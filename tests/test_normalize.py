@@ -1,0 +1,88 @@
+"""Testes unitários das funções de normalização."""
+
+import unittest
+
+from src.normalize import _enum, _prune_inventory, analyze_keys, build_stats
+
+
+def _alerta(alert_key: str, triggerid: str, signature: str, host: str = "srv-01") -> dict:
+    return {
+        "alert_key": alert_key,
+        "alert_key_strategy": "host+description",
+        "alert_key_scope": {"type": "host", "name": host, "id": "1"},
+        "zabbix": {
+            "triggerid": triggerid,
+            "description_raw": "Serviço parado",
+            "expression_signature": signature,
+            "expression_expanded": signature,
+            "priority": {"value": "4", "name": "High"},
+            "status": {"value": "0", "name": "enabled"},
+            "source_template": None,
+            "templated": False,
+            "discovered": False,
+            "comments": "",
+            "tags": [],
+            "dependencies": [],
+            "host": {"host": host, "name": host},
+        },
+    }
+
+
+class TestEnums(unittest.TestCase):
+    def test_valor_conhecido(self):
+        self.assertEqual(_enum("4", {"4": "High"}), {"value": "4", "name": "High"})
+
+    def test_valor_desconhecido_nao_quebra(self):
+        self.assertEqual(_enum("99", {"4": "High"})["name"], "unknown")
+        self.assertEqual(_enum(None, {})["value"], "")
+
+
+class TestInventario(unittest.TestCase):
+    def test_mantem_somente_campos_uteis_e_preenchidos(self):
+        inventario = {"os": "Ubuntu 22.04", "location": "", "campo_irrelevante": "x", "contact": " NOC "}
+        self.assertEqual(_prune_inventory(inventario), {"os": "Ubuntu 22.04", "contact": "NOC"})
+
+    def test_inventario_desabilitado_vira_dicionario_vazio(self):
+        self.assertEqual(_prune_inventory([]), {})
+        self.assertEqual(_prune_inventory(None), {})
+
+
+class TestAnaliseDeChaves(unittest.TestCase):
+    def test_mesma_assinatura_em_hosts_diferentes_nao_e_colisao(self):
+        alertas = [
+            _alerta("tmpl|servico-parado", "1", "last(/{HOST}/proc.num[nginx])=0", "srv-01"),
+            _alerta("tmpl|servico-parado", "2", "last(/{HOST}/proc.num[nginx])=0", "srv-02"),
+        ]
+        index, colisoes = analyze_keys(alertas)
+        self.assertEqual(colisoes, [])
+        self.assertEqual(index["tmpl|servico-parado"]["count"], 2)
+        self.assertEqual(index["tmpl|servico-parado"]["hosts"], ["srv-01", "srv-02"])
+
+    def test_assinaturas_diferentes_na_mesma_chave_sao_colisao(self):
+        alertas = [
+            _alerta("wazuh|servico-parado", "1", "last(/{HOST}/proc.num[filebeat])=0"),
+            _alerta("wazuh|servico-parado", "2", "last(/{HOST}/proc.num[wazuh-manager])=0"),
+        ]
+        index, colisoes = analyze_keys(alertas)
+        self.assertEqual(len(colisoes), 1)
+        self.assertTrue(index["wazuh|servico-parado"]["collision"])
+        self.assertEqual(len(colisoes[0]["suggested_keys"]), 2)
+        self.assertIn("#", colisoes[0]["suggested_key_pattern"])
+
+    def test_estatisticas_agregadas(self):
+        alertas = [
+            _alerta("a|x", "1", "sig-1"),
+            _alerta("a|x", "2", "sig-2"),
+            _alerta("b|y", "3", "sig-3"),
+        ]
+        index, colisoes = analyze_keys(alertas)
+        stats = build_stats(alertas, index, colisoes)
+        self.assertEqual(stats["alerts"], 3)
+        self.assertEqual(stats["unique_alert_keys"], 2)
+        self.assertEqual(stats["alert_key_collisions"], 1)
+        self.assertEqual(stats["without_comments"], 3)
+        self.assertEqual(stats["by_priority"], {"High": 3})
+
+
+if __name__ == "__main__":
+    unittest.main()

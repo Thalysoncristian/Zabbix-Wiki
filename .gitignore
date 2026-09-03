@@ -1,0 +1,24 @@
+# Credenciais — NUNCA versionar
+.env
+.env.local
+*.pem
+
+# Saída de coleta (snapshots são dados do ambiente, não código)
+output/
+export/
+import/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store

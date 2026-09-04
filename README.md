@@ -350,6 +350,23 @@ Rode a coleta e verifique `report.json` → seção `collisions` antes de aprova
 
 ---
 
+### Sem acesso a templates: regras genéricas inferidas
+
+No Zabbix, o acesso a templates é concedido por **grupos de templates** e exige
+usuário do tipo **Admin** — falta com frequência em credenciais somente leitura.
+Quando isso acontece, `template.get` devolve 0, nenhum trigger é reconhecido
+como herdado e **todo alerta vira específico do host**: o mesmo procedimento
+seria documentado 82 vezes em um ambiente de 82 hosts.
+
+O relatório mede esse impacto sem depender de permissão. Alertas são agrupados
+por `description_normalized` + `expression_signature` (que troca o host por
+`{HOST}`): o mesmo trigger aplicado a N hosts cai no mesmo grupo. A seção
+*Regras genéricas inferidas* mostra quantos procedimentos distintos existem de
+fato e quantas fichas duplicadas o escopo de template evitaria.
+
+Isso serve para dois fins: quantificar o ganho ao pedir a permissão, e servir de
+plano B na ETAPA 2 (agrupar por regra inferida) caso a permissão não venha.
+
 ## 8. `source_hash` — "o Zabbix mudou o alerta"
 
 SHA-256 determinístico sobre **apenas** os campos técnicos:

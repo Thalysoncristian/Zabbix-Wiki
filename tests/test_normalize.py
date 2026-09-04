@@ -2,7 +2,7 @@
 
 import unittest
 
-from src.normalize import _enum, _prune_inventory, analyze_keys, build_stats
+from src.normalize import _enum, _prune_inventory, analyze_keys, build_stats, infer_generic_rules
 
 
 def _alerta(alert_key: str, triggerid: str, signature: str, host: str = "srv-01") -> dict:
@@ -13,6 +13,7 @@ def _alerta(alert_key: str, triggerid: str, signature: str, host: str = "srv-01"
         "zabbix": {
             "triggerid": triggerid,
             "description_raw": "Serviço parado",
+            "description_normalized": "servico-parado",
             "expression_signature": signature,
             "expression_expanded": signature,
             "priority": {"value": "4", "name": "High"},
@@ -101,6 +102,30 @@ class TestAnaliseDeChaves(unittest.TestCase):
             alerta["zabbix"]["host"]["hostid"] = hostid
         _, colisoes = analyze_keys([a, b])
         self.assertEqual(colisoes, [], "template compartilhado entre hosts é o comportamento desejado")
+
+    def test_regra_generica_inferida_agrupa_o_mesmo_trigger_em_varios_hosts(self):
+        # Sem acesso a templates, cada host vira uma chave; a inferência mostra
+        # que na verdade é uma regra só, replicada.
+        alertas = [
+            _alerta(f"srv-{i:02d}|servico-parado", str(i), "last(/{HOST}/proc.num[nginx])=0", f"srv-{i:02d}")
+            for i in range(1, 6)
+        ]
+        resultado = infer_generic_rules(alertas)
+        self.assertEqual(resultado["summary"]["estimated_distinct_procedures"], 1)
+        self.assertEqual(resultado["summary"]["rules_spanning_multiple_hosts"], 1)
+        self.assertEqual(resultado["summary"]["alerts_in_multi_host_rules"], 5)
+        self.assertEqual(resultado["summary"]["duplicate_alert_keys_avoidable"], 4)
+        self.assertEqual(resultado["top"][0]["hosts"], 5)
+
+    def test_regras_tecnicamente_diferentes_nao_sao_agrupadas(self):
+        alertas = [
+            _alerta("srv-01|servico-parado", "1", "last(/{HOST}/proc.num[nginx])=0", "srv-01"),
+            _alerta("srv-02|servico-parado", "2", "last(/{HOST}/proc.num[postgres])=0", "srv-02"),
+        ]
+        resultado = infer_generic_rules(alertas)
+        self.assertEqual(resultado["summary"]["estimated_distinct_procedures"], 2)
+        self.assertEqual(resultado["summary"]["rules_spanning_multiple_hosts"], 0)
+        self.assertEqual(resultado["top"], [])
 
     def test_estatisticas_agregadas(self):
         alertas = [

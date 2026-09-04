@@ -567,6 +567,63 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
     return index, collisions
 
 
+def infer_generic_rules(alerts: list[dict[str, Any]]) -> dict[str, Any]:
+    """Agrupa alertas por regra genérica inferida, sem depender de templates.
+
+    Quando as credenciais não enxergam templates (permissão comum de faltar em
+    usuários somente leitura), nenhum alerta é reconhecido como herdado e todos
+    ficam com chave de host — o que duplicaria a documentação host a host.
+
+    Mas dá para inferir a regra: o mesmo trigger aplicado a N hosts tem a mesma
+    descrição normalizada e a mesma `expression_signature` (que troca o host por
+    `{HOST}`). Agrupar por esse par estima quantos procedimentos distintos
+    existem de fato, e quanta duplicação a falta de template está causando.
+    """
+    grupos: dict[tuple[str, str], dict[str, Any]] = {}
+    for alert in alerts:
+        zbx = alert["zabbix"]
+        chave = (zbx["description_normalized"], zbx["expression_signature"])
+        grupo = grupos.setdefault(
+            chave,
+            {
+                "description": zbx["description_raw"],
+                "expression_signature": zbx["expression_signature"],
+                "alerts": 0,
+                "hosts": [],
+                "alert_keys": [],
+            },
+        )
+        grupo["alerts"] += 1
+        host_name = zbx["host"]["name"] or zbx["host"]["host"]
+        if host_name and host_name not in grupo["hosts"]:
+            grupo["hosts"].append(host_name)
+        if alert["alert_key"] not in grupo["alert_keys"]:
+            grupo["alert_keys"].append(alert["alert_key"])
+
+    multi_host = [g for g in grupos.values() if len(g["hosts"]) > 1]
+    ordenados = sorted(grupos.values(), key=lambda g: (-len(g["hosts"]), -g["alerts"], g["description"]))
+    return {
+        "summary": {
+            # Quantas fichas seriam necessárias agrupando por regra inferida.
+            "estimated_distinct_procedures": len(grupos),
+            # Regras que hoje viram várias fichas por falta de escopo de template.
+            "rules_spanning_multiple_hosts": len(multi_host),
+            "alerts_in_multi_host_rules": sum(g["alerts"] for g in multi_host),
+            "duplicate_alert_keys_avoidable": sum(max(0, len(g["alert_keys"]) - 1) for g in multi_host),
+        },
+        "top": [
+            {
+                "description": g["description"],
+                "hosts": len(g["hosts"]),
+                "alerts": g["alerts"],
+                "alert_keys": len(g["alert_keys"]),
+            }
+            for g in ordenados[:10]
+            if len(g["hosts"]) > 1
+        ],
+    }
+
+
 def build_stats(
     alerts: list[dict[str, Any]],
     key_index: dict[str, dict[str, Any]],
@@ -581,11 +638,14 @@ def build_stats(
         return dict(sorted(acc.items(), key=lambda kv: (-kv[1], kv[0])))
 
     shared_keys = {k: v["count"] for k, v in key_index.items() if v["count"] > 1}
+    generic_rules = infer_generic_rules(alerts)
     return {
         "alerts": len(alerts),
         "unique_alert_keys": len(key_index),
         "alert_key_collisions": len(collisions),
         "alert_keys_shared_by_multiple_triggers": len(shared_keys),
+        "generic_rules": generic_rules["summary"],
+        "top_generic_rules": generic_rules["top"],
         "by_priority": count_by(lambda a: a["zabbix"]["priority"]["name"]),
         "by_key_strategy": count_by(lambda a: a["alert_key_strategy"]),
         "by_status": count_by(lambda a: a["zabbix"]["status"]["name"]),

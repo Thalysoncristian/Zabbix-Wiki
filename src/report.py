@@ -66,6 +66,24 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
         "  Estratégia de alert_key : " + ", ".join(f"{name}={qtd}" for name, qtd in stats["by_key_strategy"].items()),
     ]
 
+    genericas = stats.get("generic_rules") or {}
+    if genericas.get("rules_spanning_multiple_hosts"):
+        lines.append("")
+        lines.append("── Regras genéricas inferidas (mesma descrição + mesma expressão) ─")
+        lines.append(f"  procedimentos distintos estimados : {genericas['estimated_distinct_procedures']}")
+        lines.append(
+            f"  regras que abrangem vários hosts   : {genericas['rules_spanning_multiple_hosts']} "
+            f"({genericas['alerts_in_multi_host_rules']} alertas)"
+        )
+        lines.append(
+            f"  fichas duplicadas evitáveis        : {genericas['duplicate_alert_keys_avoidable']} "
+            "(se o escopo de template estivesse disponível)"
+        )
+        for regra in stats.get("top_generic_rules", [])[:5]:
+            lines.append(
+                f"    {regra['hosts']:>4} hosts / {regra['alert_keys']:>3} chaves  {regra['description'][:60]}"
+            )
+
     if stats["top_shared_alert_keys"]:
         lines.append("")
         lines.append("── alert_keys compartilhadas por mais triggers ────────────────")

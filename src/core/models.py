@@ -12,14 +12,18 @@ ficha por uma pessoa, mas a aprovação continua humana.
 
 Nível da ficha (`doc_level`) — decisão que veio dos dados reais da ETAPA 1:
 
-    instance   uma alert_key específica ("/var cheio no srv-01")
-    family     uma família inteira ("qualquer serviço do Windows parado")
+    family     regra genérica  ("qualquer serviço do Windows parado")
+    override   exceção humana   ("neste host o procedimento é outro")
 
 Numa coleta real, 1.229 de 1.380 alertas vinham de LLD: um alerta por serviço,
 por ponto de montagem, por chamado. O procedimento é o mesmo para a família
-toda, então a ficha vive na família e a instância só existe quando alguém
-precisa sobrescrever algo específico. O lookup resolve instância primeiro,
-família depois.
+toda, então a coleta **sempre** gera ficha de família. O override existe só
+quando uma pessoa decide que um caso específico foge da regra. O lookup
+resolve override primeiro, família depois.
+
+O nível nunca é inferido por contagem de instâncias. Se fosse, descobrir um
+ponto de montagem novo mudaria a chave da ficha e a documentação já escrita
+ficaria órfã — um alerta às 3h da manhã cairia numa ficha vazia.
 """
 
 from __future__ import annotations
@@ -38,8 +42,12 @@ SCHEMA_VERSION = 1
 SCOPE_ZABBIX = "zabbix"
 SCOPE_MANUAL = "manual"
 
-LEVEL_INSTANCE = "instance"
+#: Toda ficha gerada pela coleta é de FAMÍLIA. O nível nunca é decidido por
+#: contagem de instâncias: se dependesse disso, descobrir um ponto de montagem
+#: novo mudaria a chave da ficha e abandonaria a documentação já escrita.
 LEVEL_FAMILY = "family"
+#: Override criado por uma pessoa: "para ESTE host o procedimento é outro".
+LEVEL_OVERRIDE = "override"
 
 #: Caracteres proibidos em nome de arquivo no Windows (e problemáticos no resto).
 _UNSAFE_FILENAME = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
@@ -92,16 +100,19 @@ def build_family_key(alert: dict[str, Any]) -> str:
     LLD: a regra de descoberta mais a descrição crua do protótipo — o que é
     comum a todas as entidades descobertas. Trigger direto: a descrição
     normalizada mais a assinatura da expressão, que atravessa hosts.
+
+    A chave não depende de quantas instâncias existem hoje. Um protótipo de LLD
+    é uma família mesmo quando só uma entidade foi descoberta até agora.
     """
     zbx = alert.get("zabbix") or {}
     escopo = (alert.get("alert_key_scope") or {}).get("name", "")
 
     if zbx.get("discovered") and zbx.get("prototype_description"):
         regra = (zbx.get("discovery_rule") or {}).get("key_") or (zbx.get("discovery_rule") or {}).get("name") or ""
-        return "|".join(["family:lld", slugify(escopo, fallback="sem-escopo"), slugify(regra, fallback="sem-regra"),
+        return "|".join(["lld", slugify(escopo, fallback="sem-escopo"), slugify(regra, fallback="sem-regra"),
                          slugify(zbx["prototype_description"], fallback="sem-descricao")])
 
-    return "|".join(["family:rule", slugify(zbx.get("description_normalized", ""), fallback="sem-descricao"),
+    return "|".join(["rule", slugify(zbx.get("description_normalized", ""), fallback="sem-descricao"),
                      short_hash(zbx.get("expression_signature", ""))])
 
 
@@ -140,7 +151,7 @@ class AlertDoc:
 
     alert_key: str
     scope: str = SCOPE_ZABBIX
-    doc_level: str = LEVEL_INSTANCE
+    doc_level: str = LEVEL_FAMILY
     family_key: str | None = None
     zabbix: dict[str, Any] | None = None
     ai_suggestion: dict[str, Any] | None = None
@@ -204,7 +215,7 @@ class AlertDoc:
         return cls(
             alert_key=str(payload.get("alert_key") or ""),
             scope=str(payload.get("scope") or SCOPE_ZABBIX),
-            doc_level=str(payload.get("doc_level") or LEVEL_INSTANCE),
+            doc_level=str(payload.get("doc_level") or LEVEL_FAMILY),
             family_key=payload.get("family_key"),
             zabbix=payload.get("zabbix"),
             ai_suggestion=payload.get("ai_suggestion"),
@@ -219,7 +230,7 @@ class AlertDoc:
         )
 
     @classmethod
-    def from_collected_alert(cls, alert: dict[str, Any], *, doc_level: str = LEVEL_INSTANCE) -> "AlertDoc":
+    def from_collected_alert(cls, alert: dict[str, Any], *, doc_level: str = LEVEL_FAMILY) -> "AlertDoc":
         """Cria uma ficha nova (undocumented) a partir de um alerta coletado."""
         zbx = alert.get("zabbix") or {}
         agora = utc_now()
@@ -234,6 +245,15 @@ class AlertDoc:
             last_seen_at=zbx.get("collected_at") or agora,
             present_in_zabbix=True,
         )
+
+    @classmethod
+    def override(cls, alert_key: str, family_key: str) -> "AlertDoc":
+        """Override de instância: procedimento específico para um alerta.
+
+        Criado sempre por uma pessoa, nunca pela coleta. O lookup resolve o
+        override primeiro e cai na família quando ele não existe.
+        """
+        return cls(alert_key=f"override|{alert_key}", doc_level=LEVEL_OVERRIDE, family_key=family_key)
 
     @classmethod
     def manual(cls, alert_key: str) -> "AlertDoc":

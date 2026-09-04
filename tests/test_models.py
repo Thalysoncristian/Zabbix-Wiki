@@ -6,7 +6,8 @@ import unittest
 from pathlib import Path
 
 from src.core.models import (
-    LEVEL_INSTANCE,
+    LEVEL_FAMILY,
+    LEVEL_OVERRIDE,
     SCOPE_MANUAL,
     AlertDoc,
     alert_key_to_filename,
@@ -92,8 +93,14 @@ class TestFicha(unittest.TestCase):
     def test_ficha_nasce_undocumented_com_operacional_vazio(self):
         doc = AlertDoc(alert_key="srv|x")
         self.assertEqual(doc.doc_status, UNDOCUMENTED)
-        self.assertEqual(doc.doc_level, LEVEL_INSTANCE)
+        self.assertEqual(doc.doc_level, LEVEL_FAMILY)
         self.assertIsNone(doc.ai_suggestion)
+
+    def test_override_e_criado_por_humano_e_aponta_para_a_familia(self):
+        doc = AlertDoc.override("srv-01|disk-space-low", family_key="lld|srv-01|vfs|fsname-disk-space-low")
+        self.assertEqual(doc.doc_level, LEVEL_OVERRIDE)
+        self.assertTrue(doc.alert_key.startswith("override|"))
+        self.assertEqual(doc.family_key, "lld|srv-01|vfs|fsname-disk-space-low")
 
     def test_ficha_manual_nao_tem_bloco_zabbix(self):
         doc = AlertDoc.manual("pagamento-nao-processado")

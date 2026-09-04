@@ -38,21 +38,36 @@ Cada alerta vira um JSON em `docs/alerts/` com três áreas de responsabilidade
 A IA nunca escreve em `operational`. Uma sugestão pode ser copiada para a ficha
 por uma pessoa, mas a aprovação continua humana.
 
-### Nível da ficha: instância ou família
+### Nível da ficha: família e override
 
 Decisão que veio dos dados reais. Numa coleta de produção, 1.229 de 1.380
 alertas vinham de LLD — um alerta por serviço, por ponto de montagem, por
 chamado. Documentar um a um é inviável e inútil: o procedimento é o mesmo para
 a família inteira.
 
+A coleta **sempre** gera ficha de família. Instância é um override criado por
+uma pessoa, quando um caso específico foge da regra:
+
 ```
-family  "qualquer serviço do Windows parado"     → 1 ficha cobre 62 serviços
-instance "Córtex - arquivo de log acima de 100MB" → 1 ficha, 1 alerta
+family    lld|windows-bob|service-discovery|service-name-is-not-running
+          "qualquer serviço do Windows parado" — 1 ficha cobre 62 serviços
+
+family    rule|cortex-arquivo-de-log-maior-que-100mb|a1b2c3d4
+          trigger escrito à mão — 1 ficha, hoje com 1 instância
+
+override  override|srv-prod-01|disk-space-low
+          "neste host o procedimento é outro" — só humano cria
 ```
 
-Uma família com duas ou mais instâncias vira ficha única (ajustável com
-`--family-threshold`); um alerta sozinho na família vira ficha própria. Numa
-simulação com o padrão real do ambiente, **1.121 alertas geraram 8 fichas**.
+O nível **nunca** é inferido por contagem de instâncias. Se fosse, um LLD que
+descobrisse um ponto de montagem novo transformaria a ficha de instância em
+ficha de família, com outra chave — e a documentação já escrita ficaria órfã.
+O operador às 3h buscaria o alerta e cairia numa ficha vazia. Esse bug existiu
+e está coberto por teste de regressão
+(`test_instancia_nova_nao_muda_a_chave_nem_abandona_a_documentacao`).
+
+Numa simulação com o padrão real do ambiente, **1.121 alertas geraram 8
+fichas**.
 
 ### `python main.py reconcile`
 
@@ -71,10 +86,10 @@ A comparação usa `source_hash` — só o fato técnico. Editar a ficha nunca
 dispara `review_needed`, e recriar o trigger no Zabbix (novo `triggerid`) nunca
 faz a documentação ser perdida, porque a identidade é a `alert_key`.
 
-Numa ficha de **família** a comparação usa um hash da família, calculado só
-sobre o que define a regra (descrição do protótipo, regra de descoberta,
-severidade, tags). Assim, um chamado que fecha ou um serviço recém-descoberto
-trocam as instâncias sem pedir revisão de nada.
+A comparação usa um hash da família, calculado só sobre o que define a regra
+(descrição do protótipo, regra de descoberta, severidade, tags). Assim, um
+chamado que fecha ou um serviço recém-descoberto trocam as instâncias sem pedir
+revisão de nada — só uma mudança na regra em si pede.
 
 Coletando grupo a grupo, passe o filtro: o `reconcile` lê o escopo do próprio
 snapshot e só avalia como "sumidas" as fichas daquele escopo — senão coletar um

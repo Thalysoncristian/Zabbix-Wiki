@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.core.models import LEVEL_FAMILY, LEVEL_INSTANCE, AlertDoc, build_family_key
+from src.core.models import LEVEL_FAMILY, AlertDoc, build_family_key
 from src.core.repository import AlertRepository
 from src.core.status import DOCUMENTED, REVIEW_NEEDED, REVIEWED, UNDOCUMENTED
 from src.reconcile import reconcile
@@ -27,6 +27,13 @@ def _alerta(alert_key, triggerid, *, source_hash="sha256:aaa", host="srv-01", ho
     }
     return {"alert_key": alert_key, "alert_key_scope": {"type": "host", "name": host, "id": hostid},
             "alert_key_strategy": "host+description", "zabbix": zbx}
+
+
+def _chave_unica(repo):
+    """A chave da ficha gerada — derivada da família, não da alert_key crua."""
+    fichas = list(repo.all())
+    assert len(fichas) == 1, f"esperava 1 ficha, achei {len(fichas)}"
+    return fichas[0].alert_key
 
 
 def _documentar(repo, chave, status=DOCUMENTED):
@@ -55,7 +62,7 @@ class TestReconcile(unittest.TestCase):
     def test_alerta_novo_vira_ficha_undocumented(self):
         resultado = reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
         self.assertEqual(resultado.summary()["created"], 1)
-        doc = self.repo.get("srv-01|disk-space-low")
+        doc = self.repo.get(_chave_unica(self.repo))
         self.assertEqual(doc.doc_status, UNDOCUMENTED)
         self.assertEqual(doc.scope, "zabbix")
         self.assertIsNotNone(doc.zabbix)
@@ -69,12 +76,16 @@ class TestReconcile(unittest.TestCase):
         self.assertEqual(resultado.summary()["marked_review_needed"], 0)
 
     def test_mudanca_tecnica_marca_review_needed_sem_apagar_documentacao(self):
-        reconcile([_alerta("srv-01|disk-space-low", "100", source_hash="sha256:antigo")], self.repo)
-        _documentar(self.repo, "srv-01|disk-space-low")
+        reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
+        chave = _chave_unica(self.repo)
+        _documentar(self.repo, chave)
 
-        reconcile([_alerta("srv-01|disk-space-low", "100", source_hash="sha256:novo")], self.repo)
+        # A regra muda no Zabbix: a severidade do alerta sobe.
+        alterado = _alerta("srv-01|disk-space-low", "100", source_hash="sha256:novo")
+        alterado["zabbix"]["priority"] = {"value": "5", "name": "Disaster"}
+        reconcile([alterado], self.repo)
 
-        doc = self.repo.get("srv-01|disk-space-low")
+        doc = self.repo.get(chave)
         self.assertEqual(doc.doc_status, REVIEW_NEEDED)
         self.assertEqual(doc.operational["meaning"], "Partição raiz acima do limite", "documentação foi perdida")
         self.assertEqual(doc.operational["routing"]["team"], "Infraestrutura")
@@ -82,29 +93,34 @@ class TestReconcile(unittest.TestCase):
     def test_trigger_recriado_com_novo_id_preserva_a_documentacao(self):
         # triggerid não é identidade: o Zabbix recriou o trigger, a ficha continua.
         reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
-        _documentar(self.repo, "srv-01|disk-space-low", status=REVIEWED)
+        chave = _chave_unica(self.repo)
+        _documentar(self.repo, chave, status=REVIEWED)
 
         reconcile([_alerta("srv-01|disk-space-low", "999999")], self.repo)
 
-        doc = self.repo.get("srv-01|disk-space-low")
+        doc = self.repo.get(chave)
         self.assertEqual(doc.zabbix["triggerid"], "999999", "o fato técnico deve ser atualizado")
         self.assertEqual(doc.operational["meaning"], "Partição raiz acima do limite")
         self.assertEqual(doc.doc_status, REVIEWED, "mesmo hash técnico: não precisa de nova revisão")
 
     def test_edicao_humana_nunca_dispara_review_needed(self):
         reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
-        _documentar(self.repo, "srv-01|disk-space-low")
+        chave = _chave_unica(self.repo)
+        _documentar(self.repo, chave)
         reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
-        self.assertEqual(self.repo.get("srv-01|disk-space-low").doc_status, DOCUMENTED)
+        self.assertEqual(self.repo.get(chave).doc_status, DOCUMENTED)
 
     def test_alerta_que_some_preserva_a_ficha(self):
         reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
-        _documentar(self.repo, "srv-01|disk-space-low")
+        chave = _chave_unica(self.repo)
+        _documentar(self.repo, chave)
 
-        resultado = reconcile([_alerta("srv-02|outro-alerta", "200", host="srv-02", hostid="2")], self.repo)
+        resultado = reconcile(
+            [_alerta("srv-02|outro-alerta", "200", host="srv-02", hostid="2", desc="Outro alerta")], self.repo
+        )
 
         self.assertEqual(resultado.summary()["disappeared"], 1)
-        doc = self.repo.get("srv-01|disk-space-low")
+        doc = self.repo.get(chave)
         self.assertIsNotNone(doc, "a ficha não pode ser apagada")
         self.assertFalse(doc.present_in_zabbix)
         self.assertEqual(doc.operational["meaning"], "Partição raiz acima do limite")
@@ -112,10 +128,11 @@ class TestReconcile(unittest.TestCase):
     def test_alerta_que_volta_e_remarcado_como_presente(self):
         alerta = _alerta("srv-01|disk-space-low", "100")
         reconcile([alerta], self.repo)
-        reconcile([_alerta("srv-02|outro", "200", host="srv-02", hostid="2")], self.repo)
+        chave = _chave_unica(self.repo)
+        reconcile([_alerta("srv-02|outro", "200", host="srv-02", hostid="2", desc="Outro")], self.repo)
         resultado = reconcile([alerta], self.repo)
         self.assertEqual(resultado.summary()["reappeared"], 1)
-        self.assertTrue(self.repo.get("srv-01|disk-space-low").present_in_zabbix)
+        self.assertTrue(self.repo.get(chave).present_in_zabbix)
 
     def test_coleta_por_grupo_nao_marca_fichas_de_outro_grupo_como_ausentes(self):
         # O fluxo real: coletar grupo a grupo. Fichas fora do escopo da coleta
@@ -127,7 +144,7 @@ class TestReconcile(unittest.TestCase):
                               self.repo, scope_host_groups=["Ativos de Rede"])
 
         self.assertEqual(resultado.summary()["disappeared"], 0)
-        self.assertTrue(self.repo.get("srv-01|alerta-a").present_in_zabbix)
+        self.assertTrue(all(d.present_in_zabbix for d in self.repo.all()))
 
 
 class TestNivelDaFicha(unittest.TestCase):
@@ -151,13 +168,42 @@ class TestNivelDaFicha(unittest.TestCase):
         doc = next(self.repo.all())
         self.assertEqual(doc.doc_level, LEVEL_FAMILY)
         self.assertEqual(len(doc.instances), 5, "as instâncias ficam listadas na ficha")
-        self.assertTrue(doc.alert_key.startswith("family:lld|"))
+        self.assertTrue(doc.alert_key.startswith("lld|"))
 
-    def test_alerta_unico_da_familia_vira_ficha_de_instancia(self):
+    def test_alerta_unico_tambem_vira_ficha_de_familia(self):
+        # Mesmo sozinho, o alerta é uma regra. O nível não pode depender de
+        # quantas instâncias existem hoje.
         reconcile([_alerta("srv-01|disk-space-low", "100")], self.repo)
         doc = next(self.repo.all())
-        self.assertEqual(doc.doc_level, LEVEL_INSTANCE)
-        self.assertEqual(doc.alert_key, "srv-01|disk-space-low")
+        self.assertEqual(doc.doc_level, LEVEL_FAMILY)
+        self.assertTrue(doc.alert_key.startswith("rule|"))
+
+    def test_instancia_nova_nao_muda_a_chave_nem_abandona_a_documentacao(self):
+        """Regressão: o bug que jogava fora a documentação escrita.
+
+        Antes, o nível era decidido por contagem: um alerta sozinho virava
+        ficha de instância e, quando o LLD descobria a segunda entidade, a
+        ficha virava família com OUTRA chave. A documentação já escrita ficava
+        órfã e o operador às 3h caía numa ficha vazia.
+        """
+        def filesystem(ponto, triggerid):
+            return _alerta(f"srv-01|{ponto}-disk-space-low", triggerid, desc=f"{ponto}: Disk space low",
+                           lld=("vfs.fs.discovery", "{#FSNAME}: Disk space low"))
+
+        reconcile([filesystem("/", "1")], self.repo)
+        chave = next(self.repo.all()).alert_key
+        _documentar(self.repo, chave)
+
+        # O agente descobre /var na coleta seguinte.
+        resultado = reconcile([filesystem("/", "1"), filesystem("/var", "2")], self.repo)
+
+        self.assertEqual(resultado.summary()["created"], 0, "não pode criar ficha nova")
+        self.assertEqual(resultado.summary()["disappeared"], 0, "não pode abandonar a ficha documentada")
+        self.assertEqual(len(list(self.repo.all())), 1, "deve continuar existindo uma única ficha")
+
+        doc = self.repo.get(chave)
+        self.assertEqual(doc.operational["meaning"], "Partição raiz acima do limite")
+        self.assertEqual(len(doc.instances), 2, "a nova partição entra como instância da mesma ficha")
 
     def test_documentar_a_familia_cobre_instancias_futuras(self):
         base = [

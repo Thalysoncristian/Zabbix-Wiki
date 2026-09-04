@@ -26,7 +26,7 @@ from typing import Any, Iterable
 
 from .core.models import (
     LEVEL_FAMILY,
-    LEVEL_INSTANCE,
+    LEVEL_OVERRIDE,
     AlertDoc,
     build_family_key,
     compute_family_hash,
@@ -58,29 +58,6 @@ class ReconcileResult:
         }
 
 
-def group_by_doc_level(alerts: Iterable[dict[str, Any]], *, family_threshold: int = 2) -> dict[str, str]:
-    """Decide o nível de ficha de cada alerta: instância ou família.
-
-    Uma família com muitas instâncias (serviços do Windows, pontos de montagem,
-    chamados descobertos) não deve virar N fichas idênticas — o procedimento é
-    da família. Já um alerta que é o único da sua família vira ficha própria,
-    que é o caso dos triggers escritos à mão para um host específico.
-
-    Devolve `alert_key -> doc_level`.
-    """
-    familias: dict[str, list[dict[str, Any]]] = {}
-    for alerta in alerts:
-        familias.setdefault(build_family_key(alerta), []).append(alerta)
-
-    nivel: dict[str, str] = {}
-    for membros in familias.values():
-        chaves_distintas = {a["alert_key"] for a in membros}
-        alvo = LEVEL_FAMILY if len(chaves_distintas) >= family_threshold else LEVEL_INSTANCE
-        for alerta in membros:
-            nivel[alerta["alert_key"]] = alvo
-    return nivel
-
-
 def family_representative(alerts: list[dict[str, Any]]) -> dict[str, Any]:
     """Escolhe o alerta que representa tecnicamente a família.
 
@@ -95,7 +72,6 @@ def reconcile(
     alerts: list[dict[str, Any]],
     repository: AlertRepository,
     *,
-    family_threshold: int = 2,
     prune_missing: bool = True,
     scope_host_groups: Iterable[str] = (),
 ) -> ReconcileResult:
@@ -107,24 +83,18 @@ def reconcile(
     execução. Vazio significa coleta do ambiente inteiro.
     """
     resultado = ReconcileResult()
-    niveis = group_by_doc_level(alerts, family_threshold=family_threshold)
 
-    # Agrupa o que vai virar ficha: família (uma ficha para N alertas) ou
-    # instância (uma ficha por alerta).
-    fichas: dict[str, dict[str, Any]] = {}
+    # Toda ficha gerada aqui é de família. O nível NUNCA é inferido por
+    # contagem: se dependesse disso, descobrir um ponto de montagem novo
+    # trocaria a chave da ficha e abandonaria a documentação já escrita.
+    fichas: dict[str, list[dict[str, Any]]] = {}
     for alerta in alerts:
-        if niveis[alerta["alert_key"]] == LEVEL_FAMILY:
-            chave = build_family_key(alerta)
-            fichas.setdefault(chave, {"level": LEVEL_FAMILY, "alerts": []})["alerts"].append(alerta)
-        else:
-            fichas[alerta["alert_key"]] = {"level": LEVEL_INSTANCE, "alerts": [alerta]}
+        fichas.setdefault(build_family_key(alerta), []).append(alerta)
 
     vistas: set[str] = set()
-    for chave, grupo in fichas.items():
-        membros = grupo["alerts"]
-        representante = family_representative(membros) if grupo["level"] == LEVEL_FAMILY else membros[0]
+    for chave, membros in fichas.items():
         vistas.add(chave)
-        _aplicar(chave, grupo["level"], representante, membros, repository, resultado)
+        _aplicar(chave, LEVEL_FAMILY, family_representative(membros), membros, repository, resultado)
 
     if prune_missing:
         _marcar_ausentes(repository, vistas, resultado, set(scope_host_groups))
@@ -222,6 +192,9 @@ def _marcar_ausentes(
     """
     for doc in repository.all():
         if doc.alert_key in vistas or doc.scope != "zabbix" or not doc.present_in_zabbix:
+            continue
+        if doc.doc_level == LEVEL_OVERRIDE:
+            # Override é conteúdo humano: segue a presença da família dele.
             continue
         if escopo and not escopo.intersection((doc.zabbix or {}).get("host_groups") or []):
             continue

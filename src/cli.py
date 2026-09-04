@@ -77,12 +77,6 @@ def build_parser() -> argparse.ArgumentParser:
     rec.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
     rec.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
     rec.add_argument(
-        "--family-threshold",
-        type=int,
-        default=2,
-        help="a partir de quantas instâncias uma família vira ficha única (padrão: 2)",
-    )
-    rec.add_argument(
         "--no-prune",
         action="store_true",
         help="não marcar como ausentes as fichas que não apareceram nesta coleta",
@@ -237,7 +231,6 @@ def cmd_reconcile(args: argparse.Namespace) -> int:
     resultado = reconcile(
         alertas,
         repositorio,
-        family_threshold=args.family_threshold,
         prune_missing=not args.no_prune,
         scope_host_groups=grupos_do_escopo,
     )

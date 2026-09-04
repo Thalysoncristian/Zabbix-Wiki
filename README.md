@@ -266,27 +266,41 @@ mais estável:
 
 A normalização é determinística: minúsculas, sem acentos, espaços colapsados,
 pontuação convertida em hífen, e **macros substituídas por um marcador**
-(`{$LIMITE}`, `{#FSNAME}`, `{HOST.NAME}` → `macro`), para que a chave não dependa de
-valores que mudam por host ou por coleta.
+(`{$LIMITE}`, `{HOST.NAME}` → `macro`) quando ainda aparecem cruas na descrição
+(triggers de template), para que a chave não dependa de valores que mudam por
+host ou por coleta.
 
 O escopo é escolhido do mais estável para o menos estável:
 
-| Prioridade | Estratégia | Quando | Efeito |
-|---|---|---|---|
-| 1 | `prototype+description` | trigger criado por LLD | usa a descrição do **protótipo** (`{#FSNAME}: Disk space…`) e o template dono → os N pontos de montagem de M hosts colapsam em **uma** chave |
-| 2 | `template+description` | trigger herdado de template | usa o **template de origem** → 200 hosts com o mesmo trigger colapsam em **uma** chave |
-| 3 | `host+description` | trigger criado direto no host | usa o **host** |
+| Prioridade | Estratégia | Quando | Descrição usada na chave | Efeito |
+|---|---|---|---|---|
+| 1 | `prototype+description` | trigger criado por LLD | a descrição **já expandida do próprio trigger** (não o texto cru do protótipo) | uma chave por entidade descoberta (mount point, serviço…), estável entre redescobertas |
+| 2 | `template+description` | trigger herdado de template | a descrição do trigger (ainda com macros, ex. `{$LIMIT}`) | 200 hosts com o mesmo trigger colapsam em **uma** chave |
+| 3 | `host+description` | trigger criado direto no host | a descrição do trigger | usa o **host** como escopo |
 
 Exemplo:
 
 ```
 linux-by-zabbix-agent|linux-disk-space-is-critically-low-used-macro   (template)
-linux-by-zabbix-agent|macro-disk-space-is-critically-low              (protótipo LLD)
+linux-by-zabbix-agent|var-disk-space-is-critically-low                (protótipo LLD)
 wazuh|wazuh-fila-de-eventos-acima-do-limite                           (host)
 ```
 
 Isso já prepara a ETAPA 2: **regra genérica** (template) com possibilidade de
 **override específico de host**, sem duplicar conhecimento para 200 hosts.
+
+**Por que a estratégia 1 usa a descrição expandida, e não o texto cru do
+protótipo:** o texto do protótipo costuma ter mais de uma macro (ex.
+`"{#SERVICE.NAME}" ({#SERVICE.DISPLAYNAME}) is not running`, do LLD nativo de
+"Windows services discovery"). Como a normalização reduz qualquer `{...}` ao
+mesmo marcador, usar o texto cru faria **todos os serviços descobertos em um
+host colidirem na mesma chave** — Windows Audio, agente da AWS, firewall —,
+apesar de serem alertas com procedimentos completamente diferentes. Isso foi
+descoberto rodando a coleta contra um Zabbix real: 50 triggers desse tipo
+geraram só 2 chaves, ambas relatadas como colisão. Usar a descrição já
+expandida do trigger (que traz o nome real da entidade) resolve o caso sem
+comprometer a estratégia de disco, onde o texto expandido (`/var: Disk space…`)
+já é, por si só, uma boa base de chave.
 
 ### Colisões — o problema não é escondido
 

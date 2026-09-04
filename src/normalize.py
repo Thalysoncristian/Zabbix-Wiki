@@ -393,14 +393,26 @@ def _resolve_key_scope(
     """Decide o escopo e a descrição-base usados na `alert_key`.
 
     Prioridade (do mais estável para o menos estável):
-      1. protótipo de LLD (descrição com `{#MACROS}` + template/host dono);
+      1. protótipo de LLD (template/host dono do protótipo + descrição JÁ
+         EXPANDIDA do próprio trigger, não o texto cru do protótipo);
       2. template de origem do trigger herdado;
       3. host (trigger local, criado direto no host).
+
+    Por que a descrição expandida, e não `prototype["description"]`: o texto
+    cru do protótipo (`"{#SERVICE.NAME}" ({#SERVICE.DISPLAYNAME}) is not
+    running`) tem duas macros que a normalização reduz ao mesmo marcador —
+    então TODOS os serviços descobertos em um host (Windows Audio, AWS SSM
+    Agent, firewall...) colidiriam na mesma chave, apesar de serem alertas
+    operacionalmente distintos. A descrição já expandida do trigger contém o
+    nome real da entidade descoberta (`"AudioEndpointBuilder" (...) is not
+    running`), o que produz uma chave por entidade. O escopo continua vindo do
+    protótipo (host/template dono), o que preserva a chave estável mesmo que
+    o triggerid mude numa redescoberta.
     """
     if prototype and prototype["owner_name"]:
         return (
             {"type": prototype["owner_type"], "name": prototype["owner_name"], "id": prototype["owner_id"]},
-            prototype["description"],
+            description_raw,
             "prototype+description",
         )
     if source_template and source_template["name"]:

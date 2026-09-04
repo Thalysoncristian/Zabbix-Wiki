@@ -314,10 +314,21 @@ já é, por si só, uma boa base de chave.
 Vários triggers compartilharem a mesma `alert_key` **não é colisão** quando são o
 mesmo trigger de template em hosts diferentes — é exatamente o objetivo.
 
-Colisão é quando a mesma chave agrupa triggers **tecnicamente diferentes**. A
-detecção usa a `expression_signature`: a expressão expandida com o nome do host
-trocado por `{HOST}` e as macros por `{MACRO}`. Mesma chave + assinaturas
-diferentes = colisão.
+São detectados **dois tipos** de colisão:
+
+**`expressoes_diferentes`** — a mesma chave agrupa triggers tecnicamente
+distintos. A detecção usa a `expression_signature`: a expressão expandida com o
+nome do host trocado por `{HOST}` e as macros por `{MACRO}`. Mesma chave +
+assinaturas diferentes = colisão. Caso típico: dois triggers locais chamados
+"Serviço parado" monitorando serviços diferentes.
+
+**`escopo_ambiguo`** — a chave tem escopo de **host** mas agrupa hostids
+distintos: dois hosts diferentes cujos nomes produzem o mesmo slug (ex.
+`Vibe - Zabbix-Proxy` e `Vibe - Zabbix Proxy`). Esse caso escaparia da checagem
+por assinatura, porque a assinatura troca o host por `{HOST}` justamente para
+permitir que hosts diferentes compartilhem a chave de um template. Aqui a
+sugestão desambigua pelo nome técnico exato do host
+(`<escopo>#<sha256(host)[:8]>|<descrição>`).
 
 Cada colisão é relatada no console, em `normalized/collisions.json` e em
 `report.json`, com host, descrição e expressão de cada ocorrência. O alerta afetado
@@ -426,6 +437,7 @@ python -m unittest discover -s tests -t .
 | coleta lenta | use `--host-group` e/ou `--limit` na validação inicial |
 | `HTTP 500` com corpo vazio | o servidor Zabbix estourou tempo/memória montando a resposta. A coleta completa já pagina o `trigger.get` em lotes de hosts; se ainda ocorrer, reduza `ZABBIX_TRIGGER_BATCH_SIZE` (ex.: 20 ou 10) e/ou aumente `ZABBIX_TIMEOUT` |
 | `Protótipos de trigger não resolvidos` | o usuário não tem leitura em protótipos; a coleta continua e os triggers de LLD caem na chave por host |
+| `0 templates resolvidos` / `templates: []` | as credenciais não enxergam templates. No Zabbix o acesso é dado por **grupos de templates** e costuma faltar em usuários somente leitura. Sem isso nenhum alerta é reconhecido como regra genérica de template e a documentação teria de ser repetida host a host. `python main.py check` avisa quando isso acontece |
 
 ---
 

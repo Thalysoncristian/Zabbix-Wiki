@@ -124,9 +124,26 @@ def cmd_check(args: argparse.Namespace) -> int:
         print(f"✓ Conectado ao Zabbix (API {version}, {client.auth_description})")
         print(f"  endpoint : {client.endpoint}")
         print(f"  config   : {settings.describe()}")
-        for label, method in (("host groups", "hostgroup.get"), ("hosts", "host.get"), ("triggers", "trigger.get")):
-            total = client.call(method, {"countOutput": True})
+        totais: dict[str, str] = {}
+        for label, method in (
+            ("host groups", "hostgroup.get"),
+            ("hosts", "host.get"),
+            ("triggers", "trigger.get"),
+            ("templates", "template.get"),
+        ):
+            total = str(client.call(method, {"countOutput": True}))
+            totais[label] = total
             print(f"  {label:<12}: {total} visíveis para estas credenciais")
+
+        if totais.get("templates") in ("0", "None", ""):
+            print()
+            print("⚠ Nenhum template visível para estas credenciais.")
+            print("  No Zabbix, o acesso a templates é concedido por grupos de templates e")
+            print("  costuma faltar para usuários somente leitura. Sem isso, a coleta não")
+            print("  consegue identificar que um alerta é regra genérica de template — todo")
+            print("  alerta vira específico do host, e a documentação teria de ser repetida")
+            print("  host a host na ETAPA 2.")
+            print("  Peça ao admin do Zabbix acesso de leitura aos grupos de templates.")
     finally:
         client.logout()
     return EXIT_OK

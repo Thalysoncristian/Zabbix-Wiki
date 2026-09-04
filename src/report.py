@@ -76,9 +76,16 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
         lines.append("")
         lines.append("── COLISÕES DE alert_key (mesma chave, triggers diferentes) ───")
         for collision in report["collisions"][:10]:
-            lines.append(f"  ! {collision['alert_key']}  ({collision['distinct_signatures']} expressões distintas)")
+            motivos = collision.get("reasons") or ["expressoes_diferentes"]
+            if "escopo_ambiguo" in motivos:
+                causa = (
+                    f"{collision['distinct_hostids']} hosts diferentes com o mesmo slug de escopo"
+                )
+            else:
+                causa = f"{collision['distinct_signatures']} expressões distintas"
+            lines.append(f"  ! {collision['alert_key']}  ({causa})")
             for occ in collision["occurrences"][:4]:
-                lines.append(f"      - {occ['host']} :: {occ['description_raw']}")
+                lines.append(f"      - {occ['host']} (hostid {occ.get('hostid', '?')}) :: {occ['description_raw']}")
                 lines.append(f"        {occ['expression_expanded'] or occ['expression_signature']}")
             if len(collision["occurrences"]) > 4:
                 lines.append(f"      ... e mais {len(collision['occurrences']) - 4} ocorrência(s)")

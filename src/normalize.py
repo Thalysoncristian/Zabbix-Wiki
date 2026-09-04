@@ -465,8 +465,19 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
 
     Vários hosts compartilhando o mesmo trigger de template geram a MESMA
     `alert_key` — isso é desejado (procedimento único para N hosts) e não é
-    colisão. Colisão é quando a mesma `alert_key` agrupa triggers
-    tecnicamente diferentes (assinaturas de expressão distintas).
+    colisão.
+
+    Dois tipos de colisão são detectados:
+
+    * `expressoes_diferentes` — a mesma chave agrupa triggers tecnicamente
+      distintos (assinaturas de expressão diferentes). Ex.: dois triggers
+      locais chamados "Serviço parado" monitorando serviços diferentes.
+    * `escopo_ambiguo` — a chave tem escopo de HOST mas agrupa hostids
+      distintos, ou seja, dois hosts diferentes cujos nomes produzem o mesmo
+      slug (ex.: "Vibe - Zabbix-Proxy" e "Vibe - Zabbix Proxy"). Esse caso
+      passaria despercebido pela checagem de assinatura, porque a assinatura
+      troca o nome do host por `{HOST}` justamente para permitir que hosts
+      diferentes compartilhem a chave de um mesmo template.
     """
     index: dict[str, dict[str, Any]] = {}
 
@@ -482,6 +493,7 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
                 "count": 0,
                 "triggerids": [],
                 "hosts": [],
+                "hostids": [],
                 "descriptions": [],
                 "signatures": [],
                 "occurrences": [],
@@ -493,6 +505,8 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
         host_name = zbx["host"]["name"] or zbx["host"]["host"]
         if host_name and host_name not in entry["hosts"]:
             entry["hosts"].append(host_name)
+        if zbx["host"]["hostid"] and zbx["host"]["hostid"] not in entry["hostids"]:
+            entry["hostids"].append(zbx["host"]["hostid"])
         if zbx["description_raw"] not in entry["descriptions"]:
             entry["descriptions"].append(zbx["description_raw"])
         if zbx["expression_signature"] not in entry["signatures"]:
@@ -501,6 +515,8 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
             {
                 "triggerid": zbx["triggerid"],
                 "host": host_name,
+                "hostid": zbx["host"]["hostid"],
+                "host_technical": zbx["host"]["host"],
                 "description_raw": zbx["description_raw"],
                 "expression_expanded": zbx["expression_expanded"],
                 "expression_signature": zbx["expression_signature"],
@@ -511,25 +527,43 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
 
     collisions: list[dict[str, Any]] = []
     for entry in index.values():
+        reasons: list[str] = []
         if len(entry["signatures"]) > 1:
-            entry["collision"] = True
-            collisions.append(
-                {
-                    "alert_key": entry["alert_key"],
-                    "strategy": entry["strategy"],
-                    "distinct_signatures": len(entry["signatures"]),
-                    "suggested_key_pattern": f"{entry['alert_key']}#<sha256(expression_signature)[:8]>",
-                    "suggested_keys": sorted(
-                        {
-                            f"{entry['alert_key']}#{short_hash(occ['expression_signature'])}"
-                            for occ in entry["occurrences"]
-                        }
-                    ),
-                    "occurrences": entry["occurrences"],
-                }
-            )
+            reasons.append("expressoes_diferentes")
+        if entry["scope"].get("type") == "host" and len(entry["hostids"]) > 1:
+            reasons.append("escopo_ambiguo")
+        if not reasons:
+            continue
 
-    collisions.sort(key=lambda c: (-c["distinct_signatures"], c["alert_key"]))
+        entry["collision"] = True
+        if "expressoes_diferentes" in reasons:
+            pattern = f"{entry['alert_key']}#<sha256(expression_signature)[:8]>"
+            suggested = {
+                f"{entry['alert_key']}#{short_hash(occ['expression_signature'])}" for occ in entry["occurrences"]
+            }
+        else:
+            # Escopo ambíguo: desambiguar pelo nome técnico exato do host.
+            pattern = f"<escopo>#<sha256(host)[:8]>|{entry['alert_key'].split('|', 1)[-1]}"
+            suggested = {
+                f"{entry['alert_key'].split('|', 1)[0]}#{short_hash(occ['host_technical'])}"
+                f"|{entry['alert_key'].split('|', 1)[-1]}"
+                for occ in entry["occurrences"]
+            }
+
+        collisions.append(
+            {
+                "alert_key": entry["alert_key"],
+                "strategy": entry["strategy"],
+                "reasons": reasons,
+                "distinct_signatures": len(entry["signatures"]),
+                "distinct_hostids": len(entry["hostids"]),
+                "suggested_key_pattern": pattern,
+                "suggested_keys": sorted(suggested),
+                "occurrences": entry["occurrences"],
+            }
+        )
+
+    collisions.sort(key=lambda c: (-c["distinct_signatures"], -c["distinct_hostids"], c["alert_key"]))
     return index, collisions
 
 

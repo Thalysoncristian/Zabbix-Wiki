@@ -23,7 +23,7 @@ def _alerta(alert_key: str, triggerid: str, signature: str, host: str = "srv-01"
             "comments": "",
             "tags": [],
             "dependencies": [],
-            "host": {"host": host, "name": host},
+            "host": {"host": host, "name": host, "hostid": host},
         },
     }
 
@@ -49,10 +49,13 @@ class TestInventario(unittest.TestCase):
 
 class TestAnaliseDeChaves(unittest.TestCase):
     def test_mesma_assinatura_em_hosts_diferentes_nao_e_colisao(self):
+        # Escopo de template: N hosts sob a mesma chave é o objetivo do desenho.
         alertas = [
             _alerta("tmpl|servico-parado", "1", "last(/{HOST}/proc.num[nginx])=0", "srv-01"),
             _alerta("tmpl|servico-parado", "2", "last(/{HOST}/proc.num[nginx])=0", "srv-02"),
         ]
+        for alerta in alertas:
+            alerta["alert_key_scope"] = {"type": "template", "name": "Linux by Zabbix agent", "id": "10001"}
         index, colisoes = analyze_keys(alertas)
         self.assertEqual(colisoes, [])
         self.assertEqual(index["tmpl|servico-parado"]["count"], 2)
@@ -68,6 +71,36 @@ class TestAnaliseDeChaves(unittest.TestCase):
         self.assertTrue(index["wazuh|servico-parado"]["collision"])
         self.assertEqual(len(colisoes[0]["suggested_keys"]), 2)
         self.assertIn("#", colisoes[0]["suggested_key_pattern"])
+
+    def test_hosts_distintos_com_o_mesmo_slug_sao_colisao_de_escopo(self):
+        # "Vibe - Zabbix-Proxy" e "Vibe - Zabbix Proxy" geram o mesmo slug, mas
+        # são hosts diferentes: a fusão não pode passar despercebida.
+        a = _alerta("vibe-zabbix-proxy|running-out-of-inodes", "1", "last(/{HOST}/vfs.fs.inode[/,pfree])<20")
+        a["zabbix"]["host"] = {"host": "Vibe - Zabbix-Proxy", "name": "Vibe - Zabbix-Proxy", "hostid": "10693"}
+        b = _alerta("vibe-zabbix-proxy|running-out-of-inodes", "2", "last(/{HOST}/vfs.fs.inode[/,pfree])<20")
+        b["zabbix"]["host"] = {"host": "Vibe - Zabbix Proxy", "name": "Vibe - Zabbix Proxy", "hostid": "10777"}
+
+        index, colisoes = analyze_keys([a, b])
+        self.assertEqual(len(colisoes), 1)
+        self.assertIn("escopo_ambiguo", colisoes[0]["reasons"])
+        self.assertEqual(colisoes[0]["distinct_hostids"], 2)
+        self.assertEqual(len(colisoes[0]["suggested_keys"]), 2)
+        self.assertTrue(index["vibe-zabbix-proxy|running-out-of-inodes"]["collision"])
+
+    def test_mesmo_host_com_triggers_iguais_nao_e_colisao_de_escopo(self):
+        a = _alerta("host-x|servico-parado", "1", "sig-igual")
+        b = _alerta("host-x|servico-parado", "2", "sig-igual")
+        _, colisoes = analyze_keys([a, b])
+        self.assertEqual(colisoes, [])
+
+    def test_escopo_de_template_com_varios_hosts_nao_e_colisao(self):
+        a = _alerta("tmpl|disco-cheio", "1", "sig-igual", host="srv-01")
+        b = _alerta("tmpl|disco-cheio", "2", "sig-igual", host="srv-02")
+        for alerta, hostid in ((a, "1"), (b, "2")):
+            alerta["alert_key_scope"] = {"type": "template", "name": "Linux by Zabbix agent", "id": "10001"}
+            alerta["zabbix"]["host"]["hostid"] = hostid
+        _, colisoes = analyze_keys([a, b])
+        self.assertEqual(colisoes, [], "template compartilhado entre hosts é o comportamento desejado")
 
     def test_estatisticas_agregadas(self):
         alertas = [

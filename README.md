@@ -5,11 +5,11 @@ da madrugada, o que o operador precisa saber: *o que é esse alerta, o que verif
 espero ou ajo, abro chamado, para qual fila, quem é o responsável agora, qual o SLA,
 quando escalar e como sei que resolveu.*
 
-O desenvolvimento é **incremental**. Este repositório está na **ETAPA 1**.
+O desenvolvimento é **incremental**. Este repositório está na **ETAPA 2**.
 
 ```
->> ETAPA 1  coletar os alertas reais do Zabbix e validar os dados   <<  VOCÊ ESTÁ AQUI
-   ETAPA 2  normalizar + modelo operacional completo
+   ETAPA 1  coletar os alertas reais do Zabbix e validar os dados   ✓ concluída
+>> ETAPA 2  modelo operacional completo + fichas em docs/alerts/   <<  VOCÊ ESTÁ AQUI
    ETAPA 3  núcleo do sistema e persistência
    ETAPA 4  interface web + dashboard + fichas
    ETAPA 5  alertas manuais
@@ -23,6 +23,99 @@ O desenvolvimento é **incremental**. Este repositório está na **ETAPA 1**.
 **Ainda não existe** (e não deve existir) nesta etapa: FastAPI, HTML, dashboard,
 banco de dados, IA, importação de wiki, `schedule.yaml`, `categories.yaml`.
 Primeiro os dados reais; depois as camadas de cima.
+
+## A ficha operacional (ETAPA 2)
+
+Cada alerta vira um JSON em `docs/alerts/` com três áreas de responsabilidade
+**separadas de propósito**:
+
+| Bloco | O que é | Quem escreve |
+|---|---|---|
+| `zabbix` | fato técnico | a coleta, sempre; ninguém edita à mão |
+| `ai_suggestion` | sugestão | a IA (ETAPA 8) — nunca decide |
+| `operational` | procedimento oficial | **só humano** |
+
+A IA nunca escreve em `operational`. Uma sugestão pode ser copiada para a ficha
+por uma pessoa, mas a aprovação continua humana.
+
+### Nível da ficha: instância ou família
+
+Decisão que veio dos dados reais. Numa coleta de produção, 1.229 de 1.380
+alertas vinham de LLD — um alerta por serviço, por ponto de montagem, por
+chamado. Documentar um a um é inviável e inútil: o procedimento é o mesmo para
+a família inteira.
+
+```
+family  "qualquer serviço do Windows parado"     → 1 ficha cobre 62 serviços
+instance "Córtex - arquivo de log acima de 100MB" → 1 ficha, 1 alerta
+```
+
+Uma família com duas ou mais instâncias vira ficha única (ajustável com
+`--family-threshold`); um alerta sozinho na família vira ficha própria. Numa
+simulação com o padrão real do ambiente, **1.121 alertas geraram 8 fichas**.
+
+### `python main.py reconcile`
+
+Aplica um snapshot da coleta sobre as fichas existentes. O que ele **nunca**
+faz: apagar documentação humana, sobrescrever `operational`, ou rebaixar o
+status por conta própria.
+
+```
+alerta novo no Zabbix   →  cria ficha `undocumented`   (🆕 novo alerta)
+fato técnico mudou      →  documented/reviewed → `review_needed`
+alerta sumiu da coleta  →  `present_in_zabbix: false`, ficha preservada
+alerta voltou           →  marcado presente de novo
+```
+
+A comparação usa `source_hash` — só o fato técnico. Editar a ficha nunca
+dispara `review_needed`, e recriar o trigger no Zabbix (novo `triggerid`) nunca
+faz a documentação ser perdida, porque a identidade é a `alert_key`.
+
+Numa ficha de **família** a comparação usa um hash da família, calculado só
+sobre o que define a regra (descrição do protótipo, regra de descoberta,
+severidade, tags). Assim, um chamado que fecha ou um serviço recém-descoberto
+trocam as instâncias sem pedir revisão de nada.
+
+Coletando grupo a grupo, passe o filtro: o `reconcile` lê o escopo do próprio
+snapshot e só avalia como "sumidas" as fichas daquele escopo — senão coletar um
+grupo marcaria todos os outros como desaparecidos.
+
+### Máquina de estados
+
+```
+undocumented → pending_review → documented → reviewed
+                                    │            │
+                                    └─────┬──────┘
+                                          ↓
+                                   review_needed        (o Zabbix mudou)
+```
+
+`not_applicable` é alcançável de qualquer estado. Marcar como `documented`
+exige campos mínimos — `meaning`, `requires_ticket`, `resolution_criteria`, e
+equipe + fila quando abre chamado. É o que impede salvar um rascunho e fingir
+que o alerta está documentado.
+
+### Concorrência
+
+Cada ficha tem `revision`, que avança a cada gravação. Salvar com uma revisão
+desatualizada é recusado:
+
+```
+⚠ Esta ficha foi alterada por outra pessoa em 03:02 (revisão 4; você carregou a 3).
+  Recarregue a ficha antes de salvar novamente.
+```
+
+Timestamp sozinho não serve: `last_modified_at` com precisão de segundo não
+distingue duas gravações no mesmo segundo — exatamente o caso de duas pessoas
+editando a mesma ficha às 03h.
+
+### Nome dos arquivos
+
+A `alert_key` usa `|`, que é inválido em nome de arquivo no Windows, e as
+descrições de LLD passam de 100 caracteres. O nome é sanitizado (`|` → `__`),
+truncado com sufixo de hash quando necessário, e nomes reservados do Windows
+(`CON`, `LPT1`…) são escapados. A chave verdadeira vive dentro do JSON — o
+arquivo é só o endereço.
 
 ---
 
@@ -113,6 +206,15 @@ Variáveis opcionais: `ZABBIX_VERIFY_TLS` (`true` | `false` | caminho do CA bund
 ```bash
 # testa conexão e credenciais, sem coletar nada
 python main.py check
+
+# aplica a última coleta sobre as fichas em docs/alerts/
+python main.py reconcile
+
+# simula, sem gravar nada
+python main.py reconcile --dry-run
+
+# cobertura da documentação
+python main.py status
 
 # coleta completa
 python main.py collect

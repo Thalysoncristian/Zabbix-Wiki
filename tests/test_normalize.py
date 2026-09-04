@@ -107,6 +107,35 @@ class TestAnaliseDeChaves(unittest.TestCase):
         self.assertNotIn("escopo_ambiguo", colisoes[0]["reasons"], "é o mesmo host, não ambiguidade de escopo")
         self.assertEqual(colisoes[0]["duplicated_on_hosts"], {"srv-01": ["1", "2"]})
 
+    def test_par_avisar_agir_e_desambiguado_pela_severidade(self):
+        # Caso real dos domínios: {$EXP_CRIT} em High e {$EXP_WARN} em Warning.
+        # Mesma expressão depois de normalizar as macros, severidades distintas.
+        a = _alerta("dominio|expira-em-breve", "1", "last(/{HOST}/dias)<={MACRO}")
+        b = _alerta("dominio|expira-em-breve", "2", "last(/{HOST}/dias)<={MACRO}")
+        b["zabbix"]["priority"] = {"value": "2", "name": "Warning"}
+
+        _, colisoes = analyze_keys([a, b])
+        self.assertEqual(len(colisoes), 1)
+        self.assertEqual(colisoes[0]["reasons"], ["duplicado_no_host"])
+        self.assertEqual(
+            colisoes[0]["suggested_keys"],
+            ["dominio|expira-em-breve@high", "dominio|expira-em-breve@warning"],
+        )
+        self.assertEqual(colisoes[0]["suggested_by_trigger"], {
+            "1": "dominio|expira-em-breve@high",
+            "2": "dominio|expira-em-breve@warning",
+        })
+
+    def test_sugestoes_sao_distintas_entre_si(self):
+        # Regressão: a sugestão por alerta precisa seguir a mesma estratégia da
+        # análise; com expressão idêntica, o hash daria a MESMA chave aos dois.
+        a = _alerta("dominio|expira-em-breve", "1", "expressao-identica")
+        b = _alerta("dominio|expira-em-breve", "2", "expressao-identica")
+        b["zabbix"]["priority"] = {"value": "2", "name": "Warning"}
+        _, colisoes = analyze_keys([a, b])
+        sugeridas = list(colisoes[0]["suggested_by_trigger"].values())
+        self.assertEqual(len(set(sugeridas)), 2, f"sugestões não desambiguam: {sugeridas}")
+
     def test_um_trigger_por_host_nao_e_duplicata(self):
         a = _alerta("tmpl|disco-cheio", "1", "sig-igual", host="srv-01")
         b = _alerta("tmpl|disco-cheio", "2", "sig-igual", host="srv-02")

@@ -17,6 +17,7 @@ from .keys import (
     expression_signature,
     normalize_description,
     short_hash,
+    slugify,
 )
 
 PRIORITY_NAMES = {
@@ -131,11 +132,10 @@ def normalize_snapshot(raw: RawSnapshot | dict[str, Any]) -> NormalizedResult:
     for alert in alerts:
         entry = key_index[alert["alert_key"]]
         alert["alert_key_collision"] = entry["collision"]
-        alert["alert_key_suggested"] = (
-            f"{alert['alert_key']}#{short_hash(alert['zabbix']['expression_signature'])}"
-            if entry["collision"]
-            else None
-        )
+        # A sugestão por alerta usa a MESMA estratégia escolhida na análise da
+        # colisão (severidade, expressão ou host) — senão dois triggers com a
+        # mesma expressão receberiam a mesma sugestão, que não desambigua nada.
+        alert["alert_key_suggested"] = (entry.get("suggested_by_trigger") or {}).get(alert["zabbix"]["triggerid"])
 
     return NormalizedResult(
         alerts=alerts,
@@ -518,6 +518,7 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
                 "hostid": zbx["host"]["hostid"],
                 "host_technical": zbx["host"]["host"],
                 "description_raw": zbx["description_raw"],
+                "items_signature": "|".join(sorted(i["key_"] for i in zbx.get("items") or [])),
                 "expression_expanded": zbx["expression_expanded"],
                 "expression_signature": zbx["expression_signature"],
                 "priority": zbx["priority"]["name"],
@@ -548,25 +549,50 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
             continue
 
         entry["collision"] = True
-        if "expressoes_diferentes" in reasons:
+        # Par avisar/agir: mesmo item, mesmo sintoma, limiares e severidades
+        # diferentes. Se os ITENS diferem, a diferença real não é o limiar —
+        # são alertas distintos e a severidade seria um desambiguador enganoso.
+        severidades = [occ["priority"] for occ in entry["occurrences"]]
+        itens = {occ["items_signature"] for occ in entry["occurrences"]}
+        severidades_distintas = (
+            "duplicado_no_host" in reasons
+            and len(itens) == 1
+            and len(set(severidades)) == len(severidades)
+        )
+
+        escopo, _, resto = entry["alert_key"].partition("|")
+        por_trigger: dict[str, str] = {}
+
+        if severidades_distintas:
+            # Par avisar/agir: o mesmo sintoma em dois limiares e duas
+            # severidades (ex.: {$EXP_WARN} em Warning e {$EXP_CRIT} em High).
+            # Não é duplicidade no Zabbix — são procedimentos diferentes, e a
+            # severidade é o desambiguador legível e estável.
+            pattern = f"{entry['alert_key']}@<severidade>"
+            por_trigger = {
+                occ["triggerid"]: f"{entry['alert_key']}@{slugify(occ['priority'])}" for occ in entry["occurrences"]
+            }
+        elif "expressoes_diferentes" in reasons:
             pattern = f"{entry['alert_key']}#<sha256(expression_signature)[:8]>"
-            suggested = {
-                f"{entry['alert_key']}#{short_hash(occ['expression_signature'])}" for occ in entry["occurrences"]
+            por_trigger = {
+                occ["triggerid"]: f"{entry['alert_key']}#{short_hash(occ['expression_signature'])}"
+                for occ in entry["occurrences"]
             }
         elif "escopo_ambiguo" in reasons:
             # Escopo ambíguo: desambiguar pelo nome técnico exato do host.
-            pattern = f"<escopo>#<sha256(host)[:8]>|{entry['alert_key'].split('|', 1)[-1]}"
-            suggested = {
-                f"{entry['alert_key'].split('|', 1)[0]}#{short_hash(occ['host_technical'])}"
-                f"|{entry['alert_key'].split('|', 1)[-1]}"
+            pattern = f"<escopo>#<sha256(host)[:8]>|{resto}"
+            por_trigger = {
+                occ["triggerid"]: f"{escopo}#{short_hash(occ['host_technical'])}|{resto}"
                 for occ in entry["occurrences"]
             }
         else:
             # Triggers indistinguíveis pelos dados técnicos coletados: não há
             # chave derivável que os separe. É decisão humana — em geral são
-            # triggers duplicados no Zabbix, ou variam só em severidade/limiar.
+            # triggers realmente duplicados no Zabbix.
             pattern = "revisar no Zabbix: triggers indistinguíveis pelos dados técnicos"
-            suggested = set()
+
+        suggested = set(por_trigger.values())
+        entry["suggested_by_trigger"] = por_trigger
 
         collisions.append(
             {
@@ -577,6 +603,7 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
                 "distinct_hostids": len(entry["hostids"]),
                 "duplicated_on_hosts": {hid: sorted(tids) for hid, tids in sorted(hosts_duplicados.items())},
                 "suggested_key_pattern": pattern,
+                "suggested_by_trigger": por_trigger,
                 "suggested_keys": sorted(suggested),
                 "occurrences": entry["occurrences"],
             }

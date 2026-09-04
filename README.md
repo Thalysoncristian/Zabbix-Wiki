@@ -332,11 +332,21 @@ sugestão desambigua pelo nome técnico exato do host
 
 **`duplicado_no_host`** — a mesma chave agrupa triggers **distintos no mesmo
 host**. Sempre suspeito: como a assinatura troca macros por `{MACRO}`, dois
-triggers que diferem só no limiar (avisar com 30 dias e com 7 dias, com
-severidades diferentes) ficam com assinatura idêntica e se fundiriam em
-silêncio — dois procedimentos virando uma ficha. Aqui não há chave derivável
-que os separe: o relatório mostra triggerid e severidade de cada um e a decisão
-é humana. Normalmente são triggers duplicados a corrigir no próprio Zabbix.
+triggers que diferem só no limiar ficam com assinatura idêntica e se fundiriam
+em silêncio — dois procedimentos virando uma ficha.
+
+O caso mais comum **não é erro de configuração**: é o par avisar/agir do
+próprio Zabbix — o mesmo item em dois limiares e duas severidades
+(`{$EXP_WARN}` em Warning, `{$EXP_CRIT}` em High). São procedimentos
+diferentes de verdade (um espera, o outro age), então a chave sugerida usa a
+severidade: `<chave>@warning` e `<chave>@high`. Legível e estável.
+
+A severidade só é usada quando os triggers medem o **mesmo item**. Se os itens
+diferem, a diferença real não é o limiar — são alertas distintos e a chave
+sugerida volta a ser o hash da expressão. Quando nem item nem severidade
+separam os triggers, o relatório mostra triggerid e severidade de cada um e
+deixa a decisão para o humano: aí sim costuma ser duplicidade a corrigir no
+Zabbix.
 
 Cada colisão é relatada no console, em `normalized/collisions.json` e em
 `report.json`, com host, descrição e expressão de cada ocorrência. O alerta afetado

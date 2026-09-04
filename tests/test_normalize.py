@@ -2,7 +2,14 @@
 
 import unittest
 
-from src.normalize import _enum, _prune_inventory, analyze_keys, build_stats, infer_generic_rules
+from src.normalize import (
+    _enum,
+    _prune_inventory,
+    analyze_keys,
+    build_stats,
+    infer_alert_families,
+    infer_generic_rules,
+)
 
 
 def _alerta(alert_key: str, triggerid: str, signature: str, host: str = "srv-01") -> dict:
@@ -88,9 +95,23 @@ class TestAnaliseDeChaves(unittest.TestCase):
         self.assertEqual(len(colisoes[0]["suggested_keys"]), 2)
         self.assertTrue(index["vibe-zabbix-proxy|running-out-of-inodes"]["collision"])
 
-    def test_mesmo_host_com_triggers_iguais_nao_e_colisao_de_escopo(self):
+    def test_triggers_distintos_no_mesmo_host_sao_colisao_mesmo_com_assinatura_igual(self):
+        # Caso real: dois triggers "Domain Expiry ... will expire soon" no mesmo
+        # host, um avisando com 30 dias e outro com 7. A assinatura troca macros
+        # por {MACRO}, então as duas ficam idênticas e a fusão passaria batida.
         a = _alerta("host-x|servico-parado", "1", "sig-igual")
         b = _alerta("host-x|servico-parado", "2", "sig-igual")
+        _, colisoes = analyze_keys([a, b])
+        self.assertEqual(len(colisoes), 1)
+        self.assertEqual(colisoes[0]["reasons"], ["duplicado_no_host"])
+        self.assertNotIn("escopo_ambiguo", colisoes[0]["reasons"], "é o mesmo host, não ambiguidade de escopo")
+        self.assertEqual(colisoes[0]["duplicated_on_hosts"], {"srv-01": ["1", "2"]})
+
+    def test_um_trigger_por_host_nao_e_duplicata(self):
+        a = _alerta("tmpl|disco-cheio", "1", "sig-igual", host="srv-01")
+        b = _alerta("tmpl|disco-cheio", "2", "sig-igual", host="srv-02")
+        for alerta in (a, b):
+            alerta["alert_key_scope"] = {"type": "template", "name": "Linux by Zabbix agent", "id": "10001"}
         _, colisoes = analyze_keys([a, b])
         self.assertEqual(colisoes, [])
 
@@ -144,3 +165,53 @@ class TestAnaliseDeChaves(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestFamiliasDeAlertas(unittest.TestCase):
+    """Famílias: o nível em que o procedimento operacional costuma ser único."""
+
+    @staticmethod
+    def _lld(alert_key: str, triggerid: str, descricao: str, prototipo: str, regra: str, host: str) -> dict:
+        alerta = _alerta(alert_key, triggerid, f"last(/{{HOST}}/service.info[{descricao}])<>0", host)
+        alerta["zabbix"].update(
+            {
+                "description_raw": descricao,
+                "description_normalized": descricao.lower().replace(" ", "-"),
+                "discovered": True,
+                "prototype_description": prototipo,
+                "discovery_rule": {"itemid": "1", "name": regra, "key_": "service.discovery"},
+            }
+        )
+        return alerta
+
+    def test_alertas_de_lld_colapsam_na_familia_do_prototipo(self):
+        # 3 serviços x 2 hosts = 6 alertas, 6 chaves distintas, 1 família.
+        alertas = [
+            self._lld(f"{host}|{svc}", f"{i}", svc, '"{#SERVICE.NAME}" is not running', "Windows services discovery", host)
+            for i, (host, svc) in enumerate(
+                [(h, s) for h in ("srv-01", "srv-02") for s in ("AudioSrv", "BFE", "SSMAgent")]
+            )
+        ]
+        familias = infer_alert_families(alertas)
+        self.assertEqual(familias["summary"]["families"], 1)
+        self.assertEqual(familias["summary"]["alerts"], 6)
+        self.assertEqual(familias["top"][0]["alerts"], 6)
+        self.assertEqual(familias["top"][0]["alert_keys"], 6)
+        self.assertEqual(familias["top"][0]["hosts"], 2)
+        self.assertTrue(familias["top"][0]["origin"].startswith("LLD:"))
+
+    def test_regras_de_lld_diferentes_sao_familias_diferentes(self):
+        alertas = [
+            self._lld("h|a", "1", "AudioSrv", '"{#SERVICE.NAME}" is not running', "Windows services", "srv-01"),
+            self._lld("h|b", "2", "/var", "{#FSNAME}: Disk space low", "Filesystem discovery", "srv-01"),
+        ]
+        self.assertEqual(infer_alert_families(alertas)["summary"]["families"], 2)
+
+    def test_triggers_diretos_agrupam_pela_regra_inferida(self):
+        alertas = [
+            _alerta("srv-01|servico-parado", "1", "last(/{HOST}/proc.num[nginx])=0", "srv-01"),
+            _alerta("srv-02|servico-parado", "2", "last(/{HOST}/proc.num[nginx])=0", "srv-02"),
+        ]
+        familias = infer_alert_families(alertas)
+        self.assertEqual(familias["summary"]["families"], 1)
+        self.assertEqual(familias["top"][0]["origin"], "trigger direto")

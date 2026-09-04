@@ -330,6 +330,14 @@ permitir que hosts diferentes compartilhem a chave de um template. Aqui a
 sugestão desambigua pelo nome técnico exato do host
 (`<escopo>#<sha256(host)[:8]>|<descrição>`).
 
+**`duplicado_no_host`** — a mesma chave agrupa triggers **distintos no mesmo
+host**. Sempre suspeito: como a assinatura troca macros por `{MACRO}`, dois
+triggers que diferem só no limiar (avisar com 30 dias e com 7 dias, com
+severidades diferentes) ficam com assinatura idêntica e se fundiriam em
+silêncio — dois procedimentos virando uma ficha. Aqui não há chave derivável
+que os separe: o relatório mostra triggerid e severidade de cada um e a decisão
+é humana. Normalmente são triggers duplicados a corrigir no próprio Zabbix.
+
 Cada colisão é relatada no console, em `normalized/collisions.json` e em
 `report.json`, com host, descrição e expressão de cada ocorrência. O alerta afetado
 recebe:
@@ -349,6 +357,18 @@ diferentes; a resposta certa costuma ser corrigir a descrição no Zabbix.
 Rode a coleta e verifique `report.json` → seção `collisions` antes de aprovar a etapa.
 
 ---
+
+### Famílias de alertas — o nível em que o procedimento é único
+
+Uma regra de LLD produz um alerta por entidade descoberta: 300 serviços do
+Windows, 40 pontos de montagem, 12 certificados. Cada um precisa de chave
+própria (saber *qual* serviço caiu importa), mas o **procedimento** costuma ser
+o mesmo da família inteira.
+
+O relatório agrupa os alertas em famílias — o protótipo de LLD para alertas
+descobertos, a regra inferida para os demais — e mostra quantas existem. É a
+diferença entre "1.380 fichas para escrever" e "algumas dezenas de
+procedimentos, com exceções pontuais". Insumo direto para o desenho da ETAPA 2.
 
 ### Sem acesso a templates: regras genéricas inferidas
 

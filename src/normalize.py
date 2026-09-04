@@ -532,6 +532,18 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
             reasons.append("expressoes_diferentes")
         if entry["scope"].get("type") == "host" and len(entry["hostids"]) > 1:
             reasons.append("escopo_ambiguo")
+
+        # Dois triggers distintos no MESMO host sob a mesma chave. Sempre
+        # suspeito: a assinatura troca macros por {MACRO}, então triggers que
+        # diferem só no limiar (avisar com 30 dias x com 7 dias, severidades
+        # diferentes) têm assinatura idêntica e se fundiriam em silêncio.
+        por_host: dict[str, set[str]] = {}
+        for occ in entry["occurrences"]:
+            por_host.setdefault(occ["hostid"], set()).add(occ["triggerid"])
+        hosts_duplicados = {hid: tids for hid, tids in por_host.items() if len(tids) > 1}
+        if hosts_duplicados:
+            reasons.append("duplicado_no_host")
+
         if not reasons:
             continue
 
@@ -541,7 +553,7 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
             suggested = {
                 f"{entry['alert_key']}#{short_hash(occ['expression_signature'])}" for occ in entry["occurrences"]
             }
-        else:
+        elif "escopo_ambiguo" in reasons:
             # Escopo ambíguo: desambiguar pelo nome técnico exato do host.
             pattern = f"<escopo>#<sha256(host)[:8]>|{entry['alert_key'].split('|', 1)[-1]}"
             suggested = {
@@ -549,6 +561,12 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
                 f"|{entry['alert_key'].split('|', 1)[-1]}"
                 for occ in entry["occurrences"]
             }
+        else:
+            # Triggers indistinguíveis pelos dados técnicos coletados: não há
+            # chave derivável que os separe. É decisão humana — em geral são
+            # triggers duplicados no Zabbix, ou variam só em severidade/limiar.
+            pattern = "revisar no Zabbix: triggers indistinguíveis pelos dados técnicos"
+            suggested = set()
 
         collisions.append(
             {
@@ -557,6 +575,7 @@ def analyze_keys(alerts: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]
                 "reasons": reasons,
                 "distinct_signatures": len(entry["signatures"]),
                 "distinct_hostids": len(entry["hostids"]),
+                "duplicated_on_hosts": {hid: sorted(tids) for hid, tids in sorted(hosts_duplicados.items())},
                 "suggested_key_pattern": pattern,
                 "suggested_keys": sorted(suggested),
                 "occurrences": entry["occurrences"],
@@ -624,6 +643,65 @@ def infer_generic_rules(alerts: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def infer_alert_families(alerts: list[dict[str, Any]]) -> dict[str, Any]:
+    """Agrupa alertas em famílias — o nível em que o procedimento costuma ser único.
+
+    Uma regra de LLD produz um alerta por entidade descoberta: 300 serviços do
+    Windows, 40 pontos de montagem, 12 certificados. Cada um precisa de chave
+    própria (o serviço parado importa), mas o *procedimento* costuma ser o mesmo
+    da família inteira: "verificar o serviço, tentar subir, escalar se não subir".
+
+    A família é o protótipo de LLD (regra de descoberta + descrição do protótipo)
+    para alertas descobertos, e a própria regra inferida para os demais. É o
+    número que diz quantos procedimentos realmente precisam ser escritos à mão,
+    versus quantas fichas existem.
+    """
+    familias: dict[tuple[str, ...], dict[str, Any]] = {}
+    for alert in alerts:
+        zbx = alert["zabbix"]
+        if zbx["discovered"] and zbx["prototype_description"]:
+            regra = (zbx["discovery_rule"] or {}).get("name") or ""
+            chave = ("lld", regra, zbx["prototype_description"])
+            rotulo = zbx["prototype_description"]
+            origem = f"LLD: {regra}" if regra else "LLD"
+        else:
+            chave = ("rule", zbx["description_normalized"], zbx["expression_signature"])
+            rotulo = zbx["description_raw"]
+            origem = "trigger direto"
+
+        familia = familias.setdefault(
+            chave,
+            {"label": rotulo, "origin": origem, "alerts": 0, "alert_keys": [], "hosts": []},
+        )
+        familia["alerts"] += 1
+        if alert["alert_key"] not in familia["alert_keys"]:
+            familia["alert_keys"].append(alert["alert_key"])
+        host_name = zbx["host"]["name"] or zbx["host"]["host"]
+        if host_name and host_name not in familia["hosts"]:
+            familia["hosts"].append(host_name)
+
+    ordenadas = sorted(familias.values(), key=lambda f: (-f["alerts"], f["label"]))
+    return {
+        "summary": {
+            "families": len(familias),
+            "alerts": len(alerts),
+            # Fichas que uma família cobriria de uma vez só.
+            "alerts_in_multi_alert_families": sum(f["alerts"] for f in ordenadas if f["alerts"] > 1),
+        },
+        "top": [
+            {
+                "label": f["label"],
+                "origin": f["origin"],
+                "alerts": f["alerts"],
+                "alert_keys": len(f["alert_keys"]),
+                "hosts": len(f["hosts"]),
+            }
+            for f in ordenadas[:10]
+            if f["alerts"] > 1
+        ],
+    }
+
+
 def build_stats(
     alerts: list[dict[str, Any]],
     key_index: dict[str, dict[str, Any]],
@@ -639,7 +717,10 @@ def build_stats(
 
     shared_keys = {k: v["count"] for k, v in key_index.items() if v["count"] > 1}
     generic_rules = infer_generic_rules(alerts)
+    families = infer_alert_families(alerts)
     return {
+        "families": families["summary"],
+        "top_families": families["top"],
         "alerts": len(alerts),
         "unique_alert_keys": len(key_index),
         "alert_key_collisions": len(collisions),

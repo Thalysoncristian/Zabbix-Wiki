@@ -66,6 +66,20 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
         "  Estratégia de alert_key : " + ", ".join(f"{name}={qtd}" for name, qtd in stats["by_key_strategy"].items()),
     ]
 
+    familias = stats.get("families") or {}
+    if familias.get("families"):
+        lines.append("")
+        lines.append("── Famílias de alertas (nível em que o procedimento é único) ──")
+        lines.append(
+            f"  {familias['alerts']} alertas se organizam em {familias['families']} famílias "
+            f"({familias['alerts_in_multi_alert_families']} alertas em famílias com mais de um)"
+        )
+        for familia in stats.get("top_families", [])[:6]:
+            lines.append(
+                f"    {familia['alerts']:>5} alertas / {familia['hosts']:>3} hosts  "
+                f"{familia['label'][:55]}  [{familia['origin'][:28]}]"
+            )
+
     genericas = stats.get("generic_rules") or {}
     if genericas.get("rules_spanning_multiple_hosts"):
         lines.append("")
@@ -95,15 +109,20 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
         lines.append("── COLISÕES DE alert_key (mesma chave, triggers diferentes) ───")
         for collision in report["collisions"][:10]:
             motivos = collision.get("reasons") or ["expressoes_diferentes"]
+            causas = []
+            if "expressoes_diferentes" in motivos:
+                causas.append(f"{collision['distinct_signatures']} expressões distintas")
             if "escopo_ambiguo" in motivos:
-                causa = (
-                    f"{collision['distinct_hostids']} hosts diferentes com o mesmo slug de escopo"
-                )
-            else:
-                causa = f"{collision['distinct_signatures']} expressões distintas"
-            lines.append(f"  ! {collision['alert_key']}  ({causa})")
+                causas.append(f"{collision['distinct_hostids']} hosts com o mesmo slug de escopo")
+            if "duplicado_no_host" in motivos:
+                total = sum(len(t) for t in (collision.get("duplicated_on_hosts") or {}).values())
+                causas.append(f"{total} triggers distintos no mesmo host")
+            lines.append(f"  ! {collision['alert_key']}  ({'; '.join(causas)})")
             for occ in collision["occurrences"][:4]:
-                lines.append(f"      - {occ['host']} (hostid {occ.get('hostid', '?')}) :: {occ['description_raw']}")
+                lines.append(
+                    f"      - {occ['host']} (hostid {occ.get('hostid', '?')}, "
+                    f"trigger {occ['triggerid']}, {occ['priority']}) :: {occ['description_raw']}"
+                )
                 lines.append(f"        {occ['expression_expanded'] or occ['expression_signature']}")
             if len(collision["occurrences"]) > 4:
                 lines.append(f"      ... e mais {len(collision['occurrences']) - 4} ocorrência(s)")

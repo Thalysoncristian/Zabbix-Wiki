@@ -20,6 +20,57 @@ def _run(version: str = "7.0.0"):
     return fake, client, raw, normalize_snapshot(raw)
 
 
+class TestPaginacaoPorHost(unittest.TestCase):
+    """A coleta completa pagina o trigger.get em lotes de hosts.
+
+    Sem isso, ambientes grandes devolvem HTTP 500 (timeout/memória) quando se
+    pede os triggers de milhares de hosts numa única chamada.
+    """
+
+    def _coleta(self, trigger_batch_size: int, **kwargs):
+        fake = FakeZabbix()
+        client = ZabbixReadOnlyClient(
+            "https://zabbix.local",
+            api_token="fake-token",
+            trigger_batch_size=trigger_batch_size,
+            transport=fake,
+        )
+        return fake, collect_raw(client, **kwargs)
+
+    def test_um_trigger_get_por_lote_de_hosts(self):
+        fake, raw = self._coleta(trigger_batch_size=1)
+        # 3 hosts / lote de 1 => pelo menos 3 chamadas de coleta de triggers.
+        chamadas_host = [p for p in fake.params_called if p["method"] == "trigger.get" and "hostids" in p["params"]]
+        self.assertEqual(len(chamadas_host), 3)
+        for chamada in chamadas_host:
+            self.assertEqual(len(chamada["params"]["hostids"]), 1)
+        self.assertEqual(len(raw.data["triggers"]), 6)
+
+    def test_lote_maior_faz_menos_chamadas_e_traz_o_mesmo_resultado(self):
+        fake, raw = self._coleta(trigger_batch_size=50)
+        chamadas_host = [p for p in fake.params_called if p["method"] == "trigger.get" and "hostids" in p["params"]]
+        self.assertEqual(len(chamadas_host), 1)
+        self.assertEqual(len(raw.data["triggers"]), 6)
+
+    def test_triggers_nao_duplicam_entre_lotes(self):
+        _, raw = self._coleta(trigger_batch_size=1)
+        ids = [t["triggerid"] for t in raw.data["triggers"]]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_limit_continua_em_chamada_unica(self):
+        fake, raw = self._coleta(trigger_batch_size=1, limit=2)
+        chamadas_host = [p for p in fake.params_called if p["method"] == "trigger.get" and "hostids" in p["params"]]
+        self.assertEqual(chamadas_host, [], "--limit não deve paginar por host")
+        self.assertEqual(len(raw.data["triggers"]), 2)
+
+    def test_filtro_de_grupo_restringe_os_hosts_paginados(self):
+        fake, raw = self._coleta(trigger_batch_size=1, host_groups=["SIEM"])
+        chamadas_host = [p for p in fake.params_called if p["method"] == "trigger.get" and "hostids" in p["params"]]
+        # Só o host do grupo SIEM (wazuh, hostid 10503) entra no escopo.
+        self.assertEqual(len(chamadas_host), 1)
+        self.assertEqual(chamadas_host[0]["params"]["hostids"], ["10503"])
+
+
 class TestColeta(unittest.TestCase):
     def setUp(self):
         self.fake, self.client, self.raw, self.norm = _run()

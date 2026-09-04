@@ -264,6 +264,7 @@ class FakeZabbix:
         self.version = version
         self.token = token
         self.methods_called: list[str] = []
+        self.params_called: list[dict[str, Any]] = []
 
     # ------------------------------------------------------------------ helpers
     def _authorized(self, payload: dict[str, Any], headers: dict[str, str]) -> bool:
@@ -285,6 +286,7 @@ class FakeZabbix:
         method = payload["method"]
         params = payload.get("params") or {}
         self.methods_called.append(method)
+        self.params_called.append({"method": method, "params": params})
 
         if method == "apiinfo.version":
             return self._ok(self.version)
@@ -314,6 +316,9 @@ class FakeZabbix:
         if params.get("hostids"):
             wanted = {str(i) for i in params["hostids"]}
             rows = [h for h in rows if h["hostid"] in wanted]
+        if params.get("groupids"):
+            wanted = {str(i) for i in params["groupids"]}
+            rows = [h for h in rows if wanted.intersection(g["groupid"] for g in h["hostgroups"])]
         if params.get("countOutput"):
             return str(len(rows))
 
@@ -362,6 +367,9 @@ class FakeZabbix:
                     for t in rows
                     if any(g["groupid"] in wanted for h in t["hosts"] for g in _host_groups_of(h))
                 ]
+            if params.get("hostids"):
+                wanted = {str(i) for i in params["hostids"]}
+                rows = [t for t in rows if wanted.intersection(t["hosts"])]
             if params.get("limit"):
                 rows = rows[: int(params["limit"])]
         if params.get("countOutput"):

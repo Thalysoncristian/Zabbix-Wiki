@@ -19,7 +19,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable, Iterable
 
-from .zabbix_client import ZabbixError, ZabbixReadOnlyClient
+from .zabbix_client import ZabbixError, ZabbixReadOnlyClient, chunked
 
 logger = logging.getLogger(__name__)
 
@@ -141,12 +141,21 @@ def collect_raw(
         trigger_params["templated"] = False
     if only_monitored:
         trigger_params["monitored"] = True
-    if group_filter_ids:
-        trigger_params["groupids"] = group_filter_ids
-    if limit:
-        trigger_params["limit"] = int(limit)
 
-    triggers = _get_triggers(client, trigger_params, optional_selects, on_step)
+    if limit:
+        # Coleta de teste (--limit): uma única chamada, sem paginar por host.
+        if group_filter_ids:
+            trigger_params["groupids"] = group_filter_ids
+        trigger_params["limit"] = int(limit)
+        triggers = _get_triggers(client, trigger_params, optional_selects, on_step)
+    else:
+        # Coleta completa: pedir todos os triggers do escopo numa chamada só
+        # costuma estourar tempo/memória do servidor Zabbix em ambientes
+        # grandes (HTTP 500 com corpo vazio). Resolvemos os hosts do escopo
+        # primeiro e paginamos o trigger.get em lotes de hosts.
+        scope_host_ids = _resolve_scope_host_ids(client, group_filter_ids)
+        triggers = _get_triggers_by_host(client, trigger_params, optional_selects, scope_host_ids, on_step)
+
     on_step(f"{len(triggers)} triggers coletados")
 
     # Expressões expandidas: mesma consulta, apenas com expandExpression.
@@ -255,6 +264,41 @@ def collect_raw(
         },
         api_calls=list(client.call_log),
     )
+
+
+def _resolve_scope_host_ids(client: ZabbixReadOnlyClient, group_filter_ids: list[str]) -> list[str]:
+    """Hosts do escopo da coleta — usados só para paginar o trigger.get."""
+    params: dict[str, Any] = {"output": ["hostid"]}
+    if group_filter_ids:
+        params["groupids"] = group_filter_ids
+    hosts = client.call("host.get", params) or []
+    return _ids(hosts, "hostid")
+
+
+def _get_triggers_by_host(
+    client: ZabbixReadOnlyClient,
+    params: dict[str, Any],
+    optional_selects: dict[str, Any],
+    host_ids: list[str],
+    on_step: Callable[[str], None],
+) -> list[dict[str, Any]]:
+    """trigger.get em lotes de hostids.
+
+    Uma única chamada trazendo os triggers de milhares de hosts (com todos os
+    selects usados aqui) pode estourar o tempo/memória do servidor Zabbix e
+    devolver HTTP 500 com corpo vazio. Paginando por lotes de hosts, cada
+    chamada fica pequena o bastante para o servidor responder normalmente.
+    Como um host pode pertencer a mais de um grupo do escopo, deduplicamos
+    por triggerid ao final.
+    """
+    batches = list(chunked(host_ids, client.trigger_batch_size))
+    collected: dict[str, dict[str, Any]] = {}
+    for index, batch in enumerate(batches, start=1):
+        rows = _get_triggers(client, {**params, "hostids": batch}, optional_selects, on_step)
+        for row in rows:
+            collected[str(row.get("triggerid"))] = row
+        on_step(f"lote {index}/{len(batches)} de hosts: {len(rows)} triggers ({len(collected)} acumulados)")
+    return list(collected.values())
 
 
 def _get_triggers(

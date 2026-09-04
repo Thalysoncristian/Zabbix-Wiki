@@ -166,6 +166,7 @@ class ZabbixReadOnlyClient:
         timeout: int = 30,
         verify_tls: bool | str = True,
         page_size: int = 500,
+        trigger_batch_size: int = 50,
         transport: Callable[[dict[str, Any], dict[str, str]], dict[str, Any]] | None = None,
     ):
         self.endpoint = api_endpoint(url)
@@ -173,6 +174,11 @@ class ZabbixReadOnlyClient:
         self._user = user
         self._password = password
         self.page_size = page_size
+        #: hosts por chamada trigger.get na coleta completa. Menor que page_size
+        #: de propósito: trigger.get com todos os selects usados aqui é uma
+        #: consulta pesada por host — um lote grande demais pode devolver HTTP
+        #: 500 (timeout/memória) no servidor Zabbix.
+        self.trigger_batch_size = max(1, trigger_batch_size)
         self._transport = transport or RequestsTransport(self.endpoint, timeout=timeout, verify=verify_tls)
 
         self._request_id = 0
@@ -193,6 +199,7 @@ class ZabbixReadOnlyClient:
             timeout=settings.timeout,
             verify_tls=settings.verify_tls,
             page_size=settings.page_size,
+            trigger_batch_size=settings.trigger_batch_size,
             transport=transport,
         )
 

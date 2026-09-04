@@ -91,6 +91,7 @@ class Settings:
     verify_tls: bool | str = True
     timeout: int = 30
     page_size: int = 500
+    trigger_batch_size: int = 50
     host_groups: list[str] = field(default_factory=list)
     output_dir: str = "output"
 
@@ -103,6 +104,7 @@ class Settings:
         return (
             f"url={self.url} auth={self.auth_mode} verify_tls={self.verify_tls} "
             f"timeout={self.timeout}s page_size={self.page_size} "
+            f"trigger_batch_size={self.trigger_batch_size} "
             f"host_groups={self.host_groups or 'todos'}"
         )
 
@@ -144,6 +146,7 @@ def load_settings(env_file: str | Path = DEFAULT_ENV_FILE) -> Settings:
         verify_tls=verify,
         timeout=_as_int(env.get("ZABBIX_TIMEOUT"), 30),
         page_size=_as_int(env.get("ZABBIX_PAGE_SIZE"), 500),
+        trigger_batch_size=_as_int(env.get("ZABBIX_TRIGGER_BATCH_SIZE"), 50),
         host_groups=_as_list(env.get("ZABBIX_HOST_GROUPS")),
         output_dir=(env.get("OUTPUT_DIR") or "output").strip(),
     )

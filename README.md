@@ -103,7 +103,8 @@ O `.env` **nunca** é versionado (está no `.gitignore`). Nenhuma credencial apa
 no código, nos logs ou nos snapshots.
 
 Variáveis opcionais: `ZABBIX_VERIFY_TLS` (`true` | `false` | caminho do CA bundle),
-`ZABBIX_TIMEOUT`, `ZABBIX_PAGE_SIZE`, `ZABBIX_HOST_GROUPS`, `OUTPUT_DIR`.
+`ZABBIX_TIMEOUT`, `ZABBIX_PAGE_SIZE`, `ZABBIX_TRIGGER_BATCH_SIZE`,
+`ZABBIX_HOST_GROUPS`, `OUTPUT_DIR`.
 
 ---
 
@@ -134,6 +135,12 @@ ex.: `python main.py --env-file .env.homolog collect`.
 Por padrão são coletados os triggers **dos hosts** (`templated=false`) — que é o que
 gera alerta de verdade. O trigger do template é alcançado pela cadeia `templateid`
 para servir de escopo da chave.
+
+Na coleta completa (sem `--limit`), o `trigger.get` é **paginado em lotes de
+hosts** (`ZABBIX_TRIGGER_BATCH_SIZE`, padrão 50). Pedir os triggers de milhares
+de hosts numa única chamada faz o servidor Zabbix estourar tempo/memória e
+responder `HTTP 500` com corpo vazio. O progresso de cada lote é impresso
+durante a coleta.
 
 ### Saída esperada
 
@@ -417,6 +424,7 @@ python -m unittest discover -s tests -t .
 | `0 triggers encontrados` | as credenciais não enxergam nenhum grupo de hosts; rode `python main.py check` |
 | `Grupos de hosts não encontrados` | o nome em `--host-group` precisa ser exatamente igual ao do Zabbix |
 | coleta lenta | use `--host-group` e/ou `--limit` na validação inicial |
+| `HTTP 500` com corpo vazio | o servidor Zabbix estourou tempo/memória montando a resposta. A coleta completa já pagina o `trigger.get` em lotes de hosts; se ainda ocorrer, reduza `ZABBIX_TRIGGER_BATCH_SIZE` (ex.: 20 ou 10) e/ou aumente `ZABBIX_TIMEOUT` |
 | `Protótipos de trigger não resolvidos` | o usuário não tem leitura em protótipos; a coleta continua e os triggers de LLD caem na chave por host |
 
 ---

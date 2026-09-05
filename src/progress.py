@@ -24,6 +24,7 @@ real. Quando não for, a linha não mostra porcentagem — nada é estimado.
 from __future__ import annotations
 
 import re
+import shutil
 import sys
 import time
 from typing import Any, Callable
@@ -79,6 +80,7 @@ class ConsoleProgress:
         self._fase_objetos: int = 0
         self._fase_total: int = 0
         self._linha_viva = False
+        self._largura_viva = 0
         self._grupos: int = 0
 
     @property
@@ -86,24 +88,54 @@ class ConsoleProgress:
         return self._clock() - self._start
 
     # ------------------------------------------------------------------ saída
+    def _largura(self) -> int:
+        """Largura utilizável do terminal.
+
+        A linha de andamento precisa CABER: se ela passar da largura, o
+        terminal quebra em duas e o `\r` seguinte só volta ao início da
+        segunda — deixando a primeira metade como lixo na tela.
+        """
+        try:
+            return max(20, shutil.get_terminal_size(fallback=(80, 24)).columns - 1)
+        except OSError:  # pragma: no cover - terminal sem tamanho
+            return 79
+
+    def _apagar_linha_viva(self) -> None:
+        """Limpa a linha de andamento sobrescrevendo com espaços.
+
+        Espaços em vez do código ANSI `\033[K` de propósito: o console
+        legado do Windows não interpreta ANSI sem VT habilitado, e o
+        operador veria `←[K` no meio do relatório. Espaço funciona em
+        qualquer terminal.
+        """
+        if not self._linha_viva:
+            return
+        sys.stdout.write("\r" + " " * self._largura_viva + "\r")
+        sys.stdout.flush()
+        self._linha_viva = False
+        self._largura_viva = 0
+
     def _linha(self, texto: str) -> None:
         """Escreve uma linha definitiva, apagando a linha viva se houver."""
-        if self._linha_viva:
-            self._write("\r\033[K" if self._interactive else "")
-            self._linha_viva = False
+        self._apagar_linha_viva()
         self._write(f"  · {texto}")
 
     def _viva(self, texto: str) -> None:
         """Reescreve a linha de andamento no lugar (só em terminal)."""
         if not self._interactive:
             return
-        sys.stdout.write(f"\r\033[K  · {texto}")
+        linha = f"  · {texto}"[: self._largura()]
+        # Preenche até o comprimento anterior para apagar o resto da linha
+        # que estava lá — de novo, sem depender de ANSI.
+        sys.stdout.write("\r" + linha.ljust(self._largura_viva))
         sys.stdout.flush()
+        self._largura_viva = len(linha)
         self._linha_viva = True
 
     def finish(self) -> None:
-        """Fecha a última fase — chame ao terminar a coleta."""
+        """Fecha a última fase e limpa a tela — chame ao terminar a coleta."""
         self._fechar_fase()
+        self._apagar_linha_viva()
 
     # ------------------------------------------------------------- despachante
     def __call__(self, event: dict[str, Any]) -> None:

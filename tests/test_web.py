@@ -565,6 +565,173 @@ class TestEscopoViaHTTP(unittest.TestCase):
                          "o escopo é leitura: nenhum byte do snapshot pode mudar")
 
 
+class TestRegrasViaHTTP(unittest.TestCase):
+    """Fluxo do item 39: grupo → regras → confirmar → documentar."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.base = Path(self._tmp.name)
+        self.docs = self.base / "docs"
+        self.docs.mkdir(parents=True, exist_ok=True)
+        montar_snapshot(str(self.base))
+        self.srv = ServidorDeTeste(str(self.base), str(self.docs))
+
+    def tearDown(self):
+        self.srv.parar()
+        self._tmp.cleanup()
+
+    def get(self, caminho: str) -> Any:
+        status, dados = self.srv.pedir(caminho)
+        self.assertEqual(status, 200, dados)
+        return dados
+
+    def test_grupos_como_unidade_de_trabalho(self):
+        dados = self.get("/api/groups")
+        self.assertTrue(dados["items"])
+        for grupo in dados["items"]:
+            self.assertIn("rules", grupo)
+            self.assertIn("progress", grupo["rules"])
+            self.assertLessEqual(grupo["rules"]["documented"], grupo["rules"]["active"])
+
+    def test_uma_regra_reune_varios_alertas(self):
+        """A redução de unidades é medida com volume em test_rules.TestEscala.
+
+        Aqui, com o ambiente minúsculo do Zabbix falso, o que dá para afirmar é
+        que a regra agrupa: nenhuma delas é um alerta solto disfarçado.
+        """
+        regras = self.get("/api/rules")["items"]
+        self.assertTrue(regras)
+        self.assertTrue(any(r["alerts"] > 1 or r["families"] > 1 for r in regras),
+                        "nenhuma regra agrupou nada")
+        for regra in regras:
+            self.assertGreaterEqual(regra["alerts"], 1)
+
+    def test_toda_regra_explica_o_agrupamento(self):
+        for regra in self.get("/api/rules")["items"]:
+            self.assertTrue(regra["reasons"], f"{regra['id']} não explica o agrupamento")
+            self.assertIn(regra["confidence"], ("high", "medium", "low"))
+            self.assertEqual(regra["status"], "candidate", "nasce como sugestão, não como fato")
+
+    def test_a_lista_diz_que_e_sugestao(self):
+        nota = self.get("/api/rules")["note"]
+        self.assertIn("POSSÍVEIS", nota)
+        self.assertIn("confirme", nota)
+
+    def test_detalhe_da_regra(self):
+        regra = self.get("/api/rules")["items"][0]
+        d = self.get(f"/api/rules/{regra['id']}")
+        for campo in ("instances_page", "families_list", "hosts_list", "alerts_page",
+                      "item_prefixes", "reasons", "procedure"):
+            self.assertIn(campo, d)
+        self.assertEqual(d["alerts"], regra["alerts"])
+        self.assertIsInstance(d["instances"], int, "`instances` é contagem; a lista é instances_page")
+
+    def test_sub_recursos_da_regra(self):
+        regra = self.get("/api/rules")["items"][0]
+        self.assertIn("items", self.get(f"/api/rules/{regra['id']}/instances"))
+        self.assertIn("items", self.get(f"/api/rules/{regra['id']}/alerts"))
+        self.assertIn("items", self.get(f"/api/rules/{regra['id']}/families"))
+        sugestoes = self.get(f"/api/rules/{regra['id']}/suggestions")
+        self.assertTrue(sugestoes["reasons"])
+        self.assertIn("não é um diagnóstico", sugestoes["disclaimer"].lower())
+
+    def test_grupo_lista_suas_regras(self):
+        grupo = self.get("/api/groups")["items"][0]
+        pelas_regras = self.get(f"/api/rules?group={grupo['id']}")["pagination"]["total"]
+        pelo_grupo = self.get(f"/api/groups/{grupo['id']}/rules")["pagination"]["total"]
+        self.assertEqual(pelas_regras, pelo_grupo)
+        self.assertEqual(pelo_grupo, self.get(f"/api/groups/{grupo['id']}")["rules_page"]["pagination"]["total"])
+
+    def test_confirmar_candidato(self):
+        regra = self.get("/api/rules")["items"][0]
+        status, dados = self.srv.pedir(f"/api/rules/{regra['id']}/decision", "POST",
+                                       {"status": "confirmed", "by": "operador"})
+        self.assertEqual(status, 200, dados)
+        self.assertEqual(self.get(f"/api/rules/{regra['id']}")["status"], "confirmed")
+
+    def test_ignorar_e_manter_separado(self):
+        regras = self.get("/api/rules")["items"]
+        self.srv.pedir(f"/api/rules/{regras[0]['id']}/decision", "POST", {"status": "ignored"})
+        self.srv.pedir(f"/api/rules/{regras[1]['id']}/decision", "POST", {"status": "split"})
+        self.assertEqual(self.get(f"/api/rules/{regras[0]['id']}")["status"], "ignored")
+        self.assertEqual(self.get(f"/api/rules/{regras[1]['id']}")["status"], "split")
+
+    def test_desfazer_decisao(self):
+        regra = self.get("/api/rules")["items"][0]
+        self.srv.pedir(f"/api/rules/{regra['id']}/decision", "POST", {"status": "confirmed"})
+        self.srv.pedir(f"/api/rules/{regra['id']}/decision", "POST", {"status": "candidate"})
+        self.assertEqual(self.get(f"/api/rules/{regra['id']}")["status"], "candidate")
+
+    def test_decisao_invalida_e_400(self):
+        regra = self.get("/api/rules")["items"][0]
+        status, _ = self.srv.pedir(f"/api/rules/{regra['id']}/decision", "POST", {"status": "talvez"})
+        self.assertEqual(status, 400)
+
+    def test_decisao_em_regra_inexistente_e_404(self):
+        status, _ = self.srv.pedir("/api/rules/naoexiste/decision", "POST", {"status": "confirmed"})
+        self.assertEqual(status, 404)
+
+    def test_uma_regra_uma_documentacao(self):
+        """Item 35: 1 regra → 1 documentação, não 1 alerta → 1 documentação."""
+        regra = self.get("/api/rules")["items"][0]
+        status, dados = self.srv.pedir(f"/api/rules/{regra['id']}/procedure", "POST",
+                                       {"operational": {"doc_status": "pending_review",
+                                                        "meaning": "Espaço em disco acabando"}})
+        self.assertEqual(status, 200, dados)
+        self.assertEqual(dados["kind"], "rule")
+
+        detalhe = self.get(f"/api/rules/{regra['id']}")
+        self.assertEqual(detalhe["procedure"]["status"], "draft")
+        self.assertEqual(detalhe["procedure"]["operational"]["meaning"], "Espaço em disco acabando")
+
+        # UMA ficha para os N alertas da regra.
+        fichas = list(self.docs.glob("*.json"))
+        self.assertEqual(len(fichas), 1, f"esperava 1 ficha para {detalhe['alerts']} alertas: {fichas}")
+
+    def test_maquina_de_estados_vale_para_regras(self):
+        regra = self.get("/api/rules")["items"][0]
+        status, dados = self.srv.pedir(f"/api/rules/{regra['id']}/procedure", "POST",
+                                       {"operational": {"doc_status": "documented", "meaning": "só isso"}})
+        self.assertEqual(status, 422, dados)
+        self.assertIn("Campos mínimos", dados["error"])
+
+    def test_progresso_do_grupo_conta_regras(self):
+        grupo = self.get("/api/groups")["items"][0]
+        antes = self.get(f"/api/groups/{grupo['id']}")["rules"]
+        regra = self.get(f"/api/rules?group={grupo['id']}")["items"][0]
+        self.srv.pedir(f"/api/rules/{regra['id']}/procedure", "POST",
+                       {"operational": {"doc_status": "documented", "meaning": "x",
+                                        "requires_ticket": False, "resolution_criteria": "y"}})
+        depois = self.get(f"/api/groups/{grupo['id']}")["rules"]
+        self.assertEqual(depois["documented"], antes["documented"] + 1)
+        self.assertGreater(depois["progress"], antes["progress"])
+
+    def test_dashboard_mostra_o_trabalho(self):
+        w = self.get("/api/dashboard")["work"]
+        for campo in ("rules_total", "pending", "documented", "progress", "groups", "next_rules"):
+            self.assertIn(campo, w)
+        self.assertEqual(w["rules_active"], w["documented"] + w["in_progress"] + w["pending"])
+
+    def test_host_lista_regras_antes_de_familias(self):
+        host = self.get("/api/hosts")["items"][0]
+        detalhe = self.get(f"/api/hosts/{host['id']}")
+        self.assertIn("rules_list", detalhe)
+        self.assertIn("families_list", detalhe)
+
+    def test_decisao_nao_altera_o_snapshot(self):
+        alerts = next((self.base / "snapshots").glob("*/normalized/alerts.json"))
+        antes = alerts.read_bytes()
+        regra = self.get("/api/rules")["items"][0]
+        self.srv.pedir(f"/api/rules/{regra['id']}/decision", "POST", {"status": "confirmed"})
+        self.assertEqual(alerts.read_bytes(), antes, "decidir é escrita LOCAL, não no snapshot")
+
+    def test_familias_continuam_existindo(self):
+        """Item 26: a camada de regras é adicional, não substitui as famílias."""
+        self.assertTrue(self.get("/api/families")["items"])
+        familia = self.get("/api/families")["items"][0]
+        self.assertTrue(self.get(f"/api/families/{familia['id']}")["alerts"])
+
+
 class TestSemSnapshot(unittest.TestCase):
     def test_mensagem_util_quando_nao_ha_coleta(self):
         with tempfile.TemporaryDirectory() as tmp:

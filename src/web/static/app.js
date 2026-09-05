@@ -272,11 +272,43 @@ rota(/^\/$/, async () => {
   const dados = await api('/api/dashboard');
   atualizarBadgeSnapshot(dados.snapshot);
 
+  const w = dados.work;
   setView(
-    cabecalho('Dashboard', escopoTexto(dados.snapshot)),
+    cabecalho('Documentação NOC', escopoTexto(dados.snapshot)),
     faixaEscopo(dados.scope, dados.environment),
     dados.snapshot.partial ? el('div', { class: 'note warn' },
       'Este snapshot é PARCIAL: objetos ficaram de fora da coleta. Os números abaixo não representam o escopo inteiro.') : null,
+
+    // O trabalho vem primeiro. Os números técnicos continuam disponíveis,
+    // mas não dominam mais a tela.
+    el('section', { class: 'panel' },
+      el('h2', {}, 'O que precisa ser documentado'),
+      el('div', { class: 'progress-line', style: 'margin:10px 0 14px' },
+        barraProgresso(w.progress),
+        el('span', {}, el('strong', {}, `${num(w.documented)} de ${num(w.rules_active)}`),
+          ` regras documentadas (${w.progress}%)`)),
+      el('div', { class: 'chips' },
+        el('span', { class: 'chip' }, `${num(w.pending)} pendentes`),
+        el('span', { class: 'chip' }, `${num(w.in_progress)} em andamento`),
+        el('span', { class: 'chip' }, `${num(w.documented)} documentadas`),
+        el('span', { class: 'chip' }, `${num(w.confirmed)} confirmadas`)),
+      el('div', { style: 'margin-top:14px' },
+        el('a', { class: 'cta', href: '/groups' }, 'ESCOLHER GRUPO PARA DOCUMENTAR'))),
+
+    w.next_rules.length ? el('section', {},
+      el('h2', {}, 'Próximas regras'),
+      el('div', { class: 'work-cards' }, w.next_rules.map(cardRegra))) : null,
+
+    el('section', {},
+      el('h2', {}, 'Progresso por grupo'),
+      el('div', { class: 'work-cards' }, w.groups.map((g) => el('a', {
+        class: 'work-card', href: `/groups/${g.id}`,
+      },
+        el('h3', {}, g.name),
+        el('div', { class: 'meta' }, `${num(g.hosts)} hosts · ${num(g.alerts)} alertas`),
+        linhaProgresso(g.rules))))),
+
+    el('h2', {}, 'Números da coleta'),
     el('div', { class: 'cards' }, dados.cards.map((c) => el('a', { class: 'card', href: c.href },
       el('div', { class: 'card-value' }, num(c.value)),
       el('div', { class: 'card-label' }, c.label)))),
@@ -449,7 +481,7 @@ rota(/^\/alerts\/(.+)$/, async ([id]) => {
 });
 
 /* ---------------------------------------------- procedimento (3 camadas) */
-function blocoProcedimento(procedimento, familyId, aoSalvar) {
+function blocoProcedimento(procedimento, alvoId, aoSalvar, tipo = 'family') {
   const operacional = procedimento.operational || {};
   const campos = [
     ['title', 'Título', 'text'], ['objective', 'Objetivo', 'textarea'],
@@ -461,7 +493,7 @@ function blocoProcedimento(procedimento, familyId, aoSalvar) {
     ['risks', 'Riscos', 'lista'], ['notes', 'Observações', 'textarea'],
   ];
 
-  const somenteLeitura = !familyId || !aoSalvar;
+  const somenteLeitura = !alvoId || !aoSalvar;
   const entradas = {};
   const form = el('form', { class: 'procedure' });
 
@@ -498,7 +530,10 @@ function blocoProcedimento(procedimento, familyId, aoSalvar) {
         payload[nome] = lista ? bruto.split('\n').map((l) => l.trim()).filter(Boolean) : bruto;
       }
       try {
-        const resposta = await fetch(`/api/procedures/${familyId}`, {
+        const destino = tipo === 'rule'
+          ? `/api/rules/${encodeURIComponent(alvoId)}/procedure`
+          : `/api/procedures/${encodeURIComponent(alvoId)}`;
+        const resposta = await fetch(destino, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ operational: payload, expected_revision: procedimento.revision }),
@@ -532,7 +567,8 @@ function blocoProcedimento(procedimento, familyId, aoSalvar) {
             })))
         : el('div', {}, badgeProcedimento('missing'),
           el('p', { class: 'muted' }, 'Nenhum procedimento escrito para esta família. Nada é inventado aqui: o estado é ausente até que uma pessoa escreva.'),
-          familyId ? el('a', { href: `/families/${familyId}` }, 'Escrever na página da família →') : null))
+          alvoId ? el('a', { href: `/${tipo === 'rule' ? 'rules' : 'families'}/${alvoId}` },
+            `Escrever na página da ${tipo === 'rule' ? 'regra' : 'família'} →`) : null))
       : form);
 
   const ia = el('div', { class: 'layer layer-ai' },
@@ -546,6 +582,271 @@ function blocoProcedimento(procedimento, familyId, aoSalvar) {
     el('div', { class: 'subtitle', style: 'margin-bottom:10px' },
       'As três camadas ficam separadas de propósito: observado ≠ validado ≠ sugerido.'),
     el('div', { class: 'layers' }, observado, humano, ia));
+}
+
+/* ------------------------------------------------- documentação: grupos */
+const CONF_CLASS = { high: 'conf-high', medium: 'conf-medium', low: 'conf-low' };
+
+function barraProgresso(pct) {
+  return el('div', { class: 'progress' }, el('i', { style: `width:${Math.max(0, Math.min(100, pct))}%` }));
+}
+
+function linhaProgresso(regras) {
+  return el('div', { class: 'progress-line' },
+    barraProgresso(regras.progress),
+    el('span', { class: 'muted' },
+      `${num(regras.documented)}/${num(regras.active)} regras documentadas (${regras.progress}%)`));
+}
+
+rota(/^\/groups$/, async (_m, params) => {
+  const dados = await api('/api/groups', params);
+  const { form } = campoBusca(params, 'nome do grupo…');
+
+  setView(
+    cabecalho('Documentação por grupo',
+      'Escolha o grupo que você vai documentar hoje — em vez de procurar entre milhares de alertas.'),
+    form,
+    el('div', { class: 'work-cards' }, dados.items.map((g) => el('a', {
+      class: 'work-card', href: `/groups/${g.id}`,
+    },
+      el('h3', {}, g.name),
+      el('div', { class: 'meta' },
+        `${num(g.hosts)} hosts · ${num(g.alerts)} alertas · ${num(g.rules.total)} regras`),
+      linhaProgresso(g.rules),
+      el('div', { class: 'foot' },
+        g.rules.pending
+          ? el('span', { class: 'badge missing' }, `${num(g.rules.pending)} pendente(s)`)
+          : el('span', { class: 'badge documented' }, 'tudo documentado'),
+        g.rules.in_progress ? el('span', { class: 'badge draft' }, `${num(g.rules.in_progress)} em andamento`) : null)))),
+    paginador(dados.pagination, (p) => aplicarFiltro({ page: p })),
+  );
+});
+
+rota(/^\/groups\/([^/]+)$/, async ([id], params) => {
+  const g = await api(`/api/groups/${encodeURIComponent(id)}`, params);
+  const regras = g.rules_page;
+
+  setView(
+    cabecalho(g.name,
+      `${num(g.hosts)} hosts · ${num(g.alerts)} alertas · ${num(g.rules.total)} regras operacionais`,
+      el('span', {}, el('a', { href: '/groups' }, 'Grupos'), ' / ', g.name)),
+
+    el('section', { class: 'panel' },
+      el('h2', {}, 'Progresso da documentação'),
+      linhaProgresso(g.rules),
+      el('div', { class: 'chips', style: 'margin-top:10px' },
+        el('span', { class: 'chip' }, `${num(g.rules.documented)} documentadas`),
+        el('span', { class: 'chip' }, `${num(g.rules.in_progress)} em andamento`),
+        el('span', { class: 'chip' }, `${num(g.rules.pending)} pendentes`),
+        el('span', { class: 'chip' }, `${num(g.rules.confirmed)} confirmadas`))),
+
+    el('div', { class: 'note' }, regras.note),
+    el('h2', {}, 'Regras para documentar'),
+    el('div', { class: 'work-cards' }, regras.items.map(cardRegra)),
+    paginador(regras.pagination, (p) => aplicarFiltro({ page: p })),
+
+    el('section', { class: 'panel', style: 'margin-top:18px' },
+      el('h2', {}, `Hosts do grupo (${num(g.hosts)})`),
+      el('div', { class: 'chips' }, g.hosts_list.map((h) =>
+        el('a', { class: 'chip', href: `/hosts/${h.id}` }, `${h.name} (${num(h.alerts)})`)))),
+  );
+});
+
+function cardRegra(r) {
+  const proc = r.procedure || {};
+  const acao = proc.status === 'missing' ? 'DOCUMENTAR'
+    : proc.status === 'draft' ? 'CONTINUAR' : 'REVISAR';
+  return el('a', { class: 'work-card', href: `/rules/${r.id}` },
+    el('h3', {}, r.label),
+    el('div', { class: 'meta' },
+      `${num(r.alerts)} alertas · ${num(r.instances)} instâncias · ${num(r.families)} famílias técnicas`),
+    el('div', { class: 'foot' },
+      el('span', { class: `conf ${CONF_CLASS[r.confidence]}` }, `Confiança ${r.confidence_label}`),
+      badgeProcedimento(proc),
+      r.status !== 'candidate'
+        ? el('span', { class: `status-pill status-${r.status}` }, rotuloStatus(r.status)) : null),
+    el('div', {}, el('span', { class: 'cta', style: 'padding:6px 14px;font-size:13px' }, acao)));
+}
+
+const rotuloStatus = (s) => ({
+  candidate: 'Sugerido', confirmed: 'Confirmado', ignored: 'Ignorado', split: 'Mantido separado',
+}[s] || s);
+
+/* -------------------------------------------------------- lista de regras */
+rota(/^\/rules$/, async (_m, params) => {
+  const dados = await api('/api/rules', params);
+  const { form } = campoBusca(params, 'nome da regra…');
+  form.append(
+    seletor('Confiança', 'confidence', [['high', 'Alta'], ['medium', 'Média'], ['low', 'Baixa']], params),
+    seletor('Decisão', 'status', [['candidate', 'Sugeridas'], ['confirmed', 'Confirmadas'],
+      ['split', 'Mantidas separadas'], ['ignored', 'Ignoradas']], params),
+    seletor('Procedimento', 'procedure', [['missing', 'Sem procedimento'], ['draft', 'Rascunho'],
+      ['documented', 'Validado']], params));
+
+  setView(
+    cabecalho('Regras operacionais',
+      `${num(dados.pagination.total)} de ${num(dados.facets.total_unfiltered)} regras`),
+    el('div', { class: 'note' }, dados.note),
+    el('div', { class: 'chips' },
+      dados.facets.by_confidence.map((f) => el('a', {
+        class: `chip ${params.confidence === f.confidence ? 'active' : ''}`,
+        href: comFiltros({ confidence: f.confidence }),
+      }, `${f.label}: ${num(f.value)}`))),
+    form,
+    el('div', { class: 'work-cards' }, dados.items.map(cardRegra)),
+    paginador(dados.pagination, (p) => aplicarFiltro({ page: p })),
+  );
+});
+
+/* --------------------------------------------------------- página da regra */
+rota(/^\/rules\/([^/]+)$/, async ([id], params) => {
+  const r = await api(`/api/rules/${encodeURIComponent(id)}`, params);
+  const recarregar = () => render();
+
+  setView(
+    cabecalho(r.label, r.description,
+      el('span', {}, el('a', { href: '/groups' }, 'Grupos'), ' / ',
+        el('a', { href: `/groups/${r.group.id}` }, r.group.name), ' / ', r.label)),
+
+    el('div', { class: 'scope-banner' },
+      el('span', {}, el('strong', {}, num(r.alerts)), ' alertas'),
+      el('span', {}, el('strong', {}, num(r.instances)), ' instâncias'),
+      el('span', {}, el('strong', {}, num(r.families)), ' famílias técnicas'),
+      el('span', {}, el('strong', {}, num(r.dependencies)), ' dependências'),
+      el('span', {}, el('strong', {}, num(r.hosts)), ' hosts'),
+      el('span', { class: `conf ${CONF_CLASS[r.confidence]}` }, `Confiança ${r.confidence_label}`),
+      badgeProcedimento(r.procedure)),
+
+    blocoDecisao(r, recarregar),
+
+    el('section', { class: 'panel' },
+      el('h2', {}, 'Por que estes alertas foram agrupados?'),
+      el('div', { class: 'why' },
+        el('ul', {}, r.reasons.map((m) => el('li', {}, m))),
+        r.evidence_samples.length
+          ? el('div', { style: 'margin-top:10px' },
+            el('div', { class: 'cell-sub' }, 'Exemplos:'),
+            el('ul', {}, r.evidence_samples.map((e) => el('li', { class: 'muted' }, e))))
+          : null,
+        el('div', { class: 'disclaimer' },
+          'Agrupamento sugerido por heurística determinística e local (chaves de item, descrições e '
+          + 'dependências entre triggers). Não é um diagnóstico e não afirma que estes alertas têm a mesma causa.'))),
+
+    el('section', { class: 'panel' },
+      el('h2', {}, 'O que o Zabbix está monitorando'),
+      el('div', { class: 'chips' }, r.item_prefixes.map((i) =>
+        el('span', { class: 'chip tag' }, `${i.prefix}* (${num(i.alerts)})`))),
+      el('div', { class: 'subtitle', style: 'margin-top:8px' },
+        'Somente fatos observados na coleta: as chaves de item que estes alertas leem.')),
+
+    el('div', { class: 'grid-2' },
+      el('section', { class: 'panel' },
+        el('h2', {}, `Instâncias (${num(r.instances)})`),
+        el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+          'Onde a regra está aplicada. A documentação pertence à regra; a instância só diz onde.'),
+        r.instances_page.total
+          ? el('div', { class: 'instances' }, r.instances_page.items.map((i) =>
+            el('a', { class: 'instance', href: `/rules/${r.id}/instances/${encodeURIComponent(i.name)}` },
+              `${i.name} (${num(i.alerts)})`)))
+          : na('a regra se aplica ao host inteiro'),
+        r.instances_page.pagination.pages > 1
+          ? paginador(r.instances_page.pagination, (p) => aplicarFiltro({ instance_page: p })) : null),
+
+      el('section', { class: 'panel' },
+        el('h2', {}, `Hosts afetados (${num(r.hosts)})`),
+        el('div', { class: 'chips' }, r.hosts_list.map((h) =>
+          el('a', { class: 'chip', href: `/hosts/${h.id}` }, h.name))))),
+
+    el('section', { class: 'panel' },
+      el('h2', {}, `Famílias técnicas relacionadas (${num(r.families)})`),
+      el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+        'A origem técnica no Zabbix. Elas continuam existindo — a regra apenas as reúne numa unidade de documentação.'),
+      tabela([{ label: 'Família técnica' }, { label: 'Origem' }, { label: 'Alertas', num: true }],
+        r.families_list.map((f) => el('tr', {},
+          el('td', {}, el('a', { href: `/families/${f.id}` }, f.label)),
+          el('td', { class: 'cell-sub' }, f.origin),
+          el('td', { class: 'num' }, num(f.alerts)))))),
+
+    r.dependencies_list.length
+      ? el('section', { class: 'panel' }, el('h2', {}, `Dependências (${r.dependencies_list.length})`),
+        el('ul', {}, r.dependencies_list.slice(0, 20).map((d) => el('li', {},
+          el('a', { href: `/alerts/${d.from.id}` }, d.from.description), ' → ', d.to.description,
+          d.internal ? el('span', { class: 'badge', style: 'margin-left:6px' }, 'dentro da regra') : null))))
+      : null,
+
+    el('section', { class: 'panel' },
+      el('h2', {}, `Alertas (${num(r.alerts)})`),
+      tabela([{ label: 'Alerta' }, { label: 'Host' }, { label: 'Severidade' }],
+        r.alerts_page.items.map((a) => el('tr', {},
+          el('td', {}, el('a', { href: `/alerts/${a.id}` }, a.description || '(sem descrição)')),
+          el('td', {}, a.host.id ? el('a', { href: `/hosts/${a.host.id}` }, a.host.name) : na('—')),
+          el('td', {}, el('span', { class: `sev ${sevClass(a.severity)}` }, a.severity))))),
+      paginador(r.alerts_page.pagination, (p) => aplicarFiltro({ page: p }))),
+
+    blocoProcedimento(r.procedure, r.id, recarregar, 'rule'),
+  );
+});
+
+/* ------------------------------------------------- instância de uma regra */
+rota(/^\/rules\/([^/]+)\/instances\/(.+)$/, async ([id, instancia], params) => {
+  const [r, alertas] = await Promise.all([
+    api(`/api/rules/${encodeURIComponent(id)}`),
+    api(`/api/rules/${encodeURIComponent(id)}/alerts`, { ...params, instance: instancia }),
+  ]);
+  setView(
+    cabecalho(instancia, `Instância de “${r.label}” · ${num(alertas.pagination.total)} alertas`,
+      el('span', {}, el('a', { href: `/groups/${r.group.id}` }, r.group.name), ' / ',
+        el('a', { href: `/rules/${r.id}` }, r.label), ' / ', instancia)),
+    el('div', { class: 'note' },
+      'A documentação pertence à regra, não a esta instância. ',
+      el('a', { href: `/rules/${r.id}` }, 'Ver o procedimento da regra →')),
+    tabela([{ label: 'Alerta' }, { label: 'Host' }, { label: 'Severidade' }, { label: 'Família técnica' }],
+      alertas.items.map((a) => el('tr', {},
+        el('td', {}, el('a', { href: `/alerts/${a.id}` }, a.description || '(sem descrição)')),
+        el('td', {}, a.host.id ? el('a', { href: `/hosts/${a.host.id}` }, a.host.name) : na('—')),
+        el('td', {}, el('span', { class: `sev ${sevClass(a.severity)}` }, a.severity)),
+        el('td', {}, a.family ? el('a', { href: `/families/${a.family.id}` }, a.family.label) : na('—'))))),
+    paginador(alertas.pagination, (p) => aplicarFiltro({ page: p })),
+  );
+});
+
+/* --------------------------------------------- confirmar / ignorar / separar */
+function blocoDecisao(regra, aoDecidir) {
+  const mensagem = el('span', { class: 'form-msg' });
+  const decidir = async (status) => {
+    mensagem.className = 'form-msg';
+    mensagem.textContent = 'Salvando…';
+    try {
+      const resposta = await fetch(`/api/rules/${encodeURIComponent(regra.id)}/decision`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      const dados = await resposta.json();
+      if (!resposta.ok) throw new Error(dados.error || `HTTP ${resposta.status}`);
+      aoDecidir();
+    } catch (e) {
+      mensagem.className = 'form-msg error';
+      mensagem.textContent = e.message;
+    }
+  };
+
+  return el('section', { class: 'panel' },
+    el('h2', {}, 'Este agrupamento faz sentido?'),
+    el('div', { class: 'subtitle' },
+      'O sistema sugeriu com base em evidências técnicas. A decisão é sua — e é reversível.'),
+    el('div', { class: 'decide' },
+      el('span', { class: `status-pill status-${regra.status}` }, rotuloStatus(regra.status)),
+      el('button', { class: regra.status === 'confirmed' ? '' : 'primary',
+        onclick: () => decidir('confirmed') }, 'Confirmar agrupamento'),
+      el('button', { onclick: () => decidir('split') }, 'Manter separado'),
+      el('button', { onclick: () => decidir('ignored') }, 'Ignorar sugestão'),
+      regra.status !== 'candidate'
+        ? el('button', { onclick: () => decidir('candidate') }, 'Desfazer') : null,
+      mensagem),
+    regra.decided_at
+      ? el('div', { class: 'muted', style: 'margin-top:6px' },
+        `Decidido em ${regra.decided_at}${regra.decided_by ? ' por ' + regra.decided_by : ''}`)
+      : null);
 }
 
 /* ---------------------------------------------------------------- famílias */
@@ -689,7 +990,13 @@ rota(/^\/hosts\/(.+)$/, async ([id], params) => {
       el('section', { class: 'panel' }, el('h2', {}, 'Severidades'),
         barrasSeveridade(h.severities, h.alerts))),
 
-    el('section', { class: 'panel' }, el('h2', {}, `Famílias neste host (${num(h.families)})`),
+    h.rules_list.length ? el('section', {},
+      el('h2', {}, `Regras operacionais neste host (${num(h.rules)})`),
+      el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+        'A unidade de documentação. O host é o contexto onde estas regras se aplicam.'),
+      el('div', { class: 'work-cards' }, h.rules_list.slice(0, 12).map(cardRegra))) : null,
+
+    el('section', { class: 'panel' }, el('h2', {}, `Famílias técnicas neste host (${num(h.families)})`),
       tabela([{ label: 'Família' }, { label: 'Alertas', num: true }, { label: 'Procedimento' }],
         h.families_list.map((f) => el('tr', {},
           el('td', {}, el('a', { href: `/families/${f.id}` }, f.label)),

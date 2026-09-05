@@ -18,8 +18,11 @@ from ..core.models import AlertDoc, build_family_key
 from ..core.repository import AlertRepository, ConcurrentModificationError
 from ..core.status import ALL_STATUSES, StatusError, assert_can_document, assert_transition
 from ..keys import normalize_text
+from ..rules.candidates import CONFIDENCE_LABELS
+from ..rules.decisions import CANDIDATE, DECISIONS, STATUS_LABELS, DecisionError
 from .readmodel import (
     PROCEDURE_LABELS,
+    rule_doc_key,
     PROCEDURE_STATUSES,
     SEVERIDADES,
     ReadModel,
@@ -156,6 +159,35 @@ def dashboard(modelo: ReadModel, _params: dict[str, list[str]]) -> dict[str, Any
 
     top = sorted(modelo.families.values(), key=lambda f: (-len(f.alert_ids), f.label))[:10]
     ambiente = modelo.environment
+
+    # A visão de TRABALHO: quantas regras existem, quantas já têm procedimento,
+    # e quais são as próximas. É esta a pergunta que a ferramenta responde.
+    documentadas = em_andamento = pendentes = confirmadas = 0
+    pendentes_lista: list[dict[str, Any]] = []
+    for identificador in modelo.rules:
+        decisao = modelo.decision_of_rule(identificador)
+        if decisao["status"] == "ignored":
+            continue
+        if decisao["status"] == "confirmed":
+            confirmadas += 1
+        estado = modelo.procedure_of_rule(identificador)["status"]
+        if estado == "documented":
+            documentadas += 1
+        elif estado in ("draft", "needs_review"):
+            em_andamento += 1
+        else:
+            pendentes += 1
+            payload = modelo.rule_payload(identificador)
+            if payload:
+                pendentes_lista.append(payload)
+    ativas = documentadas + em_andamento + pendentes
+    pendentes_lista.sort(key=_ordem_regra)
+
+    grupos_trabalho = [
+        _resumo_grupo_trabalho(modelo, gid, registro)
+        for gid, registro in modelo.host_groups.items()
+    ]
+    grupos_trabalho.sort(key=lambda g: (-g["rules"]["pending"], -g["alerts"]))
     fora = len(modelo.out_of_scope)
     return {
         "snapshot": _snapshot_info(modelo),
@@ -207,6 +239,17 @@ def dashboard(modelo: ReadModel, _params: dict[str, list[str]]) -> dict[str, Any
              "value": len(multi_host), "href": "/families?multi_host=1"},
         ],
         "top_families": [f.resumo(modelo.procedure_of_family(f.id)) for f in top],
+        "work": {
+            "rules_total": len(modelo.rules),
+            "rules_active": ativas,
+            "confirmed": confirmadas,
+            "documented": documentadas,
+            "in_progress": em_andamento,
+            "pending": pendentes,
+            "progress": round(documentadas / ativas * 100) if ativas else 0,
+            "groups": grupos_trabalho[:8],
+            "next_rules": pendentes_lista[:6],
+        },
     }
 
 
@@ -431,9 +474,25 @@ def host_detail(modelo: ReadModel, host_id: str, params: dict[str, list[str]]) -
         for item in alerta["zabbix"].get("items") or []:
             itens.setdefault(item.get("itemid", ""), item)
 
+    # Regras operacionais que tocam este host — mostradas ANTES das famílias
+    # técnicas: o host é contexto, a regra é a unidade de trabalho.
+    regras_do_host: list[dict[str, Any]] = []
+    vistos: set[str] = set()
+    for triggerid in registro["alert_ids"]:
+        for identificador in modelo.rules_of_alert.get(triggerid, []):
+            if identificador in vistos:
+                continue
+            vistos.add(identificador)
+            payload = modelo.rule_payload(identificador)
+            if payload:
+                regras_do_host.append(payload)
+    regras_do_host.sort(key=_ordem_regra)
+
     return {
         **_resumo_host(modelo, registro),
         "inventory": registro["inventory"],
+        "rules_list": regras_do_host[:40],
+        "rules": len(regras_do_host),
         "families_list": [f.resumo(modelo.procedure_of_family(f.id)) for f in familias[:50]],
         "items": sorted(itens.values(), key=lambda i: i.get("key_", ""))[:100],
         "dependencies": [
@@ -531,30 +590,49 @@ def procedures(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any
 
 def save_procedure(
     modelo: ReadModel,
-    family_id: str,
+    target_id: str,
     corpo: dict[str, Any],
     docs_dir: str,
+    *,
+    kind: str = "family",
 ) -> dict[str, Any]:
-    """Grava o procedimento local de uma família.
+    """Grava o procedimento local de uma família OU de uma regra operacional.
 
     ESTA É A ÚNICA ESCRITA DO SISTEMA — e ela vai para `docs/alerts/`, nunca
     para o Zabbix. A ficha continua sendo criada pelo mesmo `AlertDoc` do
     `reconcile`, com a mesma máquina de estados: a interface não pode marcar
     como documentado uma ficha sem os campos mínimos, nem pular estados.
+
+    Regra e família compartilham o repositório de propósito. Uma regra é uma
+    unidade de documentação como outra qualquer; separá-las em dois lugares
+    duplicaria a máquina de estados e o controle de concorrência.
     """
-    familia = modelo.families.get(family_id)
-    if familia is None:
-        raise ApiError(f"Família {family_id} não existe neste snapshot.", 404)
+    if kind == "rule":
+        regra = modelo.rules.get(target_id)
+        if regra is None:
+            raise ApiError(f"Regra {target_id} não existe neste escopo.", 404)
+        chave = rule_doc_key(target_id)
+        primeiro = regra.alert_ids[0] if regra.alert_ids else None
+        rotulo = f"{regra.label} — {regra.group_name}"
+    else:
+        familia = modelo.families.get(target_id)
+        if familia is None:
+            raise ApiError(f"Família {target_id} não existe neste snapshot.", 404)
+        chave = familia.key
+        primeiro = familia.alert_ids[0] if familia.alert_ids else None
+        rotulo = familia.label
 
     repositorio = AlertRepository(docs_dir)
-    doc = repositorio.get(familia.key)
+    doc = repositorio.get(chave)
     if doc is None:
-        alerta = modelo.by_trigger.get(familia.alert_ids[0]) if familia.alert_ids else None
+        alerta = modelo.by_trigger.get(primeiro) if primeiro else None
         if alerta is None:
-            raise ApiError("Família sem alertas — não há o que documentar.", 400)
+            raise ApiError(f"{rotulo} não tem alertas — não há o que documentar.", 400)
         doc = AlertDoc.from_collected_alert(alerta)
-        doc.alert_key = familia.key
+        doc.alert_key = chave
         doc.family_key = build_family_key(alerta)
+        if kind == "rule":
+            doc.doc_level = "rule"
 
     esperada = corpo.get("expected_revision")
     operacional = corpo.get("operational")
@@ -589,8 +667,274 @@ def save_procedure(
     except ConcurrentModificationError as exc:
         raise ApiError(str(exc), 409) from exc
 
-    return {"saved": True, "family_id": family_id, "revision": doc.revision,
+    return {"saved": True, "kind": kind, "id": target_id, "revision": doc.revision,
             "procedure_status": doc.procedure_status}
+
+
+# ----------------------------------------------------------------------- regras
+def _ordem_regra(payload: dict[str, Any]) -> tuple[Any, ...]:
+    """Fila de trabalho: o que rende mais documentação primeiro.
+
+    Confirmadas e sem procedimento vêm antes de tudo — são as que já foram
+    validadas por uma pessoa e só esperam o texto. Depois, as sugestões de
+    confiança alta com mais alertas.
+    """
+    prioridade_status = {"confirmed": 0, CANDIDATE: 1, "split": 2, "ignored": 3}
+    prioridade_conf = {"high": 0, "medium": 1, "low": 2}
+    sem_procedimento = (payload.get("procedure") or {}).get("status") == "missing"
+    return (
+        prioridade_status.get(payload["status"], 9),
+        0 if sem_procedimento else 1,
+        prioridade_conf.get(payload["confidence"], 9),
+        -payload["alerts"],
+        payload["label"],
+    )
+
+
+def rules(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
+    grupo = _um(params, "group")
+    estado = _um(params, "status")
+    confianca = _um(params, "confidence")
+    procedimento = _um(params, "procedure")
+    termo = normalize_text(_um(params, "q"))
+
+    if estado and estado not in (CANDIDATE, *DECISIONS):
+        raise ApiError(f"status inválido: {estado}. Válidos: {CANDIDATE}, {', '.join(DECISIONS)}")
+    if confianca and confianca not in CONFIDENCE_LABELS:
+        raise ApiError(f"confidence inválida: {confianca}. Válidas: {', '.join(CONFIDENCE_LABELS)}")
+
+    itens: list[dict[str, Any]] = []
+    contagem_status = {chave: 0 for chave in (CANDIDATE, *DECISIONS)}
+    contagem_conf = {chave: 0 for chave in CONFIDENCE_LABELS}
+
+    for identificador, regra in modelo.rules.items():
+        payload = modelo.rule_payload(identificador)
+        if payload is None:
+            continue
+        contagem_status[payload["status"]] = contagem_status.get(payload["status"], 0) + 1
+        contagem_conf[payload["confidence"]] = contagem_conf.get(payload["confidence"], 0) + 1
+
+        if grupo and regra.group_id != grupo:
+            continue
+        if estado and payload["status"] != estado:
+            continue
+        if confianca and payload["confidence"] != confianca:
+            continue
+        if procedimento and (payload.get("procedure") or {}).get("status") != procedimento:
+            continue
+        if termo and termo not in normalize_text(f"{regra.label} {regra.group_name} {regra.description}"):
+            continue
+        itens.append(payload)
+
+    itens.sort(key=_ordem_regra)
+    pagina, meta = paginate(itens, _int(params, "page", 1), _int(params, "per_page", 50))
+    return {
+        "items": pagina,
+        "pagination": meta,
+        "facets": {
+            "by_status": [{"status": c, "label": STATUS_LABELS[c], "value": contagem_status.get(c, 0)}
+                          for c in (CANDIDATE, *DECISIONS)],
+            "by_confidence": [{"confidence": c, "label": CONFIDENCE_LABELS[c], "value": contagem_conf.get(c, 0)}
+                              for c in CONFIDENCE_LABELS],
+            "total_unfiltered": len(modelo.rules),
+        },
+        "note": (
+            "Estes são agrupamentos POSSÍVEIS, sugeridos a partir de evidências técnicas. "
+            "Nenhum vira regra operacional até que uma pessoa confirme."
+        ),
+    }
+
+
+def rule_detail(modelo: ReadModel, rule_id: str, params: dict[str, list[str]]) -> dict[str, Any]:
+    regra = modelo.rules.get(rule_id)
+    if regra is None:
+        raise ApiError(f"Regra {rule_id} não existe neste escopo.", 404)
+
+    payload = modelo.rule_payload(rule_id) or {}
+    alertas = [modelo.by_trigger[t] for t in regra.alert_ids if t in modelo.by_trigger]
+    pagina, meta = paginate(alertas, _int(params, "page", 1), _int(params, "per_page", 25))
+
+    familias = [modelo.families[f] for f in regra.family_ids if f in modelo.families]
+    familias.sort(key=lambda f: -len(f.alert_ids))
+
+    # Dependências dentro da regra: o Zabbix já disse que estes triggers se
+    # relacionam, e é isso que sustenta boa parte da confiança.
+    dependencias = []
+    dentro = set(regra.alert_ids)
+    for alerta in alertas:
+        for dependencia in alerta["zabbix"].get("dependencies") or []:
+            destino = str(dependencia.get("triggerid") or "")
+            dependencias.append({
+                "from": {"id": alerta["zabbix"]["triggerid"], "description": alerta["zabbix"]["description_raw"]},
+                "to": {"id": destino, "description": dependencia.get("description", "")},
+                "internal": destino in dentro,
+            })
+
+    return {
+        **payload,
+        # `instances` continua sendo a CONTAGEM (vem do payload); a lista
+        # paginada tem nome próprio.
+        "instances_page": _instancias_da_regra(modelo, regra, params),
+        "families_list": [f.resumo(modelo.procedure_of_family(f.id)) for f in familias[:50]],
+        "hosts_list": [{"id": h, "name": n} for h, n in sorted(regra.hosts.items(), key=lambda kv: kv[1])],
+        "dependencies_list": dependencias[:60],
+        "item_prefixes": sorted(({"prefix": k, "alerts": v} for k, v in regra.item_prefixes.items()),
+                                key=lambda i: -i["alerts"])[:12],
+        "alerts_page": {"items": [resumo_alerta(modelo, a) for a in pagina], "pagination": meta},
+    }
+
+
+def _instancias_da_regra(modelo: ReadModel, regra: Any, params: dict[str, list[str]]) -> dict[str, Any]:
+    """Onde a regra está aplicada. Paginada: uma regra pode ter milhares.
+
+    Uma família de LLD com 8.131 alertas tem milhares de instâncias — a tela
+    mostra o total e uma página de exemplos, nunca a lista inteira.
+    """
+    ordenadas = sorted(regra.instances.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+    itens = [{"name": nome, "alerts": len(triggers), "alert_ids": triggers[:10]}
+             for nome, triggers in ordenadas]
+    pagina, meta = paginate(itens, _int(params, "instance_page", 1), _int(params, "instance_per_page", 30))
+    return {"total": len(itens), "items": pagina, "pagination": meta}
+
+
+def rule_instances(modelo: ReadModel, rule_id: str, params: dict[str, list[str]]) -> dict[str, Any]:
+    regra = modelo.rules.get(rule_id)
+    if regra is None:
+        raise ApiError(f"Regra {rule_id} não existe neste escopo.", 404)
+    return _instancias_da_regra(modelo, regra, params)
+
+
+def rule_alerts(modelo: ReadModel, rule_id: str, params: dict[str, list[str]]) -> dict[str, Any]:
+    regra = modelo.rules.get(rule_id)
+    if regra is None:
+        raise ApiError(f"Regra {rule_id} não existe neste escopo.", 404)
+
+    instancia = _um(params, "instance")
+    ids = regra.instances.get(instancia, []) if instancia else regra.alert_ids
+    alertas = [modelo.by_trigger[t] for t in ids if t in modelo.by_trigger]
+    pagina, meta = paginate(alertas, _int(params, "page", 1), _int(params, "per_page", 50))
+    return {"items": [resumo_alerta(modelo, a) for a in pagina], "pagination": meta,
+            "instance": instancia or None}
+
+
+def rule_families(modelo: ReadModel, rule_id: str, _params: dict[str, list[str]]) -> dict[str, Any]:
+    regra = modelo.rules.get(rule_id)
+    if regra is None:
+        raise ApiError(f"Regra {rule_id} não existe neste escopo.", 404)
+    familias = [modelo.families[f] for f in regra.family_ids if f in modelo.families]
+    familias.sort(key=lambda f: -len(f.alert_ids))
+    return {"items": [f.resumo(modelo.procedure_of_family(f.id)) for f in familias],
+            "total": len(familias)}
+
+
+def rule_suggestions(modelo: ReadModel, rule_id: str, _params: dict[str, list[str]]) -> dict[str, Any]:
+    """Por que o sistema sugeriu este agrupamento — item 27.
+
+    Só evidências observadas. Nada aqui é diagnóstico, causa ou procedimento:
+    a IA não escreve neste projeto, e a heurística tampouco.
+    """
+    regra = modelo.rules.get(rule_id)
+    if regra is None:
+        raise ApiError(f"Regra {rule_id} não existe neste escopo.", 404)
+    nivel, motivos = regra.confidence()
+    return {
+        "rule_id": rule_id,
+        "confidence": nivel,
+        "confidence_label": CONFIDENCE_LABELS[nivel],
+        "reasons": motivos,
+        "evidence_samples": regra.evidence_samples,
+        "item_prefixes": sorted(({"prefix": k, "alerts": v} for k, v in regra.item_prefixes.items()),
+                                key=lambda i: -i["alerts"]),
+        "disclaimer": (
+            "Agrupamento sugerido por heurística determinística e local, a partir de chaves "
+            "de item, descrições e dependências entre triggers. Não é um diagnóstico e não "
+            "afirma que estes alertas têm a mesma causa."
+        ),
+    }
+
+
+def decide_rule(modelo: ReadModel, rule_id: str, corpo: dict[str, Any]) -> dict[str, Any]:
+    """Confirma, ignora ou mantém separado um candidato. Escrita LOCAL."""
+    if rule_id not in modelo.rules:
+        raise ApiError(f"Regra {rule_id} não existe neste escopo.", 404)
+    estado = str(corpo.get("status") or "")
+    try:
+        registro = modelo.decisions.set(
+            rule_id, estado, note=str(corpo.get("note") or ""), by=str(corpo.get("by") or ""),
+        )
+    except DecisionError as exc:
+        raise ApiError(str(exc), 400) from exc
+    return {"saved": True, "rule_id": rule_id, "status": registro["status"],
+            "label": STATUS_LABELS.get(registro["status"], registro["status"])}
+
+
+# ----------------------------------------------------------------------- grupos
+def groups(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
+    """Os grupos como unidade de TRABALHO: "hoje vou documentar este grupo"."""
+    termo = normalize_text(_um(params, "q"))
+    itens = []
+    for identificador, registro in modelo.host_groups.items():
+        if termo and termo not in normalize_text(registro["name"]):
+            continue
+        itens.append(_resumo_grupo_trabalho(modelo, identificador, registro))
+    # Grupos com mais trabalho pendente primeiro.
+    itens.sort(key=lambda g: (-g["rules"]["pending"], -g["alerts"], g["name"].lower()))
+    pagina, meta = paginate(itens, _int(params, "page", 1), _int(params, "per_page", 60))
+    return {"items": pagina, "pagination": meta, "facets": {"total_unfiltered": len(modelo.host_groups)}}
+
+
+def _resumo_grupo_trabalho(modelo: ReadModel, group_id: str, registro: dict[str, Any]) -> dict[str, Any]:
+    ids = modelo.rules_by_group.get(group_id, [])
+    documentadas = em_andamento = pendentes = confirmadas = 0
+    for identificador in ids:
+        decisao = modelo.decision_of_rule(identificador)
+        if decisao["status"] == "ignored":
+            continue
+        if decisao["status"] == "confirmed":
+            confirmadas += 1
+        estado = modelo.procedure_of_rule(identificador)["status"]
+        if estado in ("documented",):
+            documentadas += 1
+        elif estado in ("draft", "needs_review"):
+            em_andamento += 1
+        else:
+            pendentes += 1
+
+    ativas = documentadas + em_andamento + pendentes
+    return {
+        "id": group_id,
+        "name": registro["name"],
+        "hosts": len(registro["host_ids"]),
+        "alerts": len(registro["alert_ids"]),
+        "families": len(registro["family_ids"]),
+        "severities": ordenar_severidades(registro["severities"]),
+        "rules": {
+            "total": len(ids),
+            "active": ativas,
+            "confirmed": confirmadas,
+            "documented": documentadas,
+            "in_progress": em_andamento,
+            "pending": pendentes,
+            # O progresso conta REGRAS, não alertas: é a unidade de trabalho.
+            "progress": round(documentadas / ativas * 100) if ativas else 0,
+        },
+    }
+
+
+def group_detail(modelo: ReadModel, group_id: str, params: dict[str, list[str]]) -> dict[str, Any]:
+    registro = modelo.host_groups.get(group_id)
+    if registro is None:
+        raise ApiError(f"Grupo {group_id} não existe neste escopo.", 404)
+    parametros = dict(params)
+    parametros["group"] = [group_id]
+    return {
+        **_resumo_grupo_trabalho(modelo, group_id, registro),
+        "rules_page": rules(modelo, parametros),
+        "hosts_list": sorted(
+            (_resumo_host(modelo, modelo.hosts[h]) for h in registro["host_ids"] if h in modelo.hosts),
+            key=lambda h: (-h["alerts"], h["name"].lower()),
+        )[:60],
+    }
 
 
 # --------------------------------------------------------------------- colisões

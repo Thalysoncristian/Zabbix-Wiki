@@ -41,6 +41,8 @@ from typing import Any, Iterable
 from ..core.models import build_family_key
 from ..core.repository import AlertRepository
 from ..keys import normalize_text, short_hash, slugify
+from ..rules.candidates import build_candidates
+from ..rules.decisions import CANDIDATE, DecisionStore
 from ..scope import ALL_SCOPE_ID, EVERYTHING, OperationalScope, ScopeConfig
 
 #: Ordem de severidade do Zabbix, do mais grave para o menos.
@@ -152,6 +154,16 @@ def _haystack(alerta: dict[str, Any], familia_label: str) -> str:
     return normalize_text(" ".join(p for p in partes if p))
 
 
+def rule_doc_key(rule_id: str) -> str:
+    """Endereço da ficha de uma regra dentro de `docs/alerts/`.
+
+    O prefixo `rule|` separa as fichas de regra das fichas de família sem
+    precisar de um segundo repositório, de uma segunda máquina de estados nem
+    de um segundo controle de concorrência.
+    """
+    return f"rule|{rule_id}"
+
+
 def _nomes_do_host(alerta: dict[str, Any]) -> tuple[str, str]:
     host = (alerta.get("zabbix") or {}).get("host") or {}
     return str(host.get("name") or ""), str(host.get("host") or "")
@@ -207,10 +219,12 @@ class ReadModel:
         snapshot_dir: Path,
         docs_dir: str | Path = "docs/alerts",
         scope: OperationalScope = EVERYTHING,
+        decisions: DecisionStore | None = None,
     ):
         self.snapshot_dir = Path(snapshot_dir)
         self.docs_dir = Path(docs_dir)
         self.scope = scope
+        self.decisions = decisions or DecisionStore()
         self.loaded_at = ""
 
         payload = json.loads((self.snapshot_dir / "normalized" / "alerts.json").read_text(encoding="utf-8"))
@@ -242,6 +256,7 @@ class ReadModel:
         self._indexar()
         self._carregar_procedimentos()
         self.environment = _contar_ambiente(coletados)
+        self._construir_regras()
 
     # ------------------------------------------------------------------ carga
     def _ler_json(self, *partes: str) -> dict[str, Any]:
@@ -401,6 +416,43 @@ class ReadModel:
             doc = por_chave.get(familia.key)
             self.procedures[familia.id] = _procedimento(doc, familia)
 
+    def _construir_regras(self) -> None:
+        """Camada de regras operacionais sobre os alertas do escopo.
+
+        As famílias técnicas continuam intactas — esta camada é adicional, não
+        substitui nada. Um alerta pode estar numa família E numa regra.
+        """
+        self.rules = build_candidates(self.alerts, self.family_of)
+        self.rules_by_group: dict[str, list[str]] = {}
+        self.rules_of_alert: dict[str, list[str]] = {}
+        for regra in self.rules.values():
+            self.rules_by_group.setdefault(regra.group_id, []).append(regra.id)
+            for triggerid in regra.alert_ids:
+                self.rules_of_alert.setdefault(triggerid, []).append(regra.id)
+
+        self._decisoes = self.decisions.all()
+        self.rule_procedures: dict[str, dict[str, Any]] = {}
+        repositorio = AlertRepository(self.docs_dir)
+        por_chave = {doc.alert_key: doc for doc in repositorio.all()}
+        for identificador in self.rules:
+            # A ficha da regra usa a mesma máquina de estados das fichas de
+            # família: `rule|<id>` é só o endereço dentro do mesmo repositório.
+            doc = por_chave.get(rule_doc_key(identificador))
+            self.rule_procedures[identificador] = _procedimento(doc, None)
+            self.rule_procedures[identificador]["family_key"] = rule_doc_key(identificador)
+
+    def decision_of_rule(self, rule_id: str) -> dict[str, Any]:
+        return self._decisoes.get(rule_id) or {"status": CANDIDATE}
+
+    def procedure_of_rule(self, rule_id: str) -> dict[str, Any]:
+        return self.rule_procedures.get(rule_id) or _procedimento(None, None)
+
+    def rule_payload(self, rule_id: str) -> dict[str, Any] | None:
+        regra = self.rules.get(rule_id)
+        if regra is None:
+            return None
+        return regra.to_dict(self.decision_of_rule(rule_id), self.procedure_of_rule(rule_id))
+
     # ------------------------------------------------------------- acessadores
     def procedure_of_family(self, family_id: str) -> dict[str, Any]:
         return self.procedures.get(family_id) or _procedimento(None, None)
@@ -478,9 +530,11 @@ class ReadModelCache:
         docs_dir: str,
         snapshot: str | None = None,
         scopes: ScopeConfig | None = None,
+        decisions_file: str | None = None,
     ):
         self.output_dir = output_dir
         self.docs_dir = docs_dir
+        self.decisions = DecisionStore(decisions_file or Path(docs_dir).parent / "rule_decisions.json")
         self.snapshot_escolhido = snapshot
         self.scopes = scopes or ScopeConfig(scopes={ALL_SCOPE_ID: EVERYTHING}, default_id=ALL_SCOPE_ID)
         # Um modelo por escopo. Os dicionários de alerta são compartilhados por
@@ -499,7 +553,7 @@ class ReadModelCache:
         marca_docs = 0.0
         if docs.is_dir():
             marca_docs = sum(f.stat().st_mtime for f in docs.glob("*.json"))
-        return (str(caminho), alerts.stat().st_mtime, marca_docs)
+        return (str(caminho), alerts.stat().st_mtime, marca_docs, self.decisions.mtime())
 
     def get(self, scope_id: str | None = None) -> ReadModel:
         escopo = self.scopes.get(scope_id)
@@ -511,7 +565,7 @@ class ReadModelCache:
             modelo = self._modelos.get(escopo.id)
             if modelo is None:
                 caminho = resolve_snapshot(self.output_dir, self.snapshot_escolhido)
-                modelo = ReadModel(caminho, self.docs_dir, scope=escopo)
+                modelo = ReadModel(caminho, self.docs_dir, scope=escopo, decisions=self.decisions)
                 self._modelos[escopo.id] = modelo
             return modelo
 

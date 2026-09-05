@@ -1215,3 +1215,153 @@ Medido com 18.834 alertas sintéticos na proporção real (86% num host):
 
 O frontend nunca recebe o que está fora do escopo: o filtro é do read model, e
 a paginação continua no servidor.
+
+---
+
+## 20. Regras operacionais (Fase 4)
+
+### O problema
+
+O escopo NOC deixou 2.577 alertas — mas eles se espalham por **517 famílias
+técnicas**, e família técnica não é unidade de documentação. No host real
+`Vibe - MSTracker-vm Hom`, 36 alertas ocupam 29 famílias:
+
+```
+/: Disk space is low            ┐
+/: Disk space is critically low │
+/: Running out of free inodes   ├─ 5 famílias técnicas
+/: Filesystem has become read-only │
+/boot: Pouco espaço em disco    ┘   1 procedimento
+```
+
+Escrever cinco procedimentos para isso é desperdício. E `High CPU utilization`
+com `Load average is too high` são duas famílias sem nenhuma palavra em comum —
+e a mesma unidade operacional.
+
+### A hierarquia
+
+```
+GRUPO  →  REGRA OPERACIONAL  →  INSTÂNCIAS  →  ALERTAS
+```
+
+A **família técnica continua existindo** e aparece dentro da regra como
+evidência de origem. A camada de regras é adicional, não substitui nada.
+
+### Como o agrupamento é decidido
+
+O sinal mais forte é a **chave do item** — estrutural, não redigida à mão:
+
+| sinal | peso |
+|---|---|
+| chave de item (`vfs.fs.*` = filesystem) | decide |
+| descrição | confirma ou desempata |
+| dependência entre triggers | forte: o Zabbix já os relacionou |
+| protótipo de LLD e instâncias | reforça |
+
+Quando os dois primeiros concordam, a confiança é **alta**. Quando só um fala,
+**média**. Quando nenhum fala, o alerta fica **sem categoria e não entra em
+regra nenhuma** — inventar um agrupamento é pior do que admitir que não sabemos.
+
+No snapshot real: 69% dos alertas classificados por dois sinais, 29% por um,
+1% sem categoria. **517 famílias técnicas → 85 regras.**
+
+### Nada é afirmado
+
+Todo agrupamento é uma **sugestão** com os motivos impressos na tela:
+
+```
+Disco / Filesystem — Vibe Tecnologia
+Confiança: Alta
+
+✓ 23 de 23 alertas confirmados por dois sinais independentes
+✓ 19 de 23 alertas leem itens `vfs.fs.dependent*`
+✓ 9 dependências entre triggers deste agrupamento — o Zabbix já os relaciona
+✓ 3 instâncias da mesma regra (/, /boot, C:)
+✓ reúne 11 famílias técnicas que hoje seriam documentadas separadamente
+```
+
+A explicabilidade não é enfeite. Durante a validação com dados reais ela pegou
+um erro: "Disco / Filesystem" tinha capturado **licenças da Microsoft**, porque
+o prefixo `pusado.` parecia "percentual usado de disco" e era "percentual usado
+de licença". O motivo na tela ("instâncias: FLOW_FREE, Exchange Online…")
+denunciou na hora. Um agrupamento que ninguém consegue explicar é um
+agrupamento que ninguém deveria confirmar.
+
+### O operador decide
+
+```
+[Confirmar agrupamento]  [Manter separado]  [Ignorar sugestão]  [Desfazer]
+```
+
+A decisão vai para `docs/rule_decisions.json` — versionado no git, reversível,
+e **sem tocar no snapshot**. Apagar o arquivo devolve tudo ao estado de
+sugestão.
+
+### Uma regra, uma documentação
+
+O procedimento pertence à **regra**, não à instância nem ao alerta. Uma família
+de LLD com 8.131 jobs vira uma regra com 8.131 instâncias e **uma** ficha. As
+três camadas continuam separadas: observado ≠ validado ≠ sugerido.
+
+### Instâncias
+
+O valor da macro de LLD é extraído alinhando o protótipo com a descrição
+expandida — determinístico, não adivinhado:
+
+```
+protótipo   {#FSNAME}: Disk space is critically low
+alerta      /boot: Disk space is critically low     →  instância "/boot"
+```
+
+Sem protótipo, a instância é procurada nos parâmetros da chave do item, e a
+origem (`prototype` ou `item_key`) vem declarada. Sem nenhum dos dois, o alerta
+não tem instância — estado válido: muita regra se aplica ao host inteiro.
+
+### Fluxo de trabalho
+
+```bash
+python main.py serve
+```
+
+1. **Dashboard** — "o que precisa ser documentado", com o progresso em regras
+2. **Grupos** — escolha o grupo do dia
+3. **Regras do grupo** — ordenadas por quanto rendem, com confiança e motivos
+4. **Página da regra** — motivos, instâncias, famílias, dependências, alertas
+5. **Documentar** — uma ficha para a regra inteira
+
+### Endpoints novos
+
+```
+GET  /api/groups                      grupos como unidade de trabalho
+GET  /api/groups/<id>                 progresso + regras do grupo
+GET  /api/groups/<id>/rules           idem, só as regras
+GET  /api/rules                       todas as regras, com filtros
+GET  /api/rules/<id>                  detalhe completo
+GET  /api/rules/<id>/instances        instâncias, paginadas
+GET  /api/rules/<id>/alerts           alertas (aceita ?instance=)
+GET  /api/rules/<id>/families         famílias técnicas de origem
+GET  /api/rules/<id>/suggestions      por que o agrupamento foi sugerido
+POST /api/rules/<id>/decision         confirmar | split | ignored | candidate
+POST /api/rules/<id>/procedure        documentação da regra   ← escrita local
+```
+
+Todos os endpoints anteriores continuam funcionando sem alteração.
+
+### Custo
+
+Medido no snapshot real (18.903 alertas, escopo NOC de 2.577):
+
+| | |
+|---|---|
+| agrupamento | 0,6 s, uma vez na carga do modelo |
+| `/api/dashboard` | 36 ms |
+| `/api/rules` | 5 ms |
+| página de uma regra | 2 ms |
+| família de 8.131 alertas | 1 regra, instâncias paginadas — nunca 8 mil linhas no DOM |
+
+### Ajustando a taxonomia
+
+As categorias estão em `src/rules/taxonomy.py`, derivadas dos prefixos de item
+que existem no ambiente coletado. Acrescentar uma categoria só muda o
+agrupamento de quem casar com ela. Se um agrupamento parecer errado, o motivo
+na tela diz qual sinal o produziu — e é por ali que se corrige.

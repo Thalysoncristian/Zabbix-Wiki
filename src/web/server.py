@@ -75,7 +75,7 @@ class WebApp:
             if method == "GET":
                 return 200, self._get(path, params)
             if method == "POST":
-                return self._post(path, body)
+                return self._post(path, body, params)
             return 405, {"error": f"Método {method} não suportado."}
         except api.ApiError as exc:
             return exc.status, {"error": str(exc)}
@@ -121,6 +121,27 @@ class WebApp:
             )
         if recurso == "procedures":
             return api.procedures(modelo, params)
+        if recurso == "rules":
+            if not identificador:
+                return api.rules(modelo, params)
+            sub = partes[3] if len(partes) > 3 else ""
+            if sub == "instances":
+                return api.rule_instances(modelo, identificador, params)
+            if sub == "alerts":
+                return api.rule_alerts(modelo, identificador, params)
+            if sub == "families":
+                return api.rule_families(modelo, identificador, params)
+            if sub == "suggestions":
+                return api.rule_suggestions(modelo, identificador, params)
+            if sub:
+                raise api.ApiError(f"Sub-recurso desconhecido de regra: {sub}", 404)
+            return api.rule_detail(modelo, identificador, params)
+        if recurso == "groups":
+            if not identificador:
+                return api.groups(modelo, params)
+            if len(partes) > 3 and partes[3] == "rules":
+                return api.rules(modelo, {**params, "group": [identificador]})
+            return api.group_detail(modelo, identificador, params)
         if recurso == "collisions":
             return api.collisions(modelo, params)
         if recurso == "status":
@@ -131,24 +152,44 @@ class WebApp:
             return {"scopes": self.cache.scopes.listar(), "default": self.cache.scopes.default_id}
         raise api.ApiError(f"Recurso desconhecido: {recurso}", 404)
 
-    def _post(self, path: str, body: bytes) -> tuple[int, Any]:
+    def _post(self, path: str, body: bytes, params: dict[str, list[str]]) -> tuple[int, Any]:
         partes = [p for p in path.strip("/").split("/") if p]
-        # A ÚNICA escrita do sistema — e ela é local, em docs/alerts/.
-        if len(partes) == 3 and partes[:2] == ["api", "procedures"]:
+
+        def corpo_json() -> dict[str, Any]:
             try:
-                corpo = json.loads(body.decode("utf-8") or "{}")
+                carga = json.loads(body.decode("utf-8") or "{}")
             except (UnicodeDecodeError, json.JSONDecodeError) as exc:
                 raise api.ApiError(f"JSON inválido: {exc}", 400) from exc
-            if not isinstance(corpo, dict):
+            if not isinstance(carga, dict):
                 raise api.ApiError("Corpo precisa ser um objeto JSON.", 400)
+            return carga
 
+        # AS ÚNICAS ESCRITAS DO SISTEMA — todas locais, em docs/.
+        # Procedimento de família: /api/procedures/<família>
+        if len(partes) == 3 and partes[:2] == ["api", "procedures"]:
             # A família é procurada no ambiente inteiro: escrever um
             # procedimento é permitido mesmo para uma família que o escopo
             # atual não mostra. O escopo filtra a visão, não o conhecimento.
             modelo = self.cache.get("all")
-            resultado = api.save_procedure(modelo, unquote(partes[2]), corpo, self.docs_dir)
-            self.cache.invalidate()  # a ficha mudou: recarregar na próxima leitura
+            resultado = api.save_procedure(modelo, unquote(partes[2]), corpo_json(), self.docs_dir)
+            self.cache.invalidate()
             return 200, resultado
+
+        # Procedimento de regra e decisão sobre o candidato.
+        if len(partes) == 4 and partes[:2] == ["api", "rules"]:
+            escopo = (params.get("scope") or [None])[0]
+            modelo = self.cache.get(escopo)
+            identificador = unquote(partes[2])
+            if partes[3] == "procedure":
+                resultado = api.save_procedure(modelo, identificador, corpo_json(),
+                                               self.docs_dir, kind="rule")
+                self.cache.invalidate()
+                return 200, resultado
+            if partes[3] == "decision":
+                resultado = api.decide_rule(modelo, identificador, corpo_json())
+                self.cache.invalidate()
+                return 200, resultado
+
         raise api.ApiError(f"Rota desconhecida para POST: {path}", 404)
 
 
@@ -224,7 +265,7 @@ def make_handler(app: WebApp) -> type[BaseHTTPRequestHandler]:
                 self._json(413, {"error": f"Corpo maior que {MAX_BODY} bytes."})
                 return
             corpo = self.rfile.read(tamanho) if tamanho else b""
-            status, payload = app.handle("POST", url.path, {}, corpo)
+            status, payload = app.handle("POST", url.path, parse_qs(url.query), corpo)
             self._json(status, payload)
 
         def do_PUT(self) -> None:  # noqa: N802

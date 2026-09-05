@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from typing import Any, Callable, Iterable, Iterator, Sequence
 
 from .config import Settings
@@ -73,6 +74,36 @@ class ReadOnlyViolationError(ZabbixError):
 
 class ZabbixAuthError(ZabbixError):
     """Falha de autenticação/autorização."""
+
+
+class ZabbixTransientError(ZabbixError):
+    """Falha provavelmente temporária: vale a pena tentar de novo.
+
+    O caso que motivou esta classe é o HTTP 500 de corpo vazio que o Zabbix
+    devolve quando a consulta estoura tempo ou memória do servidor. Não é um
+    erro de dados nem de permissão: a mesma consulta, menor, funciona.
+    """
+
+    def __init__(self, message: str, *, status: int | None = None):
+        super().__init__(message)
+        self.status = status
+
+
+#: Status HTTP que valem retry (item 5 da Fase 2).
+TRANSIENT_STATUS: frozenset[int] = frozenset({429, 500, 502, 503, 504, 507, 509})
+
+#: Trechos de mensagem da API que indicam sobrecarga/timeout, não erro de dados.
+_TRANSIENT_HINTS = (
+    "timeout",
+    "timed out",
+    "gone away",
+    "too many connections",
+    "connection reset",
+    "temporarily unavailable",
+    "out of memory",
+    "allowed memory size",
+    "maximum execution time",
+)
 
 
 def api_endpoint(url: str) -> str:
@@ -139,9 +170,18 @@ class RequestsTransport:
                 f"Falha de TLS ao acessar {self.endpoint}: {exc}. "
                 "Se o certificado for interno, aponte ZABBIX_VERIFY_TLS para o CA bundle."
             ) from exc
+        except (self._requests.exceptions.Timeout, self._requests.exceptions.ConnectionError) as exc:
+            # Timeout/conexão derrubada: o servidor pode estar apenas ocupado.
+            raise ZabbixTransientError(f"Falha de rede ao acessar {self.endpoint}: {exc}") from exc
         except self._requests.exceptions.RequestException as exc:
             raise ZabbixError(f"Falha de rede ao acessar {self.endpoint}: {exc}") from exc
 
+        if response.status_code in TRANSIENT_STATUS:
+            corpo = (response.text or "").strip()[:300] or "(corpo vazio)"
+            raise ZabbixTransientError(
+                f"HTTP {response.status_code} em {self.endpoint}: {corpo}",
+                status=response.status_code,
+            )
         if response.status_code >= 400:
             raise ZabbixError(
                 f"HTTP {response.status_code} em {self.endpoint}: {response.text[:300]}"
@@ -167,20 +207,38 @@ class ZabbixReadOnlyClient:
         verify_tls: bool | str = True,
         page_size: int = 500,
         trigger_batch_size: int = 50,
+        max_retries: int = 4,
+        retry_backoff: float = 2.0,
+        retry_backoff_max: float = 30.0,
+        min_page_size: int = 25,
         transport: Callable[[dict[str, Any], dict[str, str]], dict[str, Any]] | None = None,
+        sleep: Callable[[float], None] = time.sleep,
     ):
         self.endpoint = api_endpoint(url)
         self._api_token = api_token
         self._user = user
         self._password = password
-        self.page_size = page_size
+        self.page_size = max(1, int(page_size))
         #: hosts por chamada trigger.get na coleta completa. Menor que page_size
         #: de propósito: trigger.get com todos os selects usados aqui é uma
         #: consulta pesada por host — um lote grande demais pode devolver HTTP
         #: 500 (timeout/memória) no servidor Zabbix.
         self.trigger_batch_size = max(1, trigger_batch_size)
+        #: Tentativas extras por chamada quando o erro é transitório (HTTP 5xx).
+        self.max_retries = max(0, int(max_retries))
+        #: Backoff progressivo: espera `retry_backoff * 2**tentativa` segundos.
+        self.retry_backoff = float(retry_backoff)
+        self.retry_backoff_max = float(retry_backoff_max)
+        #: Piso da redução adaptativa de lote — abaixo disto não adianta dividir.
+        self.min_page_size = max(1, int(min_page_size))
+        self._sleep = sleep
         self._transport = transport or RequestsTransport(self.endpoint, timeout=timeout, verify=verify_tls)
 
+        #: Contadores de resiliência, gravados nos metadados do snapshot.
+        self.retries = 0
+        self.transient_errors: list[dict[str, Any]] = []
+        self.batch_reductions: list[dict[str, Any]] = []
+        self.failed_objects: list[dict[str, Any]] = []
         self._request_id = 0
         self._session_id: str = ""
         self._logged_in = False
@@ -200,6 +258,9 @@ class ZabbixReadOnlyClient:
             verify_tls=settings.verify_tls,
             page_size=settings.page_size,
             trigger_batch_size=settings.trigger_batch_size,
+            max_retries=settings.max_retries,
+            retry_backoff=settings.retry_backoff,
+            min_page_size=settings.min_page_size,
             transport=transport,
         )
 
@@ -239,7 +300,7 @@ class ZabbixReadOnlyClient:
             else:
                 payload["auth"] = credential
 
-        result = self._send(payload, headers, method)
+        result = self._send_with_retry(payload, headers, method)
 
         # Compatibilidade: se o estilo de autenticação escolhido não serviu,
         # tenta o outro uma única vez.
@@ -253,14 +314,59 @@ class ZabbixReadOnlyClient:
                 headers["Authorization"] = f"Bearer {credential}"
             else:
                 payload["auth"] = credential
-            result = self._send(payload, headers, method)
+            result = self._send_with_retry(payload, headers, method)
 
         if isinstance(result, ZabbixError):
             raise result
         return result
 
+    def _send_with_retry(self, payload: dict[str, Any], headers: dict[str, str], method: str) -> Any:
+        """`_send` com retry e backoff progressivo para erros transitórios.
+
+        Só erros transitórios são repetidos. Um erro de permissão, de parâmetro
+        ou de dados é definitivo: repetir a mesma chamada apenas atrasaria o
+        diagnóstico. Quando as tentativas acabam, o erro é propagado como
+        `ZabbixTransientError` — quem chama pode então reduzir o lote.
+        """
+        tentativa = 0
+        while True:
+            try:
+                resultado = self._send(payload, headers, method)
+            except ZabbixTransientError as exc:
+                erro: ZabbixTransientError | None = exc
+            else:
+                erro = resultado if isinstance(resultado, ZabbixTransientError) else None
+                if erro is None:
+                    return resultado
+
+            self.transient_errors.append(
+                {
+                    "method": method,
+                    "attempt": tentativa + 1,
+                    "status": getattr(erro, "status", None),
+                    "message": str(erro)[:300],
+                }
+            )
+            if tentativa >= self.max_retries:
+                raise erro
+            espera = min(self.retry_backoff * (2**tentativa), self.retry_backoff_max)
+            self.retries += 1
+            tentativa += 1
+            logger.warning(
+                "%s falhou (%s); tentativa %d/%d em %.1fs",
+                method, erro, tentativa, self.max_retries, espera,
+            )
+            self._sleep(espera)
+
     def _send(self, payload: dict[str, Any], headers: dict[str, str], method: str) -> Any:
-        body = self._transport(payload, headers)
+        try:
+            body = self._transport(payload, headers)
+        except ZabbixTransientError:
+            # A chamada que morreu no transporte também entra no log de
+            # auditoria do snapshot — senão o retry ficaria invisível.
+            self.call_log.append({"method": method, "params": self._sanitize_params(payload.get("params")), "ok": False})
+            raise
+
         params = payload.get("params")
         self.call_log.append(
             {
@@ -275,6 +381,10 @@ class ZabbixReadOnlyClient:
             lowered = message.lower()
             if any(hint in lowered for hint in _AUTH_ERROR_HINTS):
                 return ZabbixAuthError(f"{method} -> {message}")
+            if any(hint in lowered for hint in _TRANSIENT_HINTS):
+                # HTTP 200 com erro de timeout/memória no corpo: o Zabbix nem
+                # sempre devolve 500 quando a consulta é grande demais.
+                return ZabbixTransientError(f"{method} -> {message}")
             return ZabbixError(f"{method} -> {message}")
         result = body.get("result")
         if isinstance(result, list):
@@ -359,13 +469,192 @@ class ZabbixReadOnlyClient:
         """`selectHostGroups` existe a partir do Zabbix 6.2 (antes: `selectGroups`)."""
         return parse_version(self.api_version()) >= (6, 2)
 
-    def get_by_ids(self, method: str, id_field: str, ids: Iterable[str], params: dict[str, Any]) -> list[dict[str, Any]]:
-        """Executa `method` em lotes para uma lista de IDs, concatenando resultados."""
-        unique = sorted({str(i) for i in ids if str(i) not in ("", "0")})
-        collected: list[dict[str, Any]] = []
-        for batch in chunked(unique, self.page_size):
-            call_params = dict(params)
-            call_params[id_field] = batch
-            result = self.call(method, call_params) or []
-            collected.extend(result)
-        return collected
+    def get_by_ids(
+        self,
+        method: str,
+        id_field: str,
+        ids: Iterable[str],
+        params: dict[str, Any],
+        *,
+        page_size: int | None = None,
+        on_page: Callable[[dict[str, Any]], None] = lambda _e: None,
+        label: str = "",
+    ) -> list[dict[str, Any]]:
+        """Executa `method` em lotes para uma lista de IDs, concatenando resultados.
+
+        Esta é a paginação real desta integração. A API do Zabbix **não tem
+        `offset`** — `limit` sozinho não permite avançar por um conjunto grande.
+        O que funciona é paginar por conjunto de IDs: descobrir os IDs do escopo
+        com uma consulta barata (`output: ["...id"]`, sem `select*`) e depois
+        hidratar em lotes. Como efeito colateral bom, o total passa a ser
+        conhecido de verdade — o progresso não precisa ser estimado.
+        """
+        unique = sorted({str(i) for i in ids if str(i) not in ("", "0")}, key=_id_sort_key)
+        return self.fetch_in_chunks(
+            method, id_field, unique, params, page_size=page_size, on_page=on_page, label=label
+        )
+
+    def fetch_in_chunks(
+        self,
+        method: str,
+        id_field: str,
+        ids: Sequence[str],
+        params: dict[str, Any],
+        *,
+        page_size: int | None = None,
+        on_page: Callable[[dict[str, Any]], None] = lambda _e: None,
+        label: str = "",
+    ) -> list[dict[str, Any]]:
+        """Hidrata `ids` em páginas, reduzindo o lote quando o servidor recusa.
+
+        A redução adaptativa é o que resolve o HTTP 500 observado no ambiente
+        real: uma página grande demais é dividida ao meio e cada metade é
+        tentada de novo (500 -> 250 -> 125 -> ...), até o piso `min_page_size`.
+        Abaixo do piso não se divide mais: uma falha que persiste com 25 IDs é
+        sistemática, e insistir viraria 25 requisições que também falhariam. Os
+        objetos dessa página são registrados como não coletados — e isso aparece
+        no relatório, nunca é mascarado.
+        """
+        tamanho = max(1, int(page_size or self.page_size))
+        # O piso existe para não transformar uma falha sistemática em centenas
+        # de requisições de um objeto cada, todas falhando.
+        piso = max(1, min(self.min_page_size, tamanho))
+        coletados: list[dict[str, Any]] = []
+        total = len(ids)
+
+        for linhas, lote, pagina, restantes in self._paginate(
+            method, id_field, list(ids), params, chunk_size=tamanho, floor=piso, on_page=on_page, label=label
+        ):
+            coletados.extend(linhas)
+            on_page(
+                {
+                    "event": "page",
+                    "label": label or method,
+                    "method": method,
+                    "page": pagina,
+                    "page_size": len(lote),
+                    "rows": len(linhas),
+                    "collected": len(coletados),
+                    "total": total,
+                    "remaining_pages": restantes,
+                }
+            )
+        return coletados
+
+    def _paginate(
+        self,
+        method: str,
+        id_field: str,
+        ids: list[str],
+        params: dict[str, Any],
+        *,
+        chunk_size: int,
+        floor: int,
+        on_page: Callable[[dict[str, Any]], None],
+        label: str,
+    ) -> Iterator[tuple[list[dict[str, Any]], list[str], int, int]]:
+        """Percorre `ids` em páginas, dividindo o lote quando o servidor recusa.
+
+        Devolve (linhas, lote, número da página, páginas restantes) por página
+        bem-sucedida. Páginas que falham definitivamente são registradas em
+        `failed_objects` e puladas — a coleta continua parcial, nunca silenciosa.
+        """
+        pendentes: list[list[str]] = list(chunked(ids, chunk_size))
+        pagina = 0
+
+        while pendentes:
+            lote = pendentes.pop(0)
+            pagina += 1
+            try:
+                linhas = self.call(method, {**params, id_field: lote}) or []
+            except ZabbixTransientError as exc:
+                if len(lote) > floor:
+                    meio = len(lote) // 2
+                    # Reinsere as metades no início: a página menor é tentada já.
+                    pendentes[0:0] = [lote[:meio], lote[meio:]]
+                    self.batch_reductions.append(
+                        {"method": method, "from": len(lote), "to": meio, "reason": str(exc)[:200]}
+                    )
+                    on_page(
+                        {
+                            "event": "batch_reduced",
+                            "label": label or method,
+                            "method": method,
+                            "from_size": len(lote),
+                            "to_size": meio,
+                            "error": str(exc)[:200],
+                        }
+                    )
+                    continue
+                self.failed_objects.extend(
+                    {"method": method, "id": objeto, "error": str(exc)[:200]} for objeto in lote
+                )
+                on_page({"event": "page_failed", "label": label or method, "method": method, "ids": lote,
+                         "error": str(exc)[:200]})
+                continue
+
+            yield linhas, lote, pagina, len(pendentes)
+
+    def discover_ids(
+        self,
+        method: str,
+        id_field: str,
+        filter_field: str,
+        filter_values: Sequence[str],
+        params: dict[str, Any],
+        *,
+        chunk_size: int,
+        on_page: Callable[[dict[str, Any]], None] = lambda _e: None,
+        label: str = "",
+    ) -> list[str]:
+        """Descobre IDs consultando por lotes de um campo de filtro (ex.: `hostids`).
+
+        Mesma redução adaptativa da hidratação, mas com **piso 1**: a resposta da
+        descoberta é minúscula (só IDs), então dividir até um host por chamada
+        continua barato — e é muito melhor do que perder todos os triggers de um
+        lote de hosts porque um deles é pesado.
+        """
+        vistos: dict[str, None] = {}
+        for linhas, lote, pagina, restantes in self._paginate(
+            method, filter_field, list(filter_values), {**params, "output": [id_field]},
+            chunk_size=chunk_size, floor=1, on_page=on_page, label=label,
+        ):
+            for linha in linhas:
+                valor = str(linha.get(id_field) or "")
+                if valor and valor != "0":
+                    vistos.setdefault(valor, None)
+            on_page(
+                {
+                    "event": "phase",
+                    "name": label or f"descoberta ({method})",
+                    "detail": f"lote {pagina} ({len(lote)} de {filter_field}), "
+                              f"{len(vistos)} encontrados, {restantes} lote(s) restante(s)",
+                }
+            )
+        return sorted(vistos, key=_id_sort_key)
+
+    def list_ids(self, method: str, id_field: str, params: dict[str, Any]) -> list[str]:
+        """Consulta barata que devolve só os IDs do escopo (`output: [id]`).
+
+        É o primeiro passo da paginação: sem `select*` e sem campos de texto, a
+        resposta é pequena mesmo com dezenas de milhares de objetos, e passa a
+        ser o total confiável usado no progresso.
+        """
+        rows = self.call(method, {**params, "output": [id_field]}) or []
+        vistos: list[str] = []
+        conhecidos: set[str] = set()
+        for row in rows:
+            valor = str(row.get(id_field) or "")
+            if valor and valor not in ("0",) and valor not in conhecidos:
+                conhecidos.add(valor)
+                vistos.append(valor)
+        return sorted(vistos, key=_id_sort_key)
+
+
+def _id_sort_key(value: str) -> tuple[int, Any]:
+    """Ordena IDs numericamente quando possível — páginas determinísticas.
+
+    A ordem estável importa para o resume: a mesma lista de IDs precisa render
+    as mesmas páginas em execuções diferentes.
+    """
+    return (0, int(value)) if value.isdigit() else (1, value)

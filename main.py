@@ -3,6 +3,9 @@
 
     python main.py collect
     python main.py check
+    python main.py merge
+    python main.py reconcile
+    python main.py status
 """
 
 from __future__ import annotations

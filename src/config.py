@@ -74,6 +74,13 @@ def _as_int(value: str, default: int) -> int:
         return default
 
 
+def _as_float(value: str, default: float) -> float:
+    try:
+        return float(str(value).strip())
+    except (TypeError, ValueError):
+        return default
+
+
 def _as_list(value: str) -> list[str]:
     if not value:
         return []
@@ -90,8 +97,14 @@ class Settings:
     password: str = ""
     verify_tls: bool | str = True
     timeout: int = 30
-    page_size: int = 500
+    page_size: int = 250
     trigger_batch_size: int = 50
+    #: Tentativas extras por chamada quando o erro é transitório (HTTP 5xx).
+    max_retries: int = 4
+    #: Base do backoff exponencial, em segundos (2s, 4s, 8s, 16s).
+    retry_backoff: float = 2.0
+    #: Piso da redução adaptativa de lote.
+    min_page_size: int = 25
     host_groups: list[str] = field(default_factory=list)
     output_dir: str = "output"
 
@@ -105,6 +118,7 @@ class Settings:
             f"url={self.url} auth={self.auth_mode} verify_tls={self.verify_tls} "
             f"timeout={self.timeout}s page_size={self.page_size} "
             f"trigger_batch_size={self.trigger_batch_size} "
+            f"max_retries={self.max_retries} retry_backoff={self.retry_backoff}s "
             f"host_groups={self.host_groups or 'todos'}"
         )
 
@@ -145,8 +159,11 @@ def load_settings(env_file: str | Path = DEFAULT_ENV_FILE) -> Settings:
         password=password,
         verify_tls=verify,
         timeout=_as_int(env.get("ZABBIX_TIMEOUT"), 30),
-        page_size=_as_int(env.get("ZABBIX_PAGE_SIZE"), 500),
+        page_size=_as_int(env.get("ZABBIX_PAGE_SIZE"), 250),
         trigger_batch_size=_as_int(env.get("ZABBIX_TRIGGER_BATCH_SIZE"), 50),
+        max_retries=_as_int(env.get("ZABBIX_MAX_RETRIES"), 4),
+        retry_backoff=_as_float(env.get("ZABBIX_RETRY_BACKOFF"), 2.0),
+        min_page_size=_as_int(env.get("ZABBIX_MIN_PAGE_SIZE"), 25),
         host_groups=_as_list(env.get("ZABBIX_HOST_GROUPS")),
         output_dir=(env.get("OUTPUT_DIR") or "output").strip(),
     )

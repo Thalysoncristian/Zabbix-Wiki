@@ -21,3 +21,28 @@ python main.py status       # cobertura da documentação
 
 O `reconcile` nunca apaga documentação. Quando o fato técnico muda no Zabbix,
 a ficha passa a `review_needed` com todo o conteúdo humano intacto.
+
+## Procedimento
+
+O bloco `operational` **é** o procedimento operacional: título, objetivo,
+sintomas, causa provável, verificações, ações, validação, escalonamento, riscos
+e observações. Não existe uma entidade `Procedure` separada — duas entidades
+para a mesma coisa acabariam divergindo.
+
+`procedure_status` é derivado de `doc_status` e gravado na ficha. Enquanto
+ninguém escrever nada, ele é `missing`. **Procedimento não se inventa**: nem a
+coleta nem a IA escrevem em `operational`. Uma sugestão da IA vive em
+`ai_suggestion` e só vira procedimento quando uma pessoa a escreve — e assina.
+
+## Escopo da coleta
+
+Uma coleta filtrada por grupo (`collect --host-group ...`) só enxerga parte do
+ambiente. O `reconcile` respeita isso: fichas de grupos fora do escopo daquela
+coleta **não** são marcadas como ausentes, porque ninguém foi procurá-las.
+
+Para aplicar várias coletas de uma vez, consolide antes:
+
+```bash
+python main.py merge        # gera output/snapshots/<timestamp>__consolidado/
+python main.py reconcile    # usa o snapshot mais recente
+```

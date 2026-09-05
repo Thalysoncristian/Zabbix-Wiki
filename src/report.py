@@ -13,8 +13,15 @@ CHECK = "✓"
 
 def build_report(raw: RawSnapshot, normalized: NormalizedResult, paths: dict[str, Path]) -> dict[str, Any]:
     counts = {name: len(rows) for name, rows in raw.data.items()}
+    scope = raw.meta.get("scope") or {}
+    collection = raw.meta.get("collection") or {}
     return {
         "meta": raw.meta,
+        # Escopo em primeiro plano: uma coleta de um grupo nunca pode ser lida
+        # como se fosse o retrato do ambiente inteiro.
+        "scope": scope,
+        "collection": collection,
+        "partial": bool(collection.get("partial")),
         "counts": {
             "triggers": counts.get("triggers", 0),
             "hosts": counts.get("hosts", 0),
@@ -38,8 +45,18 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
     meta = report["meta"]
     paths = report["paths"]
 
+    scope = report.get("scope") or {}
+    collection = report.get("collection") or {}
+
+    cabecalho = (
+        f"{CHECK} Base consolidada a partir de {len((meta.get('merge') or {}).get('sources') or [])} "
+        f"snapshots (Zabbix {meta.get('zabbix_version', '?')})"
+        if scope.get("kind") == "merged"
+        else f"{CHECK} Conectado ao Zabbix (API {meta.get('zabbix_version', '?')}, {meta.get('auth_method', '?')})"
+    )
     lines = [
-        f"{CHECK} Conectado ao Zabbix (API {meta.get('zabbix_version', '?')}, {meta.get('auth_method', '?')})",
+        cabecalho,
+        *_scope_lines(scope, collection),
         f"{CHECK} {counts['triggers']} triggers encontrados",
         f"{CHECK} {counts['hosts']} hosts resolvidos",
         f"{CHECK} {counts['host_groups']} host groups resolvidos",
@@ -133,6 +150,72 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
         lines.append("")
         lines.append("Nenhuma colisão de alert_key detectada nesta coleta.")
 
+    lines.extend(_collection_lines(collection))
+
     lines.append("")
     lines.append(f"Snapshot completo em: {paths['snapshot_dir']}")
     return lines
+
+
+def _scope_lines(scope: dict[str, Any], collection: dict[str, Any]) -> list[str]:
+    """Escopo da coleta, sempre visível (item 18 da Fase 2).
+
+    Snapshots da Fase 1 não têm o bloco `scope`; nesse caso a seção some em vez
+    de afirmar um escopo que ninguém registrou.
+    """
+    if not scope:
+        return []
+
+    rotulo = scope.get("label") or scope.get("kind") or "?"
+    linhas = [f"{CHECK} Escopo da coleta : {rotulo}"]
+    if scope.get("hosts"):
+        linhas.append(f"{CHECK} Hosts no escopo  : {scope['hosts']}")
+
+    if collection.get("partial"):
+        linhas.append(
+            "⚠ COLETA PARCIAL — objetos ficaram de fora. Os números abaixo NÃO "
+            "representam nem o escopo pedido."
+        )
+    elif not scope.get("complete_environment"):
+        linhas.append(
+            "⚠ Coleta parcial por escopo: cobre apenas o que está listado acima, "
+            "não o ambiente inteiro."
+        )
+    return linhas
+
+
+def _collection_lines(collection: dict[str, Any]) -> list[str]:
+    """Resiliência da coleta: páginas, retries, lotes reduzidos, falhas."""
+    if not collection:
+        return []
+
+    linhas = [
+        "",
+        "── Coleta ─────────────────────────────────────────────────────",
+        f"  duração                       : {collection.get('duration_seconds', 0):.1f}s",
+        f"  tamanho de página             : {collection.get('page_size', '?')}",
+        f"  páginas hidratadas            : {collection.get('pages', 0)}",
+        f"  retries por erro transitório  : {collection.get('retries', 0)}",
+        f"  lotes reduzidos pelo servidor : {len(collection.get('batch_reductions') or [])}",
+    ]
+    if collection.get("resumed_from"):
+        linhas.append(f"  retomada                      : {collection['resumed_from']}")
+
+    reducoes = collection.get("batch_reductions") or []
+    for reducao in reducoes[:5]:
+        linhas.append(f"    ↓ {reducao.get('method')}: {reducao.get('from')} → {reducao.get('to')}")
+    if len(reducoes) > 5:
+        linhas.append(f"    ... e mais {len(reducoes) - 5} redução(ões)")
+
+    falhas = collection.get("failed_objects") or []
+    if falhas:
+        linhas.append(f"  ✗ objetos NÃO coletados       : {len(falhas)}")
+        for falha in falhas[:5]:
+            linhas.append(f"    ✗ {falha.get('method')} id={falha.get('id')}: {falha.get('error', '')[:90]}")
+        if len(falhas) > 5:
+            linhas.append(f"    ... e mais {len(falhas) - 5} objeto(s)")
+
+    for erro in collection.get("errors") or []:
+        linhas.append(f"  ⚠ fase '{erro.get('phase')}' incompleta: {erro.get('error', '')[:90]}")
+
+    return linhas

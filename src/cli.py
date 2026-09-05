@@ -2,6 +2,7 @@
 
     python main.py collect        # coleta -> snapshot bruto + normalizado
     python main.py check          # apenas testa a conexão (read-only)
+    python main.py merge          # consolida vários snapshots numa base única
     python main.py reconcile      # snapshot -> fichas em docs/alerts/
     python main.py status         # cobertura da documentação
 """
@@ -16,14 +17,16 @@ import tempfile
 from pathlib import Path
 from typing import Any, Sequence
 
-from .collect import collect_raw
+from .collect import RawSnapshot, collect_raw, partial_snapshot_of
 from .config import ConfigError, load_settings
 from .core.repository import AlertRepository
 from .core.status import DOCUMENTED_STATUSES, UNDOCUMENTED
+from .merge import merge_raw_snapshots
 from .normalize import normalize_snapshot
+from .progress import ConsoleProgress
 from .reconcile import reconcile
 from .report import CHECK, build_report, format_report_lines
-from .snapshot import write_json, write_snapshot
+from .snapshot import list_snapshots, load_raw_snapshot, write_json, write_partial_snapshot, write_snapshot
 from .zabbix_client import ZabbixError, ZabbixReadOnlyClient
 
 EXIT_OK = 0
@@ -48,7 +51,29 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
         metavar="NOME",
-        help="restringe a coleta a um grupo de hosts (pode repetir)",
+        help="restringe a coleta a um grupo de hosts (pode repetir, ou separar por vírgula)",
+    )
+    collect_cmd.add_argument(
+        "--page-size",
+        type=int,
+        default=None,
+        metavar="N",
+        help="objetos por página na hidratação (padrão: ZABBIX_PAGE_SIZE do .env)",
+    )
+    collect_cmd.add_argument(
+        "--split-by-group",
+        action="store_true",
+        help="grava um snapshot independente por grupo, em vez de um snapshot da execução",
+    )
+    collect_cmd.add_argument(
+        "--merge",
+        action="store_true",
+        help="com --split-by-group: consolida os snapshots desta execução ao final",
+    )
+    collect_cmd.add_argument(
+        "--resume",
+        action="store_true",
+        help="reaproveita os IDs já descobertos por uma coleta anterior do mesmo escopo",
     )
     collect_cmd.add_argument(
         "--only-monitored", action="store_true", help="apenas triggers habilitados em hosts monitorados"
@@ -63,6 +88,25 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     sub.add_parser("check", help="testa a conexão e as credenciais, sem coletar nada")
+
+    mrg = sub.add_parser(
+        "merge",
+        help="consolida vários snapshots independentes num snapshot único (deduplicando por ID)",
+    )
+    mrg.add_argument(
+        "snapshots",
+        nargs="*",
+        default=[],
+        help="diretórios de snapshot a consolidar (padrão: todos os de output/snapshots)",
+    )
+    mrg.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    mrg.add_argument(
+        "--last",
+        type=int,
+        default=None,
+        metavar="N",
+        help="consolida apenas os N snapshots mais recentes",
+    )
 
     rec = sub.add_parser(
         "reconcile",
@@ -113,26 +157,45 @@ def _print_examples(alerts: list[dict[str, Any]], quantity: int) -> None:
         print()
 
 
-def cmd_collect(args: argparse.Namespace) -> int:
-    settings = load_settings(args.env_file)
-    output_dir = args.output or settings.output_dir
-    host_groups = args.host_group or settings.host_groups
+def _split_group_names(values: Sequence[str]) -> list[str]:
+    """Aceita `--host-group A --host-group B` e `--host-group "A,B"`.
 
-    print(f"→ Coletando de {settings.url} ({settings.auth_mode}, somente leitura)")
+    As duas formas existem porque nomes de grupo com vírgula são raros, mas
+    nomes com espaço são comuns — quem digita à mão prefere repetir a flag, e
+    quem gera o comando por script prefere a lista.
+    """
+    nomes: list[str] = []
+    for bruto in values:
+        for parte in str(bruto).split(","):
+            nome = parte.strip()
+            if nome and nome not in nomes:
+                nomes.append(nome)
+    return nomes
 
-    client = ZabbixReadOnlyClient.from_settings(settings)
-    try:
-        raw = collect_raw(
-            client,
-            host_groups=host_groups,
-            limit=args.limit,
-            only_monitored=args.only_monitored,
-            include_template_triggers=args.include_template_triggers,
-            on_step=lambda message: print(f"  · {message}"),
-        )
-    finally:
-        client.logout()
 
+def _known_trigger_ids(output_dir: str, host_groups: Sequence[str]) -> list[str]:
+    """IDs de triggers já descobertos pela última coleta do mesmo escopo.
+
+    Retomar aqui significa "não redescobrir", não "não rebaixar": os IDs são
+    somados aos que a descoberta encontrar agora, e a hidratação confirma cada
+    um. Um trigger apagado no Zabbix simplesmente não volta.
+    """
+    alvo = sorted(host_groups)
+    for snapshot_dir in reversed(list_snapshots(output_dir)):
+        try:
+            payload = load_raw_snapshot(snapshot_dir)
+        except (OSError, ValueError):
+            continue
+        meta = payload.get("meta") or {}
+        grupos = sorted((meta.get("scope") or {}).get("host_groups") or [])
+        if grupos == alvo and meta.get("discovered_trigger_ids"):
+            print(f"→ Retomando a partir de {snapshot_dir.name}")
+            return [str(i) for i in meta["discovered_trigger_ids"]]
+    return []
+
+
+def _gravar(output_dir: str, raw: RawSnapshot, examples: int) -> dict[str, Any]:
+    """Normaliza, grava o snapshot e imprime o relatório. Devolve o relatório."""
     normalized = normalize_snapshot(raw)
     paths = write_snapshot(output_dir, raw, normalized)
     report = build_report(raw, normalized, paths)
@@ -141,7 +204,141 @@ def cmd_collect(args: argparse.Namespace) -> int:
 
     print()
     print("\n".join(format_report_lines(report)))
-    _print_examples(normalized.alerts, args.examples)
+    _print_examples(normalized.alerts, examples)
+    return report
+
+
+def cmd_collect(args: argparse.Namespace) -> int:
+    settings = load_settings(args.env_file)
+    output_dir = args.output or settings.output_dir
+    host_groups = _split_group_names(args.host_group) or settings.host_groups
+    page_size = args.page_size or settings.page_size
+
+    print(f"→ Coletando de {settings.url} ({settings.auth_mode}, somente leitura)")
+    print(f"→ Escopo: {', '.join(host_groups) if host_groups else 'ambiente inteiro (grupo a grupo)'}")
+    print(f"→ Página: {page_size} objetos | retries: {settings.max_retries} | backoff: {settings.retry_backoff}s")
+
+    if args.split_by_group and not host_groups:
+        # Sem grupos explícitos, o próprio coletor já percorre grupo a grupo;
+        # dividir em snapshots exigiria enumerar antes só para isso.
+        raise ConfigError("--split-by-group exige pelo menos um --host-group.")
+    if args.merge and not args.split_by_group:
+        raise ConfigError("--merge só faz sentido junto com --split-by-group.")
+
+    escopos: list[list[str]] = [[g] for g in host_groups] if args.split_by_group else [list(host_groups)]
+
+    client = ZabbixReadOnlyClient.from_settings(settings)
+    relatorios: list[dict[str, Any]] = []
+    brutos: list[RawSnapshot] = []
+    parcial = False
+    try:
+        for indice, escopo in enumerate(escopos, start=1):
+            if len(escopos) > 1:
+                print(f"\n=== Coleta {indice}/{len(escopos)}: {', '.join(escopo)} ===")
+            progresso = ConsoleProgress()
+            try:
+                raw = collect_raw(
+                    client,
+                    host_groups=escopo,
+                    limit=args.limit,
+                    only_monitored=args.only_monitored,
+                    include_template_triggers=args.include_template_triggers,
+                    page_size=page_size,
+                    known_trigger_ids=_known_trigger_ids(output_dir, escopo) if args.resume else (),
+                    on_progress=progresso,
+                )
+            except BaseException as exc:
+                # Interrupção não pode destruir o que já veio: o parcial vai para
+                # um diretório próprio e os snapshots anteriores ficam intactos.
+                parcial_raw = partial_snapshot_of(exc)
+                if parcial_raw is not None:
+                    destino = write_partial_snapshot(output_dir, parcial_raw, str(exc))
+                    print(f"\n⚠ Coleta interrompida. Snapshot PARCIAL preservado em {destino}", file=sys.stderr)
+                    print(
+                        "  Ele NÃO é uma base válida — serve para auditoria e para retomar com --resume.",
+                        file=sys.stderr,
+                    )
+                raise
+
+            brutos.append(raw)
+            relatorios.append(_gravar(output_dir, raw, args.examples))
+            parcial = parcial or bool((raw.meta.get("collection") or {}).get("partial"))
+    finally:
+        client.logout()
+
+    if args.merge and len(brutos) > 1:
+        print("\n=== Consolidando os snapshots desta execução ===")
+        consolidado, resumo = merge_raw_snapshots([b.to_dict() for b in brutos])
+        _gravar(output_dir, consolidado, 0)
+        _print_merge_summary(resumo)
+    elif len(escopos) > 1:
+        print("\nPara consolidar estas coletas numa base única:")
+        print(f"  python main.py merge --last {len(escopos)}")
+
+    return EXIT_OK
+
+
+def _print_merge_summary(resumo: dict[str, Any]) -> None:
+    print()
+    print("── Consolidação ───────────────────────────────────────────────")
+    for fonte in resumo["sources"]:
+        marca = "⚠ parcial" if fonte.get("partial") else "ok"
+        print(f"  · {fonte.get('collected_at', '?')}  {fonte.get('scope', '?')}  [{marca}]")
+    print(f"  objetos consolidados : {', '.join(f'{k}={v}' for k, v in resumo['counts'].items() if v)}")
+    duplicados = resumo["duplicates_deduplicated"]
+    print(
+        "  duplicatas removidas : "
+        + (", ".join(f"{k}={v}" for k, v in duplicados.items()) if duplicados else "nenhuma")
+    )
+    conflitos = resumo["conflicts"]
+    if conflitos:
+        print(f"  ⚠ conflitos (mesmo ID, conteúdo diferente): {len(conflitos)} — venceu a coleta mais recente")
+        for conflito in conflitos[:5]:
+            campos = ", ".join(conflito["field_hint"][:4]) or "?"
+            print(f"    ! {conflito['collection']} {conflito['id']}: {campos}")
+        if len(conflitos) > 5:
+            print(f"    ... e mais {len(conflitos) - 5} conflito(s)")
+    else:
+        print("  conflitos            : nenhum")
+    if resumo["partial_sources"]:
+        print(f"  ⚠ {len(resumo['partial_sources'])} fonte(s) parcial(is) — a base consolidada também é parcial")
+    if not resumo["complete_environment"]:
+        print("  ⚠ Esta base NÃO representa o ambiente inteiro: cobre apenas os escopos listados acima.")
+
+
+def cmd_merge(args: argparse.Namespace) -> int:
+    settings = load_settings(args.env_file)
+    output_dir = args.output or settings.output_dir
+
+    if args.snapshots:
+        diretorios = [Path(caminho) for caminho in args.snapshots]
+    else:
+        diretorios = list_snapshots(output_dir)
+        if args.last:
+            diretorios = diretorios[-int(args.last):]
+    # Snapshots já consolidados não entram de novo: reconsolidar um merge
+    # inflaria as contagens de duplicata sem acrescentar nenhum objeto.
+    if not args.snapshots:
+        diretorios = [d for d in diretorios if "consolidado" not in d.name and "parcial" not in d.name]
+
+    if len(diretorios) < 2:
+        raise ConfigError(
+            f"São necessários ao menos 2 snapshots para consolidar (encontrados: {len(diretorios)} em "
+            f"{output_dir}/snapshots). Rode `python main.py collect --host-group ...` para outros grupos antes."
+        )
+
+    print(f"→ Consolidando {len(diretorios)} snapshots de {output_dir}/snapshots")
+    payloads = []
+    for diretorio in diretorios:
+        print(f"  · {diretorio.name}")
+        try:
+            payloads.append(load_raw_snapshot(diretorio))
+        except (OSError, ValueError) as exc:
+            raise ConfigError(f"Snapshot inválido em {diretorio}: {exc}") from exc
+
+    consolidado, resumo = merge_raw_snapshots(payloads)
+    _gravar(output_dir, consolidado, 0)
+    _print_merge_summary(resumo)
     return EXIT_OK
 
 
@@ -296,6 +493,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_collect(args)
         if args.command == "check":
             return cmd_check(args)
+        if args.command == "merge":
+            return cmd_merge(args)
         if args.command == "reconcile":
             return cmd_reconcile(args)
         if args.command == "status":

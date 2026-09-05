@@ -212,7 +212,9 @@ no código, nos logs ou nos snapshots.
 
 Variáveis opcionais: `ZABBIX_VERIFY_TLS` (`true` | `false` | caminho do CA bundle),
 `ZABBIX_TIMEOUT`, `ZABBIX_PAGE_SIZE`, `ZABBIX_TRIGGER_BATCH_SIZE`,
-`ZABBIX_HOST_GROUPS`, `OUTPUT_DIR`.
+`ZABBIX_MAX_RETRIES`, `ZABBIX_RETRY_BACKOFF`, `ZABBIX_MIN_PAGE_SIZE`,
+`ZABBIX_HOST_GROUPS`, `OUTPUT_DIR`. As três de retry/página estão explicadas na
+seção [13. Escala da coleta](#13-escala-da-coleta).
 
 ---
 
@@ -231,21 +233,38 @@ python main.py reconcile --dry-run
 # cobertura da documentação
 python main.py status
 
-# coleta completa
+# coleta do ambiente inteiro (percorre grupo a grupo, nunca numa requisição só)
 python main.py collect
 
 # coleta reduzida, para a primeira validação
 python main.py collect --limit 50 --examples 3
 
-# apenas alguns grupos de hosts
-python main.py collect --host-group "Infraestrutura" --host-group "SIEM"
+# um grupo de hosts
+python main.py collect --host-group "Vibe Tecnologia"
+
+# vários grupos — repetindo a flag ou separando por vírgula
+python main.py collect --host-group "Vibe Tecnologia" --host-group "Zabbix servers"
+python main.py collect --host-group "Vibe Tecnologia,Zabbix servers"
+
+# página menor, para servidores que recusam lotes grandes
+python main.py collect --host-group "Vibe Tecnologia" --page-size 100
+
+# um snapshot independente por grupo, consolidado ao final
+python main.py collect --host-group "Vibe Tecnologia,Zabbix servers" --split-by-group --merge
+
+# consolida coletas feitas em dias diferentes
+python main.py merge
+python main.py merge --last 3
+python main.py merge output/snapshots/2026*__vibe-tecnologia output/snapshots/2026*__zabbix-servers
 
 # apenas triggers habilitados em hosts monitorados
 python main.py collect --only-monitored
 ```
 
-Opções de `collect`: `--limit`, `--host-group` (repetível), `--only-monitored`,
+Opções de `collect`: `--limit`, `--host-group` (repetível ou com vírgulas),
+`--page-size N`, `--split-by-group`, `--merge`, `--resume`, `--only-monitored`,
 `--include-template-triggers`, `--examples N`, `--output DIR`.
+Opções de `merge`: caminhos de snapshot posicionais, `--last N`, `--output DIR`.
 Opções globais (antes do subcomando): `--env-file ARQUIVO`, `-v/--verbose` —
 ex.: `python main.py --env-file .env.homolog collect`.
 
@@ -253,16 +272,16 @@ Por padrão são coletados os triggers **dos hosts** (`templated=false`) — que
 gera alerta de verdade. O trigger do template é alcançado pela cadeia `templateid`
 para servir de escopo da chave.
 
-Na coleta completa (sem `--limit`), o `trigger.get` é **paginado em lotes de
-hosts** (`ZABBIX_TRIGGER_BATCH_SIZE`, padrão 50). Pedir os triggers de milhares
-de hosts numa única chamada faz o servidor Zabbix estourar tempo/memória e
-responder `HTTP 500` com corpo vazio. O progresso de cada lote é impresso
-durante a coleta.
+Como a coleta aguenta um ambiente de dezenas de milhares de triggers está
+descrito na seção [13. Escala da coleta](#13-escala-da-coleta).
 
 ### Saída esperada
 
 ```
 ✓ Conectado ao Zabbix (API 7.0.0, api_token (Authorization: Bearer))
+✓ Escopo da coleta : 1 grupo(s) de hosts: Vibe Tecnologia
+✓ Hosts no escopo  : 36
+⚠ Coleta parcial por escopo: cobre apenas o que está listado acima, não o ambiente inteiro.
 ✓ 412 triggers encontrados
 ✓ 37 hosts resolvidos
 ✓ 9 host groups resolvidos
@@ -284,8 +303,11 @@ compartilhadas, colisões) e de exemplos completos dos JSONs gerados.
 ```
 output/
 └── snapshots/
-    ├── latest -> 20260903_031705
-    └── 20260903_031705/
+    ├── latest -> 20260903_031705__consolidado
+    ├── 20260903_030112__vibe-tecnologia/     # coleta de um grupo
+    ├── 20260904_025500__zabbix-servers/      # outro grupo, outro dia
+    ├── 20260904_031000__siem-parcial/        # coleta interrompida (não é base)
+    └── 20260903_031705__consolidado/         # python main.py merge
         ├── raw/
         │   └── zabbix_raw.json      # exatamente o que a API devolveu + log das chamadas
         ├── normalized/
@@ -296,7 +318,12 @@ output/
 ```
 
 Snapshots **nunca são sobrescritos** — se dois rodarem no mesmo segundo, o segundo
-recebe sufixo (`..._2`). Isso permite auditoria e comparação histórica.
+recebe sufixo (`..._2`). Isso permite auditoria e comparação histórica, e é o que
+torna possível coletar um grupo hoje, outro amanhã e consolidar depois.
+
+O nome do diretório carrega o escopo (`__vibe-tecnologia`, `__consolidado`,
+`__amostra`, `...-parcial`), então `ls output/snapshots` já diz o que cada coleta
+cobriu sem abrir um único JSON.
 
 ---
 
@@ -543,25 +570,35 @@ ficha" — é o gatilho para `documented`/`reviewed` → `review_needed`.
 
 ```
 .
-├── main.py                    # python main.py collect | check
+├── main.py                    # python main.py collect | check | merge | reconcile | status
 ├── .env.example
 ├── requirements.txt
 ├── src/
 │   ├── config.py              # .env -> Settings (parser próprio, sem dependências)
-│   ├── zabbix_client.py       # JSON-RPC read-only + allowlist + auth por versão
-│   ├── collect.py             # orquestra a coleta e resolve os relacionamentos
+│   ├── zabbix_client.py       # JSON-RPC read-only + allowlist + retry + paginação por IDs
+│   ├── collect.py             # orquestra a coleta (escopo -> descoberta -> hidratação)
+│   ├── progress.py            # eventos de progresso da coleta
+│   ├── merge.py               # consolidação de snapshots independentes
 │   ├── normalize.py           # snapshot bruto -> alertas autocontidos
 │   ├── keys.py                # alert_key, normalização, source_hash
 │   ├── snapshot.py            # escrita imutável em output/snapshots/
 │   ├── report.py              # relatório da coleta
+│   ├── reconcile.py           # snapshot -> fichas em docs/alerts/
+│   ├── core/                  # modelo da ficha, máquina de estados, repositório
 │   └── cli.py
 └── tests/
-    ├── fixtures/fake_zabbix.py  # Zabbix falso (transporte em memória)
+    ├── fixtures/fake_zabbix.py      # Zabbix falso (transporte em memória)
+    ├── fixtures/flaky_transport.py  # Zabbix que devolve HTTP 500 sob carga
     ├── test_keys.py
     ├── test_readonly.py
     ├── test_normalize.py
     ├── test_pipeline.py
-    └── test_cli.py
+    ├── test_models.py
+    ├── test_reconcile.py
+    ├── test_scale.py                # paginação, retry, redução de lote, multi-grupo
+    ├── test_merge.py                # consolidação e snapshots independentes
+    ├── test_cli.py
+    └── test_cli_fase2.py
 ```
 
 Relacionamentos resolvidos pela coleta:
@@ -583,6 +620,10 @@ implementa um transporte JSON-RPC em memória com um ambiente representativo
 (trigger de template em 2 hosts, trigger de LLD com protótipo, trigger local e um
 par de triggers que colidem de propósito).
 
+`tests/fixtures/flaky_transport.py` complementa: simula o servidor que devolve
+`HTTP 500` quando o lote é grande e responde normalmente quando é pequeno — que
+é exatamente o comportamento observado no ambiente real de ~19.000 triggers.
+
 ```bash
 python -m unittest discover -s tests -t .
 ```
@@ -599,7 +640,9 @@ python -m unittest discover -s tests -t .
 | `0 triggers encontrados` | as credenciais não enxergam nenhum grupo de hosts; rode `python main.py check` |
 | `Grupos de hosts não encontrados` | o nome em `--host-group` precisa ser exatamente igual ao do Zabbix |
 | coleta lenta | use `--host-group` e/ou `--limit` na validação inicial |
-| `HTTP 500` com corpo vazio | o servidor Zabbix estourou tempo/memória montando a resposta. A coleta completa já pagina o `trigger.get` em lotes de hosts; se ainda ocorrer, reduza `ZABBIX_TRIGGER_BATCH_SIZE` (ex.: 20 ou 10) e/ou aumente `ZABBIX_TIMEOUT` |
+| `HTTP 500` com corpo vazio | o servidor Zabbix estourou tempo/memória montando a resposta. O coletor **já trata sozinho**: repete com backoff e divide a página ao meio até o servidor aceitar (aparece como `⚠ lote N recusado — dividindo`). Se ainda assim falhar, baixe `--page-size` (ex.: `--page-size 50`), reduza `ZABBIX_TRIGGER_BATCH_SIZE` e/ou aumente `ZABBIX_TIMEOUT` |
+| coleta interrompida no meio | o que já veio é gravado em `..._parcial/` e os snapshots anteriores ficam intactos. Rode de novo com `--resume` para não redescobrir tudo |
+| `São necessários ao menos 2 snapshots` | `merge` precisa de duas coletas; rode `collect --host-group` para outro grupo antes |
 | `Protótipos de trigger não resolvidos` | o usuário não tem leitura em protótipos; a coleta continua e os triggers de LLD caem na chave por host |
 | `0 templates resolvidos` / `templates: []` | as credenciais não enxergam templates. No Zabbix o acesso é dado por **grupos de templates** e costuma faltar em usuários somente leitura. Sem isso nenhum alerta é reconhecido como regra genérica de template e a documentação teria de ser repetida host a host. `python main.py check` avisa quando isso acontece |
 
@@ -624,3 +667,207 @@ e valide:
 Com isso aprovado, seguimos para a **ETAPA 2** (modelo completo com os blocos
 `zabbix` / `ai_suggestion` / `operational`, `docs/alerts/<alert_key>.json`, máquina
 de estados de `doc_status` e políticas de horário).
+
+---
+
+## 13. Escala da coleta
+
+O ambiente real tem **~19.000 triggers**. Uma coleta que tentasse trazer isso de
+uma vez devolvia `HTTP 500`. A solução não foi aumentar timeout nem limite: foi
+mudar como a coleta é feita.
+
+### O caminho da coleta
+
+```
+Ambiente
+   │  hostgroup.get                       (lista os grupos)
+   ▼
+Host Groups
+   │  host.get { groupids: [um grupo] }   (um grupo por vez, hosts deduplicados)
+   ▼
+Hosts
+   │  trigger.get { hostids: lote,        ← DESCOBERTA: só o ID, sem select*.
+   │                output: [triggerid] }    Resposta pequena mesmo com 19k triggers.
+   ▼
+Lista de IDs  ──────────────────────────► este é o TOTAL REAL do progresso
+   │  trigger.get { triggerids: página,   ← HIDRATAÇÃO: output completo + selects,
+   │                output+selects }         em páginas de --page-size objetos.
+   ▼
+Snapshot independente
+   │  python main.py merge
+   ▼
+Base consolidada
+```
+
+Nenhuma etapa depende de uma requisição contendo o ambiente inteiro. Um teste
+verifica isso diretamente: todo `trigger.get` do log de chamadas precisa carregar
+`hostids`, `triggerids`, `groupids` ou `limit`.
+
+### Por que não `limit` / `offset`
+
+A API do Zabbix aceita `limit`, mas **não tem `offset`**. Não existe "próxima
+página" nativa: com `limit` sozinho não há como avançar por um conjunto grande.
+
+Paginar por **conjunto de IDs** é o mecanismo equivalente que a API oferece de
+fato — e sai melhor em três pontos:
+
+* o total é conhecido antes de começar a parte cara, então a porcentagem do
+  progresso é real, não estimada;
+* as páginas são determinísticas (IDs ordenados), o que torna a retomada segura;
+* uma página que falha pode ser dividida ao meio sem reprocessar o resto.
+
+### Retry, backoff e redução adaptativa de lote
+
+`HTTP 429/500/502/503/504`, timeouts e erros de conexão são tratados como
+**transitórios**: o coletor repete com backoff exponencial
+(`ZABBIX_RETRY_BACKOFF`, padrão 2s → 4s → 8s → 16s, até `ZABBIX_MAX_RETRIES`).
+Erros definitivos — permissão, parâmetro inválido — **não** são repetidos:
+insistir só atrasaria o diagnóstico.
+
+Quando as tentativas de uma página acabam, o lote é dividido ao meio e cada
+metade é tentada de novo:
+
+```
+página de 500 ──✗──> 250 ──✗──> 125 ──✓──> segue
+```
+
+A divisão para em `ZABBIX_MIN_PAGE_SIZE` (padrão 25). Uma falha que persiste com
+25 IDs é sistemática, e insistir viraria 25 requisições que também falhariam.
+Os objetos dessa página são registrados como **não coletados** e aparecem no
+relatório — nunca são omitidos em silêncio.
+
+### Coleta parcial nunca se passa por completa
+
+Todo snapshot registra o escopo (`meta.scope`) e a saúde da coleta
+(`meta.collection`). O relatório mostra os dois no topo:
+
+```
+✓ Escopo da coleta : 1 grupo(s) de hosts: Vibe Tecnologia
+✓ Hosts no escopo  : 36
+⚠ Coleta parcial por escopo: cobre apenas o que está listado acima, não o ambiente inteiro.
+...
+── Coleta ─────────────────────────────────────────────────────
+  duração                       : 47.2s
+  tamanho de página             : 250
+  páginas hidratadas            : 23
+  retries por erro transitório  : 2
+  lotes reduzidos pelo servidor : 1
+    ↓ trigger.get: 250 → 125
+```
+
+`complete_environment` só é verdadeiro quando a coleta varreu o ambiente inteiro
+**e** nada ficou para trás.
+
+### Interrupção e retomada
+
+Se a coleta morre no meio, o que já veio é gravado num diretório `..._parcial/`
+com `collection.partial: true`. Ele **não** é uma base válida — serve para
+auditoria e para retomar. Os snapshots anteriores ficam intactos, porque cada
+coleta escreve num diretório novo.
+
+```bash
+python main.py collect --host-group "Vibe Tecnologia" --resume
+```
+
+`--resume` reaproveita os IDs já descobertos pela última coleta do **mesmo
+escopo**, pulando a fase de descoberta. Ele soma esses IDs aos que a descoberta
+atual encontrar — retomar nunca esconde objetos novos, e um trigger apagado no
+Zabbix simplesmente não volta na hidratação.
+
+### Consolidação (`merge`)
+
+```
+Vibe Tecnologia (segunda) ─┐
+Zabbix servers  (terça)   ─┼─► merge ─► base consolidada
+Ativos de Rede  (quarta)  ─┘
+```
+
+O merge acontece no **snapshot bruto**, e a normalização é refeita sobre o
+resultado. Isso não é detalhe de implementação: colisões de `alert_key`, famílias
+e regras multi-host só existem quando se olha o conjunto todo. Juntar
+`alerts.json` já prontos esconderia exatamente o que a base precisa mostrar.
+
+A deduplicação é por ID natural (`triggerid`, `hostid`, `itemid`, `groupid`,
+`templateid`) — o mesmo objeto em dois snapshots vira **uma** entrada. Quando as
+duas versões divergem, vence a coleta mais recente e a divergência é registrada
+como conflito no relatório. Estado de runtime (`value`, `state`) fica fora da
+comparação: `OK`/`PROBLEM` muda o tempo todo e não é mudança de configuração.
+
+Um merge de grupos **não** é declarado ambiente inteiro, e uma fonte parcial
+torna a base consolidada parcial.
+
+---
+
+## 14. Alerta, família, procedimento
+
+São três coisas diferentes e o modelo não as confunde:
+
+| Conceito | O que é | Onde vive |
+|---|---|---|
+| **Alert** | um trigger concreto do Zabbix | `alerts.json`, uma entrada por trigger |
+| **Alert family** | a regra que gera N alertas (protótipo de LLD, trigger replicado) | `family_key`, uma ficha por família |
+| **Procedure** | o que se faz quando o alerta toca | bloco `operational` da ficha |
+
+Uma `alert_key` **não** é um procedimento. Uma família pode ter dezenas de
+alertas com um procedimento só; um mesmo procedimento pode servir a várias
+famílias. Por isso a coleta gera ficha de **família**, e o `override` existe para
+quando uma pessoa decide que um caso específico foge da regra.
+
+### O procedimento é o bloco `operational`
+
+Os campos pedidos pela Fase 2 (título, objetivo, sintomas, causa provável,
+verificações, ações, validação, escalonamento, riscos, observações) vivem em
+`operational` — não numa entidade `Procedure` paralela. Criar uma segunda
+entidade duplicaria a máquina de estados, o hash de revisão e o controle de
+concorrência, e abriria a porta para as duas divergirem.
+
+`procedure_status` é derivado de `doc_status` e gravado na ficha:
+
+```
+doc_status                  procedure_status
+──────────────────────────────────────────────
+undocumented            ->  missing
+pending_review          ->  draft
+documented / reviewed   ->  documented
+review_needed           ->  needs_review
+not_applicable          ->  not_applicable
+```
+
+**Nenhum procedimento é inventado.** Enquanto ninguém escrever, o estado é
+`missing`. A coleta nunca escreve em `operational`, e a IA também não.
+
+### As três camadas nunca se misturam
+
+```
+zabbix          FATO OBSERVADO   "Filesystem / está com 8% livre"    (vem do Zabbix)
+ai_suggestion   SUGESTÃO         "verificar arquivos grandes e logs" (a IA propõe)
+operational     VERDADE HUMANA   "procedimento oficial"              (uma pessoa aprova)
+```
+
+Uma sugestão pode ser copiada para `operational` por uma pessoa, mas a aprovação
+continua humana. Sugestão nunca conta como procedimento.
+
+---
+
+## 15. Critério de conclusão da Fase 2
+
+| # | Critério | Onde verificar |
+|---|---|---|
+| 1 | coleta de ambientes grandes sem requisição gigante | `test_scale.py::test_nenhuma_requisicao_pede_o_ambiente_inteiro_de_uma_vez` |
+| 2 | triggers paginados | `test_scale.py::TestPaginacao` |
+| 3 | host group individual | `python main.py collect --host-group "..."` |
+| 4 | múltiplos host groups | `--host-group` repetido ou com vírgulas |
+| 5 | retry em HTTP 500/502/503/504 | `test_scale.py::TestRetry` |
+| 6 | coletas armazenadas separadamente | `test_merge.py::TestSnapshotsIndependentes` |
+| 7 | snapshots consolidáveis | `python main.py merge` |
+| 8 | merge sem duplicação | `test_merge.py::test_nao_duplica_triggers_hosts_nem_itens` |
+| 9 | progresso visível | `src/progress.py`, saída do `collect` |
+| 10 | parcial x global distinguidos | `meta.scope.complete_environment` + topo do relatório |
+| 11 | templates opcionais | comportamento da ETAPA 1, preservado |
+| 12 | alert_key e famílias | `normalize.py`, preservado |
+| 13 | colisões detectadas | `collisions.json`, preservado |
+| 14 | Procedure sem inventar | `operational` + `procedure_status: missing` |
+| 15 | 3 camadas separadas | `zabbix` / `ai_suggestion` / `operational` |
+| 16 | testes da Fase 1 passando | 99 testes originais, todos verdes |
+| 17 | testes novos de escala | `test_scale.py`, `test_merge.py`, `test_cli_fase2.py` |
+| 18 | nenhuma escrita no Zabbix | `test_readonly.py` + `test_cli_fase2.py::TestReadOnlyPreservado` |

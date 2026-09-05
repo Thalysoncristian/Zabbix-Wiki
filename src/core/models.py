@@ -35,7 +35,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from ..keys import canonical_json, short_hash, slugify
-from .status import ALL_STATUSES, UNDOCUMENTED
+from .status import ALL_STATUSES, DOCUMENTED_STATUSES, UNDOCUMENTED
 
 SCHEMA_VERSION = 1
 
@@ -116,10 +116,41 @@ def build_family_key(alert: dict[str, Any]) -> str:
                      short_hash(zbx.get("expression_signature", ""))])
 
 
+#: Campos do PROCEDIMENTO operacional (item 15 da Fase 2).
+#:
+#: O procedimento não é um modelo novo ao lado da ficha: ele É o bloco
+#: `operational`, que já era a camada de verdade humana. Criar uma entidade
+#: `Procedure` paralela duplicaria a máquina de estados, o hash de revisão e o
+#: controle de concorrência — e abriria a porta para as duas divergirem.
+#:
+#: A regra dura continua valendo: nenhum destes campos é preenchido pela
+#: coleta ou pela IA. Enquanto ninguém escrever, `doc_status` é
+#: `undocumented` — que é exatamente o `procedure_status = missing` pedido.
+PROCEDURE_FIELDS: tuple[str, ...] = (
+    "title",
+    "objective",
+    "symptoms",
+    "probable_cause",
+    "checks_before_action",
+    "actions",
+    "validation",
+    "risks",
+    "notes",
+)
+
+
 def empty_operational() -> dict[str, Any]:
     """Bloco operacional vazio — a ficha nasce assim, esperando um humano."""
     return {
         "doc_status": UNDOCUMENTED,
+        # --- procedimento (preenchido só por pessoas) ---------------------
+        "title": "",
+        "objective": "",
+        "symptoms": [],
+        "actions": [],
+        "validation": "",
+        "risks": [],
+        # --- campos originais da ETAPA 2 ----------------------------------
         "meaning": "",
         "probable_cause": "",
         "self_resolves": None,
@@ -173,6 +204,24 @@ class AlertDoc:
         return self.operational.get("doc_status", UNDOCUMENTED)
 
     @property
+    def procedure_status(self) -> str:
+        """Estado do PROCEDIMENTO, derivado do `doc_status`.
+
+        `missing` enquanto ninguém escreveu nada. Não existe estado "sugerido
+        pela IA": uma sugestão vive em `ai_suggestion` e nunca conta como
+        procedimento — só vira procedimento quando uma pessoa a escreve aqui.
+        """
+        if self.doc_status in DOCUMENTED_STATUSES:
+            return "documented"
+        if self.doc_status == "review_needed":
+            return "needs_review"
+        if self.doc_status == "not_applicable":
+            return "not_applicable"
+        if self.doc_status == "pending_review":
+            return "draft"
+        return "missing"
+
+    @property
     def filename(self) -> str:
         return alert_key_to_filename(self.alert_key)
 
@@ -201,6 +250,9 @@ class AlertDoc:
             "last_modified_at": self.last_modified_at,
             "revision": self.revision,
             "last_seen_at": self.last_seen_at,
+            # Derivado de `operational.doc_status`, gravado para quem lê o JSON
+            # de fora sem conhecer a máquina de estados.
+            "procedure_status": self.procedure_status,
             "instances": self.instances,
             "zabbix": self.zabbix,
             "ai_suggestion": self.ai_suggestion,

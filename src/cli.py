@@ -3,6 +3,7 @@
     python main.py collect        # coleta -> snapshot bruto + normalizado
     python main.py check          # apenas testa a conexão (read-only)
     python main.py merge          # consolida vários snapshots numa base única
+    python main.py serve          # interface web local de consulta
     python main.py reconcile      # snapshot -> fichas em docs/alerts/
     python main.py status         # cobertura da documentação
 """
@@ -91,6 +92,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="imprime N alertas normalizados completos ao final (padrão: 0 — cada um tem ~80 linhas de JSON)",
     )
     collect_cmd.add_argument(
+        "--no-redact",
+        action="store_true",
+        help="NÃO redigir segredos encontrados na configuração do Zabbix (não recomendado)",
+    )
+    collect_cmd.add_argument(
         "--full",
         action="store_true",
         help="relatório detalhado: mais colisões, mais famílias e expressões inteiras",
@@ -117,6 +123,15 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="N",
         help="consolida apenas os N snapshots mais recentes",
     )
+
+    srv = sub.add_parser("serve", help="sobe a interface web local de consulta (somente leitura)")
+    srv.add_argument("--host", default="127.0.0.1",
+                     help="endereço de escuta (padrão: 127.0.0.1 — só esta máquina)")
+    srv.add_argument("--port", type=int, default=8000, help="porta (padrão: 8000)")
+    srv.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    srv.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+    srv.add_argument("--snapshot", default=None,
+                     help="caminho de um snapshot específico (padrão: o mais recente não-parcial)")
 
     rec = sub.add_parser(
         "reconcile",
@@ -257,6 +272,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
                     include_template_triggers=args.include_template_triggers,
                     page_size=page_size,
                     known_trigger_ids=_known_trigger_ids(output_dir, escopo) if args.resume else (),
+                    redact_secrets=settings.redact_secrets and not args.no_redact,
                     on_progress=progresso,
                 )
             except BaseException as exc:
@@ -273,6 +289,13 @@ def cmd_collect(args: argparse.Namespace) -> int:
                 raise
 
             progresso.finish()
+            redacao = raw.meta.get("redaction") or {}
+            if redacao.get("values_redacted"):
+                print(
+                    f"  ⚠ {redacao['values_redacted']} valor(es) com aparência de segredo foram "
+                    "redigidos. Eles estão em texto claro na configuração do Zabbix — "
+                    "considere rotacioná-los."
+                )
             brutos.append(raw)
             relatorios.append(_gravar(output_dir, raw, args.examples, full=args.full))
             parcial = parcial or bool((raw.meta.get("collection") or {}).get("partial"))
@@ -385,6 +408,50 @@ def cmd_check(args: argparse.Namespace) -> int:
             print("  Peça ao admin do Zabbix acesso de leitura aos grupos de templates.")
     finally:
         client.logout()
+    return EXIT_OK
+
+
+def cmd_serve(args: argparse.Namespace) -> int:
+    """Sobe a interface web.
+
+    Este processo NÃO abre conexão com o Zabbix e não lê as credenciais: ele
+    serve o snapshot que já está em disco. `load_settings` é usado só para
+    descobrir o diretório de saída — por isso a ausência de token não impede
+    a interface de subir.
+    """
+    from .web.server import serve_forever
+
+    try:
+        settings = load_settings(args.env_file)
+        output_dir = args.output or settings.output_dir
+    except ConfigError:
+        # Sem .env configurado a interface ainda funciona: ela só precisa dos
+        # arquivos do snapshot.
+        output_dir = args.output or "output"
+
+    docs_dir = args.docs_dir or "docs/alerts"
+
+    print(f"→ Snapshots : {output_dir}/snapshots")
+    print(f"→ Fichas    : {docs_dir}")
+    print("→ Somente leitura: este processo não acessa o Zabbix nem lê credenciais.")
+    if args.host not in ("127.0.0.1", "localhost", "::1"):
+        print(
+            f"⚠ Escutando em {args.host}: qualquer pessoa na rede poderá ver toda a "
+            "configuração de monitoramento, sem senha.",
+            file=sys.stderr,
+        )
+
+    def pronto(url: str) -> None:
+        print(f"\n  Interface em {url}")
+        print("  Ctrl+C para encerrar.\n")
+
+    try:
+        serve_forever(
+            output_dir=output_dir, docs_dir=docs_dir, snapshot=args.snapshot,
+            host=args.host, port=args.port, on_ready=pronto,
+        )
+    except OSError as exc:
+        raise ConfigError(f"Não foi possível abrir {args.host}:{args.port} — {exc}") from exc
     return EXIT_OK
 
 
@@ -508,6 +575,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_check(args)
         if args.command == "merge":
             return cmd_merge(args)
+        if args.command == "serve":
+            return cmd_serve(args)
         if args.command == "reconcile":
             return cmd_reconcile(args)
         if args.command == "status":

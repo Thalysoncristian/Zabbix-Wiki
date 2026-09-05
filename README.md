@@ -259,12 +259,18 @@ python main.py merge output/snapshots/2026*__vibe-tecnologia output/snapshots/20
 
 # apenas triggers habilitados em hosts monitorados
 python main.py collect --only-monitored
+
+# interface web local (Fase 3) — abre em http://127.0.0.1:8000
+python main.py serve
+python main.py serve --port 9000
+python main.py serve --snapshot output/snapshots/20260905_181510
 ```
 
 Opções de `collect`: `--limit`, `--host-group` (repetível ou com vírgulas),
 `--page-size N`, `--split-by-group`, `--merge`, `--resume`, `--only-monitored`,
 `--include-template-triggers`, `--full`, `--examples N`, `--output DIR`.
 Opções de `merge`: caminhos de snapshot posicionais, `--last N`, `--output DIR`.
+Opções de `serve`: `--host`, `--port`, `--snapshot`, `--output DIR`, `--docs-dir DIR`.
 Opções globais (antes do subcomando): `--env-file ARQUIVO`, `-v/--verbose` —
 ex.: `python main.py --env-file .env.homolog collect`.
 
@@ -896,3 +902,164 @@ continua humana. Sugestão nunca conta como procedimento.
 | 16 | testes da Fase 1 passando | 99 testes originais, todos verdes |
 | 17 | testes novos de escala | `test_scale.py`, `test_merge.py`, `test_cli_fase2.py` |
 | 18 | nenhuma escrita no Zabbix | `test_readonly.py` + `test_cli_fase2.py::TestReadOnlyPreservado` |
+
+---
+
+## 16. Interface web (Fase 3)
+
+```bash
+python main.py collect     # 1. coletar
+python main.py serve       # 2. abrir http://127.0.0.1:8000
+```
+
+Uma interface local para navegar os ~19.000 alertas sem abrir JSON nem rodar
+comando. Ela lê o snapshot mais recente que **não** seja parcial; `--snapshot`
+escolhe outro, e a página **Status da coleta** lista os disponíveis.
+
+### Stack: biblioteca padrão, e o motivo
+
+`http.server` da stdlib + HTML/CSS/JS sem build. O projeto tem **uma**
+dependência externa (`requests`) e isto é uma ferramenta local, de um operador
+por vez, servindo um arquivo em disco: não há multi-tenancy, autenticação nem
+concorrência. Um framework traria dependências, versionamento e um passo de
+build sem resolver nenhum problema que exista aqui.
+
+Medido com 18.903 alertas sintéticos (`alerts.json` de 31 MB):
+
+| | |
+|---|---|
+| carga inicial do modelo | 2,7 s, uma vez |
+| memória do processo | ~290 MB |
+| `GET /api/dashboard` | 68 ms |
+| `GET /api/alerts` (qualquer página) | 45 ms |
+| `GET /api/alerts?q=certificado` | 18 ms |
+| `GET /api/search?q=api` | 7 ms |
+
+A tabela nunca recebe a lista inteira: filtro, ordenação e paginação acontecem
+no servidor e cada página traz no máximo algumas dezenas de linhas.
+
+### Ela não fala com o Zabbix
+
+O processo do `serve` **não importa o cliente do Zabbix, não lê o token e não
+abre conexão com a API**. A garantia é estrutural, não uma promessa — um teste
+verifica os imports de `src/web/` por AST e falha se algum deles aparecer.
+
+A única escrita do sistema é `POST /api/procedures/<família>`, que grava em
+`docs/alerts/`. Nunca no Zabbix.
+
+Outras travas: escuta só em `127.0.0.1` por padrão (`--host` avisa o que muda),
+`PUT`/`DELETE` respondem 405, `POST` só existe na rota de procedimentos, e os
+arquivos estáticos são resolvidos com o caminho normalizado — `..` não escapa.
+
+### Endpoints
+
+Todos são somente leitura, exceto o `POST` indicado.
+
+```
+GET  /api/dashboard              cards, severidades, qualidade, top famílias
+GET  /api/alerts                 lista paginada — busca e filtros
+GET  /api/alerts/<triggerid>     detalhe completo do alerta
+GET  /api/families               famílias, ordenadas por quantidade de alertas
+GET  /api/families/<id>          alertas, hosts, expressões, itens, tags
+GET  /api/hosts                  lista de hosts
+GET  /api/hosts/<hostid>         famílias, alertas, itens, dependências
+GET  /api/host-groups            grupos com hosts, alertas e severidades
+GET  /api/host-groups/<slug>     hosts, famílias e alertas do grupo
+GET  /api/procedures             famílias por estado do procedimento
+POST /api/procedures/<família>   grava o procedimento LOCAL  ← única escrita
+GET  /api/collisions             colisões com os triggers envolvidos
+GET  /api/status                 snapshot em uso, execução da coleta, redação
+GET  /api/search?q=              busca global agrupada por tipo
+```
+
+Filtros de `/api/alerts`: `q`, `host`, `host_group`, `family`, `severity`,
+`procedure`, `discovered`, `comment`, `tags`, `dependencies`, `collision`,
+`sort`, `order`, `page`, `per_page`.
+
+Os filtros também vivem na URL da interface (`/alerts?q=vpn&severity=Disaster`),
+de propósito: no NOC uma consulta útil é colada no chamado e precisa abrir igual
+do outro lado.
+
+### O que ela não reinventa
+
+A interface **não** define um segundo modelo de dados. A família de um alerta é
+`core.models.build_family_key(alert)` — a mesma função que o `reconcile` usa
+para nomear a ficha. É isso que faz o link família → procedimento ser exato: se
+a regra mudar em `core/models.py`, a interface acompanha sozinha, e um teste
+trava essa igualdade.
+
+### Estados ausentes não são erros
+
+Templates invisíveis, alerta sem comentário, sem tags, sem dependência, sem
+procedimento: todos são estados válidos e aparecem como *"não disponível"* ou
+*"não resolvido pela coleta"* — nunca como falha da aplicação.
+
+---
+
+## 17. Segredos na configuração do Zabbix
+
+A primeira coleta real trouxe isto numa expressão de trigger:
+
+```
+avg(/Saq - AWS/aws_check.py[--access-key, "AKIA…", --secret-key, "…"], 5m) >= 5
+```
+
+Uma credencial de produção, em texto claro, dentro do Zabbix. O Zabbix-Wiki não
+criou o problema, mas não pode multiplicá-lo — então a coleta redige o **valor**
+antes de gravar:
+
+```
+--secret-key, "KwoaLm…"   ->   --secret-key, "[REDACTED:3f7a1c9e]"
+```
+
+O nome do parâmetro e a estrutura da expressão ficam. O sufixo é um hash curto
+do valor, e isso importa por três motivos:
+
+* dois segredos **diferentes** continuam gerando textos diferentes, então a
+  detecção de colisão da Fase 1 segue funcionando;
+* o **mesmo** segredo gera sempre o mesmo marcador, então `source_hash` é
+  estável e a ficha não cai em `review_needed` a cada coleta;
+* redigir duas vezes não muda nada (idempotente), então consolidar snapshots já
+  redigidos é seguro.
+
+**Não** são redigidos: macros do Zabbix (`{$PASSWORD}` é referência, não valor)
+nem a palavra solta ("Certificate password expires in 30 days" não tem segredo).
+
+A redação roda **antes** da normalização, então `source_hash` e
+`expression_signature` já nascem calculados sobre o texto redigido. Fichas
+criadas antes desta versão vão acusar `review_needed` uma vez, e depois
+estabilizam. `ZABBIX_REDACT_SECRETS=false` ou `--no-redact` desliga (não
+recomendado); a página **Status da coleta** mostra em vermelho quando está
+desligada, e quantos valores foram redigidos.
+
+**Redigir no snapshot não resolve o problema de origem.** A credencial continua
+em texto claro no Zabbix, visível a quem tem leitura na API. Rotacione-a.
+
+---
+
+## 18. Fluxo completo
+
+```
+     Zabbix  ──read-only──>  collect  ──>  snapshot (redigido)
+                                              │
+                                              ├──>  serve   → interface local
+                                              └──>  reconcile → docs/alerts/
+                                                                    │
+                                                        procedimento escrito
+                                                          por uma pessoa
+```
+
+Do zero até enxergar o ambiente:
+
+```bash
+cp .env.example .env && $EDITOR .env
+python main.py check       # credenciais ok?
+python main.py collect     # ~1 min para 19k triggers
+python main.py serve       # http://127.0.0.1:8000
+```
+
+### Testes
+
+```bash
+python -m unittest discover -s tests -t .
+```

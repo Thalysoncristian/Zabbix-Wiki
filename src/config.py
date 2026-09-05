@@ -105,6 +105,8 @@ class Settings:
     retry_backoff: float = 2.0
     #: Piso da redução adaptativa de lote.
     min_page_size: int = 25
+    #: Redige segredos encontrados na configuração do Zabbix antes de gravar.
+    redact_secrets: bool = True
     host_groups: list[str] = field(default_factory=list)
     output_dir: str = "output"
 
@@ -164,6 +166,7 @@ def load_settings(env_file: str | Path = DEFAULT_ENV_FILE) -> Settings:
         max_retries=_as_int(env.get("ZABBIX_MAX_RETRIES"), 4),
         retry_backoff=_as_float(env.get("ZABBIX_RETRY_BACKOFF"), 2.0),
         min_page_size=_as_int(env.get("ZABBIX_MIN_PAGE_SIZE"), 25),
+        redact_secrets=_as_bool(env.get("ZABBIX_REDACT_SECRETS"), True),
         host_groups=_as_list(env.get("ZABBIX_HOST_GROUPS")),
         output_dir=(env.get("OUTPUT_DIR") or "output").strip(),
     )

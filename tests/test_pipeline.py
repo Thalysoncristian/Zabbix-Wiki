@@ -206,8 +206,9 @@ class TestSnapshotEmDisco(unittest.TestCase):
             self.assertEqual(len(alerts["alerts"]), 6)
 
             relatorio = build_report(raw, norm, primeiro)
-            linhas = format_report_lines(relatorio)
-            texto = "\n".join(linhas)
+
+            # `--full` preserva o detalhamento linha a linha da ETAPA 1.
+            completo = "\n".join(format_report_lines(relatorio, full=True))
             for esperado in (
                 "✓ Conectado ao Zabbix",
                 "✓ 6 triggers encontrados",
@@ -220,7 +221,21 @@ class TestSnapshotEmDisco(unittest.TestCase):
                 "✓ 4 alertas únicos",
                 "✓ 1 possíveis colisões de alert_key",
             ):
+                self.assertIn(esperado, completo)
+
+            # O compacto diz as mesmas coisas em menos linhas — e cabe na tela.
+            compacto = format_report_lines(relatorio)
+            texto = "\n".join(compacto)
+            for esperado in (
+                "✓ Conectado ao Zabbix",
+                "✓ 6 triggers encontrados",
+                "✓ 3 hosts · 3 grupos · 2 templates · 6 itens",
+                "✓ 4 alertas únicos",
+                "✓ 1 possíveis colisões de alert_key",
+                "Snapshot completo em:",
+            ):
                 self.assertIn(esperado, texto)
+            self.assertLess(len(compacto), len(format_report_lines(relatorio, full=True)))
 
     def test_snapshot_nao_vaza_credenciais(self):
         _, _, raw, norm = _run()

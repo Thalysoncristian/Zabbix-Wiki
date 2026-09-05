@@ -38,8 +38,109 @@ def build_report(raw: RawSnapshot, normalized: NormalizedResult, paths: dict[str
     }
 
 
-def format_report_lines(report: dict[str, Any]) -> list[str]:
-    """Saída de console exigida pelo critério de conclusão da ETAPA 1."""
+#: Quanto de cada lista cabe no relatório compacto x no detalhado (`--full`).
+#: Numa coleta real de 18.903 triggers, o detalhado passa de 150 linhas — útil
+#: para investigar, insuportável como saída padrão.
+LIMITES = {
+    False: {"familias": 5, "regras": 3, "chaves": 5, "colisoes": 3, "ocorrencias": 2, "expressao": 100},
+    True: {"familias": 10, "regras": 5, "chaves": 10, "colisoes": 10, "ocorrencias": 4, "expressao": 0},
+}
+
+
+def _corta(texto: str, limite: int) -> str:
+    """Trunca preservando o começo — o que identifica a expressão."""
+    texto = str(texto or "")
+    if limite and len(texto) > limite:
+        return texto[:limite].rstrip() + " …"
+    return texto
+
+
+def format_report_lines(report: dict[str, Any], *, full: bool = False) -> list[str]:
+    """Saída de console da coleta.
+
+    Compacta por padrão (~25 linhas), detalhada com `--full`. Os arquivos do
+    snapshot têm tudo nos dois casos — o que muda aqui é só quanto vai à tela.
+    Numa coleta real de 18.903 triggers a versão detalhada passa de 130 linhas:
+    ótima para investigar, péssima como saída de todo dia.
+    """
+    return _detalhado(report) if full else _compacto(report)
+
+
+def _compacto(report: dict[str, Any]) -> list[str]:
+    """O essencial: o que foi coletado, o que dá para documentar, o que doeu."""
+    counts, stats = report["counts"], report["normalization"]
+    meta, paths = report["meta"], report["paths"]
+    scope = report.get("scope") or {}
+    collection = report.get("collection") or {}
+    familias = stats.get("families") or {}
+
+    linhas = [
+        _cabecalho(meta, scope),
+        *_scope_lines(scope, collection),
+        f"{CHECK} {counts['triggers']} triggers encontrados",
+        f"{CHECK} {counts['hosts']} hosts · {counts['host_groups']} grupos · "
+        f"{counts['templates']} templates · {counts['items']} itens",
+        f"{CHECK} {stats['unique_alert_keys']} alertas únicos"
+        + (f" em {familias['families']} famílias" if familias.get("families") else ""),
+        f"{CHECK} {stats['alert_key_collisions']} possíveis colisões de alert_key",
+        "",
+        "  origem   : " + ", ".join(f"{nome}={qtd}" for nome, qtd in stats["by_key_strategy"].items()),
+        "  lacunas  : " + f"{stats['without_comments']} sem comentário, {stats['without_tags']} sem tags, "
+        f"{stats['with_dependencies']} com dependências",
+        "  severidade: " + ", ".join(f"{nome}={qtd}" for nome, qtd in stats["by_priority"].items()),
+    ]
+
+    # Famílias: é o número que diz quantos procedimentos precisam ser escritos.
+    if familias.get("families"):
+        linhas.append("")
+        linhas.append(
+            f"── Famílias — {familias['families']} procedimentos cobririam {familias['alerts']} alertas ──"
+        )
+        for familia in stats.get("top_families", [])[:3]:
+            linhas.append(
+                f"  {familia['alerts']:>6} alertas  {familia['label'][:52]}  [{familia['origin'][:24]}]"
+            )
+
+    # Colisões: uma linha cada. As ocorrências e expressões ficam no JSON.
+    colisoes = report["collisions"]
+    if colisoes:
+        linhas.append("")
+        linhas.append(f"── Colisões de alert_key — {len(colisoes)} ──")
+        for colisao in colisoes[:5]:
+            linhas.append(f"  ! {colisao['alert_key'][:64]}  ({_causa(colisao)})")
+        if len(colisoes) > 5:
+            linhas.append(f"  ... e mais {len(colisoes) - 5}. Todas em {paths['collisions']}")
+
+    linhas.extend(_collection_lines(collection, full=False))
+    linhas.append("")
+    linhas.append(f"Snapshot completo em: {paths['snapshot_dir']}")
+    return linhas
+
+
+def _causa(colisao: dict[str, Any]) -> str:
+    """Resumo de uma linha do motivo da colisão."""
+    motivos = colisao.get("reasons") or ["expressoes_diferentes"]
+    causas = []
+    if "expressoes_diferentes" in motivos:
+        causas.append(f"{colisao['distinct_signatures']} expressões distintas")
+    if "escopo_ambiguo" in motivos:
+        causas.append(f"{colisao['distinct_hostids']} hosts com o mesmo slug")
+    if "duplicado_no_host" in motivos:
+        total = sum(len(t) for t in (colisao.get("duplicated_on_hosts") or {}).values())
+        causas.append(f"{total} triggers no mesmo host")
+    return "; ".join(causas)
+
+
+def _cabecalho(meta: dict[str, Any], scope: dict[str, Any]) -> str:
+    if scope.get("kind") == "merged":
+        fontes = len((meta.get("merge") or {}).get("sources") or [])
+        return f"{CHECK} Base consolidada a partir de {fontes} snapshots (Zabbix {meta.get('zabbix_version', '?')})"
+    return f"{CHECK} Conectado ao Zabbix (API {meta.get('zabbix_version', '?')}, {meta.get('auth_method', '?')})"
+
+
+def _detalhado(report: dict[str, Any]) -> list[str]:
+    """Relatório completo (`--full`): tudo que cabe sem abrir os JSONs."""
+    limites = LIMITES[True]
     counts = report["counts"]
     stats = report["normalization"]
     meta = report["meta"]
@@ -48,14 +149,8 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
     scope = report.get("scope") or {}
     collection = report.get("collection") or {}
 
-    cabecalho = (
-        f"{CHECK} Base consolidada a partir de {len((meta.get('merge') or {}).get('sources') or [])} "
-        f"snapshots (Zabbix {meta.get('zabbix_version', '?')})"
-        if scope.get("kind") == "merged"
-        else f"{CHECK} Conectado ao Zabbix (API {meta.get('zabbix_version', '?')}, {meta.get('auth_method', '?')})"
-    )
     lines = [
-        cabecalho,
+        _cabecalho(meta, scope),
         *_scope_lines(scope, collection),
         f"{CHECK} {counts['triggers']} triggers encontrados",
         f"{CHECK} {counts['hosts']} hosts resolvidos",
@@ -91,7 +186,7 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
             f"  {familias['alerts']} alertas se organizam em {familias['families']} famílias "
             f"({familias['alerts_in_multi_alert_families']} alertas em famílias com mais de um)"
         )
-        for familia in stats.get("top_families", [])[:6]:
+        for familia in stats.get("top_families", [])[: limites["familias"]]:
             lines.append(
                 f"    {familia['alerts']:>5} alertas / {familia['hosts']:>3} hosts  "
                 f"{familia['label'][:55]}  [{familia['origin'][:28]}]"
@@ -110,7 +205,7 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
             f"  fichas duplicadas evitáveis        : {genericas['duplicate_alert_keys_avoidable']} "
             "(se o escopo de template estivesse disponível)"
         )
-        for regra in stats.get("top_generic_rules", [])[:5]:
+        for regra in stats.get("top_generic_rules", [])[: limites["regras"]]:
             lines.append(
                 f"    {regra['hosts']:>4} hosts / {regra['alert_keys']:>3} chaves  {regra['description'][:60]}"
             )
@@ -118,13 +213,16 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
     if stats["top_shared_alert_keys"]:
         lines.append("")
         lines.append("── alert_keys compartilhadas por mais triggers ────────────────")
-        for item in stats["top_shared_alert_keys"]:
+        compartilhadas = stats["top_shared_alert_keys"]
+        for item in compartilhadas[: limites["chaves"]]:
             lines.append(f"  {item['triggers']:>4}x  {item['alert_key']}")
+        if len(compartilhadas) > limites["chaves"]:
+            lines.append(f"  ... e mais {len(compartilhadas) - limites['chaves']} chave(s)")
 
     if report["collisions"]:
         lines.append("")
         lines.append("── COLISÕES DE alert_key (mesma chave, triggers diferentes) ───")
-        for collision in report["collisions"][:10]:
+        for collision in report["collisions"][: limites["colisoes"]]:
             motivos = collision.get("reasons") or ["expressoes_diferentes"]
             causas = []
             if "expressoes_diferentes" in motivos:
@@ -135,22 +233,27 @@ def format_report_lines(report: dict[str, Any]) -> list[str]:
                 total = sum(len(t) for t in (collision.get("duplicated_on_hosts") or {}).values())
                 causas.append(f"{total} triggers distintos no mesmo host")
             lines.append(f"  ! {collision['alert_key']}  ({'; '.join(causas)})")
-            for occ in collision["occurrences"][:4]:
+            for occ in collision["occurrences"][: limites["ocorrencias"]]:
                 lines.append(
-                    f"      - {occ['host']} (hostid {occ.get('hostid', '?')}, "
-                    f"trigger {occ['triggerid']}, {occ['priority']}) :: {occ['description_raw']}"
+                    f"      - {occ['host']} (trigger {occ['triggerid']}, {occ['priority']}) "
+                    f":: {occ['description_raw']}"
                 )
-                lines.append(f"        {occ['expression_expanded'] or occ['expression_signature']}")
-            if len(collision["occurrences"]) > 4:
-                lines.append(f"      ... e mais {len(collision['occurrences']) - 4} ocorrência(s)")
+                expressao = occ["expression_expanded"] or occ["expression_signature"]
+                lines.append(f"        {_corta(expressao, limites['expressao'])}")
+            restantes = len(collision["occurrences"]) - limites["ocorrencias"]
+            if restantes > 0:
+                lines.append(f"      ... e mais {restantes} ocorrência(s)")
             lines.append(f"      chave sugerida: {collision['suggested_key_pattern']}")
-        if len(report["collisions"]) > 10:
-            lines.append(f"  ... e mais {len(report['collisions']) - 10} colisão(ões) em {paths['collisions']}")
+        if len(report["collisions"]) > limites["colisoes"]:
+            lines.append(
+                f"  ... e mais {len(report['collisions']) - limites['colisoes']} colisão(ões). "
+                f"Todas em {paths['collisions']}"
+            )
     else:
         lines.append("")
         lines.append("Nenhuma colisão de alert_key detectada nesta coleta.")
 
-    lines.extend(_collection_lines(collection))
+    lines.extend(_collection_lines(collection, full=True))
 
     lines.append("")
     lines.append(f"Snapshot completo em: {paths['snapshot_dir']}")
@@ -184,10 +287,28 @@ def _scope_lines(scope: dict[str, Any], collection: dict[str, Any]) -> list[str]
     return linhas
 
 
-def _collection_lines(collection: dict[str, Any]) -> list[str]:
-    """Resiliência da coleta: páginas, retries, lotes reduzidos, falhas."""
+def _collection_lines(collection: dict[str, Any], *, full: bool = False) -> list[str]:
+    """Resiliência da coleta: páginas, retries, lotes reduzidos, falhas.
+
+    Numa coleta saudável (zero retries, zero reduções) o modo compacto resume
+    tudo numa linha só: enumerar zeros não informa nada.
+    """
     if not collection:
         return []
+
+    reducoes = collection.get("batch_reductions") or []
+    retries = collection.get("retries", 0)
+    falhas = collection.get("failed_objects") or []
+    erros = collection.get("errors") or []
+    saudavel = not (retries or reducoes or falhas or erros or collection.get("resumed_from"))
+
+    if saudavel and not full:
+        return [
+            "",
+            f"Coleta: {collection.get('duration_seconds', 0):.0f}s, "
+            f"{collection.get('pages', 0)} páginas de {collection.get('page_size', '?')}, "
+            "sem retries nem lotes reduzidos.",
+        ]
 
     linhas = [
         "",
@@ -195,19 +316,18 @@ def _collection_lines(collection: dict[str, Any]) -> list[str]:
         f"  duração                       : {collection.get('duration_seconds', 0):.1f}s",
         f"  tamanho de página             : {collection.get('page_size', '?')}",
         f"  páginas hidratadas            : {collection.get('pages', 0)}",
-        f"  retries por erro transitório  : {collection.get('retries', 0)}",
-        f"  lotes reduzidos pelo servidor : {len(collection.get('batch_reductions') or [])}",
+        f"  retries por erro transitório  : {retries}",
+        f"  lotes reduzidos pelo servidor : {len(reducoes)}",
     ]
     if collection.get("resumed_from"):
         linhas.append(f"  retomada                      : {collection['resumed_from']}")
 
-    reducoes = collection.get("batch_reductions") or []
-    for reducao in reducoes[:5]:
+    limite_reducoes = 5 if full else 3
+    for reducao in reducoes[:limite_reducoes]:
         linhas.append(f"    ↓ {reducao.get('method')}: {reducao.get('from')} → {reducao.get('to')}")
-    if len(reducoes) > 5:
-        linhas.append(f"    ... e mais {len(reducoes) - 5} redução(ões)")
+    if len(reducoes) > limite_reducoes:
+        linhas.append(f"    ... e mais {len(reducoes) - limite_reducoes} redução(ões)")
 
-    falhas = collection.get("failed_objects") or []
     if falhas:
         linhas.append(f"  ✗ objetos NÃO coletados       : {len(falhas)}")
         for falha in falhas[:5]:
@@ -215,7 +335,7 @@ def _collection_lines(collection: dict[str, Any]) -> list[str]:
         if len(falhas) > 5:
             linhas.append(f"    ... e mais {len(falhas) - 5} objeto(s)")
 
-    for erro in collection.get("errors") or []:
+    for erro in erros:
         linhas.append(f"  ⚠ fase '{erro.get('phase')}' incompleta: {erro.get('error', '')[:90]}")
 
     return linhas

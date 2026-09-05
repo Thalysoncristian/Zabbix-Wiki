@@ -263,10 +263,26 @@ python main.py collect --only-monitored
 
 Opções de `collect`: `--limit`, `--host-group` (repetível ou com vírgulas),
 `--page-size N`, `--split-by-group`, `--merge`, `--resume`, `--only-monitored`,
-`--include-template-triggers`, `--examples N`, `--output DIR`.
+`--include-template-triggers`, `--full`, `--examples N`, `--output DIR`.
 Opções de `merge`: caminhos de snapshot posicionais, `--last N`, `--output DIR`.
 Opções globais (antes do subcomando): `--env-file ARQUIVO`, `-v/--verbose` —
 ex.: `python main.py --env-file .env.homolog collect`.
+
+### Quanto a coleta fala
+
+Numa coleta real de 18.903 triggers, uma linha por página são 203 linhas e o
+relatório detalhado passa de 130. O padrão é enxuto (~28 linhas):
+
+| | progresso | relatório |
+|---|---|---|
+| padrão | uma linha por **fase**, atualizada no lugar | resumo: contagens, top 3 famílias, colisões em uma linha cada |
+| `--full` | — | detalhamento completo, com ocorrências e expressões |
+| `-v` | uma linha por **página** | — |
+| `--examples N` | — | + N alertas normalizados inteiros (~80 linhas de JSON cada) |
+
+Avisos (lote reduzido, objeto não coletado) aparecem em **todos** os modos.
+Silenciar um problema para caber na tela seria o pior dos dois mundos. E os
+arquivos do snapshot têm sempre tudo — o que muda é só o que vai para a tela.
 
 Por padrão são coletados os triggers **dos hosts** (`templated=false`) — que é o que
 gera alerta de verdade. O trigger do template é alcançado pela cadeia `templateid`
@@ -278,23 +294,32 @@ descrito na seção [13. Escala da coleta](#13-escala-da-coleta).
 ### Saída esperada
 
 ```
-✓ Conectado ao Zabbix (API 7.0.0, api_token (Authorization: Bearer))
-✓ Escopo da coleta : 1 grupo(s) de hosts: Vibe Tecnologia
-✓ Hosts no escopo  : 36
-⚠ Coleta parcial por escopo: cobre apenas o que está listado acima, não o ambiente inteiro.
-✓ 412 triggers encontrados
-✓ 37 hosts resolvidos
-✓ 9 host groups resolvidos
-✓ 14 templates resolvidos
-✓ 388 itens relacionados resolvidos
-✓ Snapshot bruto salvo -> output/snapshots/20260903_031705/raw/zabbix_raw.json
-✓ Alertas normalizados salvos -> output/snapshots/20260903_031705/normalized/alerts.json
-✓ 96 alertas únicos
-✓ 2 possíveis colisões de alert_key
+✓ Conectado ao Zabbix (API 7.2.1, api_token (Authorization: Bearer))
+✓ Escopo da coleta : ambiente inteiro
+✓ Hosts no escopo  : 82
+✓ 18903 triggers encontrados
+✓ 78 hosts · 21 grupos · 0 templates · 9965 itens
+✓ 18826 alertas únicos em 469 famílias
+✓ 32 possíveis colisões de alert_key
+
+  origem   : prototype+description=18366, host+description=537
+  lacunas  : 16506 sem comentário, 179 sem tags, 1000 com dependências
+  severidade: Information=17546, Warning=510, Average=342, High=292, Disaster=157
+
+── Famílias — 469 procedimentos cobririam 18903 alertas ──
+    8131 alertas  {#JOBID} - Job: {#NAME} - Ended Not Ok  [LLD: Jobs]
+     277 alertas  {#CODCHAMADO}: {#ASSUNTO} - Aguardando cliente  [LLD: Atualiza]
+
+── Colisões de alert_key — 32 ──
+  ! carguero-api-monitor-down|api-indisponivel  (23 expressões distintas)
+  ... e mais 27. Todas em output/snapshots/.../collisions.json
+
+Coleta: 58s, 203 páginas de 250, sem retries nem lotes reduzidos.
 ```
 
-Seguido de um detalhamento (severidades, estratégias de chave, chaves
-compartilhadas, colisões) e de exemplos completos dos JSONs gerados.
+A linha das **famílias** é a que importa para planejar o trabalho: 469
+procedimentos cobrem 18.903 alertas. Use `--full` para o detalhamento e
+`--examples N` para ver os JSONs completos.
 
 ---
 

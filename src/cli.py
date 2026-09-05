@@ -84,7 +84,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="inclui também os triggers definidos nos templates (por padrão só os dos hosts)",
     )
     collect_cmd.add_argument(
-        "--examples", type=int, default=2, metavar="N", help="quantos alertas de exemplo imprimir ao final (padrão: 2)"
+        "--examples",
+        type=int,
+        default=0,
+        metavar="N",
+        help="imprime N alertas normalizados completos ao final (padrão: 0 — cada um tem ~80 linhas de JSON)",
+    )
+    collect_cmd.add_argument(
+        "--full",
+        action="store_true",
+        help="relatório detalhado: mais colisões, mais famílias e expressões inteiras",
     )
 
     sub.add_parser("check", help="testa a conexão e as credenciais, sem coletar nada")
@@ -100,6 +109,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="diretórios de snapshot a consolidar (padrão: todos os de output/snapshots)",
     )
     mrg.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    mrg.add_argument("--full", action="store_true", help="relatório detalhado")
     mrg.add_argument(
         "--last",
         type=int,
@@ -194,7 +204,7 @@ def _known_trigger_ids(output_dir: str, host_groups: Sequence[str]) -> list[str]
     return []
 
 
-def _gravar(output_dir: str, raw: RawSnapshot, examples: int) -> dict[str, Any]:
+def _gravar(output_dir: str, raw: RawSnapshot, examples: int, *, full: bool = False) -> dict[str, Any]:
     """Normaliza, grava o snapshot e imprime o relatório. Devolve o relatório."""
     normalized = normalize_snapshot(raw)
     paths = write_snapshot(output_dir, raw, normalized)
@@ -203,7 +213,9 @@ def _gravar(output_dir: str, raw: RawSnapshot, examples: int) -> dict[str, Any]:
     report["paths"]["report"] = str(paths["report"])
 
     print()
-    print("\n".join(format_report_lines(report)))
+    print("\n".join(format_report_lines(report, full=full)))
+    if not full:
+        print("(relatório resumido — use --full para o detalhamento, ou -v para o progresso página a página)")
     _print_examples(normalized.alerts, examples)
     return report
 
@@ -235,7 +247,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
         for indice, escopo in enumerate(escopos, start=1):
             if len(escopos) > 1:
                 print(f"\n=== Coleta {indice}/{len(escopos)}: {', '.join(escopo)} ===")
-            progresso = ConsoleProgress()
+            progresso = ConsoleProgress(verbose=args.verbose)
             try:
                 raw = collect_raw(
                     client,
@@ -260,8 +272,9 @@ def cmd_collect(args: argparse.Namespace) -> int:
                     )
                 raise
 
+            progresso.finish()
             brutos.append(raw)
-            relatorios.append(_gravar(output_dir, raw, args.examples))
+            relatorios.append(_gravar(output_dir, raw, args.examples, full=args.full))
             parcial = parcial or bool((raw.meta.get("collection") or {}).get("partial"))
     finally:
         client.logout()
@@ -269,7 +282,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
     if args.merge and len(brutos) > 1:
         print("\n=== Consolidando os snapshots desta execução ===")
         consolidado, resumo = merge_raw_snapshots([b.to_dict() for b in brutos])
-        _gravar(output_dir, consolidado, 0)
+        _gravar(output_dir, consolidado, 0, full=args.full)
         _print_merge_summary(resumo)
     elif len(escopos) > 1:
         print("\nPara consolidar estas coletas numa base única:")
@@ -293,11 +306,11 @@ def _print_merge_summary(resumo: dict[str, Any]) -> None:
     conflitos = resumo["conflicts"]
     if conflitos:
         print(f"  ⚠ conflitos (mesmo ID, conteúdo diferente): {len(conflitos)} — venceu a coleta mais recente")
-        for conflito in conflitos[:5]:
+        for conflito in conflitos[:3]:
             campos = ", ".join(conflito["field_hint"][:4]) or "?"
             print(f"    ! {conflito['collection']} {conflito['id']}: {campos}")
-        if len(conflitos) > 5:
-            print(f"    ... e mais {len(conflitos) - 5} conflito(s)")
+        if len(conflitos) > 3:
+            print(f"    ... e mais {len(conflitos) - 3} conflito(s)")
     else:
         print("  conflitos            : nenhum")
     if resumo["partial_sources"]:
@@ -337,7 +350,7 @@ def cmd_merge(args: argparse.Namespace) -> int:
             raise ConfigError(f"Snapshot inválido em {diretorio}: {exc}") from exc
 
     consolidado, resumo = merge_raw_snapshots(payloads)
-    _gravar(output_dir, consolidado, 0)
+    _gravar(output_dir, consolidado, 0, full=args.full)
     _print_merge_summary(resumo)
     return EXIT_OK
 

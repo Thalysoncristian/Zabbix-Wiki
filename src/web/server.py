@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import parse_qs, unquote, urlparse
 
+from ..scope import ScopeError, load_scopes
 from . import api
 from .readmodel import ReadModelCache
 
@@ -57,8 +58,14 @@ MAX_BODY = 1024 * 1024
 class WebApp:
     """Roteia requisições para as funções de `api`. Sem estado de sessão."""
 
-    def __init__(self, output_dir: str = "output", docs_dir: str = "docs/alerts", snapshot: str | None = None):
-        self.cache = ReadModelCache(output_dir, docs_dir, snapshot)
+    def __init__(
+        self,
+        output_dir: str = "output",
+        docs_dir: str = "docs/alerts",
+        snapshot: str | None = None,
+        scopes_file: str | None = None,
+    ):
+        self.cache = ReadModelCache(output_dir, docs_dir, snapshot, scopes=load_scopes(scopes_file))
         self.docs_dir = docs_dir
 
     # ------------------------------------------------------------------- rotas
@@ -72,6 +79,8 @@ class WebApp:
             return 405, {"error": f"Método {method} não suportado."}
         except api.ApiError as exc:
             return exc.status, {"error": str(exc)}
+        except ScopeError as exc:
+            return 400, {"error": str(exc)}
         except FileNotFoundError as exc:
             return 503, {
                 "error": str(exc),
@@ -82,7 +91,10 @@ class WebApp:
             return 500, {"error": f"Erro interno: {exc}"}
 
     def _get(self, path: str, params: dict[str, list[str]]) -> Any:
-        modelo = self.cache.get()
+        # O escopo vem da query string, como qualquer filtro — assim uma tela
+        # colada num chamado abre igual do outro lado.
+        escopo = (params.get("scope") or [None])[0]
+        modelo = self.cache.get(escopo)
         partes = [p for p in path.strip("/").split("/") if p]
 
         # /api/<recurso>[/<id>]
@@ -115,6 +127,8 @@ class WebApp:
             return api.status(modelo, self.cache, params)
         if recurso == "search":
             return api.search(modelo, params)
+        if recurso == "scopes":
+            return {"scopes": self.cache.scopes.listar(), "default": self.cache.scopes.default_id}
         raise api.ApiError(f"Recurso desconhecido: {recurso}", 404)
 
     def _post(self, path: str, body: bytes) -> tuple[int, Any]:
@@ -128,7 +142,10 @@ class WebApp:
             if not isinstance(corpo, dict):
                 raise api.ApiError("Corpo precisa ser um objeto JSON.", 400)
 
-            modelo = self.cache.get()
+            # A família é procurada no ambiente inteiro: escrever um
+            # procedimento é permitido mesmo para uma família que o escopo
+            # atual não mostra. O escopo filtra a visão, não o conhecimento.
+            modelo = self.cache.get("all")
             resultado = api.save_procedure(modelo, unquote(partes[2]), corpo, self.docs_dir)
             self.cache.invalidate()  # a ficha mudou: recarregar na próxima leitura
             return 200, resultado
@@ -226,9 +243,10 @@ def serve(
     host: str = "127.0.0.1",
     port: int = 8000,
     on_ready: Callable[[str], None] = lambda _url: None,
+    scopes_file: str | None = None,
 ) -> ThreadingHTTPServer:
     """Sobe o servidor e devolve a instância (para testes e para o `serve` da CLI)."""
-    app = WebApp(output_dir=output_dir, docs_dir=docs_dir, snapshot=snapshot)
+    app = WebApp(output_dir=output_dir, docs_dir=docs_dir, snapshot=snapshot, scopes_file=scopes_file)
     servidor = ThreadingHTTPServer((host, port), make_handler(app))
     servidor.daemon_threads = True
     porta = servidor.server_address[1]
@@ -243,8 +261,9 @@ def serve_forever(
     host: str = "127.0.0.1",
     port: int = 8000,
     on_ready: Callable[[str], None] = lambda _url: None,
+    scopes_file: str | None = None,
 ) -> None:
-    servidor = serve(output_dir, docs_dir, snapshot, host, port, on_ready)
+    servidor = serve(output_dir, docs_dir, snapshot, host, port, on_ready, scopes_file)
     hilo = threading.Thread(target=servidor.serve_forever, daemon=True)
     hilo.start()
     try:

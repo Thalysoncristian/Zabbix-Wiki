@@ -4,6 +4,7 @@
     python main.py check          # apenas testa a conexão (read-only)
     python main.py merge          # consolida vários snapshots numa base única
     python main.py serve          # interface web local de consulta
+    python main.py scope          # hosts por volume: quem está dentro e fora do escopo
     python main.py reconcile      # snapshot -> fichas em docs/alerts/
     python main.py status         # cobertura da documentação
 """
@@ -132,6 +133,18 @@ def build_parser() -> argparse.ArgumentParser:
     srv.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
     srv.add_argument("--snapshot", default=None,
                      help="caminho de um snapshot específico (padrão: o mais recente não-parcial)")
+    srv.add_argument("--scopes-file", default=None,
+                     help="arquivo de escopos operacionais (padrão: scopes.json)")
+
+    esc = sub.add_parser(
+        "scope",
+        help="lista os escopos e os hosts por volume de alertas (dentro e fora)",
+    )
+    esc.add_argument("--scope", default=None, metavar="ID", help="escopo a avaliar (padrão: o de scopes.json)")
+    esc.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    esc.add_argument("--snapshot", default=None, help="snapshot específico (padrão: o mais recente não-parcial)")
+    esc.add_argument("--scopes-file", default=None, help="arquivo de escopos (padrão: scopes.json)")
+    esc.add_argument("--top", type=int, default=25, metavar="N", help="quantos hosts listar (padrão: 25)")
 
     rec = sub.add_parser(
         "reconcile",
@@ -448,10 +461,85 @@ def cmd_serve(args: argparse.Namespace) -> int:
     try:
         serve_forever(
             output_dir=output_dir, docs_dir=docs_dir, snapshot=args.snapshot,
-            host=args.host, port=args.port, on_ready=pronto,
+            host=args.host, port=args.port, on_ready=pronto, scopes_file=args.scopes_file,
         )
     except OSError as exc:
         raise ConfigError(f"Não foi possível abrir {args.host}:{args.port} — {exc}") from exc
+    return EXIT_OK
+
+
+def cmd_scope(args: argparse.Namespace) -> int:
+    """Mostra o efeito do escopo sobre o snapshot, host a host.
+
+    Existe para que a decisão de excluir um host seja tomada com o volume na
+    frente, e não por semelhança de nome. Excluir "Control-M DEV" porque
+    "Control-M PRD" foi excluído é palpite; ver que ele tem 12 alertas (ou
+    3.000) é informação.
+    """
+    from .scope import load_scopes
+    from .web.readmodel import ReadModel, resolve_snapshot
+
+    try:
+        settings = load_settings(args.env_file)
+        output_dir = args.output or settings.output_dir
+    except ConfigError:
+        output_dir = args.output or "output"
+
+    configuracao = load_scopes(args.scopes_file)
+    escopo = configuracao.get(args.scope)
+    caminho = resolve_snapshot(output_dir, args.snapshot)
+    modelo = ReadModel(caminho, docs_dir="docs/alerts", scope=escopo)
+
+    ambiente = modelo.environment
+    dentro, fora = len(modelo.alerts), len(modelo.out_of_scope)
+
+    print(f"→ Snapshot : {caminho.name}")
+    print(f"→ Escopos  : {configuracao.source or '(nenhum scopes.json — só o ambiente inteiro)'}")
+    print()
+    print("── Escopos configurados ───────────────────────────────────────")
+    for item in configuracao.listar():
+        marca = "→" if item["id"] == escopo.id else " "
+        padrao = " (padrão)" if item["is_default"] else ""
+        regra = ", ".join(item["exclude_hosts"] + item["exclude_host_patterns"]
+                          + item["include_hosts"] + item["include_host_patterns"]) or "sem filtro"
+        print(f"  {marca} {item['id']:<12} {item['label']:<20}{padrao}")
+        print(f"      {item['mode']}: {regra[:90]}")
+
+    print()
+    print(f"── Efeito do escopo '{escopo.id}' ──────────────────────────────")
+    print(f"  ambiente coletado : {ambiente['alerts']:>7} alertas, {ambiente['hosts']:>4} hosts, "
+          f"{ambiente['families']:>4} famílias")
+    print(f"  dentro do escopo  : {dentro:>7} alertas, {len(modelo.hosts):>4} hosts, "
+          f"{len(modelo.families):>4} famílias")
+    proporcao = (fora / ambiente["alerts"] * 100) if ambiente["alerts"] else 0
+    print(f"  fora do escopo    : {fora:>7} alertas ({proporcao:.0f}% do ambiente)")
+
+    # Hosts por volume, com o veredito do escopo em cada linha. Esta é a
+    # tabela que a decisão de exclusão precisa.
+    por_host: dict[str, dict[str, Any]] = {}
+    for alerta in modelo.alerts + modelo.out_of_scope:
+        zbx = alerta.get("zabbix") or {}
+        host = zbx.get("host") or {}
+        nome = host.get("name") or host.get("host") or "(sem host)"
+        registro = por_host.setdefault(nome, {"alertas": 0, "tecnico": host.get("host") or "", "lld": 0})
+        registro["alertas"] += 1
+        if zbx.get("discovered"):
+            registro["lld"] += 1
+
+    ordenados = sorted(por_host.items(), key=lambda kv: -kv[1]["alertas"])
+    print()
+    print(f"── Hosts por volume (top {args.top}) ───────────────────────────────")
+    print(f"  {'alertas':>8} {'LLD':>7}  {'%amb':>5}  escopo    host")
+    for nome, registro in ordenados[: max(1, args.top)]:
+        no_escopo = escopo.includes_host(nome, registro["tecnico"])
+        pct = registro["alertas"] / ambiente["alerts"] * 100 if ambiente["alerts"] else 0
+        print(f"  {registro['alertas']:>8} {registro['lld']:>7}  {pct:>4.0f}%  "
+              f"{'dentro' if no_escopo else 'FORA  '}    {nome[:60]}")
+    if len(ordenados) > args.top:
+        print(f"  ... e mais {len(ordenados) - args.top} host(s). Use --top para ver mais.")
+
+    print()
+    print("Para excluir um host do escopo, edite scopes.json e rode este comando de novo.")
     return EXIT_OK
 
 
@@ -577,6 +665,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_merge(args)
         if args.command == "serve":
             return cmd_serve(args)
+        if args.command == "scope":
+            return cmd_scope(args)
         if args.command == "reconcile":
             return cmd_reconcile(args)
         if args.command == "status":

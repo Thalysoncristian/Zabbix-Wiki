@@ -466,6 +466,105 @@ class TestInterfaceEstatica(BaseWeb):
             self.assertIn("text/css", resposta.headers["Content-Type"])
 
 
+class TestEscopoViaHTTP(unittest.TestCase):
+    """O escopo na URL (item 9): compartilhável, recarregável, com filtros."""
+
+    def setUp(self):
+        from tests.test_scope import GIGANTE, montar_ambiente
+
+        self.gigante = GIGANTE
+        self._tmp = tempfile.TemporaryDirectory()
+        base = Path(self._tmp.name)
+        montar_ambiente(base)
+        docs = base / "docs"
+        docs.mkdir(exist_ok=True)
+
+        escopos = base / "scopes.json"
+        escopos.write_text(json.dumps({
+            "default": "noc",
+            "scopes": [{"id": "noc", "label": "NOC", "exclude_hosts": [GIGANTE]}],
+        }), encoding="utf-8")
+
+        self.servidor = serve(output_dir=str(base), docs_dir=str(docs),
+                              host="127.0.0.1", port=0, scopes_file=str(escopos))
+        self.porta = self.servidor.server_address[1]
+        threading.Thread(target=self.servidor.serve_forever, daemon=True).start()
+
+    def tearDown(self):
+        self.servidor.shutdown()
+        self.servidor.server_close()
+        self._tmp.cleanup()
+
+    def get(self, caminho: str) -> Any:
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.porta}{caminho}", timeout=10) as resposta:
+            return json.loads(resposta.read())
+
+    def test_escopo_padrao_e_o_do_scopes_json(self):
+        dados = self.get("/api/dashboard")
+        self.assertEqual(dados["scope"]["id"], "noc")
+        self.assertEqual(dados["scope"]["alerts_in_scope"], 40)
+        self.assertEqual(dados["environment"]["alerts"], 240)
+
+    def test_scope_all_na_url_traz_o_ambiente_inteiro(self):
+        dados = self.get("/api/alerts?scope=all")
+        self.assertEqual(dados["pagination"]["total"], 240)
+        self.assertEqual(self.get("/api/alerts?scope=noc")["pagination"]["total"], 40)
+
+    def test_escopo_combina_com_filtros(self):
+        """`/alerts?scope=noc&severity=Disaster` precisa aplicar os dois."""
+        no_escopo = self.get("/api/alerts?scope=noc&severity=Disaster")["pagination"]["total"]
+        completo = self.get("/api/alerts?scope=all&severity=Disaster")["pagination"]["total"]
+        self.assertEqual(no_escopo, 3, "um Disaster por host do NOC")
+        self.assertEqual(completo, 3)
+        self.assertTrue(all(i["severity"] == "Disaster"
+                            for i in self.get("/api/alerts?scope=noc&severity=Disaster")["items"]))
+
+    def test_host_fora_do_escopo_nao_aparece_na_lista(self):
+        nomes = {h["name"] for h in self.get("/api/hosts?scope=noc")["items"]}
+        self.assertNotIn(self.gigante, nomes)
+        self.assertIn(self.gigante, {h["name"] for h in self.get("/api/hosts?scope=all")["items"]})
+
+    def test_busca_avisa_sobre_o_que_esta_fora(self):
+        dados = self.get("/api/search?scope=noc&q=job")
+        self.assertGreater(dados["out_of_scope_alerts"], 0)
+        self.assertEqual(dados["scope"]["id"], "noc")
+
+    def test_colisoes_respeitam_o_escopo(self):
+        self.assertEqual(self.get("/api/collisions?scope=noc")["pagination"]["total"], 1)
+        self.assertEqual(self.get("/api/collisions?scope=all")["pagination"]["total"], 2)
+
+    def test_status_mostra_a_coleta_inteira_em_qualquer_escopo(self):
+        for escopo in ("noc", "all"):
+            dados = self.get(f"/api/status?scope={escopo}")
+            self.assertEqual(dados["counts"]["alerts"], 240, escopo)
+            self.assertEqual(dados["environment"]["alerts"], 240, escopo)
+
+    def test_endpoint_de_escopos(self):
+        dados = self.get("/api/scopes")
+        ids = {e["id"] for e in dados["scopes"]}
+        self.assertEqual(ids, {"noc", "all"})
+        self.assertEqual(dados["default"], "noc")
+        noc = next(e for e in dados["scopes"] if e["id"] == "noc")
+        self.assertTrue(noc["is_default"])
+        self.assertEqual(noc["mode"], "exclude")
+
+    def test_escopo_invalido_e_400(self):
+        try:
+            self.get("/api/alerts?scope=inexistente")
+            self.fail("deveria ter recusado")
+        except urllib.error.HTTPError as erro:
+            self.assertEqual(erro.code, 400)
+            self.assertIn("inexistente", json.loads(erro.read())["error"])
+
+    def test_trocar_de_escopo_nao_altera_o_snapshot(self):
+        alerts = Path(self._tmp.name) / "snapshots" / "20260905_181510" / "normalized" / "alerts.json"
+        antes = (alerts.read_bytes(), alerts.stat().st_mtime)
+        for escopo in ("noc", "all", "noc"):
+            self.get(f"/api/dashboard?scope={escopo}")
+        self.assertEqual((alerts.read_bytes(), alerts.stat().st_mtime), antes,
+                         "o escopo é leitura: nenhum byte do snapshot pode mudar")
+
+
 class TestSemSnapshot(unittest.TestCase):
     def test_mensagem_util_quando_nao_ha_coleta(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -155,8 +155,21 @@ def dashboard(modelo: ReadModel, _params: dict[str, list[str]]) -> dict[str, Any
     multi_host = [f for f in modelo.families.values() if len(f.hosts) > 1]
 
     top = sorted(modelo.families.values(), key=lambda f: (-len(f.alert_ids), f.label))[:10]
+    ambiente = modelo.environment
+    fora = len(modelo.out_of_scope)
     return {
         "snapshot": _snapshot_info(modelo),
+        "scope": _scope_info(modelo),
+        # As duas visões lado a lado. Ver "2.577 alertas" sem saber que o
+        # ambiente tem 18.903 seria tão enganoso quanto o contrário.
+        "environment": {
+            **ambiente,
+            "out_of_scope_alerts": fora,
+            "out_of_scope_hosts": len({
+                str((a.get("zabbix") or {}).get("host", {}).get("hostid") or "")
+                for a in modelo.out_of_scope
+            } - {""}),
+        },
         "cards": [
             {"key": "alerts", "label": "Alertas", "value": len(alertas), "href": "/alerts"},
             {"key": "alert_keys", "label": "Alert keys únicas",
@@ -611,6 +624,16 @@ def collisions(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any
 
 
 # ----------------------------------------------------------------------- status
+def _scope_info(modelo: ReadModel) -> dict[str, Any]:
+    """O escopo ativo e o que ele deixou de fora — sempre visível."""
+    return {
+        **modelo.scope.to_dict(),
+        "alerts_in_scope": len(modelo.alerts),
+        "alerts_out_of_scope": len(modelo.out_of_scope),
+        "collisions_out_of_scope": max(0, getattr(modelo, "collisions_total", 0) - len(modelo.collisions)),
+    }
+
+
 def _snapshot_info(modelo: ReadModel) -> dict[str, Any]:
     meta = modelo.meta
     escopo = meta.get("scope") or {}
@@ -635,13 +658,18 @@ def status(modelo: ReadModel, cache: Any, _params: dict[str, list[str]]) -> dict
     meta = modelo.meta
     return {
         "snapshot": _snapshot_info(modelo),
+        # A página de status descreve a COLETA. `counts` é sempre do ambiente
+        # inteiro, escopo nenhum: é o retrato do que existe no Zabbix.
+        "environment": modelo.environment,
+        "scope": _scope_info(modelo),
+        "scopes": cache.scopes.listar(),
         "counts": {
-            "alerts": len(modelo.alerts),
-            "alert_keys": len({a.get("alert_key") for a in modelo.alerts}),
-            "families": len(modelo.families),
-            "hosts": len(modelo.hosts),
-            "host_groups": len(modelo.host_groups),
-            "collisions": len(modelo.collisions),
+            "alerts": modelo.environment["alerts"],
+            "alert_keys": len({a.get("alert_key") for a in modelo.alerts + modelo.out_of_scope}),
+            "families": modelo.environment["families"],
+            "hosts": modelo.environment["hosts"],
+            "host_groups": modelo.environment["host_groups"],
+            "collisions": getattr(modelo, "collisions_total", len(modelo.collisions)),
             # 0 templates é um estado válido: o usuário da API pode não ter
             # acesso aos grupos de templates. Não é erro da coleta.
             "templates": (modelo.report.get("counts") or {}).get("templates", 0),
@@ -662,7 +690,8 @@ def search(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
     termo = _um(params, "q")
     agulha = normalize_text(termo)
     if not agulha:
-        return {"query": termo, "groups": []}
+        return {"query": termo, "scope": {"id": modelo.scope.id, "label": modelo.scope.label},
+                "out_of_scope_alerts": 0, "groups": []}
 
     limite = _int(params, "limit", 8)
     ids = modelo.search_ids(termo) or []
@@ -694,6 +723,11 @@ def search(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
         if agulha in texto:
             procedimentos.append(familia.resumo(procedimento))
 
+    # Quantos resultados existem ALÉM do escopo. A busca não os traz, mas
+    # dizer "nada encontrado" quando existem 8.000 fora seria enganoso — e é
+    # exatamente o tipo de silêncio que o escopo não pode produzir.
+    fora_do_escopo = modelo.count_out_of_scope(termo)
+
     grupos_resultado = [
         {"kind": "alerts", "label": "Alertas", "total": len(ids), "items": alertas},
         {"kind": "families", "label": "Famílias", "total": len(familias),
@@ -704,4 +738,9 @@ def search(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
         {"kind": "procedures", "label": "Procedimentos", "total": len(procedimentos),
          "items": procedimentos[:limite]},
     ]
-    return {"query": termo, "groups": [g for g in grupos_resultado if g["total"]]}
+    return {
+        "query": termo,
+        "scope": {"id": modelo.scope.id, "label": modelo.scope.label},
+        "out_of_scope_alerts": fora_do_escopo,
+        "groups": [g for g in grupos_resultado if g["total"]],
+    }

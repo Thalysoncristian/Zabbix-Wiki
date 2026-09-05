@@ -46,3 +46,13 @@ Para aplicar várias coletas de uma vez, consolide antes:
 python main.py merge        # gera output/snapshots/<timestamp>__consolidado/
 python main.py reconcile    # usa o snapshot mais recente
 ```
+
+## Escopo operacional
+
+Uma ficha pode existir para uma família que o escopo atual do NOC não mostra —
+por exemplo, uma família de um host fora do escopo. Nesse caso a ficha **não é
+apagada nem alterada**: ela só deixa de contar nos indicadores daquela visão.
+
+Escrever um procedimento continua permitido para qualquer família do ambiente
+coletado, mesmo fora do escopo ativo. O escopo filtra a visão, não o
+conhecimento.

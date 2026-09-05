@@ -41,6 +41,7 @@ from typing import Any, Iterable
 from ..core.models import build_family_key
 from ..core.repository import AlertRepository
 from ..keys import normalize_text, short_hash, slugify
+from ..scope import ALL_SCOPE_ID, EVERYTHING, OperationalScope, ScopeConfig
 
 #: Ordem de severidade do Zabbix, do mais grave para o menos.
 SEVERIDADES = ["Disaster", "High", "Average", "Warning", "Information", "Not classified"]
@@ -151,17 +152,76 @@ def _haystack(alerta: dict[str, Any], familia_label: str) -> str:
     return normalize_text(" ".join(p for p in partes if p))
 
 
+def _nomes_do_host(alerta: dict[str, Any]) -> tuple[str, str]:
+    host = (alerta.get("zabbix") or {}).get("host") or {}
+    return str(host.get("name") or ""), str(host.get("host") or "")
+
+
+def _particionar(
+    alertas: list[dict[str, Any]], scope: OperationalScope
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Separa os alertas em (dentro do escopo, fora do escopo).
+
+    Os de fora **não são descartados**: continuam disponíveis para o dashboard
+    dizer quanto ficou de fora e para a busca avisar que existem resultados
+    além do escopo. Esconder sem contar seria enganoso.
+    """
+    if scope.is_everything:
+        return list(alertas), []
+    dentro: list[dict[str, Any]] = []
+    fora: list[dict[str, Any]] = []
+    for alerta in alertas:
+        (dentro if scope.includes_host(*_nomes_do_host(alerta)) else fora).append(alerta)
+    return dentro, fora
+
+
+def _contar_ambiente(alertas: list[dict[str, Any]]) -> dict[str, int]:
+    """Números do AMBIENTE COLETADO, independentes do escopo.
+
+    O dashboard mostra as duas visões lado a lado; sem isto o operador veria o
+    número do NOC sem saber que existe um ambiente maior atrás dele.
+    """
+    hosts: set[str] = set()
+    grupos: set[str] = set()
+    familias: set[str] = set()
+    for alerta in alertas:
+        zbx = alerta.get("zabbix") or {}
+        hostid = str((zbx.get("host") or {}).get("hostid") or "")
+        if hostid:
+            hosts.add(hostid)
+        grupos.update(zbx.get("host_groups") or [])
+        familias.add(build_family_key(alerta))
+    return {
+        "alerts": len(alertas),
+        "hosts": len(hosts),
+        "host_groups": len(grupos),
+        "families": len(familias),
+    }
+
+
 class ReadModel:
     """Snapshot carregado e indexado, pronto para as consultas da interface."""
 
-    def __init__(self, snapshot_dir: Path, docs_dir: str | Path = "docs/alerts"):
+    def __init__(
+        self,
+        snapshot_dir: Path,
+        docs_dir: str | Path = "docs/alerts",
+        scope: OperationalScope = EVERYTHING,
+    ):
         self.snapshot_dir = Path(snapshot_dir)
         self.docs_dir = Path(docs_dir)
+        self.scope = scope
         self.loaded_at = ""
 
         payload = json.loads((self.snapshot_dir / "normalized" / "alerts.json").read_text(encoding="utf-8"))
         self.meta: dict[str, Any] = payload.get("meta") or {}
-        self.alerts: list[dict[str, Any]] = payload.get("alerts") or []
+        coletados: list[dict[str, Any]] = payload.get("alerts") or []
+
+        # O escopo é aplicado AQUI e em nenhum outro lugar. Hosts, host groups,
+        # famílias, severidades e procedimentos são todos derivados desta lista
+        # em `_indexar()`, então filtrar a entrada propaga para todos os
+        # indicadores sem tocar em um único cálculo de métrica.
+        self.alerts, self.out_of_scope = _particionar(coletados, scope)
 
         self.collisions: list[dict[str, Any]] = self._ler_colisoes()
         self.report: dict[str, Any] = self._ler_report()
@@ -172,10 +232,16 @@ class ReadModel:
         self.hosts: dict[str, dict[str, Any]] = {}
         self.host_groups: dict[str, dict[str, Any]] = {}
         self.haystacks: dict[str, str] = {}
+        #: Textos pesquisáveis do que ficou FORA do escopo, montados uma vez.
+        #: Sem isto a busca global normalizaria 16 mil textos a cada tecla só
+        #: para dizer quantos resultados existem além do escopo — o aviso
+        #: custaria dez vezes mais que a busca inteira.
+        self.haystacks_out: list[str] = []
         self.collision_keys: set[str] = set()
 
         self._indexar()
         self._carregar_procedimentos()
+        self.environment = _contar_ambiente(coletados)
 
     # ------------------------------------------------------------------ carga
     def _ler_json(self, *partes: str) -> dict[str, Any]:
@@ -188,7 +254,32 @@ class ReadModel:
             return {}
 
     def _ler_colisoes(self) -> list[dict[str, Any]]:
-        return (self._ler_json("normalized", "collisions.json") or {}).get("collisions") or []
+        """Colisões do snapshot, recortadas pelo escopo.
+
+        Uma colisão entra na visão quando **pelo menos uma** ocorrência está no
+        escopo. As demais ocorrências continuam visíveis, marcadas com
+        `in_scope: false`: esconder o outro lado tornaria a colisão
+        incompreensível — não dá para analisar com o que a chave colidiu sem
+        ver o que colidiu.
+        """
+        todas = (self._ler_json("normalized", "collisions.json") or {}).get("collisions") or []
+        self.collisions_total = len(todas)
+        if self.scope.is_everything:
+            return todas
+
+        dentro: list[dict[str, Any]] = []
+        for colisao in todas:
+            ocorrencias = []
+            alguma_no_escopo = False
+            for ocorrencia in colisao.get("occurrences") or []:
+                no_escopo = self.scope.includes_host(
+                    str(ocorrencia.get("host") or ""), str(ocorrencia.get("host_technical") or "")
+                )
+                alguma_no_escopo = alguma_no_escopo or no_escopo
+                ocorrencias.append({**ocorrencia, "in_scope": no_escopo})
+            if alguma_no_escopo:
+                dentro.append({**colisao, "occurrences": ocorrencias})
+        return dentro
 
     def _ler_report(self) -> dict[str, Any]:
         return self._ler_json("report.json")
@@ -225,6 +316,9 @@ class ReadModel:
                 familia.signatures.add(zbx["expression_signature"])
 
             self.haystacks[triggerid] = _haystack(alerta, familia.label)
+
+        for alerta in self.out_of_scope:
+            self.haystacks_out.append(_haystack(alerta, ""))
 
     def _familia_de(self, alerta: dict[str, Any]) -> Familia:
         # A MESMA chave que o reconcile usa para nomear a ficha.
@@ -317,6 +411,13 @@ class ReadModel:
     def family_of_alert(self, triggerid: str) -> Familia | None:
         return self.families.get(self.family_of.get(triggerid, ""))
 
+    def count_out_of_scope(self, termo: str) -> int:
+        """Quantos alertas fora do escopo casariam com a busca."""
+        agulha = normalize_text(termo)
+        if not agulha or not self.haystacks_out:
+            return 0
+        return sum(1 for feno in self.haystacks_out if agulha in feno)
+
     def search_ids(self, termo: str) -> list[str] | None:
         """IDs cujo haystack contém o termo. `None` quando não há busca."""
         agulha = normalize_text(termo)
@@ -371,11 +472,21 @@ class ReadModelCache:
     requisição é barato e dispensa vigiar o filesystem numa thread.
     """
 
-    def __init__(self, output_dir: str, docs_dir: str, snapshot: str | None = None):
+    def __init__(
+        self,
+        output_dir: str,
+        docs_dir: str,
+        snapshot: str | None = None,
+        scopes: ScopeConfig | None = None,
+    ):
         self.output_dir = output_dir
         self.docs_dir = docs_dir
         self.snapshot_escolhido = snapshot
-        self._modelo: ReadModel | None = None
+        self.scopes = scopes or ScopeConfig(scopes={ALL_SCOPE_ID: EVERYTHING}, default_id=ALL_SCOPE_ID)
+        # Um modelo por escopo. Os dicionários de alerta são compartilhados por
+        # referência entre eles — só os índices são reconstruídos —, então o
+        # segundo escopo custa dezenas de MB, não outros 290.
+        self._modelos: dict[str, ReadModel] = {}
         self._assinatura: tuple[Any, ...] = ()
         self._lock = threading.Lock()
 
@@ -390,18 +501,23 @@ class ReadModelCache:
             marca_docs = sum(f.stat().st_mtime for f in docs.glob("*.json"))
         return (str(caminho), alerts.stat().st_mtime, marca_docs)
 
-    def get(self) -> ReadModel:
+    def get(self, scope_id: str | None = None) -> ReadModel:
+        escopo = self.scopes.get(scope_id)
         with self._lock:
             assinatura = self._assinatura_atual()
-            if self._modelo is None or assinatura != self._assinatura:
-                caminho = resolve_snapshot(self.output_dir, self.snapshot_escolhido)
-                self._modelo = ReadModel(caminho, self.docs_dir)
+            if assinatura != self._assinatura:
+                self._modelos.clear()  # snapshot ou fichas mudaram
                 self._assinatura = assinatura
-            return self._modelo
+            modelo = self._modelos.get(escopo.id)
+            if modelo is None:
+                caminho = resolve_snapshot(self.output_dir, self.snapshot_escolhido)
+                modelo = ReadModel(caminho, self.docs_dir, scope=escopo)
+                self._modelos[escopo.id] = modelo
+            return modelo
 
     def invalidate(self) -> None:
         with self._lock:
-            self._modelo = None
+            self._modelos.clear()
             self._assinatura = ()
 
     def available_snapshots(self) -> list[dict[str, Any]]:

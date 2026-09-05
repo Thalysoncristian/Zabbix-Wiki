@@ -262,6 +262,10 @@ python main.py collect --only-monitored
 
 # interface web local (Fase 3) — abre em http://127.0.0.1:8000
 python main.py serve
+
+# escopo operacional: hosts por volume, quem está dentro e fora
+python main.py scope
+python main.py scope --scope all --top 50
 python main.py serve --port 9000
 python main.py serve --snapshot output/snapshots/20260905_181510
 ```
@@ -1063,3 +1067,151 @@ python main.py serve       # http://127.0.0.1:8000
 ```bash
 python -m unittest discover -s tests -t .
 ```
+
+---
+
+## 19. Escopo operacional (o que o NOC analisa)
+
+A coleta real trouxe 18.903 alertas — e um único host, `Control-M PRD
+Votorantim`, responde por ~86% deles. Ele não está sob responsabilidade do NOC
+hoje, mas dominava todos os indicadores: o dashboard virava um retrato do
+Control-M com o resto do ambiente como ruído de fundo.
+
+### Coleta ≠ escopo
+
+```
+      Zabbix inteiro
+            ↓  collect
+    snapshot completo          18.903 alertas · 78 hosts · 21 grupos
+            ↓  camada de escopo
+      escopo NOC               ~2.577 alertas
+            ↓
+  alertas · famílias · hosts · procedimentos · colisões · qualidade
+```
+
+O escopo **não altera o snapshot**: não apaga, não deixa de coletar, não
+reescreve nada em disco. É uma projeção de leitura, reversível a qualquer
+momento. Um teste verifica que os bytes do `alerts.json` não mudam quando se
+troca de escopo.
+
+Ele também **não é segurança**. Qualquer pessoa com acesso à interface troca
+para "Ambiente inteiro" em um clique. É classificação operacional — e a tela
+diz sempre quanto ficou de fora.
+
+### Exclusão, não inclusão — e por quê
+
+Um escopo pode ser "o NOC vê APENAS estes hosts" (inclusão) ou "o NOC vê tudo,
+MENOS estes" (exclusão). A escolha tem consequência real:
+
+| | host novo aparece no Zabbix amanhã |
+|---|---|
+| inclusão | **não aparece** para o NOC. Ninguém é avisado. |
+| exclusão | aparece. O pior caso é ruído visível. |
+
+O escopo `noc` usa **exclusão** de propósito: a falha silenciosa é a mais
+perigosa num painel de plantão. `include_hosts` existe para escopos de
+investigação ("só o Control-M", "só o Cliente X"), onde a lista fechada É a
+intenção — nunca para a visão principal.
+
+### Configuração: `scopes.json`
+
+```json
+{
+  "default": "noc",
+  "scopes": [
+    {
+      "id": "noc",
+      "label": "NOC",
+      "exclude_hosts": ["Control-M PRD Votorantim"],
+      "exclude_host_patterns": []
+    }
+  ]
+}
+```
+
+* `exclude_hosts` — nome exato, sem diferenciar maiúsculas. **Nunca por
+  substring**: excluir `"Control-M PRD"` não derruba `"Control-M PRD Votorantim"`.
+  Um host só sai quando alguém escreveu que ele sai.
+* `exclude_host_patterns` — curingas, para faixas: `["Control-M * Votorantim"]`.
+* O escopo `all` (Ambiente inteiro) existe sempre e não é configurável.
+* Sem o arquivo, existe apenas `all` e nada muda.
+
+O nome do **host** é o que decide, nunca o host group — um host pertence a
+vários grupos, e filtrar por grupo traria ou esconderia alertas por tabela. Os
+grupos são derivados dos hosts que sobraram.
+
+### Decida com o número, não com o nome
+
+Apenas `Control-M PRD Votorantim` foi excluído. Os outros hosts de Control-M
+(`DEV Votorantim`, `SaaS Master`, `server [IN01]`) **não** foram: eles não
+foram medidos, e excluir por semelhança de nome é palpite. Para decidir:
+
+```bash
+python main.py scope
+```
+
+```
+── Efeito do escopo 'noc' ──────────────────────────────
+  ambiente coletado :   18903 alertas,   78 hosts,  521 famílias
+  dentro do escopo  :    2577 alertas,   77 hosts,  519 famílias
+  fora do escopo    :   16326 alertas (86% do ambiente)
+
+── Hosts por volume (top 25) ───────────────────────────────
+   alertas     LLD   %amb  escopo    host
+     16326   16200    86%  FORA      Control-M PRD Votorantim
+       412     380     2%  dentro    Control-M DEV Votorantim
+       ...
+```
+
+Com a coluna de volume na frente, a decisão sobre cada host deixa de ser
+adivinhação.
+
+### Na interface
+
+O seletor de escopo fica na barra lateral, e o escopo viaja na URL:
+
+```
+/alerts?scope=noc&severity=Disaster
+/families?scope=all
+```
+
+Isso mantém a tela compartilhável: colar o link num chamado abre o mesmo
+recorte do outro lado.
+
+O Dashboard mostra **as duas visões** lado a lado — nunca só a do escopo:
+
+```
+Escopo: NOC    2.577 alertas nesta visão    16.326 de 18.903 fora do escopo (86%)    ver ambiente inteiro →
+```
+
+A busca global procura no escopo ativo e **avisa** quando existem resultados
+além dele (`+16.326 alertas fora do escopo NOC`). Dizer "nada encontrado"
+quando há 16 mil fora seria o pior tipo de silêncio.
+
+**Status da coleta** continua descrevendo o ambiente inteiro: é o retrato do
+que existe no Zabbix, e escopo nenhum se aplica ali.
+
+### O que o escopo NÃO faz
+
+* não altera `family_key` — a família continua sendo calculada pelo mesmo
+  mecanismo; o escopo só decide quais alertas participam da visão;
+* não apaga procedimentos de famílias que saíram do escopo — apenas não os
+  contabiliza nos indicadores do NOC. Escrever um procedimento continua
+  permitido mesmo para uma família que o escopo atual não mostra;
+* não apaga colisões. Uma colisão entra na visão quando ao menos uma ocorrência
+  está no escopo, e as demais continuam visíveis marcadas como fora — esconder
+  o outro lado tornaria a colisão impossível de analisar.
+
+### Custo
+
+Medido com 18.834 alertas sintéticos na proporção real (86% num host):
+
+| | |
+|---|---|
+| filtro | uma vez na carga do modelo, não a cada requisição |
+| segundo escopo em memória | ~1,8 s e algumas dezenas de MB (os alertas são compartilhados por referência) |
+| dashboard NOC | 21 ms |
+| busca global com aviso de fora do escopo | 5 ms |
+
+O frontend nunca recebe o que está fora do escopo: o filtro é do read model, e
+a paginação continua no servidor.

@@ -32,11 +32,18 @@ const fillClass = (name) => 'fill-' + String(name || '').toLowerCase().replace(/
 /** Estado ausente é estado válido, não erro: nunca mostrar "erro" por falta de dado. */
 const na = (texto = 'não disponível') => el('span', { class: 'na' }, texto);
 
+/** Escopo operacional ativo, lido da URL. Vazio = o padrão do servidor. */
+const escopoAtual = () => new URLSearchParams(location.search).get('scope') || '';
+
 async function api(path, params = {}) {
   const url = new URL(path, location.origin);
   for (const [k, v] of Object.entries(params)) {
     if (v !== '' && v !== null && v !== undefined) url.searchParams.set(k, v);
   }
+  // Toda leitura carrega o escopo: um endpoint sem ele responderia com o
+  // escopo padrão, e a tela mostraria números de um recorte diferente do que
+  // o seletor está exibindo.
+  if (escopoAtual() && !url.searchParams.has('scope')) url.searchParams.set('scope', escopoAtual());
   const resposta = await fetch(url, { headers: { Accept: 'application/json' } });
   const dados = await resposta.json().catch(() => ({ error: 'Resposta inválida do servidor.' }));
   if (!resposta.ok) throw Object.assign(new Error(dados.error || `HTTP ${resposta.status}`), { payload: dados });
@@ -57,6 +64,11 @@ const rota = (padrao, handler) => rotas.push({ padrao, handler });
 
 function navegar(href, substituir = false) {
   const url = new URL(href, location.origin);
+  // O escopo acompanha a navegação. Injetar aqui cobre TODOS os links da
+  // interface de uma vez — bem mais seguro do que lembrar de anexar `?scope=`
+  // em cada href espalhado pelas telas.
+  const escopo = escopoAtual();
+  if (escopo && !url.searchParams.has('scope')) url.searchParams.set('scope', escopo);
   if (substituir) history.replaceState({}, '', url);
   else history.pushState({}, '', url);
   render();
@@ -83,6 +95,9 @@ function marcarNav() {
 
 async function render() {
   marcarNav();
+  if (!escoposDisponiveis.length) await carregarEscopos();
+  else seletorEscopo.value = escopoAtual() ||
+    (escoposDisponiveis.find((e) => e.is_default) || {}).id || 'all';
   const caminho = location.pathname;
   const params = Object.fromEntries(new URLSearchParams(location.search));
   setView(el('div', { class: 'loading' }, 'Carregando…'));
@@ -162,6 +177,8 @@ function comFiltros(mudancas) {
     else params.set(k, v);
   }
   if (!('page' in mudancas)) params.delete('page');
+  const escopo = escopoAtual();
+  if (escopo) params.set('scope', escopo);
   const query = params.toString();
   return location.pathname + (query ? `?${query}` : '');
 }
@@ -183,6 +200,73 @@ function seletor(rotulo, nome, opcoes, params) {
   return select;
 }
 
+/* ------------------------------------------------------ escopo operacional */
+const seletorEscopo = document.getElementById('scope-select');
+const notaEscopo = document.getElementById('scope-note');
+let escoposDisponiveis = [];
+
+async function carregarEscopos() {
+  try {
+    const dados = await api('/api/scopes');
+    escoposDisponiveis = dados.scopes || [];
+  } catch { escoposDisponiveis = []; }
+
+  const ativo = escopoAtual() || (escoposDisponiveis.find((e) => e.is_default) || {}).id || 'all';
+  seletorEscopo.replaceChildren(...escoposDisponiveis.map((e) =>
+    el('option', { value: e.id, selected: e.id === ativo }, e.label)));
+  // Um escopo só (nenhum scopes.json configurado): o seletor não decide nada.
+  seletorEscopo.parentElement.hidden = escoposDisponiveis.length < 2;
+  descreverEscopo(ativo);
+}
+
+function descreverEscopo(id) {
+  const escopo = escoposDisponiveis.find((e) => e.id === id);
+  if (!escopo || escopo.is_everything) {
+    notaEscopo.textContent = 'Mostrando tudo que foi coletado.';
+    return;
+  }
+  const quantos = (escopo.exclude_hosts || []).length + (escopo.exclude_host_patterns || []).length;
+  notaEscopo.textContent = escopo.mode === 'include'
+    ? `Somente os hosts listados no escopo ${escopo.label}.`
+    : `${quantos} host(s) fora do escopo ${escopo.label}.`;
+}
+
+seletorEscopo.addEventListener('change', () => {
+  const params = new URLSearchParams(location.search);
+  params.set('scope', seletorEscopo.value);
+  // Trocar de escopo volta para a primeira página: os totais mudaram, e a
+  // página 40 do escopo anterior provavelmente nem existe no novo.
+  params.delete('page');
+  descreverEscopo(seletorEscopo.value);
+  navegar(`${location.pathname}?${params.toString()}`);
+});
+
+/** Faixa das duas visões: o que o escopo mostra e o que ele deixou de fora. */
+function faixaEscopo(escopo, ambiente) {
+  if (!escopo || escopo.is_everything) {
+    return el('div', { class: 'scope-banner' },
+      el('span', {}, 'Escopo: ', el('strong', {}, escopo?.label || 'Ambiente inteiro')),
+      el('span', { class: 'out' }, 'mostrando todo o ambiente coletado'));
+  }
+  const fora = escopo.alerts_out_of_scope || 0;
+  const total = ambiente?.alerts || (escopo.alerts_in_scope + fora);
+  const pct = total ? Math.round((fora / total) * 100) : 0;
+  return el('div', { class: 'scope-banner' },
+    el('span', {}, 'Escopo: ', el('strong', {}, escopo.label)),
+    el('span', {}, el('strong', {}, num(escopo.alerts_in_scope)), ' alertas nesta visão'),
+    el('span', { class: 'out' },
+      `${num(fora)} de ${num(total)} alertas fora do escopo (${pct}%)`),
+    el('a', { href: comFiltrosEscopo('all') }, 'ver ambiente inteiro →'));
+}
+
+/** URL atual trocando apenas o escopo. */
+function comFiltrosEscopo(id) {
+  const params = new URLSearchParams(location.search);
+  params.set('scope', id);
+  params.delete('page');
+  return `${location.pathname}?${params.toString()}`;
+}
+
 /* -------------------------------------------------------------- dashboard */
 rota(/^\/$/, async () => {
   const dados = await api('/api/dashboard');
@@ -190,6 +274,7 @@ rota(/^\/$/, async () => {
 
   setView(
     cabecalho('Dashboard', escopoTexto(dados.snapshot)),
+    faixaEscopo(dados.scope, dados.environment),
     dados.snapshot.partial ? el('div', { class: 'note warn' },
       'Este snapshot é PARCIAL: objetos ficaram de fora da coleta. Os números abaixo não representam o escopo inteiro.') : null,
     el('div', { class: 'cards' }, dados.cards.map((c) => el('a', { class: 'card', href: c.href },
@@ -756,6 +841,16 @@ rota(/^\/status$/, async () => {
   setView(
     cabecalho('Status da coleta', escopoTexto(s.snapshot)),
     el('div', { class: 'note' }, s.note),
+    el('div', { class: 'scope-banner' },
+      el('span', {}, 'Coleta: ', el('strong', {}, s.snapshot.scope_label),
+        ` — ${num(s.environment.alerts)} alertas, ${num(s.environment.hosts)} hosts, `
+        + `${num(s.environment.host_groups)} grupos`),
+      el('span', {}, 'Escopo operacional: ', el('strong', {}, s.scope.label),
+        ` — ${num(s.scope.alerts_in_scope)} alertas`),
+      s.scope.is_everything ? null
+        : el('span', { class: 'out' }, `${num(s.scope.alerts_out_of_scope)} fora do escopo`)),
+    el('div', { class: 'subtitle', style: 'margin:-6px 0 14px' },
+      'Os números abaixo são do AMBIENTE COLETADO — a coleta não é filtrada por escopo.'),
     s.snapshot.partial ? el('div', { class: 'note warn' },
       'Snapshot PARCIAL: objetos ficaram de fora da coleta.') : null,
     !s.snapshot.complete_environment ? el('div', { class: 'note warn' },
@@ -790,6 +885,21 @@ rota(/^\/status$/, async () => {
               ? el('span', { class: 'sev sev-high' }, 'redação DESLIGADA')
               : num(redacao.values_redacted || 0))))),
 
+    el('section', { class: 'panel' }, el('h2', {}, 'Escopos operacionais'),
+      el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+        'Configurados em scopes.json. O escopo filtra a VISÃO, nunca o snapshot — '
+        + 'trocar de escopo não altera nenhum dado coletado.'),
+      tabela([{ label: 'Escopo' }, { label: 'Modo' }, { label: 'Regra' }],
+        (s.scopes || []).map((e) => el('tr', { class: e.id === s.scope.id ? '' : 'muted' },
+          el('td', {}, el('a', { href: comFiltrosEscopo(e.id) }, e.label),
+            e.id === s.scope.id ? el('span', { class: 'badge documented', style: 'margin-left:6px' }, 'ativo') : null,
+            e.is_default ? el('span', { class: 'badge', style: 'margin-left:6px' }, 'padrão') : null),
+          el('td', { class: 'cell-sub' }, e.is_everything ? 'sem filtro'
+            : e.mode === 'include' ? 'somente os listados' : 'tudo menos os listados'),
+          el('td', { class: 'cell-sub mono' },
+            [...(e.exclude_hosts || []), ...(e.exclude_host_patterns || []),
+             ...(e.include_hosts || []), ...(e.include_host_patterns || [])].join(', ') || '—'))))),
+
     el('section', { class: 'panel' }, el('h2', {}, 'Snapshots disponíveis'),
       tabela([{ label: 'Snapshot' }, { label: 'Tipo' }, { label: 'Tamanho', num: true }],
         (s.available_snapshots || []).map((sn) => el('tr', {},
@@ -814,12 +924,24 @@ inputBusca.addEventListener('input', () => {
   timerBusca = setTimeout(async () => {
     try {
       const dados = await api('/api/search', { q: termo, limit: 6 });
+      // Existem resultados além do escopo? Dizer "nada encontrado" quando há
+      // 8.000 fora seria o pior tipo de silêncio.
+      const aviso = dados.out_of_scope_alerts
+        ? el('a', { class: 'search-item', href: comFiltrosEscopo('all') },
+          el('div', {}, `+${num(dados.out_of_scope_alerts)} alerta(s) fora do escopo `,
+            el('strong', {}, dados.scope?.label || '')),
+          el('small', {}, 'clique para buscar no ambiente inteiro'))
+        : null;
+
       if (!dados.groups.length) {
-        caixaBusca.replaceChildren(el('div', { class: 'search-item muted' }, 'Nada encontrado para ', termo));
+        caixaBusca.replaceChildren(
+          el('div', { class: 'search-item muted' },
+            `Nada encontrado para "${termo}" no escopo ${dados.scope?.label || 'atual'}`),
+          aviso);
         caixaBusca.hidden = false;
         return;
       }
-      caixaBusca.replaceChildren(...dados.groups.flatMap((g) => [
+      caixaBusca.replaceChildren(...[aviso].filter(Boolean), ...dados.groups.flatMap((g) => [
         el('div', { class: 'search-group-title' }, `${g.label} (${num(g.total)})`),
         ...g.items.map((item) => linkResultado(g.kind, item)),
         g.total > g.items.length

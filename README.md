@@ -259,14 +259,40 @@ python main.py merge output/snapshots/2026*__vibe-tecnologia output/snapshots/20
 
 # apenas triggers habilitados em hosts monitorados
 python main.py collect --only-monitored
+
+# interface web local (Fase 3) — abre em http://127.0.0.1:8000
+python main.py serve
+
+# escopo operacional: hosts por volume, quem está dentro e fora
+python main.py scope
+python main.py scope --scope all --top 50
+python main.py serve --port 9000
+python main.py serve --snapshot output/snapshots/20260905_181510
 ```
 
 Opções de `collect`: `--limit`, `--host-group` (repetível ou com vírgulas),
 `--page-size N`, `--split-by-group`, `--merge`, `--resume`, `--only-monitored`,
-`--include-template-triggers`, `--examples N`, `--output DIR`.
+`--include-template-triggers`, `--full`, `--examples N`, `--output DIR`.
 Opções de `merge`: caminhos de snapshot posicionais, `--last N`, `--output DIR`.
+Opções de `serve`: `--host`, `--port`, `--snapshot`, `--output DIR`, `--docs-dir DIR`.
 Opções globais (antes do subcomando): `--env-file ARQUIVO`, `-v/--verbose` —
 ex.: `python main.py --env-file .env.homolog collect`.
+
+### Quanto a coleta fala
+
+Numa coleta real de 18.903 triggers, uma linha por página são 203 linhas e o
+relatório detalhado passa de 130. O padrão é enxuto (~28 linhas):
+
+| | progresso | relatório |
+|---|---|---|
+| padrão | uma linha por **fase**, atualizada no lugar | resumo: contagens, top 3 famílias, colisões em uma linha cada |
+| `--full` | — | detalhamento completo, com ocorrências e expressões |
+| `-v` | uma linha por **página** | — |
+| `--examples N` | — | + N alertas normalizados inteiros (~80 linhas de JSON cada) |
+
+Avisos (lote reduzido, objeto não coletado) aparecem em **todos** os modos.
+Silenciar um problema para caber na tela seria o pior dos dois mundos. E os
+arquivos do snapshot têm sempre tudo — o que muda é só o que vai para a tela.
 
 Por padrão são coletados os triggers **dos hosts** (`templated=false`) — que é o que
 gera alerta de verdade. O trigger do template é alcançado pela cadeia `templateid`
@@ -278,23 +304,32 @@ descrito na seção [13. Escala da coleta](#13-escala-da-coleta).
 ### Saída esperada
 
 ```
-✓ Conectado ao Zabbix (API 7.0.0, api_token (Authorization: Bearer))
-✓ Escopo da coleta : 1 grupo(s) de hosts: Vibe Tecnologia
-✓ Hosts no escopo  : 36
-⚠ Coleta parcial por escopo: cobre apenas o que está listado acima, não o ambiente inteiro.
-✓ 412 triggers encontrados
-✓ 37 hosts resolvidos
-✓ 9 host groups resolvidos
-✓ 14 templates resolvidos
-✓ 388 itens relacionados resolvidos
-✓ Snapshot bruto salvo -> output/snapshots/20260903_031705/raw/zabbix_raw.json
-✓ Alertas normalizados salvos -> output/snapshots/20260903_031705/normalized/alerts.json
-✓ 96 alertas únicos
-✓ 2 possíveis colisões de alert_key
+✓ Conectado ao Zabbix (API 7.2.1, api_token (Authorization: Bearer))
+✓ Escopo da coleta : ambiente inteiro
+✓ Hosts no escopo  : 82
+✓ 18903 triggers encontrados
+✓ 78 hosts · 21 grupos · 0 templates · 9965 itens
+✓ 18826 alertas únicos em 469 famílias
+✓ 32 possíveis colisões de alert_key
+
+  origem   : prototype+description=18366, host+description=537
+  lacunas  : 16506 sem comentário, 179 sem tags, 1000 com dependências
+  severidade: Information=17546, Warning=510, Average=342, High=292, Disaster=157
+
+── Famílias — 469 procedimentos cobririam 18903 alertas ──
+    8131 alertas  {#JOBID} - Job: {#NAME} - Ended Not Ok  [LLD: Jobs]
+     277 alertas  {#CODCHAMADO}: {#ASSUNTO} - Aguardando cliente  [LLD: Atualiza]
+
+── Colisões de alert_key — 32 ──
+  ! carguero-api-monitor-down|api-indisponivel  (23 expressões distintas)
+  ... e mais 27. Todas em output/snapshots/.../collisions.json
+
+Coleta: 58s, 203 páginas de 250, sem retries nem lotes reduzidos.
 ```
 
-Seguido de um detalhamento (severidades, estratégias de chave, chaves
-compartilhadas, colisões) e de exemplos completos dos JSONs gerados.
+A linha das **famílias** é a que importa para planejar o trabalho: 469
+procedimentos cobrem 18.903 alertas. Use `--full` para o detalhamento e
+`--examples N` para ver os JSONs completos.
 
 ---
 
@@ -871,3 +906,462 @@ continua humana. Sugestão nunca conta como procedimento.
 | 16 | testes da Fase 1 passando | 99 testes originais, todos verdes |
 | 17 | testes novos de escala | `test_scale.py`, `test_merge.py`, `test_cli_fase2.py` |
 | 18 | nenhuma escrita no Zabbix | `test_readonly.py` + `test_cli_fase2.py::TestReadOnlyPreservado` |
+
+---
+
+## 16. Interface web (Fase 3)
+
+```bash
+python main.py collect     # 1. coletar
+python main.py serve       # 2. abrir http://127.0.0.1:8000
+```
+
+Uma interface local para navegar os ~19.000 alertas sem abrir JSON nem rodar
+comando. Ela lê o snapshot mais recente que **não** seja parcial; `--snapshot`
+escolhe outro, e a página **Status da coleta** lista os disponíveis.
+
+### Stack: biblioteca padrão, e o motivo
+
+`http.server` da stdlib + HTML/CSS/JS sem build. O projeto tem **uma**
+dependência externa (`requests`) e isto é uma ferramenta local, de um operador
+por vez, servindo um arquivo em disco: não há multi-tenancy, autenticação nem
+concorrência. Um framework traria dependências, versionamento e um passo de
+build sem resolver nenhum problema que exista aqui.
+
+Medido com 18.903 alertas sintéticos (`alerts.json` de 31 MB):
+
+| | |
+|---|---|
+| carga inicial do modelo | 2,7 s, uma vez |
+| memória do processo | ~290 MB |
+| `GET /api/dashboard` | 68 ms |
+| `GET /api/alerts` (qualquer página) | 45 ms |
+| `GET /api/alerts?q=certificado` | 18 ms |
+| `GET /api/search?q=api` | 7 ms |
+
+A tabela nunca recebe a lista inteira: filtro, ordenação e paginação acontecem
+no servidor e cada página traz no máximo algumas dezenas de linhas.
+
+### Ela não fala com o Zabbix
+
+O processo do `serve` **não importa o cliente do Zabbix, não lê o token e não
+abre conexão com a API**. A garantia é estrutural, não uma promessa — um teste
+verifica os imports de `src/web/` por AST e falha se algum deles aparecer.
+
+A única escrita do sistema é `POST /api/procedures/<família>`, que grava em
+`docs/alerts/`. Nunca no Zabbix.
+
+Outras travas: escuta só em `127.0.0.1` por padrão (`--host` avisa o que muda),
+`PUT`/`DELETE` respondem 405, `POST` só existe na rota de procedimentos, e os
+arquivos estáticos são resolvidos com o caminho normalizado — `..` não escapa.
+
+### Endpoints
+
+Todos são somente leitura, exceto o `POST` indicado.
+
+```
+GET  /api/dashboard              cards, severidades, qualidade, top famílias
+GET  /api/alerts                 lista paginada — busca e filtros
+GET  /api/alerts/<triggerid>     detalhe completo do alerta
+GET  /api/families               famílias, ordenadas por quantidade de alertas
+GET  /api/families/<id>          alertas, hosts, expressões, itens, tags
+GET  /api/hosts                  lista de hosts
+GET  /api/hosts/<hostid>         famílias, alertas, itens, dependências
+GET  /api/host-groups            grupos com hosts, alertas e severidades
+GET  /api/host-groups/<slug>     hosts, famílias e alertas do grupo
+GET  /api/procedures             famílias por estado do procedimento
+POST /api/procedures/<família>   grava o procedimento LOCAL  ← única escrita
+GET  /api/collisions             colisões com os triggers envolvidos
+GET  /api/status                 snapshot em uso, execução da coleta, redação
+GET  /api/search?q=              busca global agrupada por tipo
+```
+
+Filtros de `/api/alerts`: `q`, `host`, `host_group`, `family`, `severity`,
+`procedure`, `discovered`, `comment`, `tags`, `dependencies`, `collision`,
+`sort`, `order`, `page`, `per_page`.
+
+Os filtros também vivem na URL da interface (`/alerts?q=vpn&severity=Disaster`),
+de propósito: no NOC uma consulta útil é colada no chamado e precisa abrir igual
+do outro lado.
+
+### O que ela não reinventa
+
+A interface **não** define um segundo modelo de dados. A família de um alerta é
+`core.models.build_family_key(alert)` — a mesma função que o `reconcile` usa
+para nomear a ficha. É isso que faz o link família → procedimento ser exato: se
+a regra mudar em `core/models.py`, a interface acompanha sozinha, e um teste
+trava essa igualdade.
+
+### Estados ausentes não são erros
+
+Templates invisíveis, alerta sem comentário, sem tags, sem dependência, sem
+procedimento: todos são estados válidos e aparecem como *"não disponível"* ou
+*"não resolvido pela coleta"* — nunca como falha da aplicação.
+
+---
+
+## 17. Segredos na configuração do Zabbix
+
+A primeira coleta real trouxe isto numa expressão de trigger:
+
+```
+avg(/Saq - AWS/aws_check.py[--access-key, "AKIA…", --secret-key, "…"], 5m) >= 5
+```
+
+Uma credencial de produção, em texto claro, dentro do Zabbix. O Zabbix-Wiki não
+criou o problema, mas não pode multiplicá-lo — então a coleta redige o **valor**
+antes de gravar:
+
+```
+--secret-key, "KwoaLm…"   ->   --secret-key, "[REDACTED:3f7a1c9e]"
+```
+
+O nome do parâmetro e a estrutura da expressão ficam. O sufixo é um hash curto
+do valor, e isso importa por três motivos:
+
+* dois segredos **diferentes** continuam gerando textos diferentes, então a
+  detecção de colisão da Fase 1 segue funcionando;
+* o **mesmo** segredo gera sempre o mesmo marcador, então `source_hash` é
+  estável e a ficha não cai em `review_needed` a cada coleta;
+* redigir duas vezes não muda nada (idempotente), então consolidar snapshots já
+  redigidos é seguro.
+
+**Não** são redigidos: macros do Zabbix (`{$PASSWORD}` é referência, não valor)
+nem a palavra solta ("Certificate password expires in 30 days" não tem segredo).
+
+A redação roda **antes** da normalização, então `source_hash` e
+`expression_signature` já nascem calculados sobre o texto redigido. Fichas
+criadas antes desta versão vão acusar `review_needed` uma vez, e depois
+estabilizam. `ZABBIX_REDACT_SECRETS=false` ou `--no-redact` desliga (não
+recomendado); a página **Status da coleta** mostra em vermelho quando está
+desligada, e quantos valores foram redigidos.
+
+**Redigir no snapshot não resolve o problema de origem.** A credencial continua
+em texto claro no Zabbix, visível a quem tem leitura na API. Rotacione-a.
+
+---
+
+## 18. Fluxo completo
+
+```
+     Zabbix  ──read-only──>  collect  ──>  snapshot (redigido)
+                                              │
+                                              ├──>  serve   → interface local
+                                              └──>  reconcile → docs/alerts/
+                                                                    │
+                                                        procedimento escrito
+                                                          por uma pessoa
+```
+
+Do zero até enxergar o ambiente:
+
+```bash
+cp .env.example .env && $EDITOR .env
+python main.py check       # credenciais ok?
+python main.py collect     # ~1 min para 19k triggers
+python main.py serve       # http://127.0.0.1:8000
+```
+
+### Testes
+
+```bash
+python -m unittest discover -s tests -t .
+```
+
+---
+
+## 19. Escopo operacional (o que o NOC analisa)
+
+A coleta real trouxe 18.903 alertas — e um único host, `Control-M PRD
+Votorantim`, responde por ~86% deles. Ele não está sob responsabilidade do NOC
+hoje, mas dominava todos os indicadores: o dashboard virava um retrato do
+Control-M com o resto do ambiente como ruído de fundo.
+
+### Coleta ≠ escopo
+
+```
+      Zabbix inteiro
+            ↓  collect
+    snapshot completo          18.903 alertas · 78 hosts · 21 grupos
+            ↓  camada de escopo
+      escopo NOC               ~2.577 alertas
+            ↓
+  alertas · famílias · hosts · procedimentos · colisões · qualidade
+```
+
+O escopo **não altera o snapshot**: não apaga, não deixa de coletar, não
+reescreve nada em disco. É uma projeção de leitura, reversível a qualquer
+momento. Um teste verifica que os bytes do `alerts.json` não mudam quando se
+troca de escopo.
+
+Ele também **não é segurança**. Qualquer pessoa com acesso à interface troca
+para "Ambiente inteiro" em um clique. É classificação operacional — e a tela
+diz sempre quanto ficou de fora.
+
+### Exclusão, não inclusão — e por quê
+
+Um escopo pode ser "o NOC vê APENAS estes hosts" (inclusão) ou "o NOC vê tudo,
+MENOS estes" (exclusão). A escolha tem consequência real:
+
+| | host novo aparece no Zabbix amanhã |
+|---|---|
+| inclusão | **não aparece** para o NOC. Ninguém é avisado. |
+| exclusão | aparece. O pior caso é ruído visível. |
+
+O escopo `noc` usa **exclusão** de propósito: a falha silenciosa é a mais
+perigosa num painel de plantão. `include_hosts` existe para escopos de
+investigação ("só o Control-M", "só o Cliente X"), onde a lista fechada É a
+intenção — nunca para a visão principal.
+
+### Configuração: `scopes.json`
+
+```json
+{
+  "default": "noc",
+  "scopes": [
+    {
+      "id": "noc",
+      "label": "NOC",
+      "exclude_hosts": ["Control-M PRD Votorantim"],
+      "exclude_host_patterns": []
+    }
+  ]
+}
+```
+
+* `exclude_hosts` — nome exato, sem diferenciar maiúsculas. **Nunca por
+  substring**: excluir `"Control-M PRD"` não derruba `"Control-M PRD Votorantim"`.
+  Um host só sai quando alguém escreveu que ele sai.
+* `exclude_host_patterns` — curingas, para faixas: `["Control-M * Votorantim"]`.
+* O escopo `all` (Ambiente inteiro) existe sempre e não é configurável.
+* Sem o arquivo, existe apenas `all` e nada muda.
+
+O nome do **host** é o que decide, nunca o host group — um host pertence a
+vários grupos, e filtrar por grupo traria ou esconderia alertas por tabela. Os
+grupos são derivados dos hosts que sobraram.
+
+### Decida com o número, não com o nome
+
+Apenas `Control-M PRD Votorantim` foi excluído. Os outros hosts de Control-M
+(`DEV Votorantim`, `SaaS Master`, `server [IN01]`) **não** foram: eles não
+foram medidos, e excluir por semelhança de nome é palpite. Para decidir:
+
+```bash
+python main.py scope
+```
+
+```
+── Efeito do escopo 'noc' ──────────────────────────────
+  ambiente coletado :   18903 alertas,   78 hosts,  521 famílias
+  dentro do escopo  :    2577 alertas,   77 hosts,  519 famílias
+  fora do escopo    :   16326 alertas (86% do ambiente)
+
+── Hosts por volume (top 25) ───────────────────────────────
+   alertas     LLD   %amb  escopo    host
+     16326   16200    86%  FORA      Control-M PRD Votorantim
+       412     380     2%  dentro    Control-M DEV Votorantim
+       ...
+```
+
+Com a coluna de volume na frente, a decisão sobre cada host deixa de ser
+adivinhação.
+
+### Na interface
+
+O seletor de escopo fica na barra lateral, e o escopo viaja na URL:
+
+```
+/alerts?scope=noc&severity=Disaster
+/families?scope=all
+```
+
+Isso mantém a tela compartilhável: colar o link num chamado abre o mesmo
+recorte do outro lado.
+
+O Dashboard mostra **as duas visões** lado a lado — nunca só a do escopo:
+
+```
+Escopo: NOC    2.577 alertas nesta visão    16.326 de 18.903 fora do escopo (86%)    ver ambiente inteiro →
+```
+
+A busca global procura no escopo ativo e **avisa** quando existem resultados
+além dele (`+16.326 alertas fora do escopo NOC`). Dizer "nada encontrado"
+quando há 16 mil fora seria o pior tipo de silêncio.
+
+**Status da coleta** continua descrevendo o ambiente inteiro: é o retrato do
+que existe no Zabbix, e escopo nenhum se aplica ali.
+
+### O que o escopo NÃO faz
+
+* não altera `family_key` — a família continua sendo calculada pelo mesmo
+  mecanismo; o escopo só decide quais alertas participam da visão;
+* não apaga procedimentos de famílias que saíram do escopo — apenas não os
+  contabiliza nos indicadores do NOC. Escrever um procedimento continua
+  permitido mesmo para uma família que o escopo atual não mostra;
+* não apaga colisões. Uma colisão entra na visão quando ao menos uma ocorrência
+  está no escopo, e as demais continuam visíveis marcadas como fora — esconder
+  o outro lado tornaria a colisão impossível de analisar.
+
+### Custo
+
+Medido com 18.834 alertas sintéticos na proporção real (86% num host):
+
+| | |
+|---|---|
+| filtro | uma vez na carga do modelo, não a cada requisição |
+| segundo escopo em memória | ~1,8 s e algumas dezenas de MB (os alertas são compartilhados por referência) |
+| dashboard NOC | 21 ms |
+| busca global com aviso de fora do escopo | 5 ms |
+
+O frontend nunca recebe o que está fora do escopo: o filtro é do read model, e
+a paginação continua no servidor.
+
+---
+
+## 20. Regras operacionais (Fase 4)
+
+### O problema
+
+O escopo NOC deixou 2.577 alertas — mas eles se espalham por **517 famílias
+técnicas**, e família técnica não é unidade de documentação. No host real
+`Vibe - MSTracker-vm Hom`, 36 alertas ocupam 29 famílias:
+
+```
+/: Disk space is low            ┐
+/: Disk space is critically low │
+/: Running out of free inodes   ├─ 5 famílias técnicas
+/: Filesystem has become read-only │
+/boot: Pouco espaço em disco    ┘   1 procedimento
+```
+
+Escrever cinco procedimentos para isso é desperdício. E `High CPU utilization`
+com `Load average is too high` são duas famílias sem nenhuma palavra em comum —
+e a mesma unidade operacional.
+
+### A hierarquia
+
+```
+GRUPO  →  REGRA OPERACIONAL  →  INSTÂNCIAS  →  ALERTAS
+```
+
+A **família técnica continua existindo** e aparece dentro da regra como
+evidência de origem. A camada de regras é adicional, não substitui nada.
+
+### Como o agrupamento é decidido
+
+O sinal mais forte é a **chave do item** — estrutural, não redigida à mão:
+
+| sinal | peso |
+|---|---|
+| chave de item (`vfs.fs.*` = filesystem) | decide |
+| descrição | confirma ou desempata |
+| dependência entre triggers | forte: o Zabbix já os relacionou |
+| protótipo de LLD e instâncias | reforça |
+
+Quando os dois primeiros concordam, a confiança é **alta**. Quando só um fala,
+**média**. Quando nenhum fala, o alerta fica **sem categoria e não entra em
+regra nenhuma** — inventar um agrupamento é pior do que admitir que não sabemos.
+
+No snapshot real: 69% dos alertas classificados por dois sinais, 29% por um,
+1% sem categoria. **517 famílias técnicas → 85 regras.**
+
+### Nada é afirmado
+
+Todo agrupamento é uma **sugestão** com os motivos impressos na tela:
+
+```
+Disco / Filesystem — Vibe Tecnologia
+Confiança: Alta
+
+✓ 23 de 23 alertas confirmados por dois sinais independentes
+✓ 19 de 23 alertas leem itens `vfs.fs.dependent*`
+✓ 9 dependências entre triggers deste agrupamento — o Zabbix já os relaciona
+✓ 3 instâncias da mesma regra (/, /boot, C:)
+✓ reúne 11 famílias técnicas que hoje seriam documentadas separadamente
+```
+
+A explicabilidade não é enfeite. Durante a validação com dados reais ela pegou
+um erro: "Disco / Filesystem" tinha capturado **licenças da Microsoft**, porque
+o prefixo `pusado.` parecia "percentual usado de disco" e era "percentual usado
+de licença". O motivo na tela ("instâncias: FLOW_FREE, Exchange Online…")
+denunciou na hora. Um agrupamento que ninguém consegue explicar é um
+agrupamento que ninguém deveria confirmar.
+
+### O operador decide
+
+```
+[Confirmar agrupamento]  [Manter separado]  [Ignorar sugestão]  [Desfazer]
+```
+
+A decisão vai para `docs/rule_decisions.json` — versionado no git, reversível,
+e **sem tocar no snapshot**. Apagar o arquivo devolve tudo ao estado de
+sugestão.
+
+### Uma regra, uma documentação
+
+O procedimento pertence à **regra**, não à instância nem ao alerta. Uma família
+de LLD com 8.131 jobs vira uma regra com 8.131 instâncias e **uma** ficha. As
+três camadas continuam separadas: observado ≠ validado ≠ sugerido.
+
+### Instâncias
+
+O valor da macro de LLD é extraído alinhando o protótipo com a descrição
+expandida — determinístico, não adivinhado:
+
+```
+protótipo   {#FSNAME}: Disk space is critically low
+alerta      /boot: Disk space is critically low     →  instância "/boot"
+```
+
+Sem protótipo, a instância é procurada nos parâmetros da chave do item, e a
+origem (`prototype` ou `item_key`) vem declarada. Sem nenhum dos dois, o alerta
+não tem instância — estado válido: muita regra se aplica ao host inteiro.
+
+### Fluxo de trabalho
+
+```bash
+python main.py serve
+```
+
+1. **Dashboard** — "o que precisa ser documentado", com o progresso em regras
+2. **Grupos** — escolha o grupo do dia
+3. **Regras do grupo** — ordenadas por quanto rendem, com confiança e motivos
+4. **Página da regra** — motivos, instâncias, famílias, dependências, alertas
+5. **Documentar** — uma ficha para a regra inteira
+
+### Endpoints novos
+
+```
+GET  /api/groups                      grupos como unidade de trabalho
+GET  /api/groups/<id>                 progresso + regras do grupo
+GET  /api/groups/<id>/rules           idem, só as regras
+GET  /api/rules                       todas as regras, com filtros
+GET  /api/rules/<id>                  detalhe completo
+GET  /api/rules/<id>/instances        instâncias, paginadas
+GET  /api/rules/<id>/alerts           alertas (aceita ?instance=)
+GET  /api/rules/<id>/families         famílias técnicas de origem
+GET  /api/rules/<id>/suggestions      por que o agrupamento foi sugerido
+POST /api/rules/<id>/decision         confirmar | split | ignored | candidate
+POST /api/rules/<id>/procedure        documentação da regra   ← escrita local
+```
+
+Todos os endpoints anteriores continuam funcionando sem alteração.
+
+### Custo
+
+Medido no snapshot real (18.903 alertas, escopo NOC de 2.577):
+
+| | |
+|---|---|
+| agrupamento | 0,6 s, uma vez na carga do modelo |
+| `/api/dashboard` | 36 ms |
+| `/api/rules` | 5 ms |
+| página de uma regra | 2 ms |
+| família de 8.131 alertas | 1 regra, instâncias paginadas — nunca 8 mil linhas no DOM |
+
+### Ajustando a taxonomia
+
+As categorias estão em `src/rules/taxonomy.py`, derivadas dos prefixos de item
+que existem no ambiente coletado. Acrescentar uma categoria só muda o
+agrupamento de quem casar com ela. Se um agrupamento parecer errado, o motivo
+na tela diz qual sinal o produziu — e é por ali que se corrige.

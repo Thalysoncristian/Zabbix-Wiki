@@ -1,0 +1,45 @@
+{
+  "_comment": [
+    "Escopos operacionais do Zabbix-Wiki.",
+    "",
+    "A COLETA continua trazendo o ambiente inteiro. Isto aqui só define o que a",
+    "interface mostra por padrão — nenhum dado é apagado, e 'Ambiente inteiro'",
+    "está sempre disponível no seletor do topo.",
+    "",
+    "O escopo 'noc' usa EXCLUSÃO de propósito: assim um host novo no Zabbix",
+    "aparece para o NOC por padrão. Com lista de inclusão ele sumiria em",
+    "silêncio, que é a falha mais perigosa num painel de plantão.",
+    "",
+    "Para decidir o que excluir com dados na mão, rode:  python main.py scope",
+    "Ele lista os hosts por volume de alertas e mostra quem está dentro e fora."
+  ],
+
+  "default": "noc",
+
+  "scopes": [
+    {
+      "id": "noc",
+      "label": "NOC",
+      "description": "Alertas sob responsabilidade operacional do NOC.",
+
+      "exclude_hosts": [
+        "Control-M PRD Votorantim"
+      ],
+
+      "_sobre_exclude_hosts": [
+        "Control-M PRD Votorantim: ~16.326 alertas (~86% do ambiente), quase",
+        "todos LLD de jobs, fora do escopo do NOC hoje.",
+        "",
+        "Os demais hosts de Control-M (DEV Votorantim, SaaS Master, server",
+        "[IN01]) NÃO foram excluídos: eles não foram medidos, e excluir por",
+        "semelhança de nome é palpite. Rode 'python main.py scope' para ver o",
+        "volume de cada um e decida com o número na frente.",
+        "",
+        "Nome exato, sem diferenciar maiúsculas. Para faixas, use",
+        "exclude_host_patterns com curingas: ['Control-M * Votorantim']."
+      ],
+
+      "exclude_host_patterns": []
+    }
+  ]
+}

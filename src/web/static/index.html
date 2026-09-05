@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zabbix-Wiki</title>
+<link rel="stylesheet" href="/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📓</text></svg>">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">ZW</span> Zabbix-Wiki</div>
+    <nav id="nav">
+      <a href="/" data-nav="/">Dashboard</a>
+      <div class="nav-group">Documentação</div>
+      <a href="/groups" data-nav="/groups">Grupos</a>
+      <a href="/rules" data-nav="/rules">Regras</a>
+      <a href="/procedures" data-nav="/procedures">Procedimentos</a>
+      <div class="nav-group">Monitoramento</div>
+      <a href="/hosts" data-nav="/hosts">Hosts</a>
+      <a href="/alerts" data-nav="/alerts">Alertas</a>
+      <a href="/families" data-nav="/families">Famílias técnicas</a>
+      <a href="/host-groups" data-nav="/host-groups">Host Groups</a>
+      <div class="nav-group">Qualidade</div>
+      <a href="/collisions" data-nav="/collisions">Colisões</a>
+      <div class="nav-group">Sistema</div>
+      <a href="/status" data-nav="/status">Status da coleta</a>
+    </nav>
+    <div class="scope-picker">
+      <label for="scope-select">Escopo</label>
+      <select id="scope-select" aria-label="Escopo operacional"></select>
+      <div id="scope-note" class="scope-note muted"></div>
+    </div>
+    <div class="sidebar-foot">
+      <div id="snapshot-badge" class="muted">—</div>
+      <div class="readonly">Somente leitura · não altera o Zabbix</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <form id="search-form" role="search" autocomplete="off">
+        <input id="search-input" type="search" placeholder="Buscar alertas, famílias, hosts, procedimentos…  (/)"
+               aria-label="Busca global">
+      </form>
+      <div id="search-results" class="search-results" hidden></div>
+    </header>
+    <main id="view" class="view" aria-live="polite"><div class="loading">Carregando…</div></main>
+  </div>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

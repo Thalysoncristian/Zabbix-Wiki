@@ -3,10 +3,20 @@
 .env.local
 *.pem
 
-# Saída de coleta (snapshots são dados do ambiente, não código)
+# Saída de coleta (snapshots são dados do ambiente, não código).
+# Um snapshot contém a configuração de monitoramento inteira e pode conter
+# segredos que estavam em texto claro no próprio Zabbix — mesmo com a redação
+# ligada, ele nunca vai para o Git.
 output/
+snapshots/
+*/snapshots/
+zabbix_raw.json
 export/
 import/*.csv
+
+# ATENÇÃO: docs/alerts/*.json é o CONHECIMENTO OPERACIONAL e DEVE ser
+# versionado — é o histórico de quem escreveu qual procedimento e quando.
+# Não adicione docs/ aqui.
 
 # Python
 __pycache__/

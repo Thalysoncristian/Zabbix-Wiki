@@ -3,6 +3,8 @@
     python main.py collect        # coleta -> snapshot bruto + normalizado
     python main.py check          # apenas testa a conexão (read-only)
     python main.py merge          # consolida vários snapshots numa base única
+    python main.py serve          # interface web local de consulta
+    python main.py scope          # hosts por volume: quem está dentro e fora do escopo
     python main.py reconcile      # snapshot -> fichas em docs/alerts/
     python main.py status         # cobertura da documentação
 """
@@ -84,7 +86,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="inclui também os triggers definidos nos templates (por padrão só os dos hosts)",
     )
     collect_cmd.add_argument(
-        "--examples", type=int, default=2, metavar="N", help="quantos alertas de exemplo imprimir ao final (padrão: 2)"
+        "--examples",
+        type=int,
+        default=0,
+        metavar="N",
+        help="imprime N alertas normalizados completos ao final (padrão: 0 — cada um tem ~80 linhas de JSON)",
+    )
+    collect_cmd.add_argument(
+        "--no-redact",
+        action="store_true",
+        help="NÃO redigir segredos encontrados na configuração do Zabbix (não recomendado)",
+    )
+    collect_cmd.add_argument(
+        "--full",
+        action="store_true",
+        help="relatório detalhado: mais colisões, mais famílias e expressões inteiras",
     )
 
     sub.add_parser("check", help="testa a conexão e as credenciais, sem coletar nada")
@@ -100,6 +116,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="diretórios de snapshot a consolidar (padrão: todos os de output/snapshots)",
     )
     mrg.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    mrg.add_argument("--full", action="store_true", help="relatório detalhado")
     mrg.add_argument(
         "--last",
         type=int,
@@ -107,6 +124,27 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="N",
         help="consolida apenas os N snapshots mais recentes",
     )
+
+    srv = sub.add_parser("serve", help="sobe a interface web local de consulta (somente leitura)")
+    srv.add_argument("--host", default="127.0.0.1",
+                     help="endereço de escuta (padrão: 127.0.0.1 — só esta máquina)")
+    srv.add_argument("--port", type=int, default=8000, help="porta (padrão: 8000)")
+    srv.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    srv.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+    srv.add_argument("--snapshot", default=None,
+                     help="caminho de um snapshot específico (padrão: o mais recente não-parcial)")
+    srv.add_argument("--scopes-file", default=None,
+                     help="arquivo de escopos operacionais (padrão: scopes.json)")
+
+    esc = sub.add_parser(
+        "scope",
+        help="lista os escopos e os hosts por volume de alertas (dentro e fora)",
+    )
+    esc.add_argument("--scope", default=None, metavar="ID", help="escopo a avaliar (padrão: o de scopes.json)")
+    esc.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    esc.add_argument("--snapshot", default=None, help="snapshot específico (padrão: o mais recente não-parcial)")
+    esc.add_argument("--scopes-file", default=None, help="arquivo de escopos (padrão: scopes.json)")
+    esc.add_argument("--top", type=int, default=25, metavar="N", help="quantos hosts listar (padrão: 25)")
 
     rec = sub.add_parser(
         "reconcile",
@@ -194,7 +232,7 @@ def _known_trigger_ids(output_dir: str, host_groups: Sequence[str]) -> list[str]
     return []
 
 
-def _gravar(output_dir: str, raw: RawSnapshot, examples: int) -> dict[str, Any]:
+def _gravar(output_dir: str, raw: RawSnapshot, examples: int, *, full: bool = False) -> dict[str, Any]:
     """Normaliza, grava o snapshot e imprime o relatório. Devolve o relatório."""
     normalized = normalize_snapshot(raw)
     paths = write_snapshot(output_dir, raw, normalized)
@@ -203,7 +241,9 @@ def _gravar(output_dir: str, raw: RawSnapshot, examples: int) -> dict[str, Any]:
     report["paths"]["report"] = str(paths["report"])
 
     print()
-    print("\n".join(format_report_lines(report)))
+    print("\n".join(format_report_lines(report, full=full)))
+    if not full:
+        print("(relatório resumido — use --full para o detalhamento, ou -v para o progresso página a página)")
     _print_examples(normalized.alerts, examples)
     return report
 
@@ -235,7 +275,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
         for indice, escopo in enumerate(escopos, start=1):
             if len(escopos) > 1:
                 print(f"\n=== Coleta {indice}/{len(escopos)}: {', '.join(escopo)} ===")
-            progresso = ConsoleProgress()
+            progresso = ConsoleProgress(verbose=args.verbose)
             try:
                 raw = collect_raw(
                     client,
@@ -245,6 +285,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
                     include_template_triggers=args.include_template_triggers,
                     page_size=page_size,
                     known_trigger_ids=_known_trigger_ids(output_dir, escopo) if args.resume else (),
+                    redact_secrets=settings.redact_secrets and not args.no_redact,
                     on_progress=progresso,
                 )
             except BaseException as exc:
@@ -260,8 +301,16 @@ def cmd_collect(args: argparse.Namespace) -> int:
                     )
                 raise
 
+            progresso.finish()
+            redacao = raw.meta.get("redaction") or {}
+            if redacao.get("values_redacted"):
+                print(
+                    f"  ⚠ {redacao['values_redacted']} valor(es) com aparência de segredo foram "
+                    "redigidos. Eles estão em texto claro na configuração do Zabbix — "
+                    "considere rotacioná-los."
+                )
             brutos.append(raw)
-            relatorios.append(_gravar(output_dir, raw, args.examples))
+            relatorios.append(_gravar(output_dir, raw, args.examples, full=args.full))
             parcial = parcial or bool((raw.meta.get("collection") or {}).get("partial"))
     finally:
         client.logout()
@@ -269,7 +318,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
     if args.merge and len(brutos) > 1:
         print("\n=== Consolidando os snapshots desta execução ===")
         consolidado, resumo = merge_raw_snapshots([b.to_dict() for b in brutos])
-        _gravar(output_dir, consolidado, 0)
+        _gravar(output_dir, consolidado, 0, full=args.full)
         _print_merge_summary(resumo)
     elif len(escopos) > 1:
         print("\nPara consolidar estas coletas numa base única:")
@@ -293,11 +342,11 @@ def _print_merge_summary(resumo: dict[str, Any]) -> None:
     conflitos = resumo["conflicts"]
     if conflitos:
         print(f"  ⚠ conflitos (mesmo ID, conteúdo diferente): {len(conflitos)} — venceu a coleta mais recente")
-        for conflito in conflitos[:5]:
+        for conflito in conflitos[:3]:
             campos = ", ".join(conflito["field_hint"][:4]) or "?"
             print(f"    ! {conflito['collection']} {conflito['id']}: {campos}")
-        if len(conflitos) > 5:
-            print(f"    ... e mais {len(conflitos) - 5} conflito(s)")
+        if len(conflitos) > 3:
+            print(f"    ... e mais {len(conflitos) - 3} conflito(s)")
     else:
         print("  conflitos            : nenhum")
     if resumo["partial_sources"]:
@@ -337,7 +386,7 @@ def cmd_merge(args: argparse.Namespace) -> int:
             raise ConfigError(f"Snapshot inválido em {diretorio}: {exc}") from exc
 
     consolidado, resumo = merge_raw_snapshots(payloads)
-    _gravar(output_dir, consolidado, 0)
+    _gravar(output_dir, consolidado, 0, full=args.full)
     _print_merge_summary(resumo)
     return EXIT_OK
 
@@ -372,6 +421,125 @@ def cmd_check(args: argparse.Namespace) -> int:
             print("  Peça ao admin do Zabbix acesso de leitura aos grupos de templates.")
     finally:
         client.logout()
+    return EXIT_OK
+
+
+def cmd_serve(args: argparse.Namespace) -> int:
+    """Sobe a interface web.
+
+    Este processo NÃO abre conexão com o Zabbix e não lê as credenciais: ele
+    serve o snapshot que já está em disco. `load_settings` é usado só para
+    descobrir o diretório de saída — por isso a ausência de token não impede
+    a interface de subir.
+    """
+    from .web.server import serve_forever
+
+    try:
+        settings = load_settings(args.env_file)
+        output_dir = args.output or settings.output_dir
+    except ConfigError:
+        # Sem .env configurado a interface ainda funciona: ela só precisa dos
+        # arquivos do snapshot.
+        output_dir = args.output or "output"
+
+    docs_dir = args.docs_dir or "docs/alerts"
+
+    print(f"→ Snapshots : {output_dir}/snapshots")
+    print(f"→ Fichas    : {docs_dir}")
+    print("→ Somente leitura: este processo não acessa o Zabbix nem lê credenciais.")
+    if args.host not in ("127.0.0.1", "localhost", "::1"):
+        print(
+            f"⚠ Escutando em {args.host}: qualquer pessoa na rede poderá ver toda a "
+            "configuração de monitoramento, sem senha.",
+            file=sys.stderr,
+        )
+
+    def pronto(url: str) -> None:
+        print(f"\n  Interface em {url}")
+        print("  Ctrl+C para encerrar.\n")
+
+    try:
+        serve_forever(
+            output_dir=output_dir, docs_dir=docs_dir, snapshot=args.snapshot,
+            host=args.host, port=args.port, on_ready=pronto, scopes_file=args.scopes_file,
+        )
+    except OSError as exc:
+        raise ConfigError(f"Não foi possível abrir {args.host}:{args.port} — {exc}") from exc
+    return EXIT_OK
+
+
+def cmd_scope(args: argparse.Namespace) -> int:
+    """Mostra o efeito do escopo sobre o snapshot, host a host.
+
+    Existe para que a decisão de excluir um host seja tomada com o volume na
+    frente, e não por semelhança de nome. Excluir "Control-M DEV" porque
+    "Control-M PRD" foi excluído é palpite; ver que ele tem 12 alertas (ou
+    3.000) é informação.
+    """
+    from .scope import load_scopes
+    from .web.readmodel import ReadModel, resolve_snapshot
+
+    try:
+        settings = load_settings(args.env_file)
+        output_dir = args.output or settings.output_dir
+    except ConfigError:
+        output_dir = args.output or "output"
+
+    configuracao = load_scopes(args.scopes_file)
+    escopo = configuracao.get(args.scope)
+    caminho = resolve_snapshot(output_dir, args.snapshot)
+    modelo = ReadModel(caminho, docs_dir="docs/alerts", scope=escopo)
+
+    ambiente = modelo.environment
+    dentro, fora = len(modelo.alerts), len(modelo.out_of_scope)
+
+    print(f"→ Snapshot : {caminho.name}")
+    print(f"→ Escopos  : {configuracao.source or '(nenhum scopes.json — só o ambiente inteiro)'}")
+    print()
+    print("── Escopos configurados ───────────────────────────────────────")
+    for item in configuracao.listar():
+        marca = "→" if item["id"] == escopo.id else " "
+        padrao = " (padrão)" if item["is_default"] else ""
+        regra = ", ".join(item["exclude_hosts"] + item["exclude_host_patterns"]
+                          + item["include_hosts"] + item["include_host_patterns"]) or "sem filtro"
+        print(f"  {marca} {item['id']:<12} {item['label']:<20}{padrao}")
+        print(f"      {item['mode']}: {regra[:90]}")
+
+    print()
+    print(f"── Efeito do escopo '{escopo.id}' ──────────────────────────────")
+    print(f"  ambiente coletado : {ambiente['alerts']:>7} alertas, {ambiente['hosts']:>4} hosts, "
+          f"{ambiente['families']:>4} famílias")
+    print(f"  dentro do escopo  : {dentro:>7} alertas, {len(modelo.hosts):>4} hosts, "
+          f"{len(modelo.families):>4} famílias")
+    proporcao = (fora / ambiente["alerts"] * 100) if ambiente["alerts"] else 0
+    print(f"  fora do escopo    : {fora:>7} alertas ({proporcao:.0f}% do ambiente)")
+
+    # Hosts por volume, com o veredito do escopo em cada linha. Esta é a
+    # tabela que a decisão de exclusão precisa.
+    por_host: dict[str, dict[str, Any]] = {}
+    for alerta in modelo.alerts + modelo.out_of_scope:
+        zbx = alerta.get("zabbix") or {}
+        host = zbx.get("host") or {}
+        nome = host.get("name") or host.get("host") or "(sem host)"
+        registro = por_host.setdefault(nome, {"alertas": 0, "tecnico": host.get("host") or "", "lld": 0})
+        registro["alertas"] += 1
+        if zbx.get("discovered"):
+            registro["lld"] += 1
+
+    ordenados = sorted(por_host.items(), key=lambda kv: -kv[1]["alertas"])
+    print()
+    print(f"── Hosts por volume (top {args.top}) ───────────────────────────────")
+    print(f"  {'alertas':>8} {'LLD':>7}  {'%amb':>5}  escopo    host")
+    for nome, registro in ordenados[: max(1, args.top)]:
+        no_escopo = escopo.includes_host(nome, registro["tecnico"])
+        pct = registro["alertas"] / ambiente["alerts"] * 100 if ambiente["alerts"] else 0
+        print(f"  {registro['alertas']:>8} {registro['lld']:>7}  {pct:>4.0f}%  "
+              f"{'dentro' if no_escopo else 'FORA  '}    {nome[:60]}")
+    if len(ordenados) > args.top:
+        print(f"  ... e mais {len(ordenados) - args.top} host(s). Use --top para ver mais.")
+
+    print()
+    print("Para excluir um host do escopo, edite scopes.json e rode este comando de novo.")
     return EXIT_OK
 
 
@@ -495,6 +663,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_check(args)
         if args.command == "merge":
             return cmd_merge(args)
+        if args.command == "serve":
+            return cmd_serve(args)
+        if args.command == "scope":
+            return cmd_scope(args)
         if args.command == "reconcile":
             return cmd_reconcile(args)
         if args.command == "status":

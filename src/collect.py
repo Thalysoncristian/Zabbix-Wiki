@@ -40,6 +40,7 @@ from datetime import datetime, timezone
 from typing import Any, Callable, Iterable, Sequence
 
 from .progress import ProgressHandler, noop
+from .redact import redact_snapshot_data
 from .zabbix_client import ZabbixError, ZabbixReadOnlyClient, ZabbixTransientError
 
 logger = logging.getLogger(__name__)
@@ -228,6 +229,7 @@ def collect_raw(
     include_template_triggers: bool = False,
     page_size: int | None = None,
     known_trigger_ids: Sequence[str] = (),
+    redact_secrets: bool = True,
     on_step: Callable[[str], None] = lambda _msg: None,
     on_progress: ProgressHandler = noop,
 ) -> RawSnapshot:
@@ -302,6 +304,7 @@ def collect_raw(
             include_template_triggers=include_template_triggers,
             trigger_ids=trigger_ids,
             fatal_error=erro,
+            redact_secrets=redact_secrets,
             data={
                 "triggers": triggers,
                 "triggers_expanded": expanded,
@@ -451,8 +454,15 @@ def _build_snapshot(
     trigger_ids: Sequence[str],
     data: dict[str, list[dict[str, Any]]],
     fatal_error: str = "",
+    redact_secrets: bool = True,
 ) -> RawSnapshot:
-    """Monta o snapshot a partir do que foi coletado — completo ou parcial."""
+    """Monta o snapshot a partir do que foi coletado — completo ou parcial.
+
+    A redação de segredos acontece AQUI, antes de qualquer gravação e antes da
+    normalização: assim `source_hash` e `expression_signature` já nascem
+    calculados sobre o texto redigido, e nenhum segredo chega ao disco nem à
+    interface web.
+    """
     stats.finished_at = utc_now_iso()
     stats.duration_seconds = time.monotonic() - inicio
     stats.retries = client.retries
@@ -479,6 +489,17 @@ def _build_snapshot(
         "collection": stats.to_dict(),
         "discovered_trigger_ids": list(trigger_ids),
     }
+    if redact_secrets:
+        data, relatorio = redact_snapshot_data(data)
+        meta["redaction"] = relatorio
+        if relatorio["values_redacted"]:
+            logger.warning(
+                "%d valor(es) com aparência de segredo foram redigidos no snapshot",
+                relatorio["values_redacted"],
+            )
+    else:
+        meta["redaction"] = {"enabled": False, "values_redacted": 0, "by_collection": {}}
+
     if fatal_error:
         # Uma coleta que morreu no meio é parcial mesmo que nenhuma página
         # individual tenha falhado: faltam fases inteiras.

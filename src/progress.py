@@ -1,23 +1,41 @@
 """Progresso da coleta (item 6 da Fase 2).
 
-Uma coleta de dezenas de milhares de objetos não pode parecer travada. O
-coletor emite eventos (dicionários) e quem chama decide como mostrá-los — a
-CLI imprime no terminal, os testes apenas coletam a lista.
+Uma coleta de dezenas de milhares de objetos não pode parecer travada — mas
+também não pode enterrar o operador em texto. Numa coleta real de 18.903
+triggers, uma linha por página são **203 linhas** que ninguém lê.
+
+Por isso há dois modos:
+
+* **compacto** (padrão): uma linha por FASE, escrita quando a fase termina.
+  Enquanto a fase roda, a mesma linha é reescrita no lugar (só em terminal
+  interativo). Dez linhas no total, em vez de duzentas.
+* **detalhado** (`-v`): uma linha por página, como antes — para depurar uma
+  coleta que está falhando.
+
+Avisos (lote reduzido, objeto não coletado) aparecem nos dois modos, sempre.
+Silenciar um problema para caber na tela seria o pior dos dois mundos.
 
 Regra que vale a pena repetir: **o total só é informado quando é conhecido de
-verdade**. Como a paginação desta integração descobre a lista de IDs antes de
-hidratar (a API do Zabbix não tem `offset`), o total normalmente É conhecido e
-a porcentagem é real. Quando não for, a linha simplesmente não mostra
-porcentagem — nada é estimado ou inventado.
+verdade**. Como a paginação descobre a lista de IDs antes de hidratar (a API do
+Zabbix não tem `offset`), o total normalmente É conhecido e a porcentagem é
+real. Quando não for, a linha não mostra porcentagem — nada é estimado.
 """
 
 from __future__ import annotations
 
+import re
+import shutil
+import sys
 import time
 from typing import Any, Callable
 
 #: Assinatura do callback de progresso usado pelo coletor.
 ProgressHandler = Callable[[dict[str, Any]], None]
+
+#: Mensagens de `step` que só repetem o que a linha da fase já diz
+#: ("18903 triggers coletados", "78 hosts resolvidos"). No modo compacto elas
+#: somem; qualquer coisa que comece com texto — inclusive "Aviso:" — fica.
+_RESUMO_DE_CONTAGEM = re.compile(r"^\d[\d.,]*\s")
 
 
 def noop(_event: dict[str, Any]) -> None:
@@ -36,24 +54,169 @@ def format_duration(seconds: float) -> str:
 
 
 class ConsoleProgress:
-    """Imprime os eventos de coleta no terminal, em uma linha por evento."""
+    """Imprime o progresso da coleta no terminal."""
 
-    def __init__(self, write: Callable[[str], None] = print, *, clock: Callable[[], float] = time.monotonic):
+    def __init__(
+        self,
+        write: Callable[[str], None] = print,
+        *,
+        clock: Callable[[], float] = time.monotonic,
+        verbose: bool = False,
+        interactive: bool | None = None,
+    ):
         self._write = write
         self._clock = clock
         self._start = clock()
+        self.verbose = verbose
+        #: Só reescreve a linha no lugar (`\\r`) em terminal de verdade —
+        #: num arquivo de log ou num pipe isso viraria lixo binário.
+        self._interactive = sys.stdout.isatty() if interactive is None else interactive
         self.events: list[dict[str, Any]] = []
+
+        # Estado da fase em andamento, no modo compacto.
+        self._fase: str = ""
+        self._fase_inicio: float = clock()
+        self._fase_paginas: int = 0
+        self._fase_objetos: int = 0
+        self._fase_total: int = 0
+        self._linha_viva = False
+        self._largura_viva = 0
+        self._grupos: int = 0
 
     @property
     def elapsed(self) -> float:
         return self._clock() - self._start
 
+    # ------------------------------------------------------------------ saída
+    def _largura(self) -> int:
+        """Largura utilizável do terminal.
+
+        A linha de andamento precisa CABER: se ela passar da largura, o
+        terminal quebra em duas e o `\r` seguinte só volta ao início da
+        segunda — deixando a primeira metade como lixo na tela.
+        """
+        try:
+            return max(20, shutil.get_terminal_size(fallback=(80, 24)).columns - 1)
+        except OSError:  # pragma: no cover - terminal sem tamanho
+            return 79
+
+    def _apagar_linha_viva(self) -> None:
+        """Limpa a linha de andamento sobrescrevendo com espaços.
+
+        Espaços em vez do código ANSI `\033[K` de propósito: o console
+        legado do Windows não interpreta ANSI sem VT habilitado, e o
+        operador veria `←[K` no meio do relatório. Espaço funciona em
+        qualquer terminal.
+        """
+        if not self._linha_viva:
+            return
+        sys.stdout.write("\r" + " " * self._largura_viva + "\r")
+        sys.stdout.flush()
+        self._linha_viva = False
+        self._largura_viva = 0
+
+    def _linha(self, texto: str) -> None:
+        """Escreve uma linha definitiva, apagando a linha viva se houver."""
+        self._apagar_linha_viva()
+        self._write(f"  · {texto}")
+
+    def _viva(self, texto: str) -> None:
+        """Reescreve a linha de andamento no lugar (só em terminal)."""
+        if not self._interactive:
+            return
+        linha = f"  · {texto}"[: self._largura()]
+        # Preenche até o comprimento anterior para apagar o resto da linha
+        # que estava lá — de novo, sem depender de ANSI.
+        sys.stdout.write("\r" + linha.ljust(self._largura_viva))
+        sys.stdout.flush()
+        self._largura_viva = len(linha)
+        self._linha_viva = True
+
+    def finish(self) -> None:
+        """Fecha a última fase e limpa a tela — chame ao terminar a coleta."""
+        self._fechar_fase()
+        self._apagar_linha_viva()
+
+    # ------------------------------------------------------------- despachante
     def __call__(self, event: dict[str, Any]) -> None:
         self.events.append(event)
-        linha = self.format(event)
-        if linha:
-            self._write(f"  · {linha}")
 
+        if self.verbose:
+            linha = self.format(event)
+            if linha:
+                self._write(f"  · {linha}")
+            return
+
+        self._compacto(event)
+
+    def _compacto(self, event: dict[str, Any]) -> None:
+        tipo = event.get("event")
+
+        # Avisos nunca são resumidos: são o motivo de existir o progresso.
+        if tipo in ("batch_reduced", "page_failed"):
+            self._linha(self.format(event))
+            return
+
+        if tipo == "page":
+            self._acumular(event)
+            return
+
+        if tipo == "group":
+            self._grupos += 1
+            self._viva(f"escopo: {self._grupos} grupo(s) varrido(s)...")
+            return
+
+        if tipo == "phase":
+            self._viva(f"{event.get('name', '')}: {event.get('detail', '')}")
+            return
+
+        self._fechar_fase()
+
+        if tipo == "scope":
+            grupos = event.get("host_groups") or []
+            alvo = ", ".join(grupos) if grupos else f"ambiente inteiro ({self._grupos} grupos)"
+            self._linha(f"escopo: {alvo} — {event.get('hosts', 0)} hosts")
+            return
+
+        if tipo == "step":
+            mensagem = str(event.get("message", ""))
+            if mensagem and not _RESUMO_DE_CONTAGEM.match(mensagem):
+                self._linha(mensagem)
+
+    def _acumular(self, event: dict[str, Any]) -> None:
+        rotulo = str(event.get("label") or event.get("method") or "")
+        if rotulo != self._fase:
+            self._fechar_fase()
+            self._fase = rotulo
+            self._fase_inicio = self._clock()
+            self._fase_paginas = 0
+            self._fase_objetos = 0
+
+        self._fase_paginas += 1
+        self._fase_objetos = event.get("collected", 0)
+        self._fase_total = event.get("total") or 0
+
+        restantes = event.get("remaining_pages", 0)
+        if self._fase_total:
+            pct = self._fase_objetos / self._fase_total * 100
+            self._viva(f"{self._fase}: {self._fase_objetos}/{self._fase_total} ({pct:.0f}%), "
+                       f"{restantes} página(s) restante(s)")
+        else:
+            self._viva(f"{self._fase}: {self._fase_objetos} objetos")
+
+    def _fechar_fase(self) -> None:
+        if not self._fase:
+            return
+        duracao = format_duration(self._clock() - self._fase_inicio)
+        objetos = "objeto" if self._fase_objetos == 1 else "objetos"
+        paginas = "página" if self._fase_paginas == 1 else "páginas"
+        self._linha(
+            f"{self._fase}: {self._fase_objetos} {objetos} em "
+            f"{self._fase_paginas} {paginas} ({duracao})"
+        )
+        self._fase = ""
+
+    # -------------------------------------------------- formato detalhado (-v)
     def format(self, event: dict[str, Any]) -> str:
         tipo = event.get("event")
         decorrido = format_duration(self.elapsed)
@@ -87,14 +250,14 @@ class ConsoleProgress:
 
         if tipo == "batch_reduced":
             return (
-                f"[{decorrido}] ⚠ {event.get('label', '')}: lote {event.get('from_size')} recusado pelo "
+                f"⚠ {event.get('label', '')}: lote {event.get('from_size')} recusado pelo "
                 f"servidor — dividindo para {event.get('to_size')} e tentando de novo"
             )
 
         if tipo == "page_failed":
             ids = event.get("ids") or []
             return (
-                f"[{decorrido}] ✗ {event.get('label', '')}: {len(ids)} objeto(s) não coletado(s) "
+                f"✗ {event.get('label', '')}: {len(ids)} objeto(s) não coletado(s) "
                 f"após todas as tentativas ({event.get('error', '')})"
             )
 

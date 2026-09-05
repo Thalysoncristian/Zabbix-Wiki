@@ -130,8 +130,6 @@ class TestPageSizeNaCli(unittest.TestCase):
             amb = _Ambiente(tmp)
             codigo, saida = amb.run(["collect", "--page-size", "2", "--examples", "0"])
             self.assertEqual(codigo, cli.EXIT_OK)
-            self.assertIn("tamanho de página             : 2", saida)
-
             lotes = [
                 len(p["params"]["triggerids"])
                 for p in amb.transport.params_called
@@ -140,12 +138,50 @@ class TestPageSizeNaCli(unittest.TestCase):
             self.assertTrue(lotes)
             self.assertLessEqual(max(lotes), 2, "nenhuma página pode exceder o --page-size")
 
-    def test_progresso_mostra_paginas_e_porcentagem(self):
+    def test_progresso_compacto_resume_uma_linha_por_fase(self):
+        """Uma coleta real tem 203 páginas: 203 linhas ninguém lê."""
         with tempfile.TemporaryDirectory() as tmp:
             amb = _Ambiente(tmp)
-            _, saida = amb.run(["collect", "--page-size", "2", "--examples", "0"])
+            _, saida = amb.run(["collect", "--page-size", "1", "--examples", "0"])
+
+            self.assertIn("triggers: 6 objetos em 6 páginas", saida)
+            self.assertNotIn("página 1 (+", saida, "o modo compacto não imprime página a página")
+
+            progresso = [l for l in saida.splitlines() if l.startswith("  · ")]
+            self.assertLess(len(progresso), 15, f"progresso longo demais:\n{chr(10).join(progresso)}")
+
+    def test_verbose_volta_a_imprimir_pagina_a_pagina(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            amb = _Ambiente(tmp)
+            _, saida = amb.run(["-v", "collect", "--page-size", "2", "--examples", "0"])
             self.assertIn("triggers: página 1", saida)
             self.assertIn("(100%)", saida)
+
+    def test_relatorio_compacto_x_full(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            amb = _Ambiente(tmp)
+            _, compacto = amb.run(["collect", "--examples", "0"])
+            _, completo = amb.run(["collect", "--examples", "0", "--full"])
+
+            self.assertLess(len(compacto.splitlines()), len(completo.splitlines()))
+            self.assertIn("--full", compacto)
+            self.assertNotIn("relatório resumido", completo)
+
+    def test_coleta_saudavel_resume_a_secao_de_coleta(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            amb = _Ambiente(tmp)
+            _, saida = amb.run(["collect", "--examples", "0"])
+            self.assertIn("sem retries nem lotes reduzidos", saida)
+            self.assertNotIn("retries por erro transitório", saida, "não enumerar zeros")
+
+    def test_exemplos_nao_saem_por_padrao(self):
+        """Cada exemplo tem ~80 linhas de JSON — não é saída padrão."""
+        with tempfile.TemporaryDirectory() as tmp:
+            amb = _Ambiente(tmp)
+            _, sem = amb.run(["collect"])
+            _, com = amb.run(["collect", "--examples", "1"])
+            self.assertNotIn("Exemplos de alertas normalizados", sem)
+            self.assertIn("Exemplos de alertas normalizados", com)
 
 
 class TestMergeNaCli(unittest.TestCase):

@@ -6,10 +6,10 @@
   "family_key": "rule|control-m-server-disconnected|395959bc",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
-  "last_modified_at": "2026-09-06T00:14:39Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T20:04:13.855613Z",
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "control-m-dev-votorantim|control-m-server-disconnected",
@@ -111,25 +111,35 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
-    "objective": "",
-    "symptoms": [],
-    "actions": [],
+    "doc_status": "documented",
+    "title": "Control-M Server desconectado — Votorantim (DEV)",
+    "objective": "Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.",
+    "symptoms": [
+      "'Control-M: Server disconnected'"
+    ],
+    "actions": [
+      "Abrir INC no ServiceNow e manter retido no NOC",
+      "Acionar o N2 de plantão (Teams, depois ligação) — falha do servidor afeta toda a malha, não um host isolado"
+    ],
     "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "risks": [
+      "Diferente do agente (que afeta um host), falha do SERVIDOR afeta a malha inteira: não aplicar a tolerância de 5/10 minutos da matriz de agentes."
+    ],
+    "meaning": "O servidor Control-M do ambiente DEV perdeu conexão.",
+    "probable_cause": "Queda, erro ou reinício do Control-M/Server, ou atualização de versão.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
-    "requires_ticket": null,
+    "checks_before_action": [
+      "Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs",
+      "Verificar se houve janela de manutenção comunicada"
+    ],
+    "requires_ticket": true,
     "routing": {
-      "team": "",
-      "ticket_category": "",
-      "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "team": "NOC (N1) → N2 Control-M da Master",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Control-M — Servidor",
+      "ticket_queue": "ServiceNow (Votorantim)",
+      "channel": "Teams, com ligação se não houver retorno"
     },
     "schedule_policy": {
       "type": "ref",
@@ -138,12 +148,12 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Rafael Silva)",
+      "channel": "Teams e telefone"
     },
-    "resolution_criteria": "",
-    "notes": "",
-    "imported_from": null,
+    "resolution_criteria": "Servidor Control-M volta a operar e a malha volta a submeter jobs.",
+    "notes": "Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Host 'Control-M DEV Votorantim'. Severidade Information no Zabbix subestima o caso — confirmar com o time se o ambiente DEV justifica o mesmo tratamento do PRD.",
+    "imported_from": "wiki_noc_votorantim_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,
     "last_zabbix_hash_at_review": null

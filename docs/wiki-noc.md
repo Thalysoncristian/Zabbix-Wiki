@@ -54,6 +54,7 @@ flowchart TD
 | **Vibe Tecnologia** | 22 | 22 | 7 |
 | **Chubb** | 3 | 10 | 2 |
 | **Master Support (interno)** | 6 | 6 | 1 |
+| **Votorantim** | 6 | 6 | 2 |
 
 ## 📋 Catálogo por cliente {.tabset}
 
@@ -859,8 +860,209 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 
 **Observações:** Severidade: Alta. SLA: 7 min (5m + 2m). Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
 
+### Votorantim
+
+**6 alerta(s)** em 6 procedimento(s) · 2 host(s): `Control-M DEV Votorantim`, `Control-M PRD Votorantim`
+
+> O host PRD tem ~16 mil alertas de job e está excluído do escopo do NOC em scopes.json — o cliente é monitorado, aquele host específico não é analisado no plantão.
+{.is-info}
+
+#### ☎️ Acionamento
+
+| Fila / Time | Canal | Escalonamento | Alertas cobertos |
+| :--- | :--- | :--- | ---: |
+| **NOC (N1) → N2 Control-M da Master** | ServiceNow (Votorantim) · ServiceNow (Votorantim) — retido no NOC até orientação do N2 | N2 de plantão (Roberto Lima (91) 98431-8588 / Jordy Oliveira (91) 99165-4121) → N3 (Marcos Correa (91) 98455-1564 / Rafael Silva +1 (321) 946-4112) → liderança. Fornecedores: Tivit (Ivan Vargem (11) 98911-0379) e NTT (0800 200 3282 / servicedesk.br@global.ntt) · N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Rafael Silva) | 6 |
+
+#### Jobs e agendamentos
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Agente Control-M desabilitado (disabled) — Votorantim | 🟠 | Control-M PRD Votorantim | FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) — retido no NOC até orientação do N2 | ⏱️ 5 min |
+| Agente Control-M indisponível (Unavailable) — Votorantim | 🟠 | Control-M PRD Votorantim | FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) — retido no NOC até orientação do N2 | ⏱️ 5 min |
+| Control-M Server com erro — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
+| Control-M Server desconectado — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
+| Control-M Server fora do ar — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
+| Control-M Server mudou de versão — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Jobs e agendamentos</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Agente Control-M desabilitado (disabled) — Votorantim | Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O agente está desabilitado no Control-M/Server: pode ser desativação manual (manutenção) ou automática após falhas sucessivas. | Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server. | FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo · FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha · Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda) · IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar) · Capturar os prints da análise — servem para o chamado e para o e-mail |
+| Agente Control-M indisponível (Unavailable) — Votorantim | Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O Control-M/Server perdeu comunicação com o agente: todos os jobs daquele host param de ser submetidos, com efeito cascata na malha (Late Submission e travamento das cadeias dependentes). | Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server. | FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo · FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha · Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda) · IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar) · Capturar os prints da análise — servem para o chamado e para o e-mail |
+| Control-M Server com erro — Votorantim (DEV) | O servidor Control-M do ambiente DEV reportou erro. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
+| Control-M Server desconectado — Votorantim (DEV) | O servidor Control-M do ambiente DEV perdeu conexão. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
+| Control-M Server fora do ar — Votorantim (DEV) | O servidor Control-M do ambiente DEV não está respondendo. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
+| Control-M Server mudou de versão — Votorantim (DEV) | A versão do servidor Control-M do ambiente DEV mudou — normalmente atualização planejada, mas mudança não comunicada merece confirmação. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
+
+</details>
+
+##### 🟠 Agente Control-M desabilitado (disabled) — Votorantim
+
+Restabelecer a submissão de jobs do host afetado e medir o impacto na malha antes de acionar o N2 — sem acionar por intermitência que se resolve sozinha.
+
+**Sintomas:**
+* 'Control-M: Agent [<nome>]: status [Unavailable (1)]' — o Control-M/Server não consegue comunicar com o agente (serviço caído, servidor offline ou bloqueio de rede)
+* 'Control-M: Agent [<nome>]: status disabled' — agente desabilitado no Control-M/Server (manutenção manual ou desativação automática após falhas sucessivas)
+
+**Verificações antes de agir:**
+* FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo
+* FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha
+* Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda)
+* IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar)
+* Capturar os prints da análise — servem para o chamado e para o e-mail
+
+**Ações:**
+* FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha
+* FASE 3 — Esgotado o tempo de tolerância, verificar no MsMonitor se o alerta normalizou:
+* NORMALIZOU: atualizar o INC com a análise de impacto (mesmo que seja 'nenhum job afetado') e ENCERRAR o chamado. Enviar e-mail informativo para noc-controlm@vibetecnologia.com e esp-controlm@vibetecnologia.com (Template 4).
+* PERSISTIU: atualizar o INC com a análise e os prints, enviar e-mail de incidente para os mesmos endereços (Template 5) e acionar o N2 de plantão — primeiro por Teams, sem retorno por ligação. Consultar a escala oficial ESCALA_NOC_2026.xlsx.
+* FASE 4 — Aguardar o retorno do N2: se ele normalizar ou identificar falso positivo, encerrar o chamado com o aval registrado; se confirmar falha de infraestrutura, o N1 transfere para a fila do fornecedor e faz o acionamento conforme orientação dele.
+
+**Riscos e ressalvas:**
+* Parece intencional e não é presumido como tal: `disabled` exige a MESMA tratativa do `Unavailable` até que o N2 ou o fornecedor confirmem manutenção programada.
+* `disabled` NÃO é presumido como manutenção programada: tratar como incidente até que o N2 ou o fornecedor confirmem formalmente. Nunca presumir que foi de propósito.
+* Job travado em Executing/Unknown é o caso mais delicado: o painel mostra amarelo, mas a execução real pode já ter falhado ou concluído no servidor de origem.
+* Se o N2 de plantão não atender: acionar o outro analista de N2, depois o N3 (Marcos Paulo Correa / Rafael Ferreira da Silva) e, em último caso, a liderança da Master. Registrar no chamado TODAS as tentativas, com horário de cada uma.
+
+**Como validar:** Agente volta a aparecer disponível no Control-M e os jobs que estavam em Wait Host voltam a ser submetidos.
+
+**Critério de resolução:** Agente volta a comunicar com o Control-M/Server e a malha volta a submeter os jobs do host. Se normalizou dentro da tolerância, o INC é encerrado pelo próprio N1.
+
+**Observações:** Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Operação 24x7. TOLERÂNCIA ANTES DE ACIONAR O N2 — Host Group (10 min de tolerância): brsaowvapp24vc/25vc/26vc (Tivit, DataFactory) · brsaowvqlk06vc/07vc/08vc (Tivit, Qliksense) · vidb0302/0303/0304 (Tivit, SAP BW) · awslcctrlmagt01 a 07 (NTT, SAP S/4) · awslcctrlmprd02 (NTT, Produção). ISOLADO (5 min de tolerância): brsaowvcgn02vc (Tivit, Cognos) · brsaowsfs01vc (Tivit, Transf. Arquivos) · brccqwsfs01vc (Tivit, SFTP ONS) · awslcctrlmprd04 (NTT, Produção). Os agentes vide0502ctm a vide0508ctm constam como permanentemente desabilitados e não devem gerar chamado. Acesso ao Control-M: VPN FortiClient da Fábrica, com ZTNA/Netskope como contingência (procedimento completo na wiki do NOC). Chamados no ServiceNow da Votorantim, obrigatoriamente como Incidente (INC), nunca Requisição.
+
+**Evidências obrigatórias no chamado:** Print do filtro de impacto no Monitoring (Host = agente) · Nome do agente e sua arquitetura (Isolado ou Host Group) · Horário de início da ocorrência · Fornecedor responsável (Tivit ou NTT)
+
+##### 🟠 Agente Control-M indisponível (Unavailable) — Votorantim
+
+Restabelecer a submissão de jobs do host afetado e medir o impacto na malha antes de acionar o N2 — sem acionar por intermitência que se resolve sozinha.
+
+**Sintomas:**
+* 'Control-M: Agent [<nome>]: status [Unavailable (1)]' — o Control-M/Server não consegue comunicar com o agente (serviço caído, servidor offline ou bloqueio de rede)
+* 'Control-M: Agent [<nome>]: status disabled' — agente desabilitado no Control-M/Server (manutenção manual ou desativação automática após falhas sucessivas)
+
+**Verificações antes de agir:**
+* FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo
+* FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha
+* Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda)
+* IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar)
+* Capturar os prints da análise — servem para o chamado e para o e-mail
+
+**Ações:**
+* FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha
+* FASE 3 — Esgotado o tempo de tolerância, verificar no MsMonitor se o alerta normalizou:
+* NORMALIZOU: atualizar o INC com a análise de impacto (mesmo que seja 'nenhum job afetado') e ENCERRAR o chamado. Enviar e-mail informativo para noc-controlm@vibetecnologia.com e esp-controlm@vibetecnologia.com (Template 4).
+* PERSISTIU: atualizar o INC com a análise e os prints, enviar e-mail de incidente para os mesmos endereços (Template 5) e acionar o N2 de plantão — primeiro por Teams, sem retorno por ligação. Consultar a escala oficial ESCALA_NOC_2026.xlsx.
+* FASE 4 — Aguardar o retorno do N2: se ele normalizar ou identificar falso positivo, encerrar o chamado com o aval registrado; se confirmar falha de infraestrutura, o N1 transfere para a fila do fornecedor e faz o acionamento conforme orientação dele.
+
+**Riscos e ressalvas:**
+* `disabled` NÃO é presumido como manutenção programada: tratar como incidente até que o N2 ou o fornecedor confirmem formalmente. Nunca presumir que foi de propósito.
+* Job travado em Executing/Unknown é o caso mais delicado: o painel mostra amarelo, mas a execução real pode já ter falhado ou concluído no servidor de origem.
+* Se o N2 de plantão não atender: acionar o outro analista de N2, depois o N3 (Marcos Paulo Correa / Rafael Ferreira da Silva) e, em último caso, a liderança da Master. Registrar no chamado TODAS as tentativas, com horário de cada uma.
+
+**Como validar:** Agente volta a aparecer disponível no Control-M e os jobs que estavam em Wait Host voltam a ser submetidos.
+
+**Critério de resolução:** Agente volta a comunicar com o Control-M/Server e a malha volta a submeter os jobs do host. Se normalizou dentro da tolerância, o INC é encerrado pelo próprio N1.
+
+**Observações:** Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Operação 24x7. TOLERÂNCIA ANTES DE ACIONAR O N2 — Host Group (10 min de tolerância): brsaowvapp24vc/25vc/26vc (Tivit, DataFactory) · brsaowvqlk06vc/07vc/08vc (Tivit, Qliksense) · vidb0302/0303/0304 (Tivit, SAP BW) · awslcctrlmagt01 a 07 (NTT, SAP S/4) · awslcctrlmprd02 (NTT, Produção). ISOLADO (5 min de tolerância): brsaowvcgn02vc (Tivit, Cognos) · brsaowsfs01vc (Tivit, Transf. Arquivos) · brccqwsfs01vc (Tivit, SFTP ONS) · awslcctrlmprd04 (NTT, Produção). Os agentes vide0502ctm a vide0508ctm constam como permanentemente desabilitados e não devem gerar chamado. Acesso ao Control-M: VPN FortiClient da Fábrica, com ZTNA/Netskope como contingência (procedimento completo na wiki do NOC). Chamados no ServiceNow da Votorantim, obrigatoriamente como Incidente (INC), nunca Requisição.
+
+**Evidências obrigatórias no chamado:** Print do filtro de impacto no Monitoring (Host = agente) · Nome do agente e sua arquitetura (Isolado ou Host Group) · Horário de início da ocorrência · Fornecedor responsável (Tivit ou NTT)
+
+##### 🔵 Control-M Server com erro — Votorantim (DEV)
+
+Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
+
+**Sintomas:**
+* 'Control-M: Server error'
+
+**Verificações antes de agir:**
+* Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs
+* Verificar se houve janela de manutenção comunicada
+
+**Ações:**
+* Abrir INC no ServiceNow e manter retido no NOC
+* Acionar o N2 de plantão (Teams, depois ligação) — falha do servidor afeta toda a malha, não um host isolado
+
+**Riscos e ressalvas:**
+* Diferente do agente (que afeta um host), falha do SERVIDOR afeta a malha inteira: não aplicar a tolerância de 5/10 minutos da matriz de agentes.
+
+**Critério de resolução:** Servidor Control-M volta a operar e a malha volta a submeter jobs.
+
+**Observações:** Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Host 'Control-M DEV Votorantim'. Severidade Information no Zabbix subestima o caso — confirmar com o time se o ambiente DEV justifica o mesmo tratamento do PRD.
+
+##### 🔵 Control-M Server desconectado — Votorantim (DEV)
+
+Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
+
+**Sintomas:**
+* 'Control-M: Server disconnected'
+
+**Verificações antes de agir:**
+* Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs
+* Verificar se houve janela de manutenção comunicada
+
+**Ações:**
+* Abrir INC no ServiceNow e manter retido no NOC
+* Acionar o N2 de plantão (Teams, depois ligação) — falha do servidor afeta toda a malha, não um host isolado
+
+**Riscos e ressalvas:**
+* Diferente do agente (que afeta um host), falha do SERVIDOR afeta a malha inteira: não aplicar a tolerância de 5/10 minutos da matriz de agentes.
+
+**Critério de resolução:** Servidor Control-M volta a operar e a malha volta a submeter jobs.
+
+**Observações:** Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Host 'Control-M DEV Votorantim'. Severidade Information no Zabbix subestima o caso — confirmar com o time se o ambiente DEV justifica o mesmo tratamento do PRD.
+
+##### 🔵 Control-M Server fora do ar — Votorantim (DEV)
+
+Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
+
+**Sintomas:**
+* 'Control-M: Server is down'
+
+**Verificações antes de agir:**
+* Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs
+* Verificar se houve janela de manutenção comunicada
+
+**Ações:**
+* Abrir INC no ServiceNow e manter retido no NOC
+* Acionar o N2 de plantão (Teams, depois ligação) — falha do servidor afeta toda a malha, não um host isolado
+
+**Riscos e ressalvas:**
+* Diferente do agente (que afeta um host), falha do SERVIDOR afeta a malha inteira: não aplicar a tolerância de 5/10 minutos da matriz de agentes.
+
+**Critério de resolução:** Servidor Control-M volta a operar e a malha volta a submeter jobs.
+
+**Observações:** Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Host 'Control-M DEV Votorantim'. Severidade Information no Zabbix subestima o caso — confirmar com o time se o ambiente DEV justifica o mesmo tratamento do PRD.
+
+##### 🔵 Control-M Server mudou de versão — Votorantim (DEV)
+
+Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
+
+**Sintomas:**
+* 'Control-M: Server version has changed'
+
+**Verificações antes de agir:**
+* Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs
+* Verificar se houve janela de manutenção comunicada
+
+**Ações:**
+* Abrir INC no ServiceNow e manter retido no NOC
+* Acionar o N2 de plantão (Teams, depois ligação) — falha do servidor afeta toda a malha, não um host isolado
+
+**Riscos e ressalvas:**
+* Diferente do agente (que afeta um host), falha do SERVIDOR afeta a malha inteira: não aplicar a tolerância de 5/10 minutos da matriz de agentes.
+
+**Critério de resolução:** Servidor Control-M volta a operar e a malha volta a submeter jobs.
+
+**Observações:** Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Host 'Control-M DEV Votorantim'. Severidade Information no Zabbix subestima o caso — confirmar com o time se o ambiente DEV justifica o mesmo tratamento do PRD.
+
 ---
 
-Gerado em 2026-09-06T19:53:48Z · 31 procedimento(s) validado(s) cobrindo 38 alerta(s) em 3 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T20:05:08Z · 37 procedimento(s) validado(s) cobrindo 44 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
 
 Fora desta página, por serem atendidos por outro NOC: Banpará.

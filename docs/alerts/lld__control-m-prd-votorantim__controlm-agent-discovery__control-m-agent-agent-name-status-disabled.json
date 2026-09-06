@@ -6,10 +6,10 @@
   "family_key": "lld|control-m-prd-votorantim|controlm-agent-discovery|control-m-agent-agent-name-status-disabled",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
-  "last_modified_at": "2026-09-06T00:14:39Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T20:04:04.079009Z",
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt01-status-disabled",
@@ -277,39 +277,64 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
-    "objective": "",
-    "symptoms": [],
-    "actions": [],
-    "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "doc_status": "documented",
+    "title": "Agente Control-M desabilitado (disabled) — Votorantim",
+    "objective": "Restabelecer a submissão de jobs do host afetado e medir o impacto na malha antes de acionar o N2 — sem acionar por intermitência que se resolve sozinha.",
+    "symptoms": [
+      "'Control-M: Agent [<nome>]: status [Unavailable (1)]' — o Control-M/Server não consegue comunicar com o agente (serviço caído, servidor offline ou bloqueio de rede)",
+      "'Control-M: Agent [<nome>]: status disabled' — agente desabilitado no Control-M/Server (manutenção manual ou desativação automática após falhas sucessivas)"
+    ],
+    "actions": [
+      "FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha",
+      "FASE 3 — Esgotado o tempo de tolerância, verificar no MsMonitor se o alerta normalizou:",
+      "  NORMALIZOU: atualizar o INC com a análise de impacto (mesmo que seja 'nenhum job afetado') e ENCERRAR o chamado. Enviar e-mail informativo para noc-controlm@vibetecnologia.com e esp-controlm@vibetecnologia.com (Template 4).",
+      "  PERSISTIU: atualizar o INC com a análise e os prints, enviar e-mail de incidente para os mesmos endereços (Template 5) e acionar o N2 de plantão — primeiro por Teams, sem retorno por ligação. Consultar a escala oficial ESCALA_NOC_2026.xlsx.",
+      "FASE 4 — Aguardar o retorno do N2: se ele normalizar ou identificar falso positivo, encerrar o chamado com o aval registrado; se confirmar falha de infraestrutura, o N1 transfere para a fila do fornecedor e faz o acionamento conforme orientação dele."
+    ],
+    "validation": "Agente volta a aparecer disponível no Control-M e os jobs que estavam em Wait Host voltam a ser submetidos.",
+    "risks": [
+      "Parece intencional e não é presumido como tal: `disabled` exige a MESMA tratativa do `Unavailable` até que o N2 ou o fornecedor confirmem manutenção programada.",
+      "`disabled` NÃO é presumido como manutenção programada: tratar como incidente até que o N2 ou o fornecedor confirmem formalmente. Nunca presumir que foi de propósito.",
+      "Job travado em Executing/Unknown é o caso mais delicado: o painel mostra amarelo, mas a execução real pode já ter falhado ou concluído no servidor de origem.",
+      "Se o N2 de plantão não atender: acionar o outro analista de N2, depois o N3 (Marcos Paulo Correa / Rafael Ferreira da Silva) e, em último caso, a liderança da Master. Registrar no chamado TODAS as tentativas, com horário de cada uma."
+    ],
+    "meaning": "Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O agente está desabilitado no Control-M/Server: pode ser desativação manual (manutenção) ou automática após falhas sucessivas.",
+    "probable_cause": "Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
-    "requires_ticket": null,
+    "checks_before_action": [
+      "FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo",
+      "FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha",
+      "Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda)",
+      "IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar)",
+      "Capturar os prints da análise — servem para o chamado e para o e-mail"
+    ],
+    "requires_ticket": true,
     "routing": {
-      "team": "",
-      "ticket_category": "",
-      "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "team": "NOC (N1) → N2 Control-M da Master",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Control-M — Agente indisponível",
+      "ticket_queue": "ServiceNow (Votorantim) — retido no NOC até orientação do N2",
+      "channel": "Teams, com ligação se não houver retorno"
     },
     "schedule_policy": {
       "type": "ref",
       "name": "default_business_hours"
     },
-    "evidence_required": [],
+    "evidence_required": [
+      "Print do filtro de impacto no Monitoring (Host = agente)",
+      "Nome do agente e sua arquitetura (Isolado ou Host Group)",
+      "Horário de início da ocorrência",
+      "Fornecedor responsável (Tivit ou NTT)"
+    ],
     "escalation": {
-      "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "after_minutes": 5,
+      "to": "N2 de plantão (Roberto Lima (91) 98431-8588 / Jordy Oliveira (91) 99165-4121) → N3 (Marcos Correa (91) 98455-1564 / Rafael Silva +1 (321) 946-4112) → liderança. Fornecedores: Tivit (Ivan Vargem (11) 98911-0379) e NTT (0800 200 3282 / servicedesk.br@global.ntt)",
+      "channel": "Teams e telefone"
     },
-    "resolution_criteria": "",
-    "notes": "",
-    "imported_from": null,
+    "resolution_criteria": "Agente volta a comunicar com o Control-M/Server e a malha volta a submeter os jobs do host. Se normalizou dentro da tolerância, o INC é encerrado pelo próprio N1.",
+    "notes": "Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Operação 24x7. TOLERÂNCIA ANTES DE ACIONAR O N2 — Host Group (10 min de tolerância): brsaowvapp24vc/25vc/26vc (Tivit, DataFactory) · brsaowvqlk06vc/07vc/08vc (Tivit, Qliksense) · vidb0302/0303/0304 (Tivit, SAP BW) · awslcctrlmagt01 a 07 (NTT, SAP S/4) · awslcctrlmprd02 (NTT, Produção). ISOLADO (5 min de tolerância): brsaowvcgn02vc (Tivit, Cognos) · brsaowsfs01vc (Tivit, Transf. Arquivos) · brccqwsfs01vc (Tivit, SFTP ONS) · awslcctrlmprd04 (NTT, Produção). Os agentes vide0502ctm a vide0508ctm constam como permanentemente desabilitados e não devem gerar chamado. Acesso ao Control-M: VPN FortiClient da Fábrica, com ZTNA/Netskope como contingência (procedimento completo na wiki do NOC). Chamados no ServiceNow da Votorantim, obrigatoriamente como Incidente (INC), nunca Requisição.",
+    "imported_from": "wiki_noc_votorantim_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,
     "last_zabbix_hash_at_review": null

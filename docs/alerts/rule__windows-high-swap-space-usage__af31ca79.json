@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-high-swap-space-usage|af31ca79",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-high-swap-space-usage|af31ca79",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-high-swap-space-usage",
+      "triggerid": "77232",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: High swap space usage"
+    },
+    {
+      "alert_key": "windows-bob|windows-high-swap-space-usage",
+      "triggerid": "35664",
+      "host": "Windows bob",
+      "description": "Windows: High swap space usage"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77232",
+    "description_raw": "Windows: High swap space usage",
+    "description_normalized": "windows-high-swap-space-usage",
+    "expression_raw": "{95472}<{$SWAP.PFREE.MIN.WARN} and {95473}>0",
+    "expression_expanded": "max(/SRV_INCONTROL_2026/system.swap.pfree,5m)<\"{$SWAP.PFREE.MIN.WARN}\" and last(/SRV_INCONTROL_2026/system.swap.size[,total])>0",
+    "expression_signature": "max(/{HOST}/system.swap.pfree,5m)<\"{MACRO}\"andlast(/{HOST}/system.swap.size[,total])>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Free: {ITEM.LASTVALUE1}, total: {ITEM.LASTVALUE2}",
+    "event_name": "Windows: High swap space usage (less than {$SWAP.PFREE.MIN.WARN}% free)",
+    "comments": "This trigger is ignored, if there is no swap configured",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "77234",
+        "description": "Windows: High memory utilization",
+        "host": "SRV_INCONTROL_2026"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103767",
+        "key_": "system.swap.pfree",
+        "name": "Windows: Free swap space in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "103757",
+        "key_": "system.swap.size[,total]",
+        "name": "Windows: Total swap space",
+        "units": "B",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:60feb610c8df2faf9174c4082a9fb3bc68b96064536e8071ef3698df7d203ad6",
+    "family_source_hash": "sha256:1e8e0a4668db7ccf904d647e180fff90392ad6629ee20c8304c9e8073afc2bfd",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

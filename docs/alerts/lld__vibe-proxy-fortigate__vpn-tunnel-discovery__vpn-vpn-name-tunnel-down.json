@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|vpn-tunnel-discovery|vpn-vpn-name-tunnel-down",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|vpn-tunnel-discovery|vpn-vpn-name-tunnel-down",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-voto1-tunnel-down",
+      "triggerid": "105629",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN MASTER_VOTO1: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-voto1-tunnel-down",
+      "triggerid": "106179",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN MASTER_VOTO1: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-voto1-tunnel-down",
+      "triggerid": "464593",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN MASTER_VOTO1: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-voto1-tunnel-down",
+      "triggerid": "464595",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN MASTER_VOTO1: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-voto1-tunnel-down",
+      "triggerid": "464611",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN MASTER_VOTO1: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-voto1-tunnel-down",
+      "triggerid": "464612",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN MASTER_VOTO1: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-algar2-tunnel-down",
+      "triggerid": "105845",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN Master_Algar2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-algar3-tunnel-down",
+      "triggerid": "105846",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN Master_Algar3: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-master-algar-tunnel-down",
+      "triggerid": "105844",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN Master_Algar: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-vibe-banpara-01-tunnel-down",
+      "triggerid": "42732",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VIBE_BANPARA_01: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "105650",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "106178",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "464594",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "464596",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "464609",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "464610",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "464613",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "465161",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|vpn-voto2-tunnel-down",
+      "triggerid": "465162",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "VPN VOTO2: Tunnel down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "105650",
+    "description_raw": "VPN VOTO2: Tunnel down",
+    "description_normalized": "vpn-voto2-tunnel-down",
+    "expression_raw": "{$VPN.STATE.CONTROL:\"VOTO2\"}=1 and {125080}=1 and ({125081}<>{125082})",
+    "expression_expanded": "\"{$VPN.STATE.CONTROL:\\\"VOTO2\\\"}\"=1 and last(/Vibe - Proxy Fortigate/vpn.tunnel.status[fgVpnTunEntStatus.180.2])=1 and (last(/Vibe - Proxy Fortigate/vpn.tunnel.status[fgVpnTunEntStatus.180.2],#1)<>last(/Vibe - Proxy Fortigate/vpn.tunnel.status[fgVpnTunEntStatus.180.2],#2))",
+    "expression_signature": "\"{MACRO}\"=1andlast(/{HOST}/vpn.tunnel.status[fgVpnTunEntStatus.180.2])=1and(last(/{HOST}/vpn.tunnel.status[fgVpnTunEntStatus.180.2],#1)<>last(/{HOST}/vpn.tunnel.status[fgVpnTunEntStatus.180.2],#2))",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{125080}<>1 or {$VPN.STATE.CONTROL:\"VOTO2\"}=0",
+    "recovery_expression_expanded": "last(/Vibe - Proxy Fortigate/vpn.tunnel.status[fgVpnTunEntStatus.180.2])<>1 or \"{$VPN.STATE.CONTROL:\\\"VOTO2\\\"}\"=0",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current status: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Trigger criada a partir do chamado: 1025-000764\r\n\r\nThis trigger expression works as follows:\r\n1. It can be triggered if the current tunnel state is down.\r\n2. `{$VPN.STATE.CONTROL}=1` - a user can redefine the context macro to \"0\", marking this notification as not important. No new trigger will be fired if this tunnel is down.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52469",
+      "name": "VPN tunnel discovery",
+      "key_": "vpn.tunnel.discovery"
+    },
+    "prototype_description": "VPN {#VPN.NAME}: Tunnel down",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "174324",
+        "key_": "vpn.tunnel.status[fgVpnTunEntStatus.180.2]",
+        "name": "VPN VOTO2: Tunnel Status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:3d1950a0dc7ef4ea324672ba8baf32e1a026654ae9a7df726e68c2edc87d8d29",
+    "family_source_hash": "sha256:aadc4a97fc9c665775f7a1771aed2a7d71447acdc878e6ca2207d21dd1ae5d6b",
+    "representative_of_family": true,
+    "family_instance_count": 6
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

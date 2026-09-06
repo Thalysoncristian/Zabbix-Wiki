@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|api-vibe-processamento-indisponivel|1fa51970",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|api-vibe-processamento-indisponivel|1fa51970",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T02:03:06.153336Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [
+    {
+      "alert_key": "chubb-links-de-api|api-vibe-processamento-indisponivel",
+      "triggerid": "24488",
+      "host": "Chubb - Links de API",
+      "description": "API - Vibe (processamento) indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24488",
+    "description_raw": "API - Vibe (processamento) indisponível",
+    "description_normalized": "api-vibe-processamento-indisponivel",
+    "expression_raw": "{39019}=0 or {39020}=1",
+    "expression_expanded": "last(/Chubb - Links de API/vibe.api)=0 or nodata(/Chubb - Links de API/vibe.api,10h)=1",
+    "expression_signature": "last(/{HOST}/vibe.api)=0ornodata(/{HOST}/vibe.api,10h)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10705",
+      "host": "Chubb - Links de API",
+      "name": "Chubb - Links de API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51878",
+        "key_": "vibe.api",
+        "name": "Vibe API",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h;0/1-7,02:00-09:00;10m/1-7,09:00-09:30"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:9a66bcf450b81ae732178ca74c97fcd7d73ae5716e04aeca76b7539d53eda26b",
+    "family_source_hash": "sha256:8158c110c92ccd2e7fe0af1045c455c2eee48844f851361a21110d218c9ee476",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "API - Vibe (processamento) indisponivel — SEM PROCEDIMENTO NO MANUAL",
+    "objective": "",
+    "symptoms": [
+      "'API - Vibe (processamento) indisponivel'"
+    ],
+    "actions": [],
+    "validation": "",
+    "risks": [
+      "GAP: nenhuma orientacao existe hoje para este alerta. Se disparar, o operador nao tem o que seguir."
+    ],
+    "meaning": "Alerta real no host 'Chubb - Links de API', nao mencionado em nenhuma secao do manual 'Control-M SaaS Chubb'.",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Nao coberto -- precisa de procedimento do time.",
+    "imported_from": "wiki_manual_chubb_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

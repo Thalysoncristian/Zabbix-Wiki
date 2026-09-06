@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-zabbix-proxy|vfs-dev-discovery|devname-disk-read-write-request-responses-are-too-high",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-zabbix-proxy|vfs-dev-discovery|devname-disk-read-write-request-responses-are-too-high",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:35:00.363960Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|sda-disk-read-write-request-responses-are-too-high",
+      "triggerid": "117403",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "sda: Disk read/write request responses are too high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "117403",
+    "description_raw": "sda: Disk read/write request responses are too high",
+    "description_normalized": "sda-disk-read-write-request-responses-are-too-high",
+    "expression_raw": "{137028} > {$VFS.DEV.READ.AWAIT.WARN:\"sda\"} or {137029} > {$VFS.DEV.WRITE.AWAIT.WARN:\"sda\"}",
+    "expression_expanded": "min(/Vibe - Zabbix-Proxy/vfs.dev.read.await[sda],15m) > \"{$VFS.DEV.READ.AWAIT.WARN:\\\"sda\\\"}\" or min(/Vibe - Zabbix-Proxy/vfs.dev.write.await[sda],15m) > \"{$VFS.DEV.WRITE.AWAIT.WARN:\\\"sda\\\"}\"",
+    "expression_signature": "min(/{HOST}/vfs.dev.read.await[sda],15m)>\"{MACRO}\"ormin(/{HOST}/vfs.dev.write.await[sda],15m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "sda: Disk read/write request responses are too high (read > {$VFS.DEV.READ.AWAIT.WARN:\"sda\"} ms for 15m or write > {$VFS.DEV.WRITE.AWAIT.WARN:\"sda\"} ms for 15m)",
+    "comments": "This trigger might indicate the disk `sda` saturation.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51046",
+      "name": "Block devices discovery",
+      "key_": "vfs.dev.discovery"
+    },
+    "prototype_description": "{#DEVNAME}: Disk read/write request responses are too high",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "225660",
+        "key_": "vfs.dev.read.await[sda]",
+        "name": "sda: Disk read request avg waiting time (r_await)",
+        "units": "!ms",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      },
+      {
+        "itemid": "225661",
+        "key_": "vfs.dev.write.await[sda]",
+        "name": "sda: Disk write request avg waiting time (w_await)",
+        "units": "!ms",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:613eb37f30e09d2bd6d19e6cf0d3a3e0e23f19b59d47c9352155139fd5b518b9",
+    "family_source_hash": "sha256:11c012340670bb462fd60786da63c5bfab998847af8b49d23bbf15cab92facef",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Disco (sda) com tempo de resposta alto no Zabbix-Proxy",
+    "objective": "",
+    "symptoms": [
+      "'sda: Disk read/write request responses are too high' no host Vibe - Zabbix-Proxy"
+    ],
+    "actions": [
+      "Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales)."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Tempo de espera (await) muito alto no disco do servidor.",
+    "probable_cause": "Gargalo de I/O no disco.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar uso de I/O e processos consumindo disco no host"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Tempo de resposta do disco volta ao normal.",
+    "notes": "Severidade: Alta. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

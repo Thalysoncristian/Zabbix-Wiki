@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-mstracker-vm-hom|net-if-discovery|interface-ifname-high-error-rate",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-mstracker-vm-hom|net-if-discovery|interface-ifname-high-error-rate",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-mstracker-vm-hom|interface-ens160-high-error-rate",
+      "triggerid": "42110",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "Interface ens160: High error rate"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "42110",
+    "description_raw": "Interface ens160: High error rate",
+    "description_normalized": "interface-ens160-high-error-rate",
+    "expression_raw": "{57292}>{$IF.ERRORS.WARN:\"ens160\"}\r\nor {57293}>{$IF.ERRORS.WARN:\"ens160\"}",
+    "expression_expanded": "min(/mstracker-vm/net.if.in[\"ens160\",errors],5m)>\"{$IF.ERRORS.WARN:\\\"ens160\\\"}\"\r\nor min(/mstracker-vm/net.if.out[\"ens160\",errors],5m)>\"{$IF.ERRORS.WARN:\\\"ens160\\\"}\"",
+    "expression_signature": "min(/{HOST}/net.if.in[\"ens160\",errors],5m)>\"{MACRO}\"ormin(/{HOST}/net.if.out[\"ens160\",errors],5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{57294}<{$IF.ERRORS.WARN:\"ens160\"}*0.8\r\nand {57295}<{$IF.ERRORS.WARN:\"ens160\"}*0.8",
+    "recovery_expression_expanded": "max(/mstracker-vm/net.if.in[\"ens160\",errors],5m)<\"{$IF.ERRORS.WARN:\\\"ens160\\\"}\"*0.8\r\nand max(/mstracker-vm/net.if.out[\"ens160\",errors],5m)<\"{$IF.ERRORS.WARN:\\\"ens160\\\"}\"*0.8",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "errors in: {ITEM.LASTVALUE1}, errors out: {ITEM.LASTVALUE2}",
+    "event_name": "Interface ens160: High error rate (>{$IF.ERRORS.WARN:\"ens160\"} for 5m)",
+    "comments": "It recovers when it is below 80% of the `{$IF.ERRORS.WARN:\"ens160\"}` threshold.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "63910",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}: High error rate",
+    "dependencies": [
+      {
+        "triggerid": "42112",
+        "description": "Interface ens160: Link down",
+        "host": "Vibe - MSTracker-vm Hom"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63950",
+        "key_": "net.if.in[\"ens160\",errors]",
+        "name": "Interface ens160: Inbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "63953",
+        "key_": "net.if.out[\"ens160\",errors]",
+        "name": "Interface ens160: Outbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:69f5ff9d78fbfa67d605c7070c9c13bf304cbd5b1a5e9a7ec0c5bb0000e03a96",
+    "family_source_hash": "sha256:fcda0c42e1e689efd0aa594f6e61153a6af719a621e90706613d507cecc560f9",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-no-snmp-data-collection|5709fab5",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-no-snmp-data-collection|5709fab5",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-no-snmp-data-collection",
+      "triggerid": "24637",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: No SNMP data collection"
+    },
+    {
+      "alert_key": "vibe-switch-fortigate|fortigate-no-snmp-data-collection",
+      "triggerid": "24526",
+      "host": "Vibe - Switch [Fortigate]",
+      "description": "FortiGate: No SNMP data collection"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24637",
+    "description_raw": "FortiGate: No SNMP data collection",
+    "description_normalized": "fortigate-no-snmp-data-collection",
+    "expression_raw": "{35777}=0",
+    "expression_expanded": "max(/Vibe - Proxy Fortigate/zabbix[host,snmp,available],{$SNMP.TIMEOUT})=0",
+    "expression_signature": "max(/{HOST}/zabbix[host,snmp,available],{MACRO})=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "SNMP is not available for polling. Please check device connectivity and SNMP settings.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24634",
+        "description": "FortiGate: Unavailable by ICMP ping",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52461",
+        "key_": "zabbix[host,snmp,available]",
+        "name": "FortiGate: SNMP agent availability",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:3c178f4000c21e30b6a8524800ad05604f05658a84c953ccc474e64f743d2d83",
+    "family_source_hash": "sha256:34cfea3d995ef1b3ce21097ea41eb3264a0588f68337d415293c9b601b976567",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

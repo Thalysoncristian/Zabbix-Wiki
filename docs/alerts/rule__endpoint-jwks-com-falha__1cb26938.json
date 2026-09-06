@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|endpoint-jwks-com-falha|1cb26938",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|endpoint-jwks-com-falha|1cb26938",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-urls|endpoint-jwks-com-falha",
+      "triggerid": "57227",
+      "host": "SAQ - URLs",
+      "description": "Endpoint JWKS com falha"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "57227",
+    "description_raw": "Endpoint JWKS com falha",
+    "description_normalized": "endpoint-jwks-com-falha",
+    "expression_raw": "{74219}=1",
+    "expression_expanded": "last(/SAQ - URLs/web.test.fail[SAQ - Verificação da URL JWKS])=1",
+    "expression_signature": "last(/{HOST}/web.test.fail[SAQ-VerificaçãodaURLJWKS])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "O endpoint JWKS da SAQ não retornou o código esperado (HTTP 200).",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10849",
+      "host": "SAQ - URLs",
+      "name": "SAQ - URLs",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Saq"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "79535",
+        "key_": "web.test.fail[SAQ - Verificação da URL JWKS]",
+        "name": "Failed step of scenario \"SAQ - Verificação da URL JWKS\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:67b72fdd27bb4cd4fee0d37971c5ded5d84a25b3dfc7f212a2eac7e6414a01f2",
+    "family_source_hash": "sha256:ba3475d445a4caf621fd25405b527de9320efa2ed3dacb850450512bfb6699d3",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

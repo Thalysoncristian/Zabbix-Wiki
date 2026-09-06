@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-utilization-of-discoverer-processes-is-high|08c8200c",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-utilization-of-discoverer-processes-is-high|08c8200c",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-utilization-of-discoverer-processes-is-high",
+      "triggerid": "24138",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: Utilization of discoverer processes is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24138",
+    "description_raw": "Zabbix proxy: Utilization of discoverer processes is high",
+    "description_normalized": "zabbix-proxy-utilization-of-discoverer-processes-is-high",
+    "expression_raw": "{34448}>{$ZABBIX.PROXY.UTIL.MAX:\"discoverer\"}",
+    "expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,discoverer,avg,busy],10m)>\"{$ZABBIX.PROXY.UTIL.MAX:\\\"discoverer\\\"}\"",
+    "expression_signature": "avg(/{HOST}/zabbix[process,discoverer,avg,busy],10m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34448}<{$ZABBIX.PROXY.UTIL.MIN:\"discoverer\"}",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,discoverer,avg,busy],10m)<\"{$ZABBIX.PROXY.UTIL.MIN:\\\"discoverer\\\"}\"",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Zabbix proxy: Utilization of discoverer processes over {$ZABBIX.PROXY.UTIL.MAX:\"discoverer\"}%",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51007",
+        "key_": "zabbix[process,discoverer,avg,busy]",
+        "name": "Zabbix proxy: Utilization of discoverer data collector processes, in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:d58b09ccd3b9900e8a490cb8509bead53a94025453393e0000c90cb40b3b6f34",
+    "family_source_hash": "sha256:7669b807eaa3eb23a76fe9c82a73367774926300397c43034d48084933793883",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

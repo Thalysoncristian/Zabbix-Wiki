@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "alert_key": "manual|rh-cloud-colaborador-nao-ativado",
+  "scope": "manual",
+  "doc_level": "family",
+  "family_key": "manual|rh-cloud-colaborador-nao-ativado",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:39:44Z",
+  "last_modified_at": "2026-09-06T00:39:44.417378Z",
+  "revision": 0,
+  "last_seen_at": null,
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": null,
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "RH Cloud — ColaboradorNaoAtivado",
+    "objective": "",
+    "symptoms": [
+      "Notificacao 'ColaboradorNaoAtivado' do RH Cloud"
+    ],
+    "actions": [
+      "Transferir chamado informando a matricula afetada."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Contratacao iniciada, mas o perfil segue inativo.",
+    "probable_cause": "Fluxo de ativacao travado.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "RH",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Perfil do colaborador ativado.",
+    "notes": "Severidade: Media. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

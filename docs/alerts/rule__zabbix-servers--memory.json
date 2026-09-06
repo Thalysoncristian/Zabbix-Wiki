@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-servers--memory",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|linux-high-memory-utilization|3a2db910",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:04Z",
+  "last_modified_at": "2026-09-06T14:39:04.342404Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "22390",
+    "description_raw": "Linux: High memory utilization",
+    "description_normalized": "linux-high-memory-utilization",
+    "expression_raw": "{30618}>{$MEMORY.UTIL.MAX}",
+    "expression_expanded": "min(/Vibe - Zabbix server/vm.memory.utilization,5m)>\"{$MEMORY.UTIL.MAX}\"",
+    "expression_signature": "min(/{HOST}/vm.memory.utilization,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Linux: High memory utilization (>{$MEMORY.UTIL.MAX}% for 5m)",
+    "comments": "The system is running out of free memory.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "22394",
+        "description": "Linux: Lack of available memory",
+        "host": "Vibe - Zabbix server"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "42270",
+        "key_": "vm.memory.utilization",
+        "name": "Linux: Memory utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:91c1162f708a915b7f8fd95acedc4d778de78c6e3242547d6aa9711f035bcb6a"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Memoria e swap — Zabbix servers",
+    "objective": "Reagir a falta de memoria antes do OOM matar processo em producao.",
+    "symptoms": [
+      "'High memory utilization'",
+      "'Lack of available memory'",
+      "'High swap space usage'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao"
+    ],
+    "validation": "",
+    "risks": [
+      "'Lack of available memory' e mais grave que 'High memory utilization': o primeiro significa que ja nao ha memoria para alocar, o segundo e so uso alto"
+    ],
+    "meaning": "6 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. Severidades: Average=4, Warning=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Distinguir memoria realmente usada de cache/buffer (no Linux, cache alto e normal)",
+      "Identificar o processo com maior consumo",
+      "Ver se o swap esta sendo usado de fato ou so alocado"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

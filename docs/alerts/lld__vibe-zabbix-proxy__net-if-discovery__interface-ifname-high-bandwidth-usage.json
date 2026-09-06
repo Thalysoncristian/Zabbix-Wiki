@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-zabbix-proxy|net-if-discovery|interface-ifname-high-bandwidth-usage",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-zabbix-proxy|net-if-discovery|interface-ifname-high-bandwidth-usage",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|interface-ens192-high-bandwidth-usage",
+      "triggerid": "117399",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Interface ens192: High bandwidth usage"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "117399",
+    "description_raw": "Interface ens192: High bandwidth usage",
+    "description_normalized": "interface-ens192-high-bandwidth-usage",
+    "expression_raw": "({137013}>({$IF.UTIL.MAX:\"ens192\"}/100)*{137014} or\r\n{137015}>({$IF.UTIL.MAX:\"ens192\"}/100)*{137014}) and\r\n{137014}>0",
+    "expression_expanded": "(avg(/Vibe - Zabbix-Proxy/net.if.in[\"ens192\"],15m)>(\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"/100)*last(/Vibe - Zabbix-Proxy/vfs.file.contents[\"/sys/class/net/ens192/speed\"]) or\r\navg(/Vibe - Zabbix-Proxy/net.if.out[\"ens192\"],15m)>(\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"/100)*last(/Vibe - Zabbix-Proxy/vfs.file.contents[\"/sys/class/net/ens192/speed\"])) and\r\nlast(/Vibe - Zabbix-Proxy/vfs.file.contents[\"/sys/class/net/ens192/speed\"])>0",
+    "expression_signature": "(avg(/{HOST}/net.if.in[\"ens192\"],15m)>(\"{MACRO}\"/100)*last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens192/speed\"])oravg(/{HOST}/net.if.out[\"ens192\"],15m)>(\"{MACRO}\"/100)*last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens192/speed\"]))andlast(/{HOST}/vfs.file.contents[\"/sys/class/net/ens192/speed\"])>0",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{137013}<(({$IF.UTIL.MAX:\"ens192\"}-3)/100)*{137014} and\r\n{137015}<(({$IF.UTIL.MAX:\"ens192\"}-3)/100)*{137014}",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix-Proxy/net.if.in[\"ens192\"],15m)<((\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"-3)/100)*last(/Vibe - Zabbix-Proxy/vfs.file.contents[\"/sys/class/net/ens192/speed\"]) and\r\navg(/Vibe - Zabbix-Proxy/net.if.out[\"ens192\"],15m)<((\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"-3)/100)*last(/Vibe - Zabbix-Proxy/vfs.file.contents[\"/sys/class/net/ens192/speed\"])",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "Interface ens192: High bandwidth usage (>{$IF.UTIL.MAX:\"ens192\"}%)",
+    "comments": "The utilization of the network interface is close to its estimated maximum bandwidth.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51045",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}: High bandwidth usage",
+    "dependencies": [
+      {
+        "triggerid": "117402",
+        "description": "Interface ens192: Link down",
+        "host": "Vibe - Zabbix-Proxy"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "225653",
+        "key_": "net.if.in[\"ens192\"]",
+        "name": "Interface ens192: Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "225656",
+        "key_": "net.if.out[\"ens192\"]",
+        "name": "Interface ens192: Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "225658",
+        "key_": "vfs.file.contents[\"/sys/class/net/ens192/speed\"]",
+        "name": "Interface ens192: Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2754623ccfcdf65d467b24513e922075adb3c6c1d0205a23998cd95ab0fbe220",
+    "family_source_hash": "sha256:198e4dcfb993236189214b37b82441b613c641749309ac111a2201bb4dad22f8",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|banpara--api_web",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|nexus-indisponivel|56c25308",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:54Z",
+  "last_modified_at": "2026-09-06T14:39:54.193402Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "31623",
+    "description_raw": "Nexus - Indisponivel",
+    "description_normalized": "nexus-indisponivel",
+    "expression_raw": "{44962}<6",
+    "expression_expanded": "count(/Banpara - Monitoramento URL/web.test.rspcode[Nexus,Validar],10m,\"eq\",\"200\")<6",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[Nexus,Validar],10m,\"eq\",\"200\")<6",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "http://nexus.banpara.com:8081/#browse/browse\r\n \r\nHost:\r\n10.0.100.253 nexus.banpara.com",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10741",
+      "host": "Banpara - Monitoramento URL",
+      "name": "Banpara - Monitoramento URL",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Banpara"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "60147",
+        "key_": "web.test.rspcode[Nexus,Validar]",
+        "name": "Response code for step \"Validar\" of scenario \"Nexus\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:075ba8884ad161550ade10e77abb4e32794a445a1e5f069112fa7d3b1348438a"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Endpoint web / API indisponivel ou lenta — Banpara",
+    "objective": "Confirmar indisponibilidade de endpoint e acionar quem responde por ele.",
+    "symptoms": [
+      "'API indisponivel - <nome>'",
+      "'Failed step of scenario'",
+      "'<endpoint> com falha'",
+      "'API lenta'"
+    ],
+    "actions": [
+      "[A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes"
+    ],
+    "validation": "",
+    "risks": [
+      "Endpoints de dev/homologacao costumam nao merecer o mesmo tratamento de producao -- confirmar a lista antes de tratar todos igual",
+      "Confianca BAIXA no agrupamento: revisar se estes alertas sao mesmo uma unidade antes de tratar a ficha como definitiva. Os motivos estao na pagina da regra."
+    ],
+    "meaning": "1 alertas em 1 host(s) do grupo 'Banpara': Banpara - Monitoramento URL. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 1 instancia(s): Nexus. Severidades: Not classified=1.",
+    "probable_cause": "Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o endpoint manualmente (curl/navegador) para confirmar",
+      "Verificar se e endpoint interno ou de terceiro -- muda quem aciona",
+      "Conferir se e ambiente de producao ou dev/homologacao"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

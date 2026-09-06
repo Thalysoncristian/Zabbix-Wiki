@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "alert_key": "manual|rh-cloud-centro-de-custo-incompleto",
+  "scope": "manual",
+  "doc_level": "family",
+  "family_key": "manual|rh-cloud-centro-de-custo-incompleto",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:39:44Z",
+  "last_modified_at": "2026-09-06T00:39:44.417383Z",
+  "revision": 0,
+  "last_seen_at": null,
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": null,
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "RH Cloud — CentroDeCustoIncompleto",
+    "objective": "",
+    "symptoms": [
+      "Notificacao 'CentroDeCustoIncompleto' do RH Cloud"
+    ],
+    "actions": [
+      "Transferir chamado para o setor competente."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Colaborador com centro de custo em 0%.",
+    "probable_cause": "Cadastro incompleto.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Administrativo",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Centro de custo preenchido corretamente.",
+    "notes": "Severidade: Baixa. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

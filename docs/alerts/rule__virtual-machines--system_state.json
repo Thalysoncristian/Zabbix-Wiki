@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|virtual-machines--system_state",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|windows-host-has-been-restarted|523166ac",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:19Z",
+  "last_modified_at": "2026-09-06T14:39:19.377849Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "35665",
+    "description_raw": "Windows: Host has been restarted",
+    "description_normalized": "windows-host-has-been-restarted",
+    "expression_raw": "{49735}<10m",
+    "expression_expanded": "last(/Windows bob/system.uptime)<10m",
+    "expression_signature": "last(/{HOST}/system.uptime)<10m",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Windows: Host has been restarted (uptime < 10m)",
+    "comments": "The device uptime is less than 10 minutes.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61676",
+        "key_": "system.uptime",
+        "name": "Windows: Uptime",
+        "units": "uptime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "30s"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a806d245d5ff89c35fd134183a7541f930797c9c32c521fd5f9f20b85afa75fe"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Estado do sistema operacional — Virtual machines",
+    "objective": "Perceber reinicio, mudanca de inventario e limites de kernel apertados.",
+    "symptoms": [
+      "'Host has been restarted'",
+      "'Operating system description has changed'",
+      "'System name has changed'",
+      "'Configured max number of processes/filedescriptors is too low'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao"
+    ],
+    "validation": "",
+    "risks": [
+      "Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao"
+    ],
+    "meaning": "4 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Warning=2, Information=2. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar se o reinicio foi programado -- a maioria destes alertas e informativa",
+      "Para limites de kernel: verificar se ja houve impacto ou e so recomendacao"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

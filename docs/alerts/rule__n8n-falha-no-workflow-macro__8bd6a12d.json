@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|n8n-falha-no-workflow-macro|8bd6a12d",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|n8n-falha-no-workflow-macro|8bd6a12d",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-n8n-server|n8n-falha-no-workflow-macro",
+      "triggerid": "79036",
+      "host": "Vibe - n8n-server",
+      "description": "N8N: Falha no Workflow - {ITEM.LASTVALUE}"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "79036",
+    "description_raw": "N8N: Falha no Workflow - {ITEM.LASTVALUE}",
+    "description_normalized": "n8n-falha-no-workflow-macro",
+    "expression_raw": "length({97361})>0\r\nand {97362}=0",
+    "expression_expanded": "length(last(/Vibe - n8n-server/n8n.workflow.error))>0\r\nand find(/Vibe - n8n-server/n8n.workflow.error,,\"like\",\"[RESOLVIDO]\")=0",
+    "expression_signature": "length(last(/{HOST}/n8n.workflow.error))>0andfind(/{HOST}/n8n.workflow.error,,\"like\",\"[RESOLVIDO]\")=0",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{97362}=1",
+    "recovery_expression_expanded": "find(/Vibe - n8n-server/n8n.workflow.error,,\"like\",\"[RESOLVIDO]\")=1",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10875",
+      "host": "Vibe - n8n-server",
+      "name": "Vibe - n8n-server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "107427",
+        "key_": "n8n.workflow.error",
+        "name": "N8N: Log de Erros de Workflow",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:bcd27b34315e5b1a15d997267f636db143e8ebb83aa19200e86c2fb8b16a398e",
+    "family_source_hash": "sha256:c8b40fd3b6d37e2de86b3be2196db1da2bbcc7c2a7419dcf459c994809f285bf",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

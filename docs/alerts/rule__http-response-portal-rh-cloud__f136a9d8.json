@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|http-response-portal-rh-cloud|f136a9d8",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|http-response-portal-rh-cloud|f136a9d8",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:36:17.792105Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "vibe-ferramentas-internas|http-response-portal-rh-cloud",
+      "triggerid": "23442",
+      "host": "Vibe - Ferramentas Internas",
+      "description": "Http Response - Portal RH Cloud"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23442",
+    "description_raw": "Http Response - Portal RH Cloud",
+    "description_normalized": "http-response-portal-rh-cloud",
+    "expression_raw": "{35248}<5",
+    "expression_expanded": "count(/Vibe - Ferramentas Internas/web.test.rspcode[https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom,Verificar],10m,\"eq\",\"200\")<5",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom,Verificar],10m,\"eq\",\"200\")<5",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "API RH Cloud - https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/home",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10594",
+      "host": "Vibe - Ferramentas Internas",
+      "name": "Vibe - Ferramentas Internas",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46204",
+        "key_": "web.test.rspcode[https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:47d0f9ad30abf4396d09541757a98ed05e9a0a43b7bc39260b0d30a40348a1eb",
+    "family_source_hash": "sha256:a5df91e92123429c3b7d6ff1e972ab874a2faca7b12493bb1307e3a22c14e08b",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Instabilidade no Portal RH Cloud",
+    "objective": "",
+    "symptoms": [
+      "'Http Response - Portal RH Cloud' no host Vibe - Ferramentas Internas"
+    ],
+    "actions": [
+      "Reportar a instabilidade do Portal."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Erro na resposta HTTP do Portal RH Cloud.",
+    "probable_cause": "Causa nao informada na fonte original — investigar na ocorrencia.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Carlos Favacho",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Carlos Favacho",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Portal volta a responder com HTTP 200.",
+    "notes": "Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

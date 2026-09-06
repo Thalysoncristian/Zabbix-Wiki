@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|chubb-sqldb|db-odbc-discovery-dbname-mssql-dsn|mssql-db-dbname-number-of-commits-waiting-for-the-log-flush-is-high",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|chubb-sqldb|db-odbc-discovery-dbname-mssql-dsn|mssql-db-dbname-number-of-commits-waiting-for-the-log-flush-is-high",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-db-sqldb-enel-prod-number-of-commits-waiting-for-the-log-flush-is-high",
+      "triggerid": "93430",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL DB 'sqldb-enel-prod': Number of commits waiting for the log flush is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93430",
+    "description_raw": "MSSQL DB 'sqldb-enel-prod': Number of commits waiting for the log flush is high",
+    "description_normalized": "mssql-db-sqldb-enel-prod-number-of-commits-waiting-for-the-log-flush-is-high",
+    "expression_raw": "{112467}>{$MSSQL.LOG_FLUSH_WAITS.MAX:\"sqldb-enel-prod\"}",
+    "expression_expanded": "min(/Chubb - SQLDB/mssql.db.log_flush_waits_sec.rate[\"sqldb-enel-prod\"],5m)>\"{$MSSQL.LOG_FLUSH_WAITS.MAX:\\\"sqldb-enel-prod\\\"}\"",
+    "expression_signature": "min(/{HOST}/mssql.db.log_flush_waits_sec.rate[\"sqldb-enel-prod\"],5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MSSQL DB 'sqldb-enel-prod': Number of commits waiting for the log flush is high (over {$MSSQL.LOG_FLUSH_WAITS.MAX:\"sqldb-enel-prod\"}/sec for 5m)",
+    "comments": "Too many commits are waiting for the log flush.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "153654",
+      "name": "Database discovery",
+      "key_": "db.odbc.discovery[dbname,\"{$MSSQL.DSN}\"]"
+    },
+    "prototype_description": "MSSQL DB '{#DBNAME}': Number of commits waiting for the log flush is high",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "database",
+        "value": "sqldb-enel-prod"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153886",
+        "key_": "mssql.db.log_flush_waits_sec.rate[\"sqldb-enel-prod\"]",
+        "name": "MSSQL DB 'sqldb-enel-prod': Log flush waits per second",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6e1b1baa6a93928732192d720e991be273766327166baea30fa571637b0dbe18",
+    "family_source_hash": "sha256:5f294813e52b8a568ab66804d74e73cbe9ccfec9c74f5fd35eeb603fc2bd288a",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

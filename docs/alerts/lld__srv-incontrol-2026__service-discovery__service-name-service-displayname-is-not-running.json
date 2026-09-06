@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|srv-incontrol-2026|service-discovery|service-name-service-displayname-is-not-running",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|srv-incontrol-2026|service-discovery|service-name-service-displayname-is-not-running",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|audioendpointbuilder-construtor-de-pontos-de-extremidade-de-audio-do-windows-is-not-running",
+      "triggerid": "77256",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"AudioEndpointBuilder\" (Construtor de Pontos de Extremidade de Áudio do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|audiosrv-audio-do-windows-is-not-running",
+      "triggerid": "77257",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Audiosrv\" (Áudio do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|bfe-mecanismo-de-filtragem-basica-is-not-running",
+      "triggerid": "77258",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"BFE\" (Mecanismo de Filtragem Básica) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|brokerinfrastructure-servico-de-infraestrutura-de-tarefas-de-segundo-plano-is-not-running",
+      "triggerid": "77259",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"BrokerInfrastructure\" (Serviço de Infraestrutura de Tarefas de Segundo Plano) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|coremessagingregistrar-coremessaging-is-not-running",
+      "triggerid": "77260",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"CoreMessagingRegistrar\" (CoreMessaging) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|cryptsvc-servicos-de-criptografia-is-not-running",
+      "triggerid": "77261",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"CryptSvc\" (Serviços de criptografia) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dps-servico-de-politica-de-diagnostico-is-not-running",
+      "triggerid": "77269",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"DPS\" (Serviço de Política de Diagnóstico) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dcomlaunch-inicializador-do-processo-de-servidor-dcom-is-not-running",
+      "triggerid": "77262",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"DcomLaunch\" (Inicializador do Processo de Servidor DCOM) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dhcp-cliente-dhcp-is-not-running",
+      "triggerid": "77264",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Dhcp\" (Cliente DHCP) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|diagtrack-experiencias-do-usuario-conectado-e-telemetria-is-not-running",
+      "triggerid": "77265",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"DiagTrack\" (Experiências do Usuário Conectado e Telemetria) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dispbrokerdesktopsvc-exibir-servico-de-politica-is-not-running",
+      "triggerid": "77266",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"DispBrokerDesktopSvc\" (Exibir Serviço de Política) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dnscache-cliente-dns-is-not-running",
+      "triggerid": "77268",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Dnscache\" (Cliente DNS) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dusmsvc-uso-de-dados-is-not-running",
+      "triggerid": "77270",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"DusmSvc\" (Uso de Dados) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|eventlog-log-de-eventos-do-windows-is-not-running",
+      "triggerid": "77271",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"EventLog\" (Log de Eventos do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|eventsystem-com-evento-do-sistema-is-not-running",
+      "triggerid": "77272",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"EventSystem\" (COM+ evento do sistema) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|fontcache-servico-de-cache-de-fontes-do-windows-is-not-running",
+      "triggerid": "77273",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"FontCache\" (Serviço de Cache de Fontes do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|googleupdaterinternalservice152-0-7933-0-google-updater-internal-service-googleupdaterinternalservice152-0-7933-0-is-not-running",
+      "triggerid": "462233",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"GoogleUpdaterInternalService152.0.7933.0\" (Google Updater Internal Service (GoogleUpdaterInternalService152.0.7933.0)) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|googleupdaterservice152-0-7933-0-google-updater-service-googleupdaterservice152-0-7933-0-is-not-running",
+      "triggerid": "462234",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"GoogleUpdaterService152.0.7933.0\" (Google Updater Service (GoogleUpdaterService152.0.7933.0)) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|ikeext-modulos-de-criacao-de-chaves-ike-e-authip-do-ipsec-is-not-running",
+      "triggerid": "77276",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IKEEXT\" (Módulos de Criação de Chaves IKE e AuthIP do IPSec) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontrolclientrtspserver-incontrol-client-rtsp-server-is-not-running",
+      "triggerid": "77277",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolClientRTSPServer\" (Incontrol Client RTSP Server) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontrolcomm-incontrol-comunicacao-is-not-running",
+      "triggerid": "77278",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolComm\" (Incontrol Comunicacao) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontrolhttpserver-incontrol-http-server-is-not-running",
+      "triggerid": "77279",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolHttpServer\" (Incontrol Http Server) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontrolpostgresql-incontrol-postgresql-is-not-running",
+      "triggerid": "77280",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolPostgreSQL\" (Incontrol PostgreSQL) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontroltasks-incontrol-tasks-is-not-running",
+      "triggerid": "77281",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolTasks\" (Incontrol Tasks) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontrolwatchdog-incontrol-watchdog-is-not-running",
+      "triggerid": "77282",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolWatchdog\" (Incontrol Watchdog) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|incontrolwebsocket-incontrol-websocket-is-not-running",
+      "triggerid": "77283",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IncontrolWebsocket\" (Incontrol Websocket) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|intunemanagementextension-microsoft-intune-management-extension-is-not-running",
+      "triggerid": "77826",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"IntuneManagementExtension\" (Microsoft Intune Management Extension) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|lsm-gerenciador-de-sessao-local-is-not-running",
+      "triggerid": "77287",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"LSM\" (Gerenciador de Sessão Local) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|lanmanserver-server-is-not-running",
+      "triggerid": "77285",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"LanmanServer\" (Server) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|lanmanworkstation-estacao-de-trabalho-is-not-running",
+      "triggerid": "77286",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"LanmanWorkstation\" (Estação de trabalho) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|mdcoresvc-servico-microsoft-defender-core-is-not-running",
+      "triggerid": "77314",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"MDCoreSvc\" (Serviço Microsoft Defender Core) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|nlasvc-reconhecimento-de-locais-de-rede-is-not-running",
+      "triggerid": "77289",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"NlaSvc\" (Reconhecimento de Locais de Rede) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|power-desligar-is-not-running",
+      "triggerid": "77291",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Power\" (Desligar) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|profsvc-servico-de-perfil-de-usuario-is-not-running",
+      "triggerid": "77292",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"ProfSvc\" (Serviço de Perfil de Usuário) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|rasman-gerenciador-de-conexao-de-acesso-remoto-is-not-running",
+      "triggerid": "77293",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"RasMan\" (Gerenciador de conexão de acesso remoto) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|rpceptmapper-mapeador-de-ponto-de-extremidade-rpc-is-not-running",
+      "triggerid": "77294",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"RpcEptMapper\" (Mapeador de Ponto de Extremidade RPC) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|rpcss-rpc-chamada-de-procedimento-remoto-is-not-running",
+      "triggerid": "77295",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"RpcSs\" (RPC (Chamada de Procedimento Remoto)) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|sens-servico-de-notificacao-de-eventos-do-sistema-is-not-running",
+      "triggerid": "77298",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"SENS\" (Serviço de Notificação de Eventos do Sistema) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|samss-gerente-de-contas-de-seguranca-is-not-running",
+      "triggerid": "77296",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"SamSs\" (Gerente de Contas de Segurança) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|schedule-agendador-de-tarefas-is-not-running",
+      "triggerid": "77297",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Schedule\" (Agendador de Tarefas) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|sense-sense-is-not-running",
+      "triggerid": "567878",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Sense\" (Sense) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|spooler-spooler-de-impressao-is-not-running",
+      "triggerid": "77299",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Spooler\" (Spooler de Impressão) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|storsvc-servico-de-armazenamento-is-not-running",
+      "triggerid": "77300",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"StorSvc\" (Serviço de Armazenamento) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|sysmain-sysmain-is-not-running",
+      "triggerid": "77301",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"SysMain\" (SysMain) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|systemeventsbroker-agente-de-eventos-do-sistema-is-not-running",
+      "triggerid": "77302",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"SystemEventsBroker\" (Agente de Eventos do Sistema) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|themes-temas-is-not-running",
+      "triggerid": "77303",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Themes\" (Temas) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|trkwks-cliente-de-rastreamento-de-link-distribuido-is-not-running",
+      "triggerid": "77304",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"TrkWks\" (Cliente de rastreamento de link distribuído) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|usermanager-gerenciador-de-usuarios-is-not-running",
+      "triggerid": "77306",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"UserManager\" (Gerenciador de Usuários) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|usosvc-servico-orquestrador-de-atualizacoes-is-not-running",
+      "triggerid": "77307",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"UsoSvc\" (Serviço orquestrador de atualizações) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|wsearch-windows-search-is-not-running",
+      "triggerid": "77313",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"WSearch\" (Windows Search) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|wcmsvc-gerenciador-de-conexoes-do-windows-is-not-running",
+      "triggerid": "77308",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Wcmsvc\" (Gerenciador de Conexões do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|windefend-servico-microsoft-defender-antivirus-is-not-running",
+      "triggerid": "77309",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"WinDefend\" (Serviço Microsoft Defender Antivírus) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|winmgmt-testador-de-instrumentacao-de-gerenciam-do-windows-is-not-running",
+      "triggerid": "77310",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Winmgmt\" (Testador de instrumentação de gerenciam. do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|wpnservice-servico-do-sistema-de-notificacoes-por-push-do-windows-is-not-running",
+      "triggerid": "77311",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"WpnService\" (Serviço do Sistema de Notificações por Push do Windows) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|zabbix-agent-zabbix-agent-is-not-running",
+      "triggerid": "77315",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"Zabbix Agent\" (Zabbix Agent) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|debugregsvc-debugregsvc-is-not-running",
+      "triggerid": "77263",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"debugregsvc\" (debugregsvc) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|dmwappushservice-servico-de-roteamento-de-mensagens-de-envio-por-push-wap-do-gerenciamento-de-dispositivos-is-not-running",
+      "triggerid": "77267",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"dmwappushservice\" (Serviço de Roteamento de mensagens de envio por Push WAP do Gerenciamento de Dispositivos) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|iphlpsvc-auxiliar-de-ip-is-not-running",
+      "triggerid": "77284",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"iphlpsvc\" (Auxiliar de IP) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|mpssvc-windows-defender-firewall-is-not-running",
+      "triggerid": "77288",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"mpssvc\" (Windows Defender Firewall) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|nsi-servico-de-interface-de-repositorio-de-rede-is-not-running",
+      "triggerid": "77290",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"nsi\" (Serviço de Interface de Repositório de Rede) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|uhssvc-microsoft-update-health-service-is-not-running",
+      "triggerid": "77305",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"uhssvc\" (Microsoft Update Health Service) is not running"
+    },
+    {
+      "alert_key": "srv-incontrol-2026|wscsvc-central-de-seguranca-is-not-running",
+      "triggerid": "77312",
+      "host": "SRV_INCONTROL_2026",
+      "description": "\"wscsvc\" (Central de Segurança) is not running"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "567878",
+    "description_raw": "\"Sense\" (Sense) is not running",
+    "description_normalized": "sense-sense-is-not-running",
+    "expression_raw": "{779626}<>0",
+    "expression_expanded": "min(/SRV_INCONTROL_2026/service.info[\"Sense\",state],#3)<>0",
+    "expression_signature": "min(/{HOST}/service.info[\"Sense\",state],#3)<>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "\"Sense\" (Sense) is not running (startup type automatic)",
+    "comments": "The service has a state other than \"Running\" for the last three times.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "103770",
+      "name": "Windows services discovery",
+      "key_": "service.discovery"
+    },
+    "prototype_description": "\"{#SERVICE.NAME}\" ({#SERVICE.DISPLAYNAME}) is not running",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1022262",
+        "key_": "service.info[\"Sense\",state]",
+        "name": "State of service \"Sense\" (Sense)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:d4c5f0c55be4ca3830f978b169c1069981aa44c87c555e0a26561fa2fd62d986",
+    "family_source_hash": "sha256:7be3e979dc0c8c0d1d4b725920e4b2fcc24a7f587459debdf35cf657ba310cea",
+    "representative_of_family": true,
+    "family_instance_count": 62
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|embratel-roteador-cisco|temperature-discovery|snmpvalue-temperature-is-above-critical-threshold",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|embratel-roteador-cisco|temperature-discovery|snmpvalue-temperature-is-above-critical-threshold",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|cpu-temperature-is-above-critical-threshold",
+      "triggerid": "24235",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "CPU: Temperature is above critical threshold"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|exhaust-fan-temperature-is-above-critical-threshold",
+      "triggerid": "24233",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Exhaust Fan: Temperature is above critical threshold"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|intake-left-temperature-is-above-critical-threshold",
+      "triggerid": "24231",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Intake Left: Temperature is above critical threshold"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|intake-right-bezel-temperature-is-above-critical-threshold",
+      "triggerid": "24234",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Intake Right(Bezel): Temperature is above critical threshold"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|intake-right-temperature-is-above-critical-threshold",
+      "triggerid": "24232",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Intake Right: Temperature is above critical threshold"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24235",
+    "description_raw": "CPU: Temperature is above critical threshold",
+    "description_normalized": "cpu-temperature-is-above-critical-threshold",
+    "expression_raw": "{34679}>{$TEMP_CRIT:\"CPU\"}\r\nor\r\n{34680}={$TEMP_CRIT_STATUS}\r\nor\r\n{34680}={$TEMP_DISASTER_STATUS}",
+    "expression_expanded": "avg(/Embratel - Roteador Cisco/sensor.temp.value[ciscoEnvMonTemperatureValue.1],5m)>\"{$TEMP_CRIT:\\\"CPU\\\"}\"\r\nor\r\nlast(/Embratel - Roteador Cisco/sensor.temp.status[ciscoEnvMonTemperatureState.1])=\"{$TEMP_CRIT_STATUS}\"\r\nor\r\nlast(/Embratel - Roteador Cisco/sensor.temp.status[ciscoEnvMonTemperatureState.1])=\"{$TEMP_DISASTER_STATUS}\"",
+    "expression_signature": "avg(/{HOST}/sensor.temp.value[ciscoEnvMonTemperatureValue.1],5m)>\"{MACRO}\"orlast(/{HOST}/sensor.temp.status[ciscoEnvMonTemperatureState.1])=\"{MACRO}\"orlast(/{HOST}/sensor.temp.status[ciscoEnvMonTemperatureState.1])=\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34681}<{$TEMP_CRIT:\"CPU\"}-3",
+    "recovery_expression_expanded": "max(/Embratel - Roteador Cisco/sensor.temp.value[ciscoEnvMonTemperatureValue.1],5m)<\"{$TEMP_CRIT:\\\"CPU\\\"}\"-3",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current value: {ITEM.LASTVALUE1}",
+    "event_name": "CPU: Temperature is above critical threshold: >{$TEMP_CRIT:\"CPU\"}",
+    "comments": "This trigger uses temperature sensor values as well as temperature sensor status if available",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51133",
+      "name": "Temperature Discovery",
+      "key_": "temperature.discovery"
+    },
+    "prototype_description": "{#SNMPVALUE}: Temperature is above critical threshold",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51198",
+        "key_": "sensor.temp.status[ciscoEnvMonTemperatureState.1]",
+        "name": "CPU: Temperature status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "51203",
+        "key_": "sensor.temp.value[ciscoEnvMonTemperatureValue.1]",
+        "name": "CPU: Temperature",
+        "units": "°C",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ffa4f05a1715c308b2eb3ac4d8b0e13e3c4d24fc0611e9246ca79dbe199db059",
+    "family_source_hash": "sha256:57a1f2f5a830f3616cfb102022c42b41e026f42dbc7a42ec336f4729ff00d3e8",
+    "representative_of_family": true,
+    "family_instance_count": 5
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

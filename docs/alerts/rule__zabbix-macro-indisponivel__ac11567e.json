@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-macro-indisponivel|ac11567e",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-macro-indisponivel|ac11567e",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "mstracker-vm|zabbix-macro-indisponivel",
+      "triggerid": "89386",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "Zabbix: {HOST.NAME} Indisponível"
+    },
+    {
+      "alert_key": "vibe-wazuh-siem|zabbix-macro-indisponivel",
+      "triggerid": "89385",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "Zabbix: {HOST.NAME} Indisponível"
+    },
+    {
+      "alert_key": "vibe-zabbix-server|zabbix-macro-indisponivel",
+      "triggerid": "89383",
+      "host": "Vibe - Zabbix server",
+      "description": "Zabbix: {HOST.NAME} Indisponível"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-macro-indisponivel",
+      "triggerid": "89384",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix: {HOST.NAME} Indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "89386",
+    "description_raw": "Zabbix: {HOST.NAME} Indisponível",
+    "description_normalized": "zabbix-macro-indisponivel",
+    "expression_raw": "{108197}=0",
+    "expression_expanded": "last(/mstracker-vm/agent.ping)=0",
+    "expression_signature": "last(/{HOST}/agent.ping)=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63869",
+        "key_": "agent.ping",
+        "name": "Linux: Zabbix agent ping",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:679f5563a289c5075dcb56b79a3f41d3e50d9ce3c3031e064c62d68ac082ecce",
+    "family_source_hash": "sha256:73eccc3f9e12be5d2c8adc673182d524ce68bc00dd04a15d269729c2e17b7299",
+    "representative_of_family": true,
+    "family_instance_count": 4
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

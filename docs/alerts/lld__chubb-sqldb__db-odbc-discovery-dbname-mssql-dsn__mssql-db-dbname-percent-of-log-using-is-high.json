@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|chubb-sqldb|db-odbc-discovery-dbname-mssql-dsn|mssql-db-dbname-percent-of-log-using-is-high",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|chubb-sqldb|db-odbc-discovery-dbname-mssql-dsn|mssql-db-dbname-percent-of-log-using-is-high",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-db-sqldb-enel-prod-percent-of-log-using-is-high",
+      "triggerid": "93431",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL DB 'sqldb-enel-prod': Percent of log using is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93431",
+    "description_raw": "MSSQL DB 'sqldb-enel-prod': Percent of log using is high",
+    "description_normalized": "mssql-db-sqldb-enel-prod-percent-of-log-using-is-high",
+    "expression_raw": "{112468}>{$MSSQL.PERCENT_LOG_USED.MAX:\"sqldb-enel-prod\"}",
+    "expression_expanded": "min(/Chubb - SQLDB/mssql.db.percent_log_used[\"sqldb-enel-prod\"],5m)>\"{$MSSQL.PERCENT_LOG_USED.MAX:\\\"sqldb-enel-prod\\\"}\"",
+    "expression_signature": "min(/{HOST}/mssql.db.percent_log_used[\"sqldb-enel-prod\"],5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MSSQL DB 'sqldb-enel-prod': Percent of log using is high (over {$MSSQL.PERCENT_LOG_USED.MAX:\"sqldb-enel-prod\"}% for 5m)",
+    "comments": "There's not enough space left in the log.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "153654",
+      "name": "Database discovery",
+      "key_": "db.odbc.discovery[dbname,\"{$MSSQL.DSN}\"]"
+    },
+    "prototype_description": "MSSQL DB '{#DBNAME}': Percent of log using is high",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "database",
+        "value": "sqldb-enel-prod"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153881",
+        "key_": "mssql.db.percent_log_used[\"sqldb-enel-prod\"]",
+        "name": "MSSQL DB 'sqldb-enel-prod': Percent log used",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:34f5545465fab08499f284f83cfb5739df344ae7a20efcc670d4f0f1e7da32da",
+    "family_source_hash": "sha256:8e7f1190e5a6b16ad0c09472182b198dc91ce2d060815e4030c7c45ea400c1c2",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

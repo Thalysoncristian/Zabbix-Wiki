@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-system-time-is-out-of-sync|52b29589",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-system-time-is-out-of-sync|52b29589",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-system-time-is-out-of-sync",
+      "triggerid": "77230",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: System time is out of sync"
+    },
+    {
+      "alert_key": "windows-bob|windows-system-time-is-out-of-sync",
+      "triggerid": "35662",
+      "host": "Windows bob",
+      "description": "Windows: System time is out of sync"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77230",
+    "description_raw": "Windows: System time is out of sync",
+    "description_normalized": "windows-system-time-is-out-of-sync",
+    "expression_raw": "{95469}=0",
+    "expression_expanded": "fuzzytime(/SRV_INCONTROL_2026/system.localtime,{$SYSTEM.FUZZYTIME.MAX})=0",
+    "expression_signature": "fuzzytime(/{HOST}/system.localtime,{MACRO})=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Windows: System time is out of sync (diff with Zabbix server > {$SYSTEM.FUZZYTIME.MAX}s)",
+    "comments": "The host's system time is different from Zabbix server time.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103753",
+        "key_": "system.localtime",
+        "name": "Windows: System local time",
+        "units": "unixtime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:3c347551b265680c55df88c31a59c2b3b8fa8bdb9df7785736ca756e56a5483e",
+    "family_source_hash": "sha256:13ebb945e38f225132bdfafb135d1688c327e5078d49cf7a3343bd18f358dbcf",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

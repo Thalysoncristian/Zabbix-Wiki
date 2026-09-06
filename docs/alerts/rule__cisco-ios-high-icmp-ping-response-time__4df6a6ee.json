@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cisco-ios-high-icmp-ping-response-time|4df6a6ee",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cisco-ios-high-icmp-ping-response-time|4df6a6ee",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|cisco-ios-high-icmp-ping-response-time",
+      "triggerid": "24187",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Cisco IOS: High ICMP ping response time"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24187",
+    "description_raw": "Cisco IOS: High ICMP ping response time",
+    "description_normalized": "cisco-ios-high-icmp-ping-response-time",
+    "expression_raw": "{34546}>{$ICMP_RESPONSE_TIME_WARN}",
+    "expression_expanded": "avg(/Embratel - Roteador Cisco/icmppingsec,5m)>\"{$ICMP_RESPONSE_TIME_WARN}\"",
+    "expression_signature": "avg(/{HOST}/icmppingsec,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Value: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24185",
+        "description": "Cisco IOS: High ICMP ping loss",
+        "host": "Embratel - Roteador [Cisco]"
+      },
+      {
+        "triggerid": "24186",
+        "description": "Cisco IOS: Unavailable by ICMP ping",
+        "host": "Embratel - Roteador [Cisco]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51105",
+        "key_": "icmppingsec",
+        "name": "Cisco IOS: ICMP response time",
+        "units": "s",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2068c2f876181d663c2f2ec22cf41e81278d04e8d541c96d5c57837b8d8e75a2",
+    "family_source_hash": "sha256:72118a8c4f769c9bca005d8029d6cc59af84b7740405f9ae04d4c4d14f2f9df0",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

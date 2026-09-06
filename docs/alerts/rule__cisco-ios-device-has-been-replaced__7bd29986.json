@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cisco-ios-device-has-been-replaced|7bd29986",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cisco-ios-device-has-been-replaced|7bd29986",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|cisco-ios-device-has-been-replaced",
+      "triggerid": "24184",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Cisco IOS: Device has been replaced"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24184",
+    "description_raw": "Cisco IOS: Device has been replaced",
+    "description_normalized": "cisco-ios-device-has-been-replaced",
+    "expression_raw": "{34541}<>{34542} and length({34543})>0",
+    "expression_expanded": "last(/Embratel - Roteador Cisco/system.hw.serialnumber,#1)<>last(/Embratel - Roteador Cisco/system.hw.serialnumber,#2) and length(last(/Embratel - Roteador Cisco/system.hw.serialnumber))>0",
+    "expression_signature": "last(/{HOST}/system.hw.serialnumber,#1)<>last(/{HOST}/system.hw.serialnumber,#2)andlength(last(/{HOST}/system.hw.serialnumber))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Cisco IOS: Device has been replaced (new serial number received)",
+    "comments": "Device serial number has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51116",
+        "key_": "system.hw.serialnumber",
+        "name": "Cisco IOS: Hardware serial number",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ab5574cd626810af9a5643bdc79898cba4722ddcf7c231ca6866daabed62f63b",
+    "family_source_hash": "sha256:03a408a71d8f75a24922da17e5b096eff0cf5a24d043fc0cf954f9f44f7c3339",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

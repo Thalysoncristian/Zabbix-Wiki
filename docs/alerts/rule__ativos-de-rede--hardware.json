@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ativos-de-rede--hardware",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|cisco-ios-device-has-been-replaced|7bd29986",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:51:55Z",
+  "last_modified_at": "2026-09-06T00:51:55.861178Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24184",
+    "description_raw": "Cisco IOS: Device has been replaced",
+    "description_normalized": "cisco-ios-device-has-been-replaced",
+    "expression_raw": "{34541}<>{34542} and length({34543})>0",
+    "expression_expanded": "last(/Embratel - Roteador Cisco/system.hw.serialnumber,#1)<>last(/Embratel - Roteador Cisco/system.hw.serialnumber,#2) and length(last(/Embratel - Roteador Cisco/system.hw.serialnumber))>0",
+    "expression_signature": "last(/{HOST}/system.hw.serialnumber,#1)<>last(/{HOST}/system.hw.serialnumber,#2)andlength(last(/{HOST}/system.hw.serialnumber))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Cisco IOS: Device has been replaced (new serial number received)",
+    "comments": "Device serial number has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51116",
+        "key_": "system.hw.serialnumber",
+        "name": "Cisco IOS: Hardware serial number",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ab5574cd626810af9a5643bdc79898cba4722ddcf7c231ca6866daabed62f63b"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Hardware de rede — temperatura, fonte, chassi (roteadores/APs/Fortigate)",
+    "objective": "Reagir a alertas fisicos de hardware (fonte, temperatura, ventoinha, chassi trocado) em roteadores, APs e Fortigate.",
+    "symptoms": [
+      "'<Sensor>: Power supply is in critical/warning state'",
+      "'Cisco IOS: Device has been replaced'",
+      "'Cisco IOS: Host has been restarted'"
+    ],
+    "actions": [
+      "[A DEFINIR] Procedimento de substituicao de hardware -- provavelmente exige RMA/fornecedor, fora do escopo de resolucao imediata do NOC"
+    ],
+    "validation": "",
+    "risks": [
+      "'Device has been replaced' e 'Host has been restarted' sao eventos informativos, nao necessariamente falha -- confirmar antes de escalar como incidente"
+    ],
+    "meaning": "36 alertas, 14 instancias (fontes, ventoinhas, sensores de temperatura), 6 hosts. 26 de 36 sao LLD (discovered) -- a maioria vem de descoberta automatica de sensores.",
+    "probable_cause": "Falha real de componente fisico (fonte, ventoinha) ou substituicao de equipamento nao comunicada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar presencialmente ou via console remoto o estado do componente",
+      "'Device has been replaced' pode ser troca planejada -- confirmar antes de tratar como incidente"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 14 familias tecnicas.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|api-indisponivel|56dc4475",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|api-indisponivel|56dc4475",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "carguero-api-monitor-down|api-indisponivel",
+      "triggerid": "23464",
+      "host": "Carguero - API Monitor Down",
+      "description": "API - Indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23464",
+    "description_raw": "API - Indisponível",
+    "description_normalized": "api-indisponivel",
+    "expression_raw": "{79730}<6 and {79731}<>0 and {79732}=1 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_expanded": "count(/Carguero - API Monitor Down/web.test.rspcode[https://api-monitoramento.carguero.com.br/,Verificar],10m,\"eq\",\"200\")<6 and last(/Carguero - API Monitor Down/web.test.fail[https://api-monitoramento.carguero.com.br/])<>0 and nodata(/Carguero - API Monitor Down/web.test.rspcode[https://api-monitoramento.carguero.com.br/,Verificar],600)=1 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[https://api-monitoramento.carguero.com.br/,Verificar],10m,\"eq\",\"200\")<6andlast(/{HOST}/web.test.fail[https://api-monitoramento.carguero.com.br/])<>0andnodata(/{HOST}/web.test.rspcode[https://api-monitoramento.carguero.com.br/,Verificar],600)=1and((dayofweek()<6and(time()>180000ortime()<080000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "https://api-monitoramento.carguero.com.br/",
+    "event_name": "https://api-monitoramento.carguero.com.br/",
+    "comments": "API Monitoramento - https://api-monitoramento.carguero.com.br/",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46256",
+        "key_": "web.test.fail[https://api-monitoramento.carguero.com.br/]",
+        "name": "Failed step of scenario \"https://api-monitoramento.carguero.com.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      },
+      {
+        "itemid": "46258",
+        "key_": "web.test.rspcode[https://api-monitoramento.carguero.com.br/,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://api-monitoramento.carguero.com.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:4ca128e9b4e15b8c1235c3a69b1bdd93f538aa8a3ffcb6969114e6a0a31e9659",
+    "family_source_hash": "sha256:aa8008e8b446425ab705c06151a313ea9de10aea7c8b0bbe8c877fc0e8daf1aa",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-servidor-idrac-dell|virtualdisk-discovery|disk-snmpvalue-disk-name-virtual-disk-is-in-warning-state",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-servidor-idrac-dell|virtualdisk-discovery|disk-snmpvalue-disk-name-virtual-disk-is-in-warning-state",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|disk-1-virtual-disk-0-virtual-disk-is-in-warning-state",
+      "triggerid": "24304",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Disk 1(Virtual Disk 0): Virtual disk is in warning state"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24304",
+    "description_raw": "Disk 1(Virtual Disk 0): Virtual disk is in warning state",
+    "description_normalized": "disk-1-virtual-disk-0-virtual-disk-is-in-warning-state",
+    "expression_raw": "{34801}=1",
+    "expression_expanded": "count(/Vibe - Servidor iDRAC DELL/system.hw.virtualdisk.status[virtualDiskState.1],#1,\"eq\",\"{$VDISK_WARN_STATUS:\\\"degraded\\\"}\")=1",
+    "expression_signature": "count(/{HOST}/system.hw.virtualdisk.status[virtualDiskState.1],#1,\"eq\",\"{MACRO}\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Please check virtual disk for warnings or errors",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51283",
+      "name": "Virtual Disk Discovery",
+      "key_": "virtualdisk.discovery"
+    },
+    "prototype_description": "Disk {#SNMPVALUE}({#DISK_NAME}): Virtual disk is in warning state",
+    "dependencies": [
+      {
+        "triggerid": "24303",
+        "description": "Disk 1(Virtual Disk 0): Virtual disk failed",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51313",
+        "key_": "system.hw.virtualdisk.status[virtualDiskState.1]",
+        "name": "Disk 1(Virtual Disk 0): Status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:bb7457bb76f78fa8a786ec27e1d226b1614d6736a2dc324497efcb72877d4baa",
+    "family_source_hash": "sha256:9531eb79f8139942d769bf8f20ed4f7d11cc6f5aa1ad8645bb572d08cc48d52e",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

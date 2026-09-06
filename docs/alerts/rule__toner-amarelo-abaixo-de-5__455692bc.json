@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|toner-amarelo-abaixo-de-5|455692bc",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|toner-amarelo-abaixo-de-5|455692bc",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:36:50.923553Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "vibe-impressora-hp|toner-amarelo-abaixo-de-5",
+      "triggerid": "24339",
+      "host": "Vibe - Impressora [HP]",
+      "description": "Toner Amarelo abaixo de 5%"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24339",
+    "description_raw": "Toner Amarelo abaixo de 5%",
+    "description_normalized": "toner-amarelo-abaixo-de-5",
+    "expression_raw": "{116409}<=5\r\nand time()>=080000 and time()<=180000 and dayofweek()>=1 and dayofweek()<=5",
+    "expression_expanded": "last(/Vibe - Impressora HP/hp.yellow.toner.now)<=5\r\nand time()>=080000 and time()<=180000 and dayofweek()>=1 and dayofweek()<=5",
+    "expression_signature": "last(/{HOST}/hp.yellow.toner.now)<=5andtime()>=080000andtime()<=180000anddayofweek()>=1anddayofweek()<=5",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10695",
+      "host": "Vibe - Impressora HP",
+      "name": "Vibe - Impressora [HP]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "IOT"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51255",
+        "key_": "hp.yellow.toner.now",
+        "name": "Toner Amarelo",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:42535a0bf1c7204e1f767aebe007362e9d5b3021b20fe844ef24eceba858139f",
+    "family_source_hash": "sha256:c76dc92b6654f086c932c4fb98f0ff406743b267872977cf369865d3609a89a5",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Toner Amarelo abaixo de 5% (Impressora HP)",
+    "objective": "",
+    "symptoms": [
+      "'Toner Amarelo abaixo de 5%' no host Vibe - Impressora HP"
+    ],
+    "actions": [
+      "Solicitar substituicao e fazer teste de impressao apos a troca."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Baixa qualidade de impressao por falta de suprimento (toner magenta).",
+    "probable_cause": "Fim da vida util do toner.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC / GE",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "Central de Servicos",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Teste de impressao apos a troca sai correto.",
+    "notes": "Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

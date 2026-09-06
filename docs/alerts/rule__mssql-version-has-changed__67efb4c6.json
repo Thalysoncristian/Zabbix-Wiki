@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mssql-version-has-changed|67efb4c6",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mssql-version-has-changed|67efb4c6",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-version-has-changed",
+      "triggerid": "93314",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL: Version has changed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93314",
+    "description_raw": "MSSQL: Version has changed",
+    "description_normalized": "mssql-version-has-changed",
+    "expression_raw": "{112335}<>{112336} and length({112337})>0",
+    "expression_expanded": "last(/Chubb - SQLDB/mssql.version,#1)<>last(/Chubb - SQLDB/mssql.version,#2) and length(last(/Chubb - SQLDB/mssql.version))>0",
+    "expression_signature": "last(/{HOST}/mssql.version,#1)<>last(/{HOST}/mssql.version,#2)andlength(last(/{HOST}/mssql.version))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MSSQL: Version has changed (new version value received: {ITEM.VALUE})",
+    "comments": "MSSQL version has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153592",
+        "key_": "mssql.version",
+        "name": "MSSQL: Version",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a959b94ea38ce42f4a87e4bd1793d58892fc441dd2ea7eaec2393e8b4bb4946f",
+    "family_source_hash": "sha256:8ae22bfd8aca9d52ddae0bed30a1368511aebef0eca103a859eb3d1146e44991",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

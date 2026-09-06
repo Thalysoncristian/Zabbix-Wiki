@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|applications--api_web",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|pagol-grafana|descrobrir-alertas|teste-alertas",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:52:05Z",
+  "last_modified_at": "2026-09-06T00:52:05.530506Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23851",
+    "description_raw": "TESTE  APIGateway api-conta-bankeiro - plans PROD com erros acima de 20%",
+    "description_normalized": "teste-apigateway-api-conta-bankeiro-plans-prod-com-erros-acima-de-20",
+    "expression_raw": "{33874}=1",
+    "expression_expanded": "last(/Pagol - Grafana/alerta[\" APIGateway api-conta-bankeiro - plans PROD com erros acima de 20% \"])=1",
+    "expression_signature": "last(/{HOST}/alerta[\"APIGatewayapi-conta-bankeiro-plansPRODcomerrosacimade20%\"])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "ambiente: prod\r\nServiceName: {#SERVICENAME}\r\nclient: Pagol\r\nslackChannels: pagol_noc_producao\r\ngrafana_folder: Pagol\r\nvaluesName: D\r\nservice: ApiGateway\r\nalerta: ApiGateway",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "46262",
+      "name": "Descobrir alertas",
+      "key_": "descrobrir.alertas"
+    },
+    "prototype_description": "TESTE {#ALERTAS}",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "cliente",
+        "value": "Pagol"
+      },
+      {
+        "tag": "grafana_folder",
+        "value": "Pagol"
+      }
+    ],
+    "host": {
+      "hostid": "10604",
+      "host": "Pagol - Grafana",
+      "name": "Pagol - Grafana",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46669",
+        "key_": "alerta[\" APIGateway api-conta-bankeiro - plans PROD com erros acima de 20% \"]",
+        "name": "APIGateway api-conta-bankeiro - plans PROD com erros acima de 20%",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:0a5d6bfe4cb99054cc7c3d1da35c33308b5ee8ee88a15f05e5fb60a03845a3ec"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "APIGateway com erro/latencia — Pagol/Bankeiro (Grafana)",
+    "objective": "Reagir a taxas de erro (5xx, acima de 20%) ou volume anormal de requisicoes nas APIs do Bankeiro monitoradas via Grafana.",
+    "symptoms": [
+      "'APIGateway Error 5xx - Bankeiro - prod ApiName=...'",
+      "'APIGateway <rota> com erros acima de 20%'",
+      "'API <rota> com 10x mais request'"
+    ],
+    "actions": [
+      "[A DEFINIR] Confirmar com o time se estes 30 alertas sao mesmo de producao ou sobrou configuracao de teste ativa"
+    ],
+    "validation": "",
+    "risks": [
+      "Prefixo 'TESTE' em 100% das amostras pode indicar que esta regra inteira e ambiente de teste, nao producao -- verificar antes de tratar como alerta real"
+    ],
+    "meaning": "30 alertas, 29 instancias (nomes de API/rota: onboarding, transaction, auth, faq, welcome, conversao de milhas...), host unico 'Pagol - Grafana'. Confianca MEDIA -- 30 de 30 alertas so foram classificados pela descricao (sem chave de item conhecida, o item e generico 'alerta*'). TODOS os exemplos de evidencia trazem o prefixo 'TESTE' no nome do alerta.",
+    "probable_cause": "Deploy com bug, dependencia externa falhando, ou pico de trafego real.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar no Grafana/Pagol se e um alerta de TESTE ou de producao real -- o prefixo 'TESTE' em todas as amostras levanta duvida",
+      "Identificar a rota/API especifica afetada"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca MEDIA. Verificar com o time Pagol/Bankeiro se e producao antes de investir em documentar o procedimento completo.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-utilizacao-de-cpu-acima-de-80|3be8fac3",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-utilizacao-de-cpu-acima-de-80|3be8fac3",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-utilizacao-de-cpu-acima-de-80",
+      "triggerid": "24629",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Utilização de CPU acima de 80%"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24629",
+    "description_raw": "FortiGate: Utilização de CPU acima de 80%",
+    "description_normalized": "fortigate-utilizacao-de-cpu-acima-de-80",
+    "expression_raw": "{35767}>{$CPU.UTIL.CRIT}",
+    "expression_expanded": "min(/Vibe - Proxy Fortigate/system.cpu.util[fgSysCpuUsage.0],5m)>80",
+    "expression_signature": "min(/{HOST}/system.cpu.util[fgSysCpuUsage.0],5m)>80",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current utilization: {ITEM.LASTVALUE1}",
+    "event_name": "FortiGate: High CPU utilization (over {$CPU.UTIL.CRIT}% for 5m)",
+    "comments": "The CPU utilization is too high. The system might be slow to respond.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52437",
+        "key_": "system.cpu.util[fgSysCpuUsage.0]",
+        "name": "FortiGate: CPU utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:0bba76f88f38686fa81932091f7d40e369d1305472100329452d16aa21aa0445",
+    "family_source_hash": "sha256:8276e6e8e5fc5fd2a8c5363b9721d6672135a20254547c8b2b2b262d7674799b",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

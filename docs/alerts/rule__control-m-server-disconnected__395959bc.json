@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|control-m-server-disconnected|395959bc",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|control-m-server-disconnected|395959bc",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "control-m-dev-votorantim|control-m-server-disconnected",
+      "triggerid": "105885",
+      "host": "Control-M DEV Votorantim",
+      "description": "Control-M: Server disconnected"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-server-disconnected",
+      "triggerid": "105898",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Server disconnected"
+    },
+    {
+      "alert_key": "in01|control-m-server-disconnected",
+      "triggerid": "71921",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Server disconnected"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "105885",
+    "description_raw": "Control-M: Server disconnected",
+    "description_normalized": "control-m-server-disconnected",
+    "expression_raw": "{125329}=\"Disconnected\"",
+    "expression_expanded": "last(/Control-M DEV Votorantim/server.message,#1)=\"Disconnected\"",
+    "expression_signature": "last(/{HOST}/server.message,#1)=\"Disconnected\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "Triggered message: {ITEM.VALUE}, Current message: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "The server is disconnected.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10885",
+      "host": "Control-M DEV Votorantim",
+      "name": "Control-M DEV Votorantim",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "174673",
+        "key_": "server.message",
+        "name": "Server message",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f225ef605c3b1d594e438c8cfb72df5e9b4f0e476b36dea6c71debae7b42c327",
+    "family_source_hash": "sha256:a0737718fd93b521b355ce1e468003f875fb83764a581b64435ebf08a73d0b0e",
+    "representative_of_family": true,
+    "family_instance_count": 3
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

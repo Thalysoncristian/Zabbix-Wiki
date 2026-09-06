@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-servers--agent",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|linux-zabbix-agent-is-not-available|5b28f228",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:46:46Z",
+  "last_modified_at": "2026-09-06T00:46:46.787487Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "22391",
+    "description_raw": "Linux: Zabbix agent is not available",
+    "description_normalized": "linux-zabbix-agent-is-not-available",
+    "expression_raw": "{30619}=0",
+    "expression_expanded": "max(/Vibe - Zabbix server/zabbix[host,agent,available],{$AGENT.TIMEOUT})=0",
+    "expression_signature": "max(/{HOST}/zabbix[host,agent,available],{MACRO})=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Linux: Zabbix agent is not available (for {$AGENT.TIMEOUT})",
+    "comments": "For passive only agents, host availability is used with {$AGENT.TIMEOUT} as time threshold.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "42266",
+        "key_": "zabbix[host,agent,available]",
+        "name": "Linux: Zabbix agent availability",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:42b291b18b4d3092d3b08228b69962019a83bd3adeaeda4e63bcc8c9304f2421"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Agente/Proxy Zabbix indisponivel ou desatualizado (Zabbix server / Zabbix-Proxy)",
+    "objective": "Garantir que o agente e o proxy Zabbix que sustentam a propria coleta de alertas estejam disponiveis, atualizados e suportados.",
+    "symptoms": [
+      "'Linux: Zabbix agent is not available'",
+      "'Proxy [Zabbix_Proxy_Fabrica]: Proxy last seen' (proxy sem contato recente)",
+      "'Zabbix proxy is not supported' / 'Zabbix proxy is outdated'"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem reinicia o servico -- provavelmente o mesmo time que administra o Zabbix, nao o NOC de plantao"
+    ],
+    "validation": "",
+    "risks": [
+      "Este e o monitoramento monitorando a si mesmo: se o proxy cair, os alertas dos hosts atras dele param de chegar silenciosamente -- tratar com prioridade mesmo sendo severidade 'Average'"
+    ],
+    "meaning": "79 alertas, 9 instancias (Zabbix_Proxy_Fabrica, process, queue, rcache, uptime, vcache, version, vmware, wcache), 2 hosts (Vibe - Zabbix server, Vibe - Zabbix-Proxy). Severidade concentrada em Average (69) -- e o proprio sistema de monitoramento avisando sobre si mesmo, entao um problema aqui pode significar outros alertas parando de chegar.",
+    "probable_cause": "Servico do agente/proxy parado, porta 10050/10051 bloqueada, ou versao do proxy desatualizada em relacao ao servidor.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar se o servico zabbix-agent/zabbix-proxy esta rodando no host",
+      "Verificar conectividade de rede na porta correspondente",
+      "Checar a versao do proxy contra a versao do servidor Zabbix"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy).",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

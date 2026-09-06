@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|virtual-machines--cpu",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|windows-bob|perf-instance-en-discovery-physicaldisk|devname-disk-is-overloaded",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:42Z",
+  "last_modified_at": "2026-09-06T14:38:42.714902Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "35732",
+    "description_raw": "0 C:: Disk is overloaded",
+    "description_normalized": "0-c-disk-is-overloaded",
+    "expression_raw": "{49832}>{$VFS.DEV.UTIL.MAX.WARN}",
+    "expression_expanded": "min(/Windows bob/perf_counter_en[\"\\PhysicalDisk(0 C:)\\% Idle Time\",60],15m)>\"{$VFS.DEV.UTIL.MAX.WARN}\"",
+    "expression_signature": "min(/{HOST}/perf_counter_en[\"\\PhysicalDisk(0C:)\\%IdleTime\",60],15m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "0 C:: Disk is overloaded (util > {$VFS.DEV.UTIL.MAX.WARN}% for 15m)",
+    "comments": "The disk appears to be under heavy load.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61686",
+      "name": "Physical disks discovery",
+      "key_": "perf_instance_en.discovery[PhysicalDisk]"
+    },
+    "prototype_description": "{#DEVNAME}: Disk is overloaded",
+    "dependencies": [
+      {
+        "triggerid": "35733",
+        "description": "0 C:: Disk read request responses are too high",
+        "host": "Windows bob"
+      },
+      {
+        "triggerid": "35734",
+        "description": "0 C:: Disk write request responses are too high",
+        "host": "Windows bob"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61772",
+        "key_": "perf_counter_en[\"\\PhysicalDisk(0 C:)\\% Idle Time\",60]",
+        "name": "0 C:: Disk utilization by idle time",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2d1cc10ce9151ea004b967e80673373586bb684a4eab2694c906c8d8dfce5116"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "CPU / carga de processamento — Virtual machines",
+    "objective": "Distinguir pico normal de saturacao real de CPU.",
+    "symptoms": [
+      "'High CPU utilization'",
+      "'Load average is too high'",
+      "'Uso de CPU acima de N%'"
+    ],
+    "actions": [
+      "[A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado"
+    ],
+    "validation": "",
+    "risks": [
+      "O agrupamento mistura CPU com DISCO: varios alertas sao '0 C:: Disk is overloaded' e 'Disk read/write request responses are too high', que sao I/O, nao processamento. Entraram aqui pelo prefixo `perf_counter_en` do Windows, que serve as duas coisas."
+    ],
+    "meaning": "9 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 6 instancia(s): 0 C:, \\Memory\\Free System Page Table Entries, \\Memory\\Pages/sec, \\Processor Information(_total)\\% Interrupt Time, \\Processor Information(_total)\\% Privileged Time. Severidades: Warning=9. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Ver se o pico e continuo ou pontual (janela do trigger)",
+      "Identificar o processo/container que puxa a CPU",
+      "Conferir se coincide com janela de batch/backup conhecida"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 9 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

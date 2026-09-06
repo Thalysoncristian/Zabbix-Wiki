@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|http-response-portal-noc|31766f0e",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|http-response-portal-noc|31766f0e",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ferramentas-internas|http-response-portal-noc",
+      "triggerid": "23370",
+      "host": "Vibe - Ferramentas Internas",
+      "description": "Http Response - Portal NOC"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23370",
+    "description_raw": "Http Response - Portal NOC",
+    "description_normalized": "http-response-portal-noc",
+    "expression_raw": "{33443}<6",
+    "expression_expanded": "count(/Vibe - Ferramentas Internas/web.test.rspcode[https://centralizadorms.prod.cloud.dnxbrasil.com.br/,Verificar],10m,\"eq\",\"200\")<6",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[https://centralizadorms.prod.cloud.dnxbrasil.com.br/,Verificar],10m,\"eq\",\"200\")<6",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "https://centralizadorms.prod.cloud.dnxbrasil.com.br/",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10594",
+      "host": "Vibe - Ferramentas Internas",
+      "name": "Vibe - Ferramentas Internas",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "45916",
+        "key_": "web.test.rspcode[https://centralizadorms.prod.cloud.dnxbrasil.com.br/,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://centralizadorms.prod.cloud.dnxbrasil.com.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f55810ac4fd8fec97b21ca3dfc42c660e85151cd8dcbd134b48773d0929878d8",
+    "family_source_hash": "sha256:35d63d9ae3d60e2a4d82ec965b637b632ddc67a150e56805ad9c4c39643131b5",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-ap14-vibe|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-ethernet-has-changed-to-lower-speed-than-it-was-before",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-ap14-vibe|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-ethernet-has-changed-to-lower-speed-than-it-was-before",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-br0-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108968",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface br0(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-br0-20-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108969",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface br0.20(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-eth0-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108960",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface eth0(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-eth0-20-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108967",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface eth0.20(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-wifi0-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108961",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface wifi0(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-wifi0ap0-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108963",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface wifi0ap0(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-wifi0ap1-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108964",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface wifi0ap1(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-wifi1-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108962",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface wifi1(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-wifi1ap2-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108965",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface wifi1ap2(): Ethernet has changed to lower speed than it was before"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-interface-wifi1ap3-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "108966",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Interface wifi1ap3(): Ethernet has changed to lower speed than it was before"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "108968",
+    "description_raw": "Ubiquiti AirOS: Interface br0(): Ethernet has changed to lower speed than it was before",
+    "description_normalized": "ubiquiti-airos-interface-br0-ethernet-has-changed-to-lower-speed-than-it-was-before",
+    "expression_raw": "{128550}<0 and {128551}>0\r\nand (\r\n{128552}=6 or\r\n{128552}=7 or\r\n{128552}=11 or\r\n{128552}=62 or\r\n{128552}=69 or\r\n{128552}=117\r\n)\r\nand\r\n({128553}<>2)",
+    "expression_expanded": "change(/Vibe - AP14_VIBE/net.if.speed[ifSpeed.11])<0 and last(/Vibe - AP14_VIBE/net.if.speed[ifSpeed.11])>0\r\nand (\r\nlast(/Vibe - AP14_VIBE/net.if.type[ifType.11])=6 or\r\nlast(/Vibe - AP14_VIBE/net.if.type[ifType.11])=7 or\r\nlast(/Vibe - AP14_VIBE/net.if.type[ifType.11])=11 or\r\nlast(/Vibe - AP14_VIBE/net.if.type[ifType.11])=62 or\r\nlast(/Vibe - AP14_VIBE/net.if.type[ifType.11])=69 or\r\nlast(/Vibe - AP14_VIBE/net.if.type[ifType.11])=117\r\n)\r\nand\r\n(last(/Vibe - AP14_VIBE/net.if.status[ifOperStatus.11])<>2)",
+    "expression_signature": "change(/{HOST}/net.if.speed[ifSpeed.11])<0andlast(/{HOST}/net.if.speed[ifSpeed.11])>0and(last(/{HOST}/net.if.type[ifType.11])=6orlast(/{HOST}/net.if.type[ifType.11])=7orlast(/{HOST}/net.if.type[ifType.11])=11orlast(/{HOST}/net.if.type[ifType.11])=62orlast(/{HOST}/net.if.type[ifType.11])=69orlast(/{HOST}/net.if.type[ifType.11])=117)and(last(/{HOST}/net.if.status[ifOperStatus.11])<>2)",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "({128550}>0 and {128554}>0) or\r\n({128553}=2)",
+    "recovery_expression_expanded": "(change(/Vibe - AP14_VIBE/net.if.speed[ifSpeed.11])>0 and last(/Vibe - AP14_VIBE/net.if.speed[ifSpeed.11],#2)>0) or\r\n(last(/Vibe - AP14_VIBE/net.if.status[ifOperStatus.11])=2)",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current reported speed: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "188399",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Ubiquiti AirOS: Interface {#IFNAME}({#IFALIAS}): Ethernet has changed to lower speed than it was before",
+    "dependencies": [
+      {
+        "triggerid": "108978",
+        "description": "Ubiquiti AirOS: Interface br0(): Link down",
+        "host": "Vibe - AP14_VIBE"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10890",
+      "host": "Vibe - AP14_VIBE",
+      "name": "Vibe - AP14_VIBE",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "188477",
+        "key_": "net.if.speed[ifSpeed.11]",
+        "name": "Interface br0(): Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "188487",
+        "key_": "net.if.status[ifOperStatus.11]",
+        "name": "Interface br0(): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      },
+      {
+        "itemid": "188497",
+        "key_": "net.if.type[ifType.11]",
+        "name": "Interface br0(): Interface type",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5dc250484f3f52307585e703eb89ec4adfa429aea15f6a33b76b5b3fea40856a",
+    "family_source_hash": "sha256:bca08228661a9ccfb25864c13cf11e95047ce02b2fd32eeb69e8a28431fb205e",
+    "representative_of_family": true,
+    "family_instance_count": 10
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

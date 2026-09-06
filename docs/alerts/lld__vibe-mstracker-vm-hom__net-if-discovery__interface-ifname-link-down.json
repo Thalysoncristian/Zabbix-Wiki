@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-mstracker-vm-hom|net-if-discovery|interface-ifname-link-down",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-mstracker-vm-hom|net-if-discovery|interface-ifname-link-down",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-mstracker-vm-hom|interface-ens160-link-down",
+      "triggerid": "42112",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "Interface ens160: Link down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "42112",
+    "description_raw": "Interface ens160: Link down",
+    "description_normalized": "interface-ens160-link-down",
+    "expression_raw": "{$IFCONTROL:\"ens160\"}=1 and {57299}=2 and ({57300}<>{57301})",
+    "expression_expanded": "\"{$IFCONTROL:\\\"ens160\\\"}\"=1 and last(/mstracker-vm/vfs.file.contents[\"/sys/class/net/ens160/operstate\"])=2 and (last(/mstracker-vm/vfs.file.contents[\"/sys/class/net/ens160/operstate\"],#1)<>last(/mstracker-vm/vfs.file.contents[\"/sys/class/net/ens160/operstate\"],#2))",
+    "expression_signature": "\"{MACRO}\"=1andlast(/{HOST}/vfs.file.contents[\"/sys/class/net/ens160/operstate\"])=2and(last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens160/operstate\"],#1)<>last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens160/operstate\"],#2))",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{57299}<>2 or {$IFCONTROL:\"ens160\"}=0",
+    "recovery_expression_expanded": "last(/mstracker-vm/vfs.file.contents[\"/sys/class/net/ens160/operstate\"])<>2 or \"{$IFCONTROL:\\\"ens160\\\"}\"=0",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This trigger expression works as follows:\r\n1. It can be triggered if the operations status is down.\r\n2. `{$IFCONTROL:\"ens160\"}=1` - a user can redefine context macro to value - 0. That marks this interface as not important. No new trigger will be fired if this interface is down.\r\n3. `{TEMPLATE_NAME:METRIC.diff()}=1` - the trigger fires only if the operational status was up to (1) sometime before (so, do not fire for the 'eternal off' interfaces.)\r\n\r\nWARNING: if closed manually - it will not fire again on the next poll, because of .diff.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "63910",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}: Link down",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63955",
+        "key_": "vfs.file.contents[\"/sys/class/net/ens160/operstate\"]",
+        "name": "Interface ens160: Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:44e4de6df60a27f956ebe5abdfb89da159399d359b8add876f5d23f8c27f4057",
+    "family_source_hash": "sha256:c43bf94381f1ad1373fbd783641d3795c3192340b5e971b381469a6d3406bfab",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

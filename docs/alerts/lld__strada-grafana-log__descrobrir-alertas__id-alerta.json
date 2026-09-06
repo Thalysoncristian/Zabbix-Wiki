@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|strada-grafana-log|descrobrir-alertas|id-alerta",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|strada-grafana-log|descrobrir-alertas|id-alerta",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "strada-grafana-log|host-com-cpu-acima-de-90-cw-undefined",
+      "triggerid": "93730",
+      "host": "Strada - Grafana Log",
+      "description": "Host com CPU acima de 90% CW undefined"
+    },
+    {
+      "alert_key": "strada-grafana-log|restart-de-pods-3-kube-state-metrics",
+      "triggerid": "93759",
+      "host": "Strada - Grafana Log",
+      "description": "Restart de Pods > 3 kube-state-metrics"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93730",
+    "description_raw": "Host com CPU acima de 90% CW undefined",
+    "description_normalized": "host-com-cpu-acima-de-90-cw-undefined",
+    "expression_raw": "{112775}=1",
+    "expression_expanded": "last(/Strada - Grafana Log/alerta[ec2-monitoring,Host com CPU acima de 90% CW undefined])=1",
+    "expression_signature": "last(/{HOST}/alerta[ec2-monitoring,HostcomCPUacimade90%CWundefined])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "ambiente: prod\r\nServiceName: {#SERVICENAME}\r\nclient: {#CLIENT}\r\nslackChannels: {#SLACKCHANNELS}\r\ngrafana_folder: NOC\r\nvaluesName: {#VALUESNAME}\r\nservice: ec2-monitoring\r\nalerta: ec2-monitoring",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "78247",
+      "name": "Descobrir alertas",
+      "key_": "descrobrir.alertas"
+    },
+    "prototype_description": "{#ID_ALERTA}",
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10848",
+      "host": "Strada - Grafana Log",
+      "name": "Strada - Grafana Log",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "154999",
+        "key_": "alerta[ec2-monitoring,Host com CPU acima de 90% CW undefined]",
+        "name": "Host com CPU acima de 90% CW undefined",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6032abbf965d15849ab3f45d585bf610569514f2b1f80cb63b1110b4007e7e72",
+    "family_source_hash": "sha256:6fd9cea124b2b470360443d238e0ec9e1c85c68e943ed6e7f062d8107f5f1d60",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

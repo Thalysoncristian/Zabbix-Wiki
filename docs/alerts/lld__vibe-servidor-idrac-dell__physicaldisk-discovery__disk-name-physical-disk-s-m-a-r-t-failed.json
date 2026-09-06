@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-servidor-idrac-dell|physicaldisk-discovery|disk-name-physical-disk-s-m-a-r-t-failed",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-servidor-idrac-dell|physicaldisk-discovery|disk-name-physical-disk-s-m-a-r-t-failed",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|physical-disk-0-1-0-physical-disk-s-m-a-r-t-failed",
+      "triggerid": "24307",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Physical Disk 0:1:0: Physical disk S.M.A.R.T. failed"
+    },
+    {
+      "alert_key": "vibe-servidor-idrac-dell|physical-disk-0-1-1-physical-disk-s-m-a-r-t-failed",
+      "triggerid": "24308",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Physical Disk 0:1:1: Physical disk S.M.A.R.T. failed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24307",
+    "description_raw": "Physical Disk 0:1:0: Physical disk S.M.A.R.T. failed",
+    "description_normalized": "physical-disk-0-1-0-physical-disk-s-m-a-r-t-failed",
+    "expression_raw": "{34809}=1",
+    "expression_expanded": "count(/Vibe - Servidor iDRAC DELL/system.hw.physicaldisk.smart_status[physicalDiskSmartAlertIndication.1],#1,\"eq\",\"{$DISK_SMART_FAIL_STATUS}\")=1",
+    "expression_signature": "count(/{HOST}/system.hw.physicaldisk.smart_status[physicalDiskSmartAlertIndication.1],#1,\"eq\",\"{MACRO}\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Disk probably requires replacement.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51279",
+      "name": "Physical Disk Discovery",
+      "key_": "physicaldisk.discovery"
+    },
+    "prototype_description": "{#DISK_NAME}: Physical disk S.M.A.R.T. failed",
+    "dependencies": [
+      {
+        "triggerid": "24311",
+        "description": "Physical Disk 0:1:0: Physical disk failed",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51327",
+        "key_": "system.hw.physicaldisk.smart_status[physicalDiskSmartAlertIndication.1]",
+        "name": "Physical Disk 0:1:0: Physical disk S.M.A.R.T. status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2987e9b10588e2d0a648ed950dc2e3b864b8e904c8e2e463912c29f992d1adcb",
+    "family_source_hash": "sha256:99570ea3eb7e43b91504e4f51ebc497bedf17b4c940f44277687244edaacf250",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

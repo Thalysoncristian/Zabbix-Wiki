@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--memory",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|uso-de-memoria-acima-de-90-centralizador|82af1472",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:34Z",
+  "last_modified_at": "2026-09-06T14:38:34.021647Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23447",
+    "description_raw": "Uso de memória acima de 90% - centralizador",
+    "description_normalized": "uso-de-memoria-acima-de-90-centralizador",
+    "expression_raw": "{33456}>90",
+    "expression_expanded": "last(/Vibe - Influxdb/pmemoriausada[centralizador])>90",
+    "expression_signature": "last(/{HOST}/pmemoriausada[centralizador])>90",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46250",
+        "key_": "pmemoriausada[centralizador]",
+        "name": "Memória Usado % - centralizador",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:169a8c46497bbd79427927cd286e30767f765d9df3d7631b535fe2a051e61681"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Memoria e swap — Vibe Tecnologia",
+    "objective": "Reagir a falta de memoria antes do OOM matar processo em producao.",
+    "symptoms": [
+      "'High memory utilization'",
+      "'Lack of available memory'",
+      "'High swap space usage'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao"
+    ],
+    "validation": "",
+    "risks": [
+      "'Lack of available memory' e mais grave que 'High memory utilization': o primeiro significa que ja nao ha memoria para alocar, o segundo e so uso alto"
+    ],
+    "meaning": "13 alertas em 4 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - Influxdb, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. 5 instancia(s): centralizador, grafana, ords-dev-vibe, ords-prod-vibe, zabbix-dnxBrasil. Severidades: High=5, Average=5, Warning=3. 7 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Distinguir memoria realmente usada de cache/buffer (no Linux, cache alto e normal)",
+      "Identificar o processo com maior consumo",
+      "Ver se o swap esta sendo usado de fato ou so alocado"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 10 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

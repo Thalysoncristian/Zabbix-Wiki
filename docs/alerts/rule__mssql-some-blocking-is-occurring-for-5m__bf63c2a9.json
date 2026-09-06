@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mssql-some-blocking-is-occurring-for-5m|bf63c2a9",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mssql-some-blocking-is-occurring-for-5m|bf63c2a9",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-some-blocking-is-occurring-for-5m",
+      "triggerid": "93303",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL: Some blocking is occurring for 5m"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93303",
+    "description_raw": "MSSQL: Some blocking is occurring for 5m",
+    "description_normalized": "mssql-some-blocking-is-occurring-for-5m",
+    "expression_raw": "{112323}>0",
+    "expression_expanded": "min(/Chubb - SQLDB/mssql.lock_waits_sec.rate,5m)>0",
+    "expression_signature": "min(/{HOST}/mssql.lock_waits_sec.rate,5m)>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Values greater than zero indicate at least some blocking is occurring, while a value of zero can quickly eliminate blocking as a potential root-cause problem.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153609",
+        "key_": "mssql.lock_waits_sec.rate",
+        "name": "MSSQL: Total lock requests per second that required waiting",
+        "units": "rps",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:e156e4051386d495625818bd31b6531467eeb34a75abaa52b244d346ff48e4c8",
+    "family_source_hash": "sha256:69e6a495e6f6ed2b1354ff04ca434cba2dff2ff8e443d8e7b39efd2e4a60dc33",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

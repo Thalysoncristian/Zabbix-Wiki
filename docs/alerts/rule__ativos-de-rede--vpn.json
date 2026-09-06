@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ativos-de-rede--vpn",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|sem-dados-de-vpn|a7b9349f",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:46:59Z",
+  "last_modified_at": "2026-09-06T00:46:59.187841Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "29350",
+    "description_raw": "Sem dados de VPN",
+    "description_normalized": "sem-dados-de-vpn",
+    "expression_raw": "{42348}<>1 or {42349}=1",
+    "expression_expanded": "last(/Vibe - VPN Fortigate API/atualiza_vpn.sh)<>1 or nodata(/Vibe - VPN Fortigate API/atualiza_vpn.sh,1h)=1",
+    "expression_signature": "last(/{HOST}/atualiza_vpn.sh)<>1ornodata(/{HOST}/atualiza_vpn.sh,1h)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Chamado: 0226-000003 - Prezados conforme conversado com o sr. Fabrício o alerta foi desativado, já que o monitoramento das sessões está sendo feito pelo grafana.\r\n\r\nDeve-se verificar porque o script abaixo não está funcionando corretamente.\r\n\r\nhost: 192.168.14.217\r\n/usr/lib/zabbix/externalscripts/atualiza_vpn.sh",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10719",
+      "host": "Vibe - VPN Fortigate API",
+      "name": "Vibe - VPN [Fortigate] API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Suporte_infra"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "55743",
+        "key_": "atualiza_vpn.sh",
+        "name": "Atualiza monitoramento VPN",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "10m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:464e9d6db351ab8d58da1e2722628caa51521fde5c8620a60723422e7b1d4b80"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Tunel VPN ou link SD-WAN degradado (Fortigate)",
+    "objective": "Reagir a perda de pacotes ou queda de tuneis SD-WAN/VPN entre a matriz e os links monitorados (AWS, FortiGuard, Gmail, Google Search, Office 365, parceiros Algar/Votorantim/Banpara).",
+    "symptoms": [
+      "'Sem dados de VPN'",
+      "'SD-WAN [NomeDoLink]:[wan1/wan2/internal2]: Perda de Pacotes acima de 5%'"
+    ],
+    "actions": [
+      "[A DEFINIR] VOTO2/MASTER_VOTO1 sao do cliente Votorantim -- confirmar se ha SLA/contato especifico do cliente para esses links"
+    ],
+    "validation": "",
+    "risks": [
+      "Links de clientes especificos (Votorantim, Banpara, Algar) podem ter SLA contratual diferente do generico da Infraestrutura -- nao tratar todos os 17 links com a mesma prioridade sem confirmar"
+    ],
+    "meaning": "56 alertas, 17 instancias (Default_AWS, Default_FortiGuard, Default_Gmail, Default_Google Search, Default_Office_365, MASTER_VOTO1, Master_Algar, Master_Algar2, Master_Algar3, VIBE_BANPARA_01, VOTO2...), 2 hosts (Vibe - Proxy [Fortigate], Vibe - VPN [Fortigate] API). Severidade grave: 22 High + 19 Disaster de 56 -- a maioria dos casos desta regra ja e critica.",
+    "probable_cause": "Instabilidade do provedor de link, saturacao de banda ou falha de configuracao do tunel IPsec/SD-WAN.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Identificar qual link/tunel especifico (nome vem no titulo)",
+      "Verificar se e um parceiro externo (Algar, Votorantim, Banpara) ou um servico proprio (AWS, Office 365)",
+      "Checar se o problema e so perda de pacotes ou queda total do tunel"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 10 familias tecnicas. Nao confundir com a ficha 'Interface VPNBKP(): Baixo Trafego' (ja documentada, SLA 7min) -- aquela e uma interface especifica do Proxy Fortigate, classificada como 'Rede / Interfaces', nao 'VPN e SD-WAN'.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

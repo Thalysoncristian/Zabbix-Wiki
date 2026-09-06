@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|srv-incontrol-2026|perf-instance-en-discovery-physicaldisk|devname-disk-is-overloaded",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|srv-incontrol-2026|perf-instance-en-discovery-physicaldisk|devname-disk-is-overloaded",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|0-c-disk-is-overloaded",
+      "triggerid": "77316",
+      "host": "SRV_INCONTROL_2026",
+      "description": "0 C:: Disk is overloaded"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77316",
+    "description_raw": "0 C:: Disk is overloaded",
+    "description_normalized": "0-c-disk-is-overloaded",
+    "expression_raw": "{95587}>{$VFS.DEV.UTIL.MAX.WARN}",
+    "expression_expanded": "min(/SRV_INCONTROL_2026/perf_counter_en[\"\\PhysicalDisk(0 C:)\\% Idle Time\",60],15m)>\"{$VFS.DEV.UTIL.MAX.WARN}\"",
+    "expression_signature": "min(/{HOST}/perf_counter_en[\"\\PhysicalDisk(0C:)\\%IdleTime\",60],15m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "0 C:: Disk is overloaded (util > {$VFS.DEV.UTIL.MAX.WARN}% for 15m)",
+    "comments": "The disk appears to be under heavy load.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "103769",
+      "name": "Physical disks discovery",
+      "key_": "perf_instance_en.discovery[PhysicalDisk]"
+    },
+    "prototype_description": "{#DEVNAME}: Disk is overloaded",
+    "dependencies": [
+      {
+        "triggerid": "77317",
+        "description": "0 C:: Disk read request responses are too high",
+        "host": "SRV_INCONTROL_2026"
+      },
+      {
+        "triggerid": "77318",
+        "description": "0 C:: Disk write request responses are too high",
+        "host": "SRV_INCONTROL_2026"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103875",
+        "key_": "perf_counter_en[\"\\PhysicalDisk(0 C:)\\% Idle Time\",60]",
+        "name": "0 C:: Disk utilization by idle time",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:852399e978d1d8c3ebcce44f296e36c7d444c135e7a32764a77af1244be1468c",
+    "family_source_hash": "sha256:1b4ed1859e9e70df1222d0437b96ebe35d4a0396c31ca50354f397af6df262c6",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

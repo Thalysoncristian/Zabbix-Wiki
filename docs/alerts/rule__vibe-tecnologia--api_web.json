@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--api_web",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|alerte-para-teste-favor-desconciderar|2082cd43",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:31Z",
+  "last_modified_at": "2026-09-06T14:38:31.858565Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23404",
+    "description_raw": "Alerte para Teste, Favor Desconciderar",
+    "description_normalized": "alerte-para-teste-favor-desconciderar",
+    "expression_raw": "{33271}<100",
+    "expression_expanded": "first(/Vibe - Ferramentas Internas/web.test.rspcode[https://centralizadorms.prod.cloud.dnxbrasil.com.br/,Verificar],1m)<100",
+    "expression_signature": "first(/{HOST}/web.test.rspcode[https://centralizadorms.prod.cloud.dnxbrasil.com.br/,Verificar],1m)<100",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Alerte para Teste, Favor Desconciderar",
+    "event_name": "Alerte para Teste, Favor Desconciderar",
+    "comments": "Alerte para Teste, Favor Desconciderar",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10594",
+      "host": "Vibe - Ferramentas Internas",
+      "name": "Vibe - Ferramentas Internas",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "45916",
+        "key_": "web.test.rspcode[https://centralizadorms.prod.cloud.dnxbrasil.com.br/,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://centralizadorms.prod.cloud.dnxbrasil.com.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:1ad0a62d21a9f223103134a8e3e24861bd9f52472a9915d197fda1859de85ea9"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Endpoint web / API indisponivel ou lenta — Vibe Tecnologia",
+    "objective": "Confirmar indisponibilidade de endpoint e acionar quem responde por ele.",
+    "symptoms": [
+      "'API indisponivel - <nome>'",
+      "'Failed step of scenario'",
+      "'<endpoint> com falha'",
+      "'API lenta'"
+    ],
+    "actions": [
+      "[A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes"
+    ],
+    "validation": "",
+    "risks": [
+      "Endpoints de dev/homologacao costumam nao merecer o mesmo tratamento de producao -- confirmar a lista antes de tratar todos igual",
+      "Um dos alertas se chama 'Alerte para Teste, Favor Desconciderar' e esta como Disaster. Alerta de teste em producao — confirmar se pode ser desligado.",
+      "Mistura endpoints de PRODUCAO e de HOMOLOGACAO (ex.: .../rh/hom) no mesmo agrupamento."
+    ],
+    "meaning": "13 alertas em 4 host(s) do grupo 'Vibe Tecnologia': Vibe -  Bot Zap, Vibe - Ferramentas Internas, Vibe - MSTracker API, Vibe - MSTracker-vm Hom. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 9 instancia(s): Checar status do bot, Waha SAQ API Status, https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom, https://app.feedz.com.br/, https://app2.pontomais.com.br/login. Severidades: Disaster=10, Average=1, High=2.",
+    "probable_cause": "Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o endpoint manualmente (curl/navegador) para confirmar",
+      "Verificar se e endpoint interno ou de terceiro -- muda quem aciona",
+      "Conferir se e ambiente de producao ou dev/homologacao"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 13 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|applications--service",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|pagol-grafana|descrobrir-alertas|teste-alertas",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:23Z",
+  "last_modified_at": "2026-09-06T14:39:23.663961Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23897",
+    "description_raw": "TESTE ECS: Tarefas Pendentes de Implantação-APPS-NONPRO ServiceName=autorizador-saque",
+    "description_normalized": "teste-ecs-tarefas-pendentes-de-implantacao-apps-nonpro-servicename-autorizador-saque",
+    "expression_raw": "{33951}=1",
+    "expression_expanded": "last(/Pagol - Grafana/alerta[ECS: Tarefas Pendentes de Implantação-APPS-NONPRO ServiceName=autorizador-saque])=1",
+    "expression_signature": "last(/{HOST}/alerta[ECS:TarefasPendentesdeImplantação-APPS-NONPROServiceName=autorizador-saque])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "ambiente: \r\nServiceName: autorizador-saque\r\nclient: Pagol\r\nslackChannels: private-teste\r\ngrafana_folder: Pagol\r\nvaluesName: A\r\nservice: ECS\r\nalerta: ECS",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "46262",
+      "name": "Descobrir alertas",
+      "key_": "descrobrir.alertas"
+    },
+    "prototype_description": "TESTE {#ALERTAS}",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": ""
+      },
+      {
+        "tag": "cliente",
+        "value": "Pagol"
+      },
+      {
+        "tag": "grafana_folder",
+        "value": "Pagol"
+      }
+    ],
+    "host": {
+      "hostid": "10604",
+      "host": "Pagol - Grafana",
+      "name": "Pagol - Grafana",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46753",
+        "key_": "alerta[ECS: Tarefas Pendentes de Implantação-APPS-NONPRO ServiceName=autorizador-saque]",
+        "name": "ECS: Tarefas Pendentes de Implantação-APPS-NONPRO ServiceName=autorizador-saque",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:86d6fff65371f85e4a4da12f773e6b91fd1858f5df8d5c773cf46dc29537a6c3"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Servicos e limite de processos — Applications",
+    "objective": "Reagir a servico parado ou sistema perto do limite de processos.",
+    "symptoms": [
+      "'<servico> is not running'",
+      "'Getting closer to process limit'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se reiniciar servico e autorizado ao NOC sem chamado previo"
+    ],
+    "validation": "",
+    "risks": [
+      "ALERTAS DE TESTE EM PRODUCAO: as descricoes trazem o prefixo 'TESTE'. Antes de documentar procedimento, confirmar com o time se estes triggers deveriam existir no ambiente de producao — pode ser configuracao esquecida ligada.",
+      "Mistura dois assuntos sem relacao: ECS/AWS (Pagol) e SLA de servico do Control-M SaaS. Provavelmente merece ser separado em vez de documentado como uma unidade.",
+      "Confianca BAIXA no agrupamento: revisar se estes alertas sao mesmo uma unidade antes de tratar a ficha como definitiva. Os motivos estao na pagina da regra."
+    ],
+    "meaning": "4 alertas em 2 host(s) do grupo 'Applications': Control-M SaaS Master, Pagol - Grafana. Itens `service.info*` e `proc.num*` medem estado de servico e contagem de processos. 2 instancia(s): ECS: Tarefas Pendentes de Implantação-APPS-NONPRO ServiceName=autorizador-saque, Enel Chubb. Severidades: Not classified=1, Average=2, Warning=1.",
+    "probable_cause": "Servico travado apos atualizacao/reinicio, ou processo vazando handles.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar se o servico e essencial ao papel do host",
+      "Verificar se parou sozinho ou foi parado por alguem"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca low, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cliente-chubb--connectivity",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|api-enel-token-autenticador-indisponivel|8a5de7fc",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:36Z",
+  "last_modified_at": "2026-09-06T14:38:36.276015Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24480",
+    "description_raw": "API ENEL Token autenticador Indisponível",
+    "description_normalized": "api-enel-token-autenticador-indisponivel",
+    "expression_raw": "{39236}=0 or\r\n{39237}=0 or {39238}=1",
+    "expression_expanded": "find(/Chubb - Links de API/autorization.enel.item,1h,,\"access_token\")=0 or\r\nfind(/Chubb - Links de API/autorization.enel.item,1h,,\"Bearer\")=0 or nodata(/Chubb - Links de API/autorization.enel.item,7h)=1",
+    "expression_signature": "find(/{HOST}/autorization.enel.item,1h,,\"access_token\")=0orfind(/{HOST}/autorization.enel.item,1h,,\"Bearer\")=0ornodata(/{HOST}/autorization.enel.item,7h)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10705",
+      "host": "Chubb - Links de API",
+      "name": "Chubb - Links de API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51836",
+        "key_": "autorization.enel.item",
+        "name": "ENEL Token API",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "15m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:448fef412d6d7c859250d7e469e98e4a32b7f73ca9cbb8fff94e69bdcc5ed67a"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Conectividade (ICMP/TCP) — Cliente_chubb",
+    "objective": "Confirmar se o equipamento/servico esta mesmo fora antes de escalar.",
+    "symptoms": [
+      "'Unavailable by ICMP ping' (host fora)",
+      "'High ICMP ping loss' (perda de pacotes)",
+      "'High ICMP ping response time' (latencia alta)"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno"
+    ],
+    "validation": "",
+    "risks": [
+      "'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'",
+      "Varios destes alertas JA TEM ficha propria de familia, escrita a partir do manual da Chubb (token ENEL, FTP, SSH, APIs ENEL). Esta regra os agrega; conferir as fichas de familia antes de escrever procedimento novo aqui."
+    ],
+    "meaning": "12 alertas em 2 host(s) do grupo 'Cliente_chubb': Chubb - Links de API, Chubb - SQLDB. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 4 instancia(s): Bearer, https, ssh, tcp. Severidades: Disaster=5, Warning=4, High=3. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o ping/porta manualmente para confirmar",
+      "Verificar se outros hosts do mesmo caminho tambem cairam (indica link, nao host)",
+      "Confirmar se ha manutencao ou reinicio programado"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 12 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

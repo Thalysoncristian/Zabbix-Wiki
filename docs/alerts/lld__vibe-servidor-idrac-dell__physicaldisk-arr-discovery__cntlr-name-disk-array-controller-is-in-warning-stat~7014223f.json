@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-servidor-idrac-dell|physicaldisk-arr-discovery|cntlr-name-disk-array-controller-is-in-warning-state",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-servidor-idrac-dell|physicaldisk-arr-discovery|cntlr-name-disk-array-controller-is-in-warning-state",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|raid-controller-in-slot-6-disk-array-controller-is-in-warning-state",
+      "triggerid": "24302",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "RAID Controller in Slot 6: Disk array controller is in warning state"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24302",
+    "description_raw": "RAID Controller in Slot 6: Disk array controller is in warning state",
+    "description_normalized": "raid-controller-in-slot-6-disk-array-controller-is-in-warning-state",
+    "expression_raw": "{34799}=1",
+    "expression_expanded": "count(/Vibe - Servidor iDRAC DELL/system.hw.diskarray.status[controllerComponentStatus.1],#1,\"eq\",\"{$DISK_ARRAY_WARN_STATUS:\\\"nonCritical\\\"}\")=1",
+    "expression_signature": "count(/{HOST}/system.hw.diskarray.status[controllerComponentStatus.1],#1,\"eq\",\"{MACRO}\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Please check the device for faults",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51278",
+      "name": "Array Controller Discovery",
+      "key_": "physicaldisk.arr.discovery"
+    },
+    "prototype_description": "{#CNTLR_NAME}: Disk array controller is in warning state",
+    "dependencies": [
+      {
+        "triggerid": "24300",
+        "description": "RAID Controller in Slot 6: Disk array controller is in critical state",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      },
+      {
+        "triggerid": "24301",
+        "description": "RAID Controller in Slot 6: Disk array controller is in unrecoverable state!",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51308",
+        "key_": "system.hw.diskarray.status[controllerComponentStatus.1]",
+        "name": "RAID Controller in Slot 6: Disk array controller status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:cf1a7a9f10d700e9e4ad04984d1e8a2c85ee0423c170e309e720164b2ca66ba6",
+    "family_source_hash": "sha256:1343f3d7173b01660198af0f863e2aaae5fbccdba7ee3798d005b04225a0e639",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ubiquiti-airos-firmware-has-changed|cff784e7",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|ubiquiti-airos-firmware-has-changed|cff784e7",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-firmware-has-changed",
+      "triggerid": "24342",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Firmware has changed"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-firmware-has-changed",
+      "triggerid": "24395",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Firmware has changed"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-firmware-has-changed",
+      "triggerid": "108931",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Firmware has changed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24342",
+    "description_raw": "Ubiquiti AirOS: Firmware has changed",
+    "description_normalized": "ubiquiti-airos-firmware-has-changed",
+    "expression_raw": "{34875}<>{34876} and length({34877})>0",
+    "expression_expanded": "last(/Vibe - AP REUNIAO Ubiquiti/system.hw.firmware,#1)<>last(/Vibe - AP REUNIAO Ubiquiti/system.hw.firmware,#2) and length(last(/Vibe - AP REUNIAO Ubiquiti/system.hw.firmware))>0",
+    "expression_signature": "last(/{HOST}/system.hw.firmware,#1)<>last(/{HOST}/system.hw.firmware,#2)andlength(last(/{HOST}/system.hw.firmware))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "Current value: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Firmware version has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10701",
+      "host": "Vibe - AP REUNIAO Ubiquiti",
+      "name": "Vibe - AP REUNIAO [Ubiquiti]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51371",
+        "key_": "system.hw.firmware",
+        "name": "Firmware version",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:925b42c84fb4665cb7fbda2193d66eda12432701f8e0a1b431f6755abbebe70b",
+    "family_source_hash": "sha256:c88116691066ed9fd71a458e1be04d4601bb88185d3ee2d72bdb2ac742990fa8",
+    "representative_of_family": true,
+    "family_instance_count": 3
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

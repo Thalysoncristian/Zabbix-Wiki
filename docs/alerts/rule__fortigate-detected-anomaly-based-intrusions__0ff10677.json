@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-detected-anomaly-based-intrusions|0ff10677",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-detected-anomaly-based-intrusions|0ff10677",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-detected-anomaly-based-intrusions",
+      "triggerid": "103173",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Detected anomaly based intrusions"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "103173",
+    "description_raw": "FortiGate: Detected anomaly based intrusions",
+    "description_normalized": "fortigate-detected-anomaly-based-intrusions",
+    "expression_raw": "{122477}<>0",
+    "expression_expanded": "last(/Vibe - Proxy Fortigate/ips.detected.anomaly[fgIpsAnomalyDetections.0])<>0",
+    "expression_signature": "last(/{HOST}/ips.detected.anomaly[fgIpsAnomalyDetections.0])<>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Acionar a equipe de infra: SOC - Segurança da Informação",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52423",
+        "key_": "ips.detected.anomaly[fgIpsAnomalyDetections.0]",
+        "name": "FortiGate: Detected anomaly based intrusions",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:58850a940e634287d5aa4f0f7e155f1dcf05531619b1dbc1e2ee4ccb03169f8e",
+    "family_source_hash": "sha256:0b3b8a1b6e384544475b5f112bae81548c8abacc76bc02f248e59f152bba775d",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|linux-load-average-is-too-high|4ccca46e",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|linux-load-average-is-too-high|4ccca46e",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "mstracker-vm|linux-load-average-is-too-high",
+      "triggerid": "42079",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "Linux: Load average is too high"
+    },
+    {
+      "alert_key": "vibe-wazuh-siem|linux-load-average-is-too-high",
+      "triggerid": "33950",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "Linux: Load average is too high"
+    },
+    {
+      "alert_key": "vibe-zabbix-server|linux-load-average-is-too-high",
+      "triggerid": "22395",
+      "host": "Vibe - Zabbix server",
+      "description": "Linux: Load average is too high"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|linux-load-average-is-too-high",
+      "triggerid": "24119",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Linux: Load average is too high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "42079",
+    "description_raw": "Linux: Load average is too high",
+    "description_normalized": "linux-load-average-is-too-high",
+    "expression_raw": "{674219}/{674220}>{$LOAD_AVG_PER_CPU.MAX.WARN}\r\nand {674221}>0\r\nand {674222}>0",
+    "expression_expanded": "min(/mstracker-vm/system.cpu.load[all,avg1],10m)/last(/mstracker-vm/system.cpu.num)>\"{$LOAD_AVG_PER_CPU.MAX.WARN}\"\r\nand last(/mstracker-vm/system.cpu.load[all,avg5])>0\r\nand last(/mstracker-vm/system.cpu.load[all,avg15])>0",
+    "expression_signature": "min(/{HOST}/system.cpu.load[all,avg1],10m)/last(/{HOST}/system.cpu.num)>\"{MACRO}\"andlast(/{HOST}/system.cpu.load[all,avg5])>0andlast(/{HOST}/system.cpu.load[all,avg15])>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Load averages(1m 5m 15m): ({ITEM.LASTVALUE1} {ITEM.LASTVALUE3} {ITEM.LASTVALUE4}), # of CPUs: {ITEM.LASTVALUE2}",
+    "event_name": "Linux: Load average is too high (per CPU load over {$LOAD_AVG_PER_CPU.MAX.WARN} for 5m)",
+    "comments": "The load average per CPU is too high. The system may be slow to respond.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63877",
+        "key_": "system.cpu.load[all,avg15]",
+        "name": "Linux: Load average (15m avg)",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "63878",
+        "key_": "system.cpu.load[all,avg1]",
+        "name": "Linux: Load average (1m avg)",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "63879",
+        "key_": "system.cpu.load[all,avg5]",
+        "name": "Linux: Load average (5m avg)",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "63880",
+        "key_": "system.cpu.num",
+        "name": "Linux: Number of CPUs",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:99e7347d63838e24042bb12d0551bc07c980c991647077aca51b6a2c0132f93b",
+    "family_source_hash": "sha256:df20aa9e618192ec954fb34e7fbbb9f11c4dc9d3ba4bdeaf155237cb6d094f8d",
+    "representative_of_family": true,
+    "family_instance_count": 4
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

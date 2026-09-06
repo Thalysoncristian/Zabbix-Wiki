@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-zabbix-proxy|vfs-fs-dependent-discovery|fsname-filesystem-has-become-read-only",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-zabbix-proxy|vfs-fs-dependent-discovery|fsname-filesystem-has-become-read-only",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|filesystem-has-become-read-only",
+      "triggerid": "24174",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "/: Filesystem has become read-only"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|boot-filesystem-has-become-read-only",
+      "triggerid": "117404",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "/boot: Filesystem has become read-only"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24174",
+    "description_raw": "/: Filesystem has become read-only",
+    "description_normalized": "filesystem-has-become-read-only",
+    "expression_raw": "{34517}=0 and {34518}=1",
+    "expression_expanded": "last(/Vibe - Zabbix-Proxy/vfs.fs.dependent[/,readonly],#2)=0 and last(/Vibe - Zabbix-Proxy/vfs.fs.dependent[/,readonly])=1",
+    "expression_signature": "last(/{HOST}/vfs.fs.dependent[/,readonly],#2)=0andlast(/{HOST}/vfs.fs.dependent[/,readonly])=1",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34518}=0",
+    "recovery_expression_expanded": "last(/Vibe - Zabbix-Proxy/vfs.fs.dependent[/,readonly])=0",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The filesystem has become read-only. A possible reason is an I/O error. It is available only for Zabbix agents 6.4 and higher.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51047",
+      "name": "Mounted filesystem discovery",
+      "key_": "vfs.fs.dependent.discovery"
+    },
+    "prototype_description": "{#FSNAME}: Filesystem has become read-only",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51091",
+        "key_": "vfs.fs.dependent[/,readonly]",
+        "name": "/: Filesystem is read-only",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:cb511e52359875cf8beb8e7de770c02bea61392fc5c733da846a276bcfc14355",
+    "family_source_hash": "sha256:90921ac829b4c222a46573fc8f013851be30852841030949bf0380ec0218c617",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

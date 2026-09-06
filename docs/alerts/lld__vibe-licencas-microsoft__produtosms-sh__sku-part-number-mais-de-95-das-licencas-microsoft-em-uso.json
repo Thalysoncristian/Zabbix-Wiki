@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-licencas-microsoft|produtosms-sh|sku-part-number-mais-de-95-das-licencas-microsoft-em-uso",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-licencas-microsoft|produtosms-sh|sku-part-number-mais-de-95-das-licencas-microsoft-em-uso",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-licencas-microsoft|ccibots-privprev-viral-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49018",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "CCIBOTS_PRIVPREV_VIRAL: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|dyn365-team-members-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49013",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "DYN365_TEAM_MEMBERS: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|dynamics-365-onboarding-sku-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49021",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Dynamics_365_Onboarding_SKU: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|exchange-online-plano-2-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "84858",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Exchange Online (Plano 2): Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|flow-free-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49017",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "FLOW_FREE: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|flow-per-user-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49011",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "FLOW_PER_USER: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|microsoft-365-business-premium-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "84856",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Microsoft 365 Business Premium: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|office-365-f3-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "84855",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Office 365 F3: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|powerapps-dev-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49026",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "POWERAPPS_DEV: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|powerapps-viral-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49019",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "POWERAPPS_VIRAL: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|power-bi-standard-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49022",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "POWER_BI_STANDARD: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|projectprofessional-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "99155",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "PROJECTPROFESSIONAL: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|power-bi-premium-por-usuario-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "84857",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Power BI Premium por Usuário: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|power-pages-vtrial-for-makers-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49023",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Power_Pages_vTrial_for_Makers: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|rightsmanagement-adhoc-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49025",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "RIGHTSMANAGEMENT_ADHOC: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|stream-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49009",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "STREAM: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|teams-premium-for-departments-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "84336",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Teams_Premium_(for_Departments): Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|windows-store-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "49015",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "WINDOWS_STORE: Mais de 95% das Licenças Microsoft em uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|win10-vda-e3-mais-de-95-das-licencas-microsoft-em-uso",
+      "triggerid": "84335",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Win10_VDA_E3: Mais de 95% das Licenças Microsoft em uso"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "49009",
+    "description_raw": "STREAM: Mais de 95% das Licenças Microsoft em uso",
+    "description_normalized": "stream-mais-de-95-das-licencas-microsoft-em-uso",
+    "expression_raw": "{64951}>=98",
+    "expression_expanded": "last(/Vibe - Licencas Microsoft/pusado.[STREAM])>=98",
+    "expression_signature": "last(/{HOST}/pusado.[STREAM])>=98",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52904",
+      "name": "Licenças",
+      "key_": "produtosms.sh"
+    },
+    "prototype_description": "{#SKU_PART_NUMBER}: Mais de 95% das Licenças Microsoft em uso",
+    "dependencies": [
+      {
+        "triggerid": "24777",
+        "description": "STREAM: Todas as licenças em uso 100%",
+        "host": "Vibe - Licencas [Microsoft]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10711",
+      "host": "Vibe - Licencas Microsoft",
+      "name": "Vibe - Licencas [Microsoft]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52993",
+        "key_": "pusado.[STREAM]",
+        "name": "STREAM usados em %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "12h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f49196e090dd7cc06182c46620d0e287987c02830f9c037f9ccd72c5d2d430b0",
+    "family_source_hash": "sha256:4b35a7f28a90fb7d1e0d3edc60d5307c257672c5ad180b1f448722576ac5d531",
+    "representative_of_family": true,
+    "family_instance_count": 19
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vpn-vibe-via-embratel-indisponivel|1d14d263",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|vpn-vibe-via-embratel-indisponivel|1d14d263",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-vpn|vpn-vibe-via-embratel-indisponivel",
+      "triggerid": "24774",
+      "host": "Vibe - VPN",
+      "description": "VPN Vibe via Embratel Indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24774",
+    "description_raw": "VPN Vibe via Embratel Indisponível",
+    "description_normalized": "vpn-vibe-via-embratel-indisponivel",
+    "expression_raw": "({72643}=0 and {72644}=0 and {72645}=0) or {72646}=1",
+    "expression_expanded": "(avg(/Vibe - VPN/net.tcp.service[tcp,vpn.vibetecnologia.com,8443],5m)=0 and avg(/Vibe - VPN/net.tcp.service[tcp,200.208.86.178,8443],5m)=0 and last(/Vibe - VPN Fortigate API/vpn_wan_uso.sh[wan1])=0) or nodata(/Vibe - VPN Fortigate API/vpn_wan_uso.sh[wan1],5m)=1",
+    "expression_signature": "(avg(/{HOST}/net.tcp.service[tcp,vpn.vibetecnologia.com,8443],5m)=0andavg(/{HOST}/net.tcp.service[tcp,200.208.86.178,8443],5m)=0andlast(/Vibe-VPNFortigateAPI/vpn_wan_uso.sh[wan1])=0)ornodata(/Vibe-VPNFortigateAPI/vpn_wan_uso.sh[wan1],5m)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "vpn.vibetecnologia.com porta 8443, , Usuários conectados: {ITEM.LASTVALUE2}",
+    "event_name": "",
+    "comments": "Quando este serviço porta 8443 fica Indisponível pode ocorrer devido:\r\n\r\n- Link Embratel Fábrica Indisponível\r\n- VMWare Fábrica Indisponível\r\n- Servidor VPN com algum problema.\r\n\r\nVerifique o Mapa de Rede da Vibe para mais detalhes.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10710",
+      "host": "Vibe - VPN",
+      "name": "Vibe - VPN",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "78019",
+        "key_": "net.tcp.service[tcp,200.208.86.178,8443]",
+        "name": "VPN Vibe via Embratel (IP)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "53017",
+        "key_": "net.tcp.service[tcp,vpn.vibetecnologia.com,8443]",
+        "name": "VPN Vibe via Embratel",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "58675",
+        "key_": "vpn_wan_uso.sh[wan1]",
+        "name": "Conexões WAN1 (Embratel)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:e3f5c6cd233f160e911d3e6095a44019950b7086f1928bf8d485be04bab9b779",
+    "family_source_hash": "sha256:e802589a40678176c23cf16cec8fe0a7b69f9d1269ef037015f066e2da0bba28",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

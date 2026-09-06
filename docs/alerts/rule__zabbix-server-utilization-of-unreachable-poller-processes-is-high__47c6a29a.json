@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-server-utilization-of-unreachable-poller-processes-is-high|47c6a29a",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-server-utilization-of-unreachable-poller-processes-is-high|47c6a29a",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-server|zabbix-server-utilization-of-unreachable-poller-processes-is-high",
+      "triggerid": "13485",
+      "host": "Vibe - Zabbix server",
+      "description": "Zabbix server: Utilization of unreachable poller processes is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "13485",
+    "description_raw": "Zabbix server: Utilization of unreachable poller processes is high",
+    "description_normalized": "zabbix-server-utilization-of-unreachable-poller-processes-is-high",
+    "expression_raw": "{13203}>75",
+    "expression_expanded": "avg(/Vibe - Zabbix server/zabbix[process,unreachable poller,avg,busy],10m)>75",
+    "expression_signature": "avg(/{HOST}/zabbix[process,unreachablepoller,avg,busy],10m)>75",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{13203}<65",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix server/zabbix[process,unreachable poller,avg,busy],10m)<65",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Zabbix server: Utilization of unreachable poller processes over 75%",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "23270",
+        "key_": "zabbix[process,unreachable poller,avg,busy]",
+        "name": "Zabbix server: Utilization of unreachable poller data collector processes, in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:43f0383155cb1e9d99188e3b22ee0a8ee360acd9c0491bb0e3200cf50da0b399",
+    "family_source_hash": "sha256:9f43457d80d796e951a62e512dfcdde8476a7e31736689d50b22bd8f304550bc",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

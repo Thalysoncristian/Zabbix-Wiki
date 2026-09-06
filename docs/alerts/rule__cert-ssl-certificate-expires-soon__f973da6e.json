@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cert-ssl-certificate-expires-soon|f973da6e",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cert-ssl-certificate-expires-soon|f973da6e",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-certificado-dnxbrasil-com|cert-ssl-certificate-expires-soon",
+      "triggerid": "26215",
+      "host": "Vibe - Certificado dnxbrasil.com",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "vibe-certificado-dnxbrasil-com-br|cert-ssl-certificate-expires-soon",
+      "triggerid": "26218",
+      "host": "Vibe - Certificado dnxbrasil.com.br",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "vibe-certificado-mastersupport-com-br|cert-ssl-certificate-expires-soon",
+      "triggerid": "25978",
+      "host": "Vibe - Certificado mastersupport.com.br",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "vibe-certificado-vibedesenv-com|cert-ssl-certificate-expires-soon",
+      "triggerid": "26196",
+      "host": "Vibe - Certificado vibedesenv.com",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "vibe-certificado-vibetecnologia-com|cert-ssl-certificate-expires-soon",
+      "triggerid": "26193",
+      "host": "Vibe - Certificado vibetecnologia.com",
+      "description": "Cert: SSL certificate expires soon"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "26218",
+    "description_raw": "Cert: SSL certificate expires soon",
+    "description_normalized": "cert-ssl-certificate-expires-soon",
+    "expression_raw": "({38349} - now()) / 86400 < {$CERT.EXPIRY.WARN}",
+    "expression_expanded": "(last(/Vibe - Certificado dnxbrasil.com.br/cert.not_after) - now()) / 86400 < \"{$CERT.EXPIRY.WARN}\"",
+    "expression_signature": "(last(/{HOST}/cert.not_after)-now())/86400<\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Cert: SSL certificate expires soon (less than {$CERT.EXPIRY.WARN} days)",
+    "comments": "The SSL certificate should be updated or it will become untrusted.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "26220",
+        "description": "Cert: SSL certificate is invalid",
+        "host": "Vibe - Certificado dnxbrasil.com.br"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10732",
+      "host": "Vibe - Certificado dnxbrasil.com.br",
+      "name": "Vibe - Certificado dnxbrasil.com.br",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Dominios e Certificados",
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "56949",
+        "key_": "cert.not_after",
+        "name": "Cert: Expires on",
+        "units": "unixtime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:bbfeac8c8077b018882760fd61889c6ae243004fcd399091ff0e44237e1aa752",
+    "family_source_hash": "sha256:8f00d7b8a52498eaed8068f19d1a1fa9445e403019613c529ba3b844e49a34bf",
+    "representative_of_family": true,
+    "family_instance_count": 5
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

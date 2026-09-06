@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|indisponivel-ha-10m-192-168-14-221|80a2c817",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|indisponivel-ha-10m-192-168-14-221|80a2c817",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|indisponivel-ha-10m-192-168-14-221",
+      "triggerid": "77367",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Indisponível há 10m: 192.168.14.221"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77367",
+    "description_raw": "Indisponível há 10m: 192.168.14.221",
+    "description_normalized": "indisponivel-ha-10m-192-168-14-221",
+    "expression_raw": "{95638}=0",
+    "expression_expanded": "sum(/SRV_INCONTROL_2026/icmpping,10m)=0",
+    "expression_signature": "sum(/{HOST}/icmpping,10m)=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "104090",
+        "key_": "icmpping",
+        "name": "ICMP - Ping (Disponibilidade)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6c055ed41c2ed7540c4aa2995f193327f92ed2e102a47a8ac810fff1e20af91a",
+    "family_source_hash": "sha256:335115789c41bd3501cc682f545b80e4e5b47db4f50a7997933cc121fcee7696",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

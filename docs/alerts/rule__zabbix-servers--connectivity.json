@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-servers--connectivity",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|zabbix-proxy-service-indisponivel|91dc3e2e",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:08Z",
+  "last_modified_at": "2026-09-06T14:39:08.632123Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24770",
+    "description_raw": "Zabbix-Proxy-Service Indisponível",
+    "description_normalized": "zabbix-proxy-service-indisponivel",
+    "expression_raw": "{36189}=0",
+    "expression_expanded": "last(/Vibe - Zabbix-Proxy-Gateway/net.tcp.service[tcp,200.208.86.184,10051])=0",
+    "expression_signature": "last(/{HOST}/net.tcp.service[tcp,200.208.86.184,10051])=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "IP: 200.208.86.184 porta 10051",
+    "event_name": "",
+    "comments": "Quando o serviço do Zabbix-Proxy porta 10051 fica Indisponível pode ocorrer devido:\r\n\r\n- Link Embratel Fábrica Indisponível\r\n- VMWare Fábrica Indisponível\r\n- Servidor Zabbix-Proxy com algum problema.\r\n\r\nVerifique o Mapa de Rede da Vibe para mais detalhes.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "742561",
+        "description": "Link Backup - Fábrica Interconnect indisponível",
+        "host": "Embratel - Roteador [Cisco]"
+      },
+      {
+        "triggerid": "742560",
+        "description": "Link Principal - Fábrica Embratel indisponível",
+        "host": "Embratel - Roteador [Cisco]"
+      }
+    ],
+    "tags": [],
+    "host": {
+      "hostid": "10709",
+      "host": "Vibe - Zabbix-Proxy-Gateway",
+      "name": "Vibe - Zabbix-Proxy-Gateway",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52891",
+        "key_": "net.tcp.service[tcp,200.208.86.184,10051]",
+        "name": "Zabbix-Proxy-Service [Embratel]",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:568c430298c1ca8af12e38fcd85e593c0dc1d214ceaa1aebc807af366044df96"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Conectividade (ICMP/TCP) — Zabbix servers",
+    "objective": "Confirmar se o equipamento/servico esta mesmo fora antes de escalar.",
+    "symptoms": [
+      "'Unavailable by ICMP ping' (host fora)",
+      "'High ICMP ping loss' (perda de pacotes)",
+      "'High ICMP ping response time' (latencia alta)"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno"
+    ],
+    "validation": "",
+    "risks": [
+      "'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'",
+      "Inclui 'Zabbix-Proxy-Service Indisponivel' (Disaster): se o proxy cai, os alertas dos hosts atras dele param de chegar em silencio. Nao e um alerta de conectividade comum."
+    ],
+    "meaning": "6 alertas em 3 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy, Vibe - Zabbix-Proxy-Gateway. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 1 instancia(s): tcp. Severidades: Disaster=3, Warning=2, High=1. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o ping/porta manualmente para confirmar",
+      "Verificar se outros hosts do mesmo caminho tambem cairam (indica link, nao host)",
+      "Confirmar se ha manutencao ou reinicio programado"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mssql-number-of-index-and-table-scans-exceeds-index-searches-in-the-last-15m|fe6af011",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mssql-number-of-index-and-table-scans-exceeds-index-searches-in-the-last-15m|fe6af011",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-number-of-index-and-table-scans-exceeds-index-searches-in-the-last-15m",
+      "triggerid": "93311",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL: Number of index and table scans exceeds index searches in the last 15m"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93311",
+    "description_raw": "MSSQL: Number of index and table scans exceeds index searches in the last 15m",
+    "description_normalized": "mssql-number-of-index-and-table-scans-exceeds-index-searches-in-the-last-15m",
+    "expression_raw": "{112332} > 0.001",
+    "expression_expanded": "min(/Chubb - SQLDB/mssql.scan_to_search,15m) > 0.001",
+    "expression_signature": "min(/{HOST}/mssql.scan_to_search,15m)>0.001",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Index searches are preferable to index and table scans. For OLTP applications, optimize for more index searches and less scans (preferably, 1 full scan for every 1000 index searches). Index and table scans are expensive I/O operations.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153578",
+        "key_": "mssql.scan_to_search",
+        "name": "MSSQL: Full scans to Index searches ratio",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0;m0-59s3"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f8b3d830551a8f9c1da1d9592d1bb9a5c61472adbd2ae5c3fe600909997efb06",
+    "family_source_hash": "sha256:fe556336e68e00d4db991b10d0b1d817a7f5b817028bf76f487655a2ad95c711",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

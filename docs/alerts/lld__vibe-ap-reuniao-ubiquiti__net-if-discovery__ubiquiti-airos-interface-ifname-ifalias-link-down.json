@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-ap-reuniao-ubiquiti|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-link-down",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-ap-reuniao-ubiquiti|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-link-down",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-ath0-link-down",
+      "triggerid": "24387",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface ath0(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-ath1-link-down",
+      "triggerid": "24388",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface ath1(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-ath2-link-down",
+      "triggerid": "24389",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface ath2(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-ath3-link-down",
+      "triggerid": "24390",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface ath3(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-br0-link-down",
+      "triggerid": "24392",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface br0(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-br0-20-link-down",
+      "triggerid": "24393",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface br0.20(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-eth0-link-down",
+      "triggerid": "24384",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface eth0(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-eth0-20-link-down",
+      "triggerid": "24391",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface eth0.20(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-wifi0-link-down",
+      "triggerid": "24385",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface wifi0(): Link down"
+    },
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-interface-wifi1-link-down",
+      "triggerid": "24386",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Interface wifi1(): Link down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24392",
+    "description_raw": "Ubiquiti AirOS: Interface br0(): Link down",
+    "description_normalized": "ubiquiti-airos-interface-br0-link-down",
+    "expression_raw": "{$IFCONTROL:\"br0\"}=1 and {35047}=2 and ({35048}<>{35049})",
+    "expression_expanded": "\"{$IFCONTROL:\\\"br0\\\"}\"=1 and last(/Vibe - AP REUNIAO Ubiquiti/net.if.status[ifOperStatus.11])=2 and (last(/Vibe - AP REUNIAO Ubiquiti/net.if.status[ifOperStatus.11],#1)<>last(/Vibe - AP REUNIAO Ubiquiti/net.if.status[ifOperStatus.11],#2))",
+    "expression_signature": "\"{MACRO}\"=1andlast(/{HOST}/net.if.status[ifOperStatus.11])=2and(last(/{HOST}/net.if.status[ifOperStatus.11],#1)<>last(/{HOST}/net.if.status[ifOperStatus.11],#2))",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{35047}<>2 or {$IFCONTROL:\"br0\"}=0",
+    "recovery_expression_expanded": "last(/Vibe - AP REUNIAO Ubiquiti/net.if.status[ifOperStatus.11])<>2 or \"{$IFCONTROL:\\\"br0\\\"}\"=0",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This trigger expression works as follows:\r\n1. It can be triggered if the operations status is down.\r\n2. `{$IFCONTROL:\"br0\"}=1` - a user can redefine the context macro to \"0\", marking this interface as not important. No new trigger will be fired if this interface is down.\r\n3. `{TEMPLATE_NAME:METRIC.diff()}=1` - the trigger fires only if the operational status was up to (1) sometime before (so, does not fire for \"eternal off\" interfaces.)\r\n\r\nWARNING: if closed manually - it will not fire again on the next poll, because of .diff.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51384",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Ubiquiti AirOS: Interface {#IFNAME}({#IFALIAS}): Link down",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10701",
+      "host": "Vibe - AP REUNIAO Ubiquiti",
+      "name": "Vibe - AP REUNIAO [Ubiquiti]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51472",
+        "key_": "net.if.status[ifOperStatus.11]",
+        "name": "Interface br0(): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5a25338d87666ed73dce40446818410464a4d033b9ab428008e89e0f8154b737",
+    "family_source_hash": "sha256:3b0fae477a35e119cc779a3286302991931b8ddc3f162d5bf6606f3415f907a8",
+    "representative_of_family": true,
+    "family_instance_count": 10
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

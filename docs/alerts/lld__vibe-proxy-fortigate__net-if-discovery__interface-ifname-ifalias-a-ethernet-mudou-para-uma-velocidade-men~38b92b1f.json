@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-interno2-interno2-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24696",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface INTERNO2(INTERNO2): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto1-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "105389",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO1(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto2-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "105400",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO2(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-banpara-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "42735",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VIBE_BANPARA(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-visitante-visitante-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24705",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VISITANTE(VISITANTE): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnbkp-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24697",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNBKP(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnvibe-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24703",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNVIBE(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-a-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24706",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface a(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-b-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24698",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface b(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-fortilink-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24709",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface fortilink(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24702",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal1-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24699",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal1(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal2-oi-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24704",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal2(Oi): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal3-lan-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24700",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal3(LAN): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal4-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24710",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal4(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal5-banpara-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24714",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal5(BANPARA): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal6-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24708",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal6(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-l2t-root-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24712",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface l2t.root(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-naf-root-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24711",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface naf.root(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-ssl-root-ssl-vpn-interface-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24707",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface ssl.root(SSL VPN interface): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-master-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24713",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface vibe_master(): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan1-wan-ebt-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24715",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan1(WAN_EBT): A Ethernet mudou para uma velocidade menor do que era antes"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan2-interconect-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+      "triggerid": "24701",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan2(INTERCONECT): A Ethernet mudou para uma velocidade menor do que era antes"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24706",
+    "description_raw": "Interface a(): A Ethernet mudou para uma velocidade menor do que era antes",
+    "description_normalized": "interface-a-a-ethernet-mudou-para-uma-velocidade-menor-do-que-era-antes",
+    "expression_raw": "{36017}<0 and {36018}>0 and (\r\n{36019}=6 or\r\n{36019}=7 or\r\n{36019}=11 or\r\n{36019}=62 or\r\n{36019}=69 or\r\n{36019}=117\r\n) and ({36020}<>2)",
+    "expression_expanded": "change(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19])<0 and last(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19])>0 and (\r\nlast(/Vibe - Proxy Fortigate/net.if.type[ifType.19])=6 or\r\nlast(/Vibe - Proxy Fortigate/net.if.type[ifType.19])=7 or\r\nlast(/Vibe - Proxy Fortigate/net.if.type[ifType.19])=11 or\r\nlast(/Vibe - Proxy Fortigate/net.if.type[ifType.19])=62 or\r\nlast(/Vibe - Proxy Fortigate/net.if.type[ifType.19])=69 or\r\nlast(/Vibe - Proxy Fortigate/net.if.type[ifType.19])=117\r\n) and (last(/Vibe - Proxy Fortigate/net.if.status[ifOperStatus.19])<>2)",
+    "expression_signature": "change(/{HOST}/net.if.speed[ifHighSpeed.19])<0andlast(/{HOST}/net.if.speed[ifHighSpeed.19])>0and(last(/{HOST}/net.if.type[ifType.19])=6orlast(/{HOST}/net.if.type[ifType.19])=7orlast(/{HOST}/net.if.type[ifType.19])=11orlast(/{HOST}/net.if.type[ifType.19])=62orlast(/{HOST}/net.if.type[ifType.19])=69orlast(/{HOST}/net.if.type[ifType.19])=117)and(last(/{HOST}/net.if.status[ifOperStatus.19])<>2)",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "({36017}>0 and \r\n{36021}>0) or\r\n({36020}=2)",
+    "recovery_expression_expanded": "(change(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19])>0 and \r\nlast(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19],#2)>0) or\r\n(last(/Vibe - Proxy Fortigate/net.if.status[ifOperStatus.19])=2)",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current reported speed: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52465",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): A Ethernet mudou para uma velocidade menor do que era antes",
+    "dependencies": [
+      {
+        "triggerid": "24726",
+        "description": "Interface a(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52732",
+        "key_": "net.if.speed[ifHighSpeed.19]",
+        "name": "Interface a(): Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52752",
+        "key_": "net.if.status[ifOperStatus.19]",
+        "name": "Interface a(): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52772",
+        "key_": "net.if.type[ifType.19]",
+        "name": "Interface a(): Interface type",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6f31679081e32c19de3bab65e4faf3a57084e53449cd7db3cbb148b81cf5f48a",
+    "family_source_hash": "sha256:e7a8146a241e5fddc77f2364032c08756867b5d61c5fb9bc69e7fdd4bdb54089",
+    "representative_of_family": true,
+    "family_instance_count": 23
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

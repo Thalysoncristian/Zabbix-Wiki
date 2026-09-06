@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|embratel-roteador-cisco|net-if-discovery|interface-ifname-ifalias-high-bandwidth-usage",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|embratel-roteador-cisco|net-if-discovery|interface-ifname-ifalias-high-bandwidth-usage",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-0-e-santos-e-l-silva-100000k-blm-ip-06103-blm-ip-06103-high-bandwidth-usage",
+      "triggerid": "24209",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/0(E. SANTOS E L. SILVA | 100000K | BLM/IP/06103 | (BLM/IP/06103)): High bandwidth usage"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-0-276-e-santos-e-l-silva-100000k-blm-ip-06103-blm-ip-06103-high-bandwidth-usage",
+      "triggerid": "24210",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/0.276(E. SANTOS E L. SILVA | 100000K | BLM/IP/06103 | (BLM/IP/06103)): High bandwidth usage"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-1-lan-high-bandwidth-usage",
+      "triggerid": "24212",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/1(| LAN |): High bandwidth usage"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-3-high-bandwidth-usage",
+      "triggerid": "24211",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/3(): High bandwidth usage"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24211",
+    "description_raw": "Interface Gi0/3(): High bandwidth usage",
+    "description_normalized": "interface-gi0-3-high-bandwidth-usage",
+    "expression_raw": "({34601}>({$IF.UTIL.MAX:\"Gi0/3\"}/100)*{34602} or\r\n{34603}>({$IF.UTIL.MAX:\"Gi0/3\"}/100)*{34602}) and\r\n{34602}>0",
+    "expression_expanded": "(avg(/Embratel - Roteador Cisco/net.if.in[ifHCInOctets.4],15m)>(\"{$IF.UTIL.MAX:\\\"Gi0/3\\\"}\"/100)*last(/Embratel - Roteador Cisco/net.if.speed[ifHighSpeed.4]) or\r\navg(/Embratel - Roteador Cisco/net.if.out[ifHCOutOctets.4],15m)>(\"{$IF.UTIL.MAX:\\\"Gi0/3\\\"}\"/100)*last(/Embratel - Roteador Cisco/net.if.speed[ifHighSpeed.4])) and\r\nlast(/Embratel - Roteador Cisco/net.if.speed[ifHighSpeed.4])>0",
+    "expression_signature": "(avg(/{HOST}/net.if.in[ifHCInOctets.4],15m)>(\"{MACRO}\"/100)*last(/{HOST}/net.if.speed[ifHighSpeed.4])oravg(/{HOST}/net.if.out[ifHCOutOctets.4],15m)>(\"{MACRO}\"/100)*last(/{HOST}/net.if.speed[ifHighSpeed.4]))andlast(/{HOST}/net.if.speed[ifHighSpeed.4])>0",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34601}<(({$IF.UTIL.MAX:\"Gi0/3\"}-3)/100)*{34602} and\r\n{34603}<(({$IF.UTIL.MAX:\"Gi0/3\"}-3)/100)*{34602}",
+    "recovery_expression_expanded": "avg(/Embratel - Roteador Cisco/net.if.in[ifHCInOctets.4],15m)<((\"{$IF.UTIL.MAX:\\\"Gi0/3\\\"}\"-3)/100)*last(/Embratel - Roteador Cisco/net.if.speed[ifHighSpeed.4]) and\r\navg(/Embratel - Roteador Cisco/net.if.out[ifHCOutOctets.4],15m)<((\"{$IF.UTIL.MAX:\\\"Gi0/3\\\"}\"-3)/100)*last(/Embratel - Roteador Cisco/net.if.speed[ifHighSpeed.4])",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "Interface Gi0/3(): High bandwidth usage (>{$IF.UTIL.MAX:\"Gi0/3\"}%)",
+    "comments": "The utilization of the network interface is close to its estimated maximum bandwidth.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51130",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): High bandwidth usage",
+    "dependencies": [
+      {
+        "triggerid": "24223",
+        "description": "Interface Gi0/3(): Link down",
+        "host": "Embratel - Roteador [Cisco]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51165",
+        "key_": "net.if.in[ifHCInOctets.4]",
+        "name": "Interface Gi0/3(): Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "51177",
+        "key_": "net.if.out[ifHCOutOctets.4]",
+        "name": "Interface Gi0/3(): Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "51181",
+        "key_": "net.if.speed[ifHighSpeed.4]",
+        "name": "Interface Gi0/3(): Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:66866260b4cd6e332c878dfe6588f8286a46bbbb4335f69c46b32df37702f78c",
+    "family_source_hash": "sha256:a9bf72b8e7b70d73d4f07c5951f4edd00ab5fb2f5092aae80c11301ca9635278",
+    "representative_of_family": true,
+    "family_instance_count": 4
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

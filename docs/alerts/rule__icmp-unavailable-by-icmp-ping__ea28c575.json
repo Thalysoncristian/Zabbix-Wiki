@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|icmp-unavailable-by-icmp-ping|ea28c575",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|icmp-unavailable-by-icmp-ping|ea28c575",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:35:24.431122Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "vibe-impressora-hp|icmp-unavailable-by-icmp-ping",
+      "triggerid": "86392",
+      "host": "Vibe - Impressora [HP]",
+      "description": "ICMP: Unavailable by ICMP ping"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "86392",
+    "description_raw": "ICMP: Unavailable by ICMP ping",
+    "description_normalized": "icmp-unavailable-by-icmp-ping",
+    "expression_raw": "{106352}=0\r\nand dayofweek()>=1 and dayofweek()<=5\r\nand time()>=080000 and time()<=180000",
+    "expression_expanded": "max(/Vibe - Impressora HP/icmpping,#3)=0\r\nand dayofweek()>=1 and dayofweek()<=5\r\nand time()>=080000 and time()<=180000",
+    "expression_signature": "max(/{HOST}/icmpping,#3)=0anddayofweek()>=1anddayofweek()<=5andtime()>=080000andtime()<=180000",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Last three attempts returned timeout.  Please check device connectivity.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10695",
+      "host": "Vibe - Impressora HP",
+      "name": "Vibe - Impressora [HP]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "IOT"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51875",
+        "key_": "icmpping",
+        "name": "ICMP: ICMP ping",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ba373ec2350abc4f1949d4f5eb7bf98ef6a6c7de8c3400714e7709b3824dd1a7",
+    "family_source_hash": "sha256:ecf1986bef5a2210fb26ba7584ebeeacd706b5e7abde7ff1f71d186801c6e268",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Impressora HP inacessivel (ICMP)",
+    "objective": "",
+    "symptoms": [
+      "'ICMP: Unavailable by ICMP ping' no host Vibe - Impressora HP"
+    ],
+    "actions": [
+      "Verificar presencialmente na fabrica e abrir chamado."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Impressora inacessivel na rede da fabrica.",
+    "probable_cause": "Equipamento desligado ou falha de rede.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar presencialmente na fabrica"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC / GE",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "Central de Servicos",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Impressora volta a responder ao ping.",
+    "notes": "Severidade: Alta. SLA: Imediato. Horario: NOC/GE atende 24x7. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

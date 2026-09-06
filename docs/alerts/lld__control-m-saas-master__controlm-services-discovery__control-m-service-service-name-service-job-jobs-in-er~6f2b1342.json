@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|control-m-saas-master|controlm-services-discovery|control-m-service-service-name-service-job-jobs-in-error-state",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|control-m-saas-master|controlm-services-discovery|control-m-service-service-name-service-job-jobs-in-error-state",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "control-m-saas-master|control-m-service-enel-chubb-in01-00tmq-jobs-in-error-state",
+      "triggerid": "810864",
+      "host": "Control-M SaaS Master",
+      "description": "Control-M: Service [Enel Chubb, IN01:00tmq]: jobs in 'error' state"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "810864",
+    "description_raw": "Control-M: Service [Enel Chubb, IN01:00tmq]: jobs in 'error' state",
+    "description_normalized": "control-m-service-enel-chubb-in01-00tmq-jobs-in-error-state",
+    "expression_raw": "{1022913}>0",
+    "expression_expanded": "last(/Control-M SaaS Master/service.jobs.status['Enel Chubb','IN01:00tmq',error],#1)>0",
+    "expression_signature": "last(/{HOST}/service.jobs.status['EnelChubb','IN01:00tmq',error],#1)>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Trigger value '{ITEM.VALUE}', Current value '{ITEM.LASTVALUE}'",
+    "event_name": "",
+    "comments": "There are services present which are in the state - `error`.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "95394",
+      "name": "SLA services discovery",
+      "key_": "controlm.services.discovery"
+    },
+    "prototype_description": "Control-M: Service [{#SERVICE.NAME}, {#SERVICE.JOB}]: jobs in 'error' state",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10863",
+      "host": "Control-M SaaS Master",
+      "name": "Control-M SaaS Master",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1320527",
+        "key_": "service.jobs.status['Enel Chubb','IN01:00tmq',error]",
+        "name": "Service [Enel Chubb, IN01:00tmq]: jobs 'error'",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:48f08ba1df1f00ecc0998e1d7b5bcdeeaf79c5245ecf34cc5719e649eea8f76c",
+    "family_source_hash": "sha256:2a203c6537547c256c72dd535e760f9af70d9f5ad89b0bf216d32cab3ffbd5e2",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cisco-ios-high-icmp-ping-loss|6911d723",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cisco-ios-high-icmp-ping-loss|6911d723",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|cisco-ios-high-icmp-ping-loss",
+      "triggerid": "24185",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Cisco IOS: High ICMP ping loss"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24185",
+    "description_raw": "Cisco IOS: High ICMP ping loss",
+    "description_normalized": "cisco-ios-high-icmp-ping-loss",
+    "expression_raw": "{34544}>{$ICMP_LOSS_WARN} and {34544}<100",
+    "expression_expanded": "min(/Embratel - Roteador Cisco/icmppingloss,5m)>\"{$ICMP_LOSS_WARN}\" and min(/Embratel - Roteador Cisco/icmppingloss,5m)<100",
+    "expression_signature": "min(/{HOST}/icmppingloss,5m)>\"{MACRO}\"andmin(/{HOST}/icmppingloss,5m)<100",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Loss: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24186",
+        "description": "Cisco IOS: Unavailable by ICMP ping",
+        "host": "Embratel - Roteador [Cisco]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51104",
+        "key_": "icmppingloss",
+        "name": "Cisco IOS: ICMP loss",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6851a27d7bb7434694ee3c00e4bedca7ae13c0473173b62aba6062b35646b1b1",
+    "family_source_hash": "sha256:da0f3aaf8574240f0bf276b0695a5e16f5618590a4b3d65e0913fd321d596380",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

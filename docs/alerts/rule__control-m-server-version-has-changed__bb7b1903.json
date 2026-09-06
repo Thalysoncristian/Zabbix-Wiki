@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|control-m-server-version-has-changed|bb7b1903",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|control-m-server-version-has-changed|bb7b1903",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "control-m-dev-votorantim|control-m-server-version-has-changed",
+      "triggerid": "105888",
+      "host": "Control-M DEV Votorantim",
+      "description": "Control-M: Server version has changed"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-server-version-has-changed",
+      "triggerid": "105901",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Server version has changed"
+    },
+    {
+      "alert_key": "in01|control-m-server-version-has-changed",
+      "triggerid": "71924",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Server version has changed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "105888",
+    "description_raw": "Control-M: Server version has changed",
+    "description_normalized": "control-m-server-version-has-changed",
+    "expression_raw": "{125332}<>{125333} and\r\nlength({125334})>0",
+    "expression_expanded": "last(/Control-M DEV Votorantim/server.version,#1)<>last(/Control-M DEV Votorantim/server.version,#2) and\r\nlength(last(/Control-M DEV Votorantim/server.version))>0",
+    "expression_signature": "last(/{HOST}/server.version,#1)<>last(/{HOST}/server.version,#2)andlength(last(/{HOST}/server.version))>0",
+    "recovery_mode": {
+      "value": "2",
+      "name": "none"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "Old version: {ITEM.VALUE}, Current version: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "The server version has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10885",
+      "host": "Control-M DEV Votorantim",
+      "name": "Control-M DEV Votorantim",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "174675",
+        "key_": "server.version",
+        "name": "Server version",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:005b18c0503363f412e919f9f956d88724ba3221e164f23b76b7ea6176fc10b6",
+    "family_source_hash": "sha256:cc7ffa41f55e0c0cbb345b9d36f1907228d9a82a6f31932c6bbee0b1af3d019e",
+    "representative_of_family": true,
+    "family_instance_count": 3
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

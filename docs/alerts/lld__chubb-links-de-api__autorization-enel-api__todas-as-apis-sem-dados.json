@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|chubb-links-de-api|autorization-enel-api|todas-as-apis-sem-dados",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|chubb-links-de-api|autorization-enel-api|todas-as-apis-sem-dados",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T02:02:14.913786Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "chubb-links-de-api|todas-as-apis-sem-dados",
+      "triggerid": "29160",
+      "host": "Chubb - Links de API",
+      "description": "Todas as APIs sem dados"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "29160",
+    "description_raw": "Todas as APIs sem dados",
+    "description_normalized": "todas-as-apis-sem-dados",
+    "expression_raw": "{42006}=3636\r\nand {104930}=1",
+    "expression_expanded": "last(/Chubb - Links de API/api.soma.[Bearer])=3636\r\nand nodata(/Chubb - Links de API/api.soma.[Bearer],10m)=1",
+    "expression_signature": "last(/{HOST}/api.soma.[Bearer])=3636andnodata(/{HOST}/api.soma.[Bearer],10m)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "08/31/2026",
+    "event_name": "",
+    "comments": "Atualize o token de autorização conforme passo a passo abaixo:\r\n* Selecione o host e clique em atualizar\r\n* Recarregue a página e verefique a última checagem\r\n\r\nApós atualizar o token, faça a atualização de cada estado individualmente.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51820",
+      "name": "Token para Autorização API",
+      "key_": "autorization.enel.api"
+    },
+    "prototype_description": "Todas as APIs sem dados",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10705",
+      "host": "Chubb - Links de API",
+      "name": "Chubb - Links de API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "58591",
+        "key_": "api.soma.[Bearer]",
+        "name": "API Soma",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "15m;0/1-7,02:00-09:00;10m/1-7,09:00-09:30"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f496ba7e26587ad8a75496e2e4ac1bf2ed20233dc9acc9799943932b2a3ed5d2",
+    "family_source_hash": "sha256:a49d4b2fa12cca0ce6f77965a98626da0905c50ffe718a81ce4f6f8208c7653c",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "API ENEL indisponivel (endpoint especifico)",
+    "objective": "Validar indisponibilidade real de um endpoint ENEL e notificar os contatos da Chubb.",
+    "symptoms": [
+      "'ENEL API Adesao(Subscription) CE Indisponivel' (+ variante 'a Mais de 2hs')",
+      "'ENEL API Faturamento(Invoice) SP Indisponivel' (+ variante 'a Mais de 2hs')",
+      "'ENEL API Customer-address CE Indisponivel' (+ variante 'a Mais de 2hs')",
+      "'ENEL API Request-history Indisponivel'",
+      "'Todas as APIs sem dados'"
+    ],
+    "actions": [
+      "Analisar o alerta e notificar os contatos da Chubb via e-mail"
+    ],
+    "validation": "",
+    "risks": [
+      "'a Mais de 2hs' e uma segunda severidade do MESMO endpoint (o par avisar/agir do Zabbix) -- nao tratar como incidente novo, e o mesmo caso escalado por tempo"
+    ],
+    "meaning": "Item `services.<endpoint>.<regiao>.[Bearer]`, host 'Chubb - Links de API'. Endpoints monitorados: adesao/subscription (CE), faturamento/invoice (SP), customer-address (CE), request-history (RJ).",
+    "probable_cause": "Indisponibilidade do lado ENEL (externa) ou falha de token/autenticacao (ver ficha propria de token).",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Primeiro descartar o caso do token vencido (ver ficha 'API ENEL Token autenticador indisponivel')",
+      "Validar a indisponibilidade diretamente, se possivel"
+    ],
+    "requires_ticket": false,
+    "routing": {
+      "team": "NOC",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "e-mail para contatos Chubb",
+      "channel": "E-mail"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Mayara Polonio, Gabriel Chakrian, Jajyta Biadolla, Priscila Costa (Chubb) — copiar João Queiroz (Vibe)",
+      "channel": "E-mail"
+    },
+    "resolution_criteria": "Endpoint volta a responder normalmente.",
+    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Contatos em docs/escalation_matrix.md, secao Chubb.",
+    "imported_from": "wiki_manual_chubb_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

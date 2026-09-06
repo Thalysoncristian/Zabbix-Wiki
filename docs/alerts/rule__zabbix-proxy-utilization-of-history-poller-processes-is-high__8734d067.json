@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-utilization-of-history-poller-processes-is-high|8734d067",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-utilization-of-history-poller-processes-is-high|8734d067",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-utilization-of-history-poller-processes-is-high",
+      "triggerid": "24139",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: Utilization of history poller processes is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24139",
+    "description_raw": "Zabbix proxy: Utilization of history poller processes is high",
+    "description_normalized": "zabbix-proxy-utilization-of-history-poller-processes-is-high",
+    "expression_raw": "{34449}>{$ZABBIX.PROXY.UTIL.MAX:\"history poller\"}",
+    "expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,history poller,avg,busy],10m)>\"{$ZABBIX.PROXY.UTIL.MAX:\\\"history poller\\\"}\"",
+    "expression_signature": "avg(/{HOST}/zabbix[process,historypoller,avg,busy],10m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34449}<{$ZABBIX.PROXY.UTIL.MIN:\"history poller\"}",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,history poller,avg,busy],10m)<\"{$ZABBIX.PROXY.UTIL.MIN:\\\"history poller\\\"}\"",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Zabbix proxy: Utilization of history poller processes over {$ZABBIX.PROXY.UTIL.MAX:\"history poller\"}%",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51008",
+        "key_": "zabbix[process,history poller,avg,busy]",
+        "name": "Zabbix proxy: Utilization of history poller data collector processes, in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:0287c03dc8d2e471eb6133fbc55f5f857da20f301c501462fe8d05cd71ac5ccf",
+    "family_source_hash": "sha256:83cb93f086b4c2dfcc74c2d843ce5e72578cf4a74a1d9006ef7a8422067b9b2e",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

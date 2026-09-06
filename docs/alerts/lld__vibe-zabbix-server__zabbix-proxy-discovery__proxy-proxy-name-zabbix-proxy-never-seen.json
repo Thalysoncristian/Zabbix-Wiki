@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-zabbix-server|zabbix-proxy-discovery|proxy-proxy-name-zabbix-proxy-never-seen",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-zabbix-server|zabbix-proxy-discovery|proxy-proxy-name-zabbix-proxy-never-seen",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-server|proxy-zabbix-proxy-fabrica-zabbix-proxy-never-seen",
+      "triggerid": "24113",
+      "host": "Vibe - Zabbix server",
+      "description": "Proxy [Zabbix_Proxy_Fabrica]: Zabbix proxy never seen"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24113",
+    "description_raw": "Proxy [Zabbix_Proxy_Fabrica]: Zabbix proxy never seen",
+    "description_normalized": "proxy-zabbix-proxy-fabrica-zabbix-proxy-never-seen",
+    "expression_raw": "{34414}=-1",
+    "expression_expanded": "last(/Vibe - Zabbix server/zabbix.proxy.last_seen[Zabbix_Proxy_Fabrica],#1)=-1",
+    "expression_signature": "last(/{HOST}/zabbix.proxy.last_seen[Zabbix_Proxy_Fabrica],#1)=-1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current value: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Zabbix proxy is not updating the configuration data.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "44058",
+      "name": "Zabbix proxy discovery",
+      "key_": "zabbix.proxy.discovery"
+    },
+    "prototype_description": "Proxy [{#PROXY.NAME}]: Zabbix proxy never seen",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "50956",
+        "key_": "zabbix.proxy.last_seen[Zabbix_Proxy_Fabrica]",
+        "name": "Proxy [Zabbix_Proxy_Fabrica]: Last seen, in seconds",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:83632322bc4e274a069b2348aa73446e93071088666898ef363afcbec4237e30",
+    "family_source_hash": "sha256:3699f68fa8cef72c16803972a7950f6b320afceedcf202a3858ef49cdaba1895",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

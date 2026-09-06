@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|windows-bob|net-if-discovery|interface-ifname-ifalias-ethernet-has-changed-to-lower-speed-than-it-was-before",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|windows-bob|net-if-discovery|interface-ifname-ifalias-ethernet-has-changed-to-lower-speed-than-it-was-before",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "windows-bob|interface-amazon-elastic-network-adapter-ethernet-3-ethernet-has-changed-to-lower-speed-than-it-was-before",
+      "triggerid": "35730",
+      "host": "Windows bob",
+      "description": "Interface Amazon Elastic Network Adapter(Ethernet 3): Ethernet has changed to lower speed than it was before"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "35730",
+    "description_raw": "Interface Amazon Elastic Network Adapter(Ethernet 3): Ethernet has changed to lower speed than it was before",
+    "description_normalized": "interface-amazon-elastic-network-adapter-ethernet-3-ethernet-has-changed-to-lower-speed-than-it-was-before",
+    "expression_raw": "{49826}<0 and\r\n{49827}>0 and\r\n{49828}=2",
+    "expression_expanded": "change(/Windows bob/net.if.speed[\"{EFDCC438-1368-4889-B23E-1841C6D0BDB5}\"])<0 and\r\nlast(/Windows bob/net.if.speed[\"{EFDCC438-1368-4889-B23E-1841C6D0BDB5}\"])>0 and\r\nlast(/Windows bob/net.if.status[\"{EFDCC438-1368-4889-B23E-1841C6D0BDB5}\"])=2",
+    "expression_signature": "change(/{HOST}/net.if.speed[\"{MACRO}\"])<0andlast(/{HOST}/net.if.speed[\"{MACRO}\"])>0andlast(/{HOST}/net.if.status[\"{MACRO}\"])=2",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current reported speed: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61685",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Ethernet has changed to lower speed than it was before",
+    "dependencies": [
+      {
+        "triggerid": "35731",
+        "description": "Interface Amazon Elastic Network Adapter(Ethernet 3): Link down",
+        "host": "Windows bob"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61769",
+        "key_": "net.if.speed[\"{EFDCC438-1368-4889-B23E-1841C6D0BDB5}\"]",
+        "name": "Interface Amazon Elastic Network Adapter(Ethernet 3): Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "61770",
+        "key_": "net.if.status[\"{EFDCC438-1368-4889-B23E-1841C6D0BDB5}\"]",
+        "name": "Interface Amazon Elastic Network Adapter(Ethernet 3): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:db7980b360539339f5a87a5b8a0467fb0e5e81883fc869a0c739399e7ce45216",
+    "family_source_hash": "sha256:bd07c88bdad302ee2f526923619f8c1a8105a25a93e1f748d1889cd3951f2394",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

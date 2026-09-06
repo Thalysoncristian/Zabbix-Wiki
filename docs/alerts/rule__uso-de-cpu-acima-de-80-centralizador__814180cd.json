@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|uso-de-cpu-acima-de-80-centralizador|814180cd",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|uso-de-cpu-acima-de-80-centralizador|814180cd",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-influxdb|uso-de-cpu-acima-de-80-centralizador",
+      "triggerid": "23452",
+      "host": "Vibe - Influxdb",
+      "description": "Uso de CPU acima de 80% - centralizador"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23452",
+    "description_raw": "Uso de CPU acima de 80% - centralizador",
+    "description_normalized": "uso-de-cpu-acima-de-80-centralizador",
+    "expression_raw": "{33461}>=80",
+    "expression_expanded": "avg(/Vibe - Influxdb/cpu[centralizador],10m)>=80",
+    "expression_signature": "avg(/{HOST}/cpu[centralizador],10m)>=80",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46245",
+        "key_": "cpu[centralizador]",
+        "name": "CPU utilizado - centralizador",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2cee7ef36d17739d45734da893c4437765f0faa52e85066e3a2c416468f349ae",
+    "family_source_hash": "sha256:ece9fd9a3951fc36234d2c8d8ded7f5c13120f93d9ce31706d52708e2ce82a75",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

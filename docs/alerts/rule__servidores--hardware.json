@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|servidores--hardware",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|vibe-servidor-idrac-dell|temp-cpu-discovery|sensor-locale-temperature-is-above-critical-threshold",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:52:00Z",
+  "last_modified_at": "2026-09-06T00:52:00.839877Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24324",
+    "description_raw": "CPU1 Temp: Temperature is above critical threshold",
+    "description_normalized": "cpu1-temp-temperature-is-above-critical-threshold",
+    "expression_raw": "{34841}>{$TEMP_CRIT:\"CPU\"}\r\nor\r\n{34842}={$TEMP_CRIT_STATUS}\r\nor\r\n{34842}={$TEMP_DISASTER_STATUS}",
+    "expression_expanded": "avg(/Vibe - Servidor iDRAC DELL/sensor.temp.value[temperatureProbeReading.CPU.1.2],5m)>\"{$TEMP_CRIT:\\\"CPU\\\"}\"\r\nor\r\nlast(/Vibe - Servidor iDRAC DELL/sensor.temp.status[temperatureProbeStatus.CPU.1.2])=\"{$TEMP_CRIT_STATUS}\"\r\nor\r\nlast(/Vibe - Servidor iDRAC DELL/sensor.temp.status[temperatureProbeStatus.CPU.1.2])=\"{$TEMP_DISASTER_STATUS}\"",
+    "expression_signature": "avg(/{HOST}/sensor.temp.value[temperatureProbeReading.CPU.1.2],5m)>\"{MACRO}\"orlast(/{HOST}/sensor.temp.status[temperatureProbeStatus.CPU.1.2])=\"{MACRO}\"orlast(/{HOST}/sensor.temp.status[temperatureProbeStatus.CPU.1.2])=\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34843}<{$TEMP_CRIT:\"CPU\"}-3",
+    "recovery_expression_expanded": "max(/Vibe - Servidor iDRAC DELL/sensor.temp.value[temperatureProbeReading.CPU.1.2],5m)<\"{$TEMP_CRIT:\\\"CPU\\\"}\"-3",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current value: {ITEM.LASTVALUE1}",
+    "event_name": "CPU1 Temp: Temperature is above critical threshold: >{$TEMP_CRIT:\"CPU\"}",
+    "comments": "This trigger uses temperature sensor values as well as temperature sensor status if available",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51282",
+      "name": "Temperature CPU Discovery",
+      "key_": "temp.cpu.discovery"
+    },
+    "prototype_description": "{#SENSOR_LOCALE}: Temperature is above critical threshold",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51335",
+        "key_": "sensor.temp.status[temperatureProbeStatus.CPU.1.2]",
+        "name": "CPU1 Temp: Temperature status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "51337",
+        "key_": "sensor.temp.value[temperatureProbeReading.CPU.1.2]",
+        "name": "CPU1 Temp: Temperature",
+        "units": "°C",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:d57ce177ebec7e7f7598d6c3d8836510dafbf5277d870d746362ec0b8d84126b"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Hardware do servidor DELL (iDRAC) — temperatura, fonte, disco fisico, RAID",
+    "objective": "Reagir a alertas de saude fisica do servidor DELL via iDRAC (temperatura, fonte, disco, RAID).",
+    "symptoms": [
+      "'CPUx Temp: Temperature is above critical/warning threshold'",
+      "'PSx Status' / disco fisico / RAID Controller com problema"
+    ],
+    "actions": [
+      "[A DEFINIR] Procedimento de troca de disco/fonte -- normalmente hot-swap, mas confirmar quem executa"
+    ],
+    "validation": "",
+    "risks": [
+      "Disco fisico com falha em array RAID e o caso mais serio desta regra (risco real de perda de dados) -- nao tratar com a mesma prioridade que uma temperatura alta pontual"
+    ],
+    "meaning": "35 alertas, 12 instancias (CPU1/2 Temp, PS1/2 Status, discos fisicos, controladora RAID, status global do sistema), host unico 'Vibe - Servidor iDRAC [DELL]'. 28 de 35 sao LLD.",
+    "probable_cause": "Falha real de componente (fonte, disco, ventoinha) ou ambiente com temperatura elevada no rack.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Consultar o iDRAC diretamente para o log de hardware detalhado",
+      "Verificar se ha disco fisico marcado como falho no RAID (indica risco de perda de dados, nao so degradacao)"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 26 familias tecnicas.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

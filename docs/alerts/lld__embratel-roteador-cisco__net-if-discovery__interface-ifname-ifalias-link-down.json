@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|embratel-roteador-cisco|net-if-discovery|interface-ifname-ifalias-link-down",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|embratel-roteador-cisco|net-if-discovery|interface-ifname-ifalias-link-down",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-0-e-santos-e-l-silva-100000k-blm-ip-06103-blm-ip-06103-link-down",
+      "triggerid": "24221",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/0(E. SANTOS E L. SILVA | 100000K | BLM/IP/06103 | (BLM/IP/06103)): Link down"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-0-276-e-santos-e-l-silva-100000k-blm-ip-06103-blm-ip-06103-link-down",
+      "triggerid": "24222",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/0.276(E. SANTOS E L. SILVA | 100000K | BLM/IP/06103 | (BLM/IP/06103)): Link down"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-1-lan-link-down",
+      "triggerid": "24224",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/1(| LAN |): Link down"
+    },
+    {
+      "alert_key": "embratel-roteador-cisco|interface-gi0-3-link-down",
+      "triggerid": "24223",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Interface Gi0/3(): Link down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24223",
+    "description_raw": "Interface Gi0/3(): Link down",
+    "description_normalized": "interface-gi0-3-link-down",
+    "expression_raw": "{$IFCONTROL:\"Gi0/3\"}=1 and {34649}=2 and ({34650}<>{34651})",
+    "expression_expanded": "\"{$IFCONTROL:\\\"Gi0/3\\\"}\"=1 and last(/Embratel - Roteador Cisco/net.if.status[ifOperStatus.4])=2 and (last(/Embratel - Roteador Cisco/net.if.status[ifOperStatus.4],#1)<>last(/Embratel - Roteador Cisco/net.if.status[ifOperStatus.4],#2))",
+    "expression_signature": "\"{MACRO}\"=1andlast(/{HOST}/net.if.status[ifOperStatus.4])=2and(last(/{HOST}/net.if.status[ifOperStatus.4],#1)<>last(/{HOST}/net.if.status[ifOperStatus.4],#2))",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34649}<>2 or {$IFCONTROL:\"Gi0/3\"}=0",
+    "recovery_expression_expanded": "last(/Embratel - Roteador Cisco/net.if.status[ifOperStatus.4])<>2 or \"{$IFCONTROL:\\\"Gi0/3\\\"}\"=0",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This trigger expression works as follows:\r\n1. It can be triggered if the operations status is down.\r\n2. `{$IFCONTROL:\"Gi0/3\"}=1` - a user can redefine context macro to value - 0. That marks this interface as not important. No new trigger will be fired if this interface is down.\r\n3. `{TEMPLATE_NAME:METRIC.diff()}=1` - the trigger fires only if the operational status was up to (1) sometime before (so, do not fire for the 'eternal off' interfaces.)\r\n\r\nWARNING: if closed manually - it will not fire again on the next poll, because of .diff.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51130",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Link down",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51185",
+        "key_": "net.if.status[ifOperStatus.4]",
+        "name": "Interface Gi0/3(): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:b65691d598e7a3b41c1b1d1de28073a9d2e906331b958578a00452b1b5e65b71",
+    "family_source_hash": "sha256:25f406af093342a10f0dcaae20f0658dad6dfa5607be57d128ba4fc4f4b398fc",
+    "representative_of_family": true,
+    "family_instance_count": 4
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

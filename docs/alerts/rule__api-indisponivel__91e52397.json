@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|api-indisponivel|91e52397",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|api-indisponivel|91e52397",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "carguero-api-monitor-down|api-indisponivel",
+      "triggerid": "55116",
+      "host": "Carguero - API Monitor Down",
+      "description": "API - Indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "55116",
+    "description_raw": "API - Indisponível",
+    "description_normalized": "api-indisponivel",
+    "expression_raw": "{79733}<6 and {79734}<>0 and {79735}=1 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_expanded": "count(/Carguero - API Monitor Down/web.test.rspcode[https://conteudo.strada.log.br/,Verificar],10m,\"eq\",\"200\")<6 and last(/Carguero - API Monitor Down/web.test.fail[https://conteudo.strada.log.br/])<>0 and nodata(/Carguero - API Monitor Down/web.test.rspcode[https://conteudo.strada.log.br/,Verificar],600)=1 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[https://conteudo.strada.log.br/,Verificar],10m,\"eq\",\"200\")<6andlast(/{HOST}/web.test.fail[https://conteudo.strada.log.br/])<>0andnodata(/{HOST}/web.test.rspcode[https://conteudo.strada.log.br/,Verificar],600)=1and((dayofweek()<6and(time()>180000ortime()<080000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "https://conteudo.strada.log.br/",
+    "event_name": "https://conteudo.strada.log.br/",
+    "comments": "API Site Strada - https://conteudo.strada.log.br/",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "76151",
+        "key_": "web.test.fail[https://conteudo.strada.log.br/]",
+        "name": "Failed step of scenario \"https://conteudo.strada.log.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      },
+      {
+        "itemid": "76153",
+        "key_": "web.test.rspcode[https://conteudo.strada.log.br/,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://conteudo.strada.log.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:94f7f453df37ddd330ebf72b22469b07ef3c141d05e322dc8a1b8a8e34f611c0",
+    "family_source_hash": "sha256:d141e703f3790b6d274e47b0eb2d7190a4d1fb05e3e4c769770e4ef2acc3a591",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

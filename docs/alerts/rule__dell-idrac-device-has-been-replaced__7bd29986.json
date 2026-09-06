@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|dell-idrac-device-has-been-replaced|7bd29986",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|dell-idrac-device-has-been-replaced|7bd29986",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|dell-idrac-device-has-been-replaced",
+      "triggerid": "24267",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Dell iDRAC: Device has been replaced"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24267",
+    "description_raw": "Dell iDRAC: Device has been replaced",
+    "description_normalized": "dell-idrac-device-has-been-replaced",
+    "expression_raw": "{34738}<>{34739} and length({34740})>0",
+    "expression_expanded": "last(/Vibe - Servidor iDRAC DELL/system.hw.serialnumber,#1)<>last(/Vibe - Servidor iDRAC DELL/system.hw.serialnumber,#2) and length(last(/Vibe - Servidor iDRAC DELL/system.hw.serialnumber))>0",
+    "expression_signature": "last(/{HOST}/system.hw.serialnumber,#1)<>last(/{HOST}/system.hw.serialnumber,#2)andlength(last(/{HOST}/system.hw.serialnumber))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Dell iDRAC: Device has been replaced (new serial number received)",
+    "comments": "Device serial number has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51267",
+        "key_": "system.hw.serialnumber",
+        "name": "Dell iDRAC: Hardware serial number",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:4b869919ad91a6416ab07f17ef82fed2874059399d52eb8a0f7f91b900437734",
+    "family_source_hash": "sha256:c22288ca8f6780cd447e7eb663f4bbcd35b7e7061e4693ac16b231bbcb44d62e",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

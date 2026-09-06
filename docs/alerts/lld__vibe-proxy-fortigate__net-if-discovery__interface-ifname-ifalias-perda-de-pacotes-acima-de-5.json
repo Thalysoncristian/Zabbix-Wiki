@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-perda-de-pacotes-acima-de-5",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-perda-de-pacotes-acima-de-5",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-interno2-interno2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63344",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface INTERNO2(INTERNO2): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto1-perda-de-pacotes-acima-de-5",
+      "triggerid": "105392",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO1(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto2-perda-de-pacotes-acima-de-5",
+      "triggerid": "105403",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO2(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-banpara-perda-de-pacotes-acima-de-5",
+      "triggerid": "63347",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VIBE_BANPARA(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-visitante-visitante-perda-de-pacotes-acima-de-5",
+      "triggerid": "63354",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VISITANTE(VISITANTE): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnbkp-perda-de-pacotes-acima-de-5",
+      "triggerid": "63345",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNBKP(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnvibe-perda-de-pacotes-acima-de-5",
+      "triggerid": "63352",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNVIBE(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-a-perda-de-pacotes-acima-de-5",
+      "triggerid": "63355",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface a(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-b-perda-de-pacotes-acima-de-5",
+      "triggerid": "63346",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface b(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-fortilink-perda-de-pacotes-acima-de-5",
+      "triggerid": "63358",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface fortilink(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal-perda-de-pacotes-acima-de-5",
+      "triggerid": "63351",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal1-perda-de-pacotes-acima-de-5",
+      "triggerid": "63348",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal1(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal2-oi-perda-de-pacotes-acima-de-5",
+      "triggerid": "63353",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal2(Oi): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal3-lan-perda-de-pacotes-acima-de-5",
+      "triggerid": "63349",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal3(LAN): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal4-perda-de-pacotes-acima-de-5",
+      "triggerid": "63359",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal4(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal5-banpara-perda-de-pacotes-acima-de-5",
+      "triggerid": "63363",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal5(BANPARA): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal6-perda-de-pacotes-acima-de-5",
+      "triggerid": "63357",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal6(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-l2t-root-perda-de-pacotes-acima-de-5",
+      "triggerid": "63361",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface l2t.root(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-naf-root-perda-de-pacotes-acima-de-5",
+      "triggerid": "63360",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface naf.root(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-ssl-root-ssl-vpn-interface-perda-de-pacotes-acima-de-5",
+      "triggerid": "63356",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface ssl.root(SSL VPN interface): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-master-perda-de-pacotes-acima-de-5",
+      "triggerid": "63362",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface vibe_master(): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan1-wan-ebt-perda-de-pacotes-acima-de-5",
+      "triggerid": "63364",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan1(WAN_EBT): Perda de Pacotes acima de 5 %"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan2-interconect-perda-de-pacotes-acima-de-5",
+      "triggerid": "63350",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan2(INTERCONECT): Perda de Pacotes acima de 5 %"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "63355",
+    "description_raw": "Interface a(): Perda de Pacotes acima de 5 %",
+    "description_normalized": "interface-a-perda-de-pacotes-acima-de-5",
+    "expression_raw": "{81346}> 5 and {81347}>5 and {81348}>5",
+    "expression_expanded": "min(/Vibe - Proxy Fortigate/net.if.in.errors[ifInErrors.19],5m)> 5 and min(/Vibe - Proxy Fortigate/net.if.in.discards[ifInDiscards.19],5m)>5 and min(/Vibe - Proxy Fortigate/net.if.in[ifHCInOctets.19],5m)>5",
+    "expression_signature": "min(/{HOST}/net.if.in.errors[ifInErrors.19],5m)>5andmin(/{HOST}/net.if.in.discards[ifInDiscards.19],5m)>5andmin(/{HOST}/net.if.in[ifHCInOctets.19],5m)>5",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Trigger criada a partir do chamado: 1025-000764",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52465",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Perda de Pacotes acima de 5 %",
+    "dependencies": [
+      {
+        "triggerid": "24726",
+        "description": "Interface a(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52612",
+        "key_": "net.if.in.discards[ifInDiscards.19]",
+        "name": "Interface a(): Inbound packets discarded",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52632",
+        "key_": "net.if.in.errors[ifInErrors.19]",
+        "name": "Interface a(): Inbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52652",
+        "key_": "net.if.in[ifHCInOctets.19]",
+        "name": "Interface a(): Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:dcaaf4a3ef778601419a0266c1b2c6526decfae268c61e450a390492bdf308f2",
+    "family_source_hash": "sha256:693f3127ed53905698f9b6606fd14bbf174df02ac1460a981bb0c914bb695f9b",
+    "representative_of_family": true,
+    "family_instance_count": 23
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

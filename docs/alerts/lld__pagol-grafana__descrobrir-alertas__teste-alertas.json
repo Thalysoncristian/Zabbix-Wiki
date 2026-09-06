@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|pagol-grafana|descrobrir-alertas|teste-alertas",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|pagol-grafana|descrobrir-alertas|teste-alertas",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-plans-prod-com-erros-acima-de-20",
+      "triggerid": "23851",
+      "host": "Pagol - Grafana",
+      "description": "TESTE  APIGateway api-conta-bankeiro - plans PROD com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-api-auth-excesso-de-requisicoes-de-token-de-autenticacao-api-conta-bankeiro-auth-token-device-id-account-nonprod-headers-device-id-364e65a9dcf20f27",
+      "triggerid": "24029",
+      "host": "Pagol - Grafana",
+      "description": "TESTE API AUTH: Excesso de Requisições de Token de Autenticação(api.conta.bankeiro.auth.token.device.id.account) NONPROD headers.device-id=364e65a9dcf20f27"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-api-api-conta-bankeiro-com-10x-mais-request-apiname-api-conta-bankeiro-subscription-webhook",
+      "triggerid": "23854",
+      "host": "Pagol - Grafana",
+      "description": "TESTE API api-conta-bankeiro com 10x mais request ApiName=api-conta-bankeiro/subscription-webhook"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-error-5xx-bankeiro-prod-apiname-api-conta-bankeiro-onboarding",
+      "triggerid": "24034",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway  Error 5xx -  Bankeiro - prod ApiName=api-conta-bankeiro/onboarding"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-error-5xx-bankeiro-prod-apiname-api-conta-bankeiro-transaction",
+      "triggerid": "23863",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway  Error 5xx -  Bankeiro - prod ApiName=api-conta-bankeiro/transaction"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-error-5xx-bankeiro-prod-apiname-api-credito-bankeiro-v2",
+      "triggerid": "23867",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway  Error 5xx -  Bankeiro - prod ApiName=api-credito-bankeiro/v2"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-de-conversao-de-milhas-do-aplicativo-conta-bankeiro-device-com-erros-acima-de-20",
+      "triggerid": "23864",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway - de Conversão de Milhas do Aplicativo - conta-bankeiro - device - com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-welcome-prod-com-erros-acima-de-20",
+      "triggerid": "23871",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway - welcome PROD com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-account-nonprod-com-erros-acima-de-20",
+      "triggerid": "24032",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - account NonProd com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-account-prod-com-erros-acima-de-20",
+      "triggerid": "24031",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - account PROD com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-auth-nonprod",
+      "triggerid": "24035",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - auth NONPROD"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-auth-prod",
+      "triggerid": "23865",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - auth PROD"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-faq-nonprod-com-erros-acima-de-20",
+      "triggerid": "24039",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - faq NONPROD com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-faq-prod-com-erros-acima-de-20",
+      "triggerid": "23861",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - faq PROD com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-plans-nonprod-com-erros-acima-de-20",
+      "triggerid": "24038",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-conta-bankeiro - plans NONPROD com erros acima de 20%"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-loyalty-v1-conversion-packages-prod",
+      "triggerid": "23857",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-loyalty-v1 - conversion packages PROD"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-apigateway-api-loyalty-v1-order-prod",
+      "triggerid": "24074",
+      "host": "Pagol - Grafana",
+      "description": "TESTE APIGateway api-loyalty-v1 - order PROD"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-ecs-tarefas-pendentes-de-implantacao-apps-nonpro-servicename-autorizador-saque",
+      "triggerid": "23897",
+      "host": "Pagol - Grafana",
+      "description": "TESTE ECS: Tarefas Pendentes de Implantação-APPS-NONPRO ServiceName=autorizador-saque"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-erro-4xx-api-bankeiro-device-validate-token",
+      "triggerid": "23849",
+      "host": "Pagol - Grafana",
+      "description": "TESTE Erro 4XX - API-BANKEIRO-DEVICE - /validate-token"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-erro-4xx-api-bankeiro-auth-integracao-keycloak",
+      "triggerid": "23872",
+      "host": "Pagol - Grafana",
+      "description": "TESTE Erro 4XX API-BANKEIRO-AUTH - Integração Keycloak"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-erro-4xx-api-bankeiro-auth-auth-refresh",
+      "triggerid": "23870",
+      "host": "Pagol - Grafana",
+      "description": "TESTE Erro 4xx API-BANKEIRO-AUTH - /auth/refresh"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-integracao-com-a-2rpnet-integration-pode-estar-com-problemas",
+      "triggerid": "23852",
+      "host": "Pagol - Grafana",
+      "description": "TESTE Integração com a \"2rpnet-integration\" pode estar com problemas"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-rds-uso-cpu-90-bankeiro-non-prod",
+      "triggerid": "24033",
+      "host": "Pagol - Grafana",
+      "description": "TESTE RDS Uso CPU 90% - Bankeiro - Non prod"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-ext4-instance-pagol-mp-prod-tomcat-i-022dfe5bb6c478d0a-10-148-127-26-job-ec2-matera-prd",
+      "triggerid": "23838",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] - Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle /dev/nvme0n1p1, ext4, instance=pagol-mp-prod-Tomcat, i-022dfe5bb6c478d0a, 10.148.127.26, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-ext4-instance-pagol-mp-prod-tomcatjudccs-i-073e1fd74dd0c4980-10-148-127-238-job-ec2-matera-prd",
+      "triggerid": "23840",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] - Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle /dev/nvme0n1p1, ext4, instance=pagol-mp-prod-TomcatJudccs, i-073e1fd74dd0c4980, 10.148.127.238, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-xfs-instance-pagol-mp-prod-apiserver-spot-i-0ce039247b66ef83f-10-148-81-136-job-ec2-matera-prd",
+      "triggerid": "23842",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] - Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle /dev/nvme0n1p1, xfs, instance=pagol-mp-prod-ApiServer-SPOT, i-0ce039247b66ef83f, 10.148.81.136, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-xfs-instance-pagol-si-prod-registerapi-i-05e931a5646ba956f-10-148-82-161-job-ec2-matera-prd",
+      "triggerid": "23841",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] - Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle /dev/nvme0n1p1, xfs, instance=pagol-si-prod-RegisterApi, i-05e931a5646ba956f, 10.148.82.161, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-xfs-instance-pagol-si-prod-transactionapis-spot-i-08be2139f8f4b1dae-10-148-94-230-job-ec2-matera-prd",
+      "triggerid": "23843",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] - Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle /dev/nvme0n1p1, xfs, instance=pagol-si-prod-TransactionApis-SPOT, i-08be2139f8f4b1dae, 10.148.94.230, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-xfs-instance-pagol-si-prod-transactionapis-spot-i-0ab3821e5d4315df0-10-148-89-244-job-ec2-matera-prd",
+      "triggerid": "23839",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] - Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle /dev/nvme0n1p1, xfs, instance=pagol-si-prod-TransactionApis-SPOT, i-0ab3821e5d4315df0, 10.148.89.244, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-apigateway-error-5xx-bankeiro-prod-copy-apiname-api-conta-bankeiro",
+      "triggerid": "23846",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] APIGateway  Error 5xx -  Bankeiro - prod (copy) ApiName=api-conta-bankeiro/"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-apigateway-error-5xx-bankeiro-prod-copy-apiname-api-conta-bankeiro-device",
+      "triggerid": "23848",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] APIGateway  Error 5xx -  Bankeiro - prod (copy) ApiName=api-conta-bankeiro/device"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-apigateway-error-5xx-bankeiro-prod-copy-apiname-api-conta-bankeiro-subscription-webhook",
+      "triggerid": "23853",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] APIGateway  Error 5xx -  Bankeiro - prod (copy) ApiName=api-conta-bankeiro/subscription-webhook"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-apigateway-error-5xx-bankeiro-prod-copy-apiname-api-conta-bankeiro-v2",
+      "triggerid": "23845",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] APIGateway  Error 5xx -  Bankeiro - prod (copy) ApiName=api-conta-bankeiro/v2"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-apigateway-error-5xx-bankeiro-prod-copy-apiname-api-conta-bankeiro-v3",
+      "triggerid": "23844",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] APIGateway  Error 5xx -  Bankeiro - prod (copy) ApiName=api-conta-bankeiro/v3"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-teste-apigateway-error-5xx-bankeiro-prod-copy-apiname-api-credito-bankeiro-card",
+      "triggerid": "23847",
+      "host": "Pagol - Grafana",
+      "description": "TESTE [TESTE] APIGateway  Error 5xx -  Bankeiro - prod (copy) ApiName=api-credito-bankeiro/card"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-api-conta-bankeiro-auth-token-device-id-account-prod-headers-device-id-364e65a9dcf20f27",
+      "triggerid": "24030",
+      "host": "Pagol - Grafana",
+      "description": "TESTE api-conta-bankeiro auth-token device-id - account PROD headers.device-id=364e65a9dcf20f27"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-api-gateway-bankeiro-account-erros-400",
+      "triggerid": "23868",
+      "host": "Pagol - Grafana",
+      "description": "TESTE ⚠️ API Gateway Bankeiro account erros 400 ⚠️"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-api-gateway-bankeiro-account-erros-400-nonprod",
+      "triggerid": "23869",
+      "host": "Pagol - Grafana",
+      "description": "TESTE ⚠️ API Gateway Bankeiro account erros 400 ⚠️ (Nonprod)"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-atencao-api-cash-out-pode-estar-fora-nonprod",
+      "triggerid": "23860",
+      "host": "Pagol - Grafana",
+      "description": "TESTE ⚠️ Atenção: API Cash-out pode estar FORA ⚠️ NonProd"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-diferente-oracle-dev-nvme0n1p1-xfs-instance-pagol-mp-prod-celcoin-i-05fa03b9b05987bc9-10-148-118-148-job-ec2-matera-prd",
+      "triggerid": "23837",
+      "host": "Pagol - Grafana",
+      "description": "TESTE ⚠️ Atenção: Uso do Espaço em Disco Acima de 90% MATERA diferente Oracle⚠️  /dev/nvme0n1p1, xfs, instance=pagol-mp-prod-Celcoin, i-05fa03b9b05987bc9, 10.148.118.148, job=ec2_matera_prd, /"
+    },
+    {
+      "alert_key": "pagol-grafana|teste-atencao-uso-do-espaco-em-disco-acima-de-90-matera-oracle-dev-nvme1n1p1-ext4-instance-pagol-mp-prod-oracle-i-0253d568d6a0920cf-10-148-118-123-job-ec2-matera-prd-u02",
+      "triggerid": "23873",
+      "host": "Pagol - Grafana",
+      "description": "TESTE 🚨Atenção: Uso do Espaço em Disco Acima de 90% Matera - Oracle🚨 /dev/nvme1n1p1, ext4, instance=pagol-mp-prod-Oracle, i-0253d568d6a0920cf, 10.148.118.123, job=ec2_matera_prd, /u02"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24033",
+    "description_raw": "TESTE RDS Uso CPU 90% - Bankeiro - Non prod",
+    "description_normalized": "teste-rds-uso-cpu-90-bankeiro-non-prod",
+    "expression_raw": "{34270}=1",
+    "expression_expanded": "last(/Pagol - Grafana/alerta[RDS Uso CPU 90% - Bankeiro - Non prod ])=1",
+    "expression_signature": "last(/{HOST}/alerta[RDSUsoCPU90%-Bankeiro-Nonprod])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "ambiente: prod\r\nServiceName: {#SERVICENAME}\r\nclient: Pagol\r\nslackChannels: private-teste\r\ngrafana_folder: Pagol\r\nvaluesName: C\r\nservice: RDS\r\nalerta: RDS",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "46262",
+      "name": "Descobrir alertas",
+      "key_": "descrobrir.alertas"
+    },
+    "prototype_description": "TESTE {#ALERTAS}",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "cliente",
+        "value": "Pagol"
+      },
+      {
+        "tag": "grafana_folder",
+        "value": "Pagol"
+      }
+    ],
+    "host": {
+      "hostid": "10604",
+      "host": "Pagol - Grafana",
+      "name": "Pagol - Grafana",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "50668",
+        "key_": "alerta[RDS Uso CPU 90% - Bankeiro - Non prod ]",
+        "name": "RDS Uso CPU 90% - Bankeiro - Non prod",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:abea28858efa00d096da99c75ac764678ea4d2513bf002f1746b7c8cf6fd9389",
+    "family_source_hash": "sha256:2839706486b9e6d46616e065bb0ab42ac3a72903eb890d8ebae93f1afd489ff1",
+    "representative_of_family": true,
+    "family_instance_count": 41
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

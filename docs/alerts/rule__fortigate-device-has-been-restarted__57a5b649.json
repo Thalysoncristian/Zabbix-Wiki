@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-device-has-been-restarted|57a5b649",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-device-has-been-restarted|57a5b649",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-device-has-been-restarted",
+      "triggerid": "24639",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Device has been restarted"
+    },
+    {
+      "alert_key": "vibe-switch-fortigate|fortigate-device-has-been-restarted",
+      "triggerid": "24528",
+      "host": "Vibe - Switch [Fortigate]",
+      "description": "FortiGate: Device has been restarted"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24639",
+    "description_raw": "FortiGate: Device has been restarted",
+    "description_normalized": "fortigate-device-has-been-restarted",
+    "expression_raw": "{79920}<1m",
+    "expression_expanded": "last(/Vibe - Proxy Fortigate/system.uptime[fgSysUpTime.0])<1m",
+    "expression_signature": "last(/{HOST}/system.uptime[fgSysUpTime.0])<1m",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "FortiGate: {HOST.NAME} has been restarted (uptime < 1m)",
+    "comments": "Uptime is less than 10 minutes.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52446",
+        "key_": "system.uptime[fgSysUpTime.0]",
+        "name": "FortiGate: System uptime",
+        "units": "uptime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:4e6a5107db4756a3a431b59186e8cd481c352296fd1f0c7d902a6ccba27686b4",
+    "family_source_hash": "sha256:074a290b26460cc593a19e5f4d238b6492e3915d2a606248cdf9a3cf35ca32b3",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

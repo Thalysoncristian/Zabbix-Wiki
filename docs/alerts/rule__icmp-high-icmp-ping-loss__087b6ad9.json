@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|icmp-high-icmp-ping-loss|087b6ad9",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|icmp-high-icmp-ping-loss|087b6ad9",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "banpara-firewall-fwbp01|icmp-high-icmp-ping-loss",
+      "triggerid": "23373",
+      "host": "Banpara - Firewall FWBP01",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "banpara-firewall-fwbp02|icmp-high-icmp-ping-loss",
+      "triggerid": "23376",
+      "host": "Banpara - Firewall FWBP02",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "interconect-roteador|icmp-high-icmp-ping-loss",
+      "triggerid": "23382",
+      "host": "Interconect - Roteador",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "oi-roteador-huawei|icmp-high-icmp-ping-loss",
+      "triggerid": "24448",
+      "host": "Oi - Roteador [Huawei]",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "rt-cisco-ebt|icmp-high-icmp-ping-loss",
+      "triggerid": "23379",
+      "host": "RT_CISCO_EBT",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "srvcyberarq|icmp-high-icmp-ping-loss",
+      "triggerid": "105842",
+      "host": "SRVCYBERARQ",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-camera-1-intelbras|icmp-high-icmp-ping-loss",
+      "triggerid": "24798",
+      "host": "Vibe - Camera 1 [Intelbras]",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-camera-2-intelbras|icmp-high-icmp-ping-loss",
+      "triggerid": "24804",
+      "host": "Vibe - Camera 2 [Intelbras]",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-camera-3-intelbras|icmp-high-icmp-ping-loss",
+      "triggerid": "24807",
+      "host": "Vibe - Camera 3 [Intelbras]",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-impressora-hp|icmp-high-icmp-ping-loss",
+      "triggerid": "24486",
+      "host": "Vibe - Impressora [HP]",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-porta-intelbras|icmp-high-icmp-ping-loss",
+      "triggerid": "24492",
+      "host": "Vibe - Porta [Intelbras]",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-vmware|icmp-high-icmp-ping-loss",
+      "triggerid": "24627",
+      "host": "Vibe - VMware",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-voip-gateway-asterisk|icmp-high-icmp-ping-loss",
+      "triggerid": "32879",
+      "host": "Vibe - VoIP-Gateway Asterisk",
+      "description": "ICMP: High ICMP ping loss"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|icmp-high-icmp-ping-loss",
+      "triggerid": "87614",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "ICMP: High ICMP ping loss"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23373",
+    "description_raw": "ICMP: High ICMP ping loss",
+    "description_normalized": "icmp-high-icmp-ping-loss",
+    "expression_raw": "{106588}>{$ICMP_LOSS_WARN} and {106589}<100",
+    "expression_expanded": "min(/Banpara - Firewall FWBP01/icmppingloss,10m)>\"{$ICMP_LOSS_WARN}\" and min(/Banpara - Firewall FWBP01/icmppingloss,5m)<100",
+    "expression_signature": "min(/{HOST}/icmppingloss,10m)>\"{MACRO}\"andmin(/{HOST}/icmppingloss,5m)<100",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Loss: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Alta perda de ping",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "23372",
+        "description": "ICMP: Unavailable by ICMP ping",
+        "host": "Banpara - Firewall FWBP01"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10595",
+      "host": "Banpara - Firewall FWBP01",
+      "name": "Banpara - Firewall FWBP01",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "45920",
+        "key_": "icmppingloss",
+        "name": "ICMP: ICMP loss",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:513d2ee942b978876017cea198acc2a29090278d90f5318b58ab3a96eb1904fd",
+    "family_source_hash": "sha256:5b7cd8f0bf1fd5ea1bddbff7f35e186a59fd4fda9d74f18b15d37e0e234ac5b5",
+    "representative_of_family": true,
+    "family_instance_count": 14
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

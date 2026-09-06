@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|control-m-prd-votorantim|controlm-agent-discovery|control-m-agent-agent-name-status-disabled",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|control-m-prd-votorantim|controlm-agent-discovery|control-m-agent-agent-name-status-disabled",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt01-status-disabled",
+      "triggerid": "189893",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt01]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt02-status-disabled",
+      "triggerid": "189892",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt02]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt03-status-disabled",
+      "triggerid": "189891",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt03]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt04-status-disabled",
+      "triggerid": "189890",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt04]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt05-status-disabled",
+      "triggerid": "567661",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt05]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt06-status-disabled",
+      "triggerid": "189888",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt06]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt07-status-disabled",
+      "triggerid": "189887",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt07]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmprd02-status-disabled",
+      "triggerid": "189886",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmprd02]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmprd04-status-disabled",
+      "triggerid": "189885",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmprd04]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brccqwsfs01vc-status-disabled",
+      "triggerid": "189884",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brccqwsfs01vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowsfs01vc-status-disabled",
+      "triggerid": "189883",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowsfs01vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvapp24vc-status-disabled",
+      "triggerid": "189882",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvapp24vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvapp25vc-status-disabled",
+      "triggerid": "189881",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvapp25vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvapp26vc-status-disabled",
+      "triggerid": "189880",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvapp26vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvcgn02vc-status-disabled",
+      "triggerid": "189879",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvcgn02vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvqlk06vc-status-disabled",
+      "triggerid": "189878",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvqlk06vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvqlk07vc-status-disabled",
+      "triggerid": "189877",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvqlk07vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvqlk08vc-status-disabled",
+      "triggerid": "189876",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvqlk08vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-r3sap-status-disabled",
+      "triggerid": "217332",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [r3sap]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vid-adf-vc-status-disabled",
+      "triggerid": "189894",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vid_adf_vc]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vidb0302-status-disabled",
+      "triggerid": "189875",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vidb0302]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vidb0303-status-disabled",
+      "triggerid": "189874",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vidb0303]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vidb0304-status-disabled",
+      "triggerid": "189873",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vidb0304]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0502ctm-status-disabled",
+      "triggerid": "189872",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0502ctm]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0503ctm-status-disabled",
+      "triggerid": "189871",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0503ctm]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0504ctm-status-disabled",
+      "triggerid": "189870",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0504ctm]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0505ctm-status-disabled",
+      "triggerid": "189869",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0505ctm]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0506ctm-status-disabled",
+      "triggerid": "189868",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0506ctm]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0507ctm-status-disabled",
+      "triggerid": "189867",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0507ctm]: status disabled"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0508ctm-status-disabled",
+      "triggerid": "189866",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0508ctm]: status disabled"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "217332",
+    "description_raw": "Control-M: Agent [r3sap]: status disabled",
+    "description_normalized": "control-m-agent-r3sap-status-disabled",
+    "expression_raw": "{259045}=2 or\r\n{259045}=3",
+    "expression_expanded": "last(/Control-M PRD Votorantim/agent.status['r3sap'],#1)=2 or\r\nlast(/Control-M PRD Votorantim/agent.status['r3sap'],#1)=3",
+    "expression_signature": "last(/{HOST}/agent.status['r3sap'],#1)=2orlast(/{HOST}/agent.status['r3sap'],#1)=3",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The agent is disabled.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "174701",
+      "name": "Agent discovery",
+      "key_": "controlm.agent.discovery"
+    },
+    "prototype_description": "Control-M: Agent [{#AGENT.NAME}]: status disabled",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "Agent",
+        "value": "disabled"
+      }
+    ],
+    "host": {
+      "hostid": "10886",
+      "host": "Control-M PRD Votorantim",
+      "name": "Control-M PRD Votorantim",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "555120",
+        "key_": "agent.status['r3sap']",
+        "name": "Agent [r3sap]: status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:87ebf40c2e2c516ff7c9539cbf183fc3fab11494a923c7c42b69bf3e80c89df7",
+    "family_source_hash": "sha256:281344e3cc23c3111fa778b7b5928d69b178841e7bb4a8ab1ba65a75884e6e00",
+    "representative_of_family": true,
+    "family_instance_count": 30
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ativos-de-rede--filesystem",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|fortigate-free-disk-space-is-low|5d4e5d04",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:15Z",
+  "last_modified_at": "2026-09-06T14:39:15.080555Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24519",
+    "description_raw": "FortiGate: Free disk space is low",
+    "description_normalized": "fortigate-free-disk-space-is-low",
+    "expression_raw": "{35399}<{$DISK.FREE.WARN}",
+    "expression_expanded": "last(/Vibe - Switch Fortigate/vfs.fs.pfree)<\"{$DISK.FREE.WARN}\"",
+    "expression_signature": "last(/{HOST}/vfs.fs.pfree)<\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "FortiGate: Free disk space is less than {$DISK.FREE.WARN}%",
+    "comments": "Available disk space is not enough.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24520",
+        "description": "FortiGate: Free disk space is too low",
+        "host": "Vibe - Switch [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10707",
+      "host": "Vibe - Switch Fortigate",
+      "name": "Vibe - Switch [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52118",
+        "key_": "vfs.fs.pfree",
+        "name": "FortiGate: Free disk percentage",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:fd78431b8c45a92b55178627a1accaf47f66c4f88d09fe1d69820d9a5626d3c9"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Espaco em disco / filesystem — Ativos de Rede",
+    "objective": "Evitar que uma particao cheia derrube o servico antes de alguem perceber.",
+    "symptoms": [
+      "'Disk space is low' (aviso)",
+      "'Disk space is critically low' (critico)",
+      "'Running out of free inodes'",
+      "'Filesystem has become read-only'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura"
+    ],
+    "validation": "",
+    "risks": [
+      "'read-only' e categoria a parte: o filesystem entrou em protecao e quase sempre indica problema de disco, nao falta de espaco"
+    ],
+    "meaning": "4 alertas em 2 host(s) do grupo 'Ativos de Rede': Vibe - Proxy [Fortigate], Vibe - Switch [Fortigate]. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. Severidades: Warning=2, High=2. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Crescimento de log, arquivo temporario acumulado ou volume subdimensionado.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Identificar a particao exata (vem no titulo do alerta)",
+      "Ver o que cresceu: log, dump, backup, arquivo temporario",
+      "Confirmar se e crescimento continuo ou pico pontual"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

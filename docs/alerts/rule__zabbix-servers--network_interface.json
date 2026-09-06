@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-servers--network_interface",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|vibe-zabbix-server|net-if-discovery|interface-ifname-ethernet-has-changed-to-lower-speed-than-it-was-before",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:49Z",
+  "last_modified_at": "2026-09-06T14:38:49.213237Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23349",
+    "description_raw": "Interface ens5: Ethernet has changed to lower speed than it was before",
+    "description_normalized": "interface-ens5-ethernet-has-changed-to-lower-speed-than-it-was-before",
+    "expression_raw": "{33124}<0 and {33125}>0\r\nand\r\n({33126}=6 or {33126}=1)\r\nand\r\n({33127}<>2)",
+    "expression_expanded": "change(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/speed\"])<0 and last(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/speed\"])>0\r\nand\r\n(last(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/type\"])=6 or last(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/type\"])=1)\r\nand\r\n(last(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/operstate\"])<>2)",
+    "expression_signature": "change(/{HOST}/vfs.file.contents[\"/sys/class/net/ens5/speed\"])<0andlast(/{HOST}/vfs.file.contents[\"/sys/class/net/ens5/speed\"])>0and(last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens5/type\"])=6orlast(/{HOST}/vfs.file.contents[\"/sys/class/net/ens5/type\"])=1)and(last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens5/operstate\"])<>2)",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "({33124}>0 and {33128}>0) or\r\n({33127}=2)",
+    "recovery_expression_expanded": "(change(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/speed\"])>0 and last(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/speed\"],#2)>0) or\r\n(last(/Vibe - Zabbix server/vfs.file.contents[\"/sys/class/net/ens5/operstate\"])=2)",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "Current reported speed: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "42274",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}: Ethernet has changed to lower speed than it was before",
+    "dependencies": [
+      {
+        "triggerid": "23351",
+        "description": "Interface ens5: Link down",
+        "host": "Vibe - Zabbix server"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "45805",
+        "key_": "vfs.file.contents[\"/sys/class/net/ens5/operstate\"]",
+        "name": "Interface ens5: Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      },
+      {
+        "itemid": "45807",
+        "key_": "vfs.file.contents[\"/sys/class/net/ens5/speed\"]",
+        "name": "Interface ens5: Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "45806",
+        "key_": "vfs.file.contents[\"/sys/class/net/ens5/type\"]",
+        "name": "Interface ens5: Interface type",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:9c55c7b7392d420bf8c9d228df011967544651e0512156f2e2afc37355672547"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Interfaces de rede — Zabbix servers",
+    "objective": "Reagir a queda, degradacao ou saturacao de interface.",
+    "symptoms": [
+      "'Link down'",
+      "'Ethernet has changed to lower speed'",
+      "'High error rate'",
+      "'High bandwidth usage'"
+    ],
+    "actions": [
+      "[A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso"
+    ],
+    "validation": "",
+    "risks": [
+      "'High bandwidth usage' pode ser uso legitimo (backup, replicacao) -- confirmar antes de tratar como incidente"
+    ],
+    "meaning": "8 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 2 instancia(s): ens192, ens5. Severidades: Information=2, Warning=4, Average=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Identificar host e interface exata (vem no titulo)",
+      "Verificar se a interface e de producao ou secundaria/backup",
+      "Conferir se coincide com manutencao"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

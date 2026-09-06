@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-alta-taxa-de-erro",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-alta-taxa-de-erro",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-interno2-interno2-alta-taxa-de-erro",
+      "triggerid": "24676",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface INTERNO2(INTERNO2): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto1-alta-taxa-de-erro",
+      "triggerid": "105388",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO1(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto2-alta-taxa-de-erro",
+      "triggerid": "105399",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO2(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-banpara-alta-taxa-de-erro",
+      "triggerid": "42734",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VIBE_BANPARA(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-visitante-visitante-alta-taxa-de-erro",
+      "triggerid": "24685",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VISITANTE(VISITANTE): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnbkp-alta-taxa-de-erro",
+      "triggerid": "24677",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNBKP(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnvibe-alta-taxa-de-erro",
+      "triggerid": "24683",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNVIBE(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-a-alta-taxa-de-erro",
+      "triggerid": "24686",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface a(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-b-alta-taxa-de-erro",
+      "triggerid": "24678",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface b(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-fortilink-alta-taxa-de-erro",
+      "triggerid": "24689",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface fortilink(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal-alta-taxa-de-erro",
+      "triggerid": "24682",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal1-alta-taxa-de-erro",
+      "triggerid": "24679",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal1(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal2-oi-alta-taxa-de-erro",
+      "triggerid": "24684",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal2(Oi): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal3-lan-alta-taxa-de-erro",
+      "triggerid": "24680",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal3(LAN): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal4-alta-taxa-de-erro",
+      "triggerid": "24690",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal4(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal5-banpara-alta-taxa-de-erro",
+      "triggerid": "24694",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal5(BANPARA): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal6-alta-taxa-de-erro",
+      "triggerid": "24688",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal6(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-l2t-root-alta-taxa-de-erro",
+      "triggerid": "24692",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface l2t.root(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-naf-root-alta-taxa-de-erro",
+      "triggerid": "24691",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface naf.root(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-ssl-root-ssl-vpn-interface-alta-taxa-de-erro",
+      "triggerid": "24687",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface ssl.root(SSL VPN interface): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-master-alta-taxa-de-erro",
+      "triggerid": "24693",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface vibe_master(): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan1-wan-ebt-alta-taxa-de-erro",
+      "triggerid": "24695",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan1(WAN_EBT): Alta Taxa de Erro"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan2-interconect-alta-taxa-de-erro",
+      "triggerid": "24681",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan2(INTERCONECT): Alta Taxa de Erro"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24686",
+    "description_raw": "Interface a(): Alta Taxa de Erro",
+    "description_normalized": "interface-a-alta-taxa-de-erro",
+    "expression_raw": "{79498}>{$IF.ERRORS.WARN:\"a\"}\r\nor {79499}>{$IF.ERRORS.WARN:\"a\"}",
+    "expression_expanded": "min(/Vibe - Proxy Fortigate/net.if.in.errors[ifInErrors.19],10m)>50\r\nor min(/Vibe - Proxy Fortigate/net.if.out.errors[ifOutErrors.19],10m)>50",
+    "expression_signature": "min(/{HOST}/net.if.in.errors[ifInErrors.19],10m)>50ormin(/{HOST}/net.if.out.errors[ifOutErrors.19],10m)>50",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{79500}<{$IF.ERRORS.WARN:\"a\"}*0.8\r\nand {79501}<{$IF.ERRORS.WARN:\"a\"}*0.8",
+    "recovery_expression_expanded": "max(/Vibe - Proxy Fortigate/net.if.in.errors[ifInErrors.19],2m)<50*0.8\r\nand max(/Vibe - Proxy Fortigate/net.if.out.errors[ifOutErrors.19],2m)<50*0.8",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "errors in: {ITEM.LASTVALUE1}, errors out: {ITEM.LASTVALUE2}",
+    "event_name": "Interface a(): Alta taxa de Erro (>{$IF.ERRORS.WARN:\"a\"} for 5m)",
+    "comments": "The trigger recovers when it is below 80% of the `{$IF.ERRORS.WARN:\"a\"}` threshold.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52465",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Alta Taxa de Erro",
+    "dependencies": [
+      {
+        "triggerid": "24726",
+        "description": "Interface a(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52632",
+        "key_": "net.if.in.errors[ifInErrors.19]",
+        "name": "Interface a(): Inbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52692",
+        "key_": "net.if.out.errors[ifOutErrors.19]",
+        "name": "Interface a(): Outbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:da12cccef5d1d1dd3fbed5b3fe916ab7b38058c31524c7f053efcc747e117cde",
+    "family_source_hash": "sha256:143039f41734e851ac373b81dbbdb413aed5b4ef8fe56d7c680873992e494f79",
+    "representative_of_family": true,
+    "family_instance_count": 23
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

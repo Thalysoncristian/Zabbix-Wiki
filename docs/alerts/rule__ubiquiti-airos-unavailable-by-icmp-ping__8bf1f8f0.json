@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ubiquiti-airos-unavailable-by-icmp-ping|8bf1f8f0",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|ubiquiti-airos-unavailable-by-icmp-ping|8bf1f8f0",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-unavailable-by-icmp-ping",
+      "triggerid": "24344",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: Unavailable by ICMP ping"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-unavailable-by-icmp-ping",
+      "triggerid": "24397",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Unavailable by ICMP ping"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-unavailable-by-icmp-ping",
+      "triggerid": "108927",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: Unavailable by ICMP ping"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24344",
+    "description_raw": "Ubiquiti AirOS: Unavailable by ICMP ping",
+    "description_normalized": "ubiquiti-airos-unavailable-by-icmp-ping",
+    "expression_raw": "{34879}=0",
+    "expression_expanded": "max(/Vibe - AP REUNIAO Ubiquiti/icmpping,#3)=0",
+    "expression_signature": "max(/{HOST}/icmpping,#3)=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Last three attempts returned timeout.  Please check device connectivity.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10701",
+      "host": "Vibe - AP REUNIAO Ubiquiti",
+      "name": "Vibe - AP REUNIAO [Ubiquiti]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51364",
+        "key_": "icmpping",
+        "name": "ICMP ping",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:3d4953179468e4f48a3f30fde80cd7f48e4b5bf2dcbc838c9997cacd786ef598",
+    "family_source_hash": "sha256:67d6da1527c7830d6ccb719d81dcbac967d2c1ead43c0afe09e4017f78580769",
+    "representative_of_family": true,
+    "family_instance_count": 3
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

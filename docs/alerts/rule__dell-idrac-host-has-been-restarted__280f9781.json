@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|dell-idrac-host-has-been-restarted|280f9781",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|dell-idrac-host-has-been-restarted|280f9781",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|dell-idrac-host-has-been-restarted",
+      "triggerid": "24277",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Dell iDRAC: Host has been restarted"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24277",
+    "description_raw": "Dell iDRAC: Host has been restarted",
+    "description_normalized": "dell-idrac-host-has-been-restarted",
+    "expression_raw": "({34754}>0 and {34754}<10m) or ({34754}=0 and {34755}<10m)",
+    "expression_expanded": "(last(/Vibe - Servidor iDRAC DELL/system.hw.uptime[hrSystemUptime.0])>0 and last(/Vibe - Servidor iDRAC DELL/system.hw.uptime[hrSystemUptime.0])<10m) or (last(/Vibe - Servidor iDRAC DELL/system.hw.uptime[hrSystemUptime.0])=0 and last(/Vibe - Servidor iDRAC DELL/system.net.uptime[sysUpTime.0])<10m)",
+    "expression_signature": "(last(/{HOST}/system.hw.uptime[hrSystemUptime.0])>0andlast(/{HOST}/system.hw.uptime[hrSystemUptime.0])<10m)or(last(/{HOST}/system.hw.uptime[hrSystemUptime.0])=0andlast(/{HOST}/system.net.uptime[sysUpTime.0])<10m)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Dell iDRAC: {HOST.NAME} has been restarted (uptime < 10m)",
+    "comments": "Uptime is less than 10 minutes.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24275",
+        "description": "Dell iDRAC: No SNMP data collection",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51268",
+        "key_": "system.hw.uptime[hrSystemUptime.0]",
+        "name": "Dell iDRAC: Uptime (hardware)",
+        "units": "uptime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "51271",
+        "key_": "system.net.uptime[sysUpTime.0]",
+        "name": "Dell iDRAC: Uptime (network)",
+        "units": "uptime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:68c3df97f6d4433ae9099102df8cda2723a8c7e8db0edb45a5498a6dcfb04eec",
+    "family_source_hash": "sha256:458af557e07ae6d7ec6112ae7a0d8772d7edf0df09d6d2833c2b8083c46a3a3a",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

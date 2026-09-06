@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-cpu-queue-length-is-too-high|8e17931f",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-cpu-queue-length-is-too-high|8e17931f",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-cpu-queue-length-is-too-high",
+      "triggerid": "77227",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: CPU queue length is too high"
+    },
+    {
+      "alert_key": "windows-bob|windows-cpu-queue-length-is-too-high",
+      "triggerid": "35659",
+      "host": "Windows bob",
+      "description": "Windows: CPU queue length is too high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77227",
+    "description_raw": "Windows: CPU queue length is too high",
+    "description_normalized": "windows-cpu-queue-length-is-too-high",
+    "expression_raw": "{95464} - {95465} * 2 > {$CPU.QUEUE.CRIT.MAX}",
+    "expression_expanded": "min(/SRV_INCONTROL_2026/perf_counter_en[\"\\System\\Processor Queue Length\"],5m) - last(/SRV_INCONTROL_2026/wmi.get[root/cimv2,\"Select NumberOfLogicalProcessors from Win32_ComputerSystem\"]) * 2 > \"{$CPU.QUEUE.CRIT.MAX}\"",
+    "expression_signature": "min(/{HOST}/perf_counter_en[\"\\System\\ProcessorQueueLength\"],5m)-last(/{HOST}/wmi.get[root/cimv2,\"SelectNumberOfLogicalProcessorsfromWin32_ComputerSystem\"])*2>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Windows: CPU queue length is too high (over {$CPU.QUEUE.CRIT.MAX} for 5m)",
+    "comments": "The CPU Queue Length in the last 5 minutes exceeds {$CPU.QUEUE.CRIT.MAX}. According to actual observations, PQL should not exceed the number of cores * 2. To fine-tune the conditions, use the macro {$CPU.QUEUE.CRIT.MAX }.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "77228",
+        "description": "Windows: High CPU utilization",
+        "host": "SRV_INCONTROL_2026"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103748",
+        "key_": "perf_counter_en[\"\\System\\Processor Queue Length\"]",
+        "name": "Windows: CPU queue length",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "103764",
+        "key_": "wmi.get[root/cimv2,\"Select NumberOfLogicalProcessors from Win32_ComputerSystem\"]",
+        "name": "Windows: Number of cores",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a0a90aeea489a593728301ca56d698ffa029e301bde2d6d63bfa521329b5e19a",
+    "family_source_hash": "sha256:62c5252186bee1dca8144085c5b1894087b7c8846e7707584635da446f6f88e9",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|pix-api-muito-lenta-media-5m-macro-s|6cb99e86",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|pix-api-muito-lenta-media-5m-macro-s|6cb99e86",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-pix|pix-api-muito-lenta-media-5m-macro-s",
+      "triggerid": "52335",
+      "host": "Saq - Pix",
+      "description": "PIX API muito lenta (média 5m > {$PIX_RT_CRIT}s)"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "52335",
+    "description_raw": "PIX API muito lenta (média 5m > {$PIX_RT_CRIT}s)",
+    "description_normalized": "pix-api-muito-lenta-media-5m-macro-s",
+    "expression_raw": "{68712}>{$PIX_RT_CRIT}",
+    "expression_expanded": "avg(/Saq - Pix/check_pix_api_detalhes.py[--mode,responsetime,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],5m)>10",
+    "expression_signature": "avg(/{HOST}/check_pix_api_detalhes.py[--mode,responsetime,--url,{MACRO},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],5m)>10",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Média de 5 min acima do limite crítico.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "52333",
+        "description": "PIX API indisponível (falha ao criar PIX)",
+        "host": "Saq - Pix"
+      },
+      {
+        "triggerid": "52334",
+        "description": "PIX API lenta (média 5m > {$PIX_RT_WARN}s)",
+        "host": "Saq - Pix"
+      }
+    ],
+    "tags": [],
+    "host": {
+      "hostid": "10846",
+      "host": "Saq - Pix",
+      "name": "Saq - Pix",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Saq"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "73671",
+        "key_": "check_pix_api_detalhes.py[--mode,responsetime,--url,{$PIX_API_URL},--clientid,{$PIX_CLIENT_ID},--clientsecret,{$PIX_CLIENT_SECRET},--hmacsecret,{$PIX_HMAC_SECRET},--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}]",
+        "name": "Tempo de resposta da PIX API (s)",
+        "units": "s",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:c61a8996a9a10eb305ca72b0bc2a92122bd4f5b45460100d650d238f7d20abcd",
+    "family_source_hash": "sha256:d915e69472dcccb3903a2e4ad568877974ae8a8c00da79832ede8e920c9a1a95",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

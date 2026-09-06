@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-deskmanager-api|ms-chamadosv3-sh|codchamado-tempo-restante-para-atendimento-menor-que-8h",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-deskmanager-api|ms-chamadosv3-sh|codchamado-tempo-restante-para-atendimento-menor-que-8h",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-deskmanager-api|0325-000383-tempo-restante-para-atendimento-menor-que-8h",
+      "triggerid": "38250",
+      "host": "Vibe - DeskManager API",
+      "description": "0325-000383 Tempo Restante para Atendimento menor que 8h"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "38250",
+    "description_raw": "0325-000383 Tempo Restante para Atendimento menor que 8h",
+    "description_normalized": "0325-000383-tempo-restante-para-atendimento-menor-que-8h",
+    "expression_raw": "(000012<>000022 or 000012<>000009 or 000012<>000011 or 000012<>000020) and (000005=000006 or 000005=000001) and {52771}<28800 and \"P\"=\"S\"",
+    "expression_expanded": "(000012<>000022 or 000012<>000009 or 000012<>000011 or 000012<>000020) and (000005=000006 or 000005=000001) and last(/Vibe - DeskManager API/temporestante2.[0325-000383])<28800 and \"P\"=\"S\"",
+    "expression_signature": "(000012<>000022or000012<>000009or000012<>000011or000012<>000020)and(000005=000006or000005=000001)andlast(/{HOST}/temporestante2.[0325-000383])<28800and\"P\"=\"S\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Suporte - Oracle - -02:07:38",
+    "event_name": "",
+    "comments": "Assunto: Vibe Cloud - RH - Melhoria\r\nGrupo: Suporte - Oracle",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "55782",
+      "name": "Atualiza",
+      "key_": "ms_chamadosv3.sh"
+    },
+    "prototype_description": "{#CODCHAMADO} Tempo Restante para Atendimento menor que 8h",
+    "dependencies": [
+      {
+        "triggerid": "38252",
+        "description": "0325-000383 Tempo Restante para Atendimento menor que 1h",
+        "host": "Vibe - DeskManager API"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10720",
+      "host": "Vibe - DeskManager API",
+      "name": "Vibe - DeskManager API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "62632",
+        "key_": "temporestante2.[0325-000383]",
+        "name": "0325-000383 Tempo restante 2º",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "10m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f5b689bb56a6197462e4964d8e90cc506c3c8a1a2688da2c4464f619a46882a8",
+    "family_source_hash": "sha256:62d2bd31883db7460965629745d85762c645e8b751b5c327ade84a660fdd1ae9",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|correios-db-esta-fora-porta-1527|6aee2797",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|correios-db-esta-fora-porta-1527|6aee2797",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-correiosdb|correios-db-esta-fora-porta-1527",
+      "triggerid": "25217",
+      "host": "Vibe - CorreiosDB",
+      "description": "Correios DB está fora (porta 1527)"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "25217",
+    "description_raw": "Correios DB está fora (porta 1527)",
+    "description_normalized": "correios-db-esta-fora-porta-1527",
+    "expression_raw": "{36640}=0",
+    "expression_expanded": "last(/Vibe - CorreiosDB/net.tcp.listen[1527])=0",
+    "expression_signature": "last(/{HOST}/net.tcp.listen[1527])=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Acionar do GE.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10718",
+      "host": "Vibe - CorreiosDB",
+      "name": "Vibe - CorreiosDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "55709",
+        "key_": "net.tcp.listen[1527]",
+        "name": "Porta CorreiosDB (1527)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f4c549ad18af8e231dc8dc799eeb4c86a22500b6b491cb4b5f80195d3ebeec12",
+    "family_source_hash": "sha256:60107598885990931de3e86a0754cf0cae1638268ccbd73e5a784126e737fc4d",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

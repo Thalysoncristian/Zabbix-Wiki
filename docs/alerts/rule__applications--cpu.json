@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|applications--cpu",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|vibe-grafana|descrobrir-alertas|teste-alertas",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:02Z",
+  "last_modified_at": "2026-09-06T14:39:02.186010Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24072",
+    "description_raw": "TESTE CPU Load - Zabbix host=zabbix-dnxBrasil",
+    "description_normalized": "teste-cpu-load-zabbix-host-zabbix-dnxbrasil",
+    "expression_raw": "{34321}=1",
+    "expression_expanded": "last(/Vibe - Grafana/alerta[CPU Load - Zabbix host=zabbix-dnxBrasil])=1",
+    "expression_signature": "last(/{HOST}/alerta[CPULoad-Zabbixhost=zabbix-dnxBrasil])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "ambiente: prod\r\nServiceName: {#SERVICENAME}\r\nclient: Master\r\nslackChannels: private_teste\r\ngrafana_folder: MasterSupport\r\nvaluesName: A\r\nservice: ApiGateway\r\nalerta: ApiGateway",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "46843",
+      "name": "Descobrir alertas",
+      "key_": "descrobrir.alertas"
+    },
+    "prototype_description": "TESTE {#ALERTAS}",
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10614",
+      "host": "Vibe - Grafana",
+      "name": "Vibe - Grafana",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "50769",
+        "key_": "alerta[CPU Load - Zabbix host=zabbix-dnxBrasil]",
+        "name": "CPU Load - Zabbix host=zabbix-dnxBrasil",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:fd37fc00cdd733924d02ae3cdb20afa008a11100f5b75f6fa19bed43290caeed"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "CPU / carga de processamento — Applications",
+    "objective": "Distinguir pico normal de saturacao real de CPU.",
+    "symptoms": [
+      "'High CPU utilization'",
+      "'Load average is too high'",
+      "'Uso de CPU acima de N%'"
+    ],
+    "actions": [
+      "[A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado"
+    ],
+    "validation": "",
+    "risks": [
+      "ALERTAS DE TESTE EM PRODUCAO: as descricoes trazem o prefixo 'TESTE'. Antes de documentar procedimento, confirmar com o time se estes triggers deveriam existir no ambiente de producao — pode ser configuracao esquecida ligada. Aqui 5 de 7 alertas sao 'Not classified' e varios trazem 'TESTE' ou '(copy)'.",
+      "Mistura Grafana de CLIENTES DIFERENTES (Carguero, Pagol, Strada, Vibe) num agrupamento so — o procedimento e o acionamento provavelmente diferem por cliente."
+    ],
+    "meaning": "7 alertas em 5 host(s) do grupo 'Applications': Carguero - Grafana, Pagol - Grafana, Strada - Grafana Bank, Strada - Grafana Log, Vibe - Grafana. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 6 instancia(s): CPU Load - Zabbix host=zabbix-dnxBrasil, CPU RDS > 70% DBInstanceIdentifier=orcl-prod-tipbank-db, Host com CPU acima de 90% CW undefined, RDS Uso CPU 90% - Bankeiro - Non prod, Uso de CPU > 70% - Zabbix (AWS)  host=zabbix-dnxBrasil. Severidades: Not classified=5, High=2.",
+    "probable_cause": "Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Ver se o pico e continuo ou pontual (janela do trigger)",
+      "Identificar o processo/container que puxa a CPU",
+      "Conferir se coincide com janela de batch/backup conhecida"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca medium, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

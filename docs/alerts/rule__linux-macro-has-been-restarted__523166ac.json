@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|linux-macro-has-been-restarted|523166ac",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|linux-macro-has-been-restarted|523166ac",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "mstracker-vm|linux-macro-has-been-restarted",
+      "triggerid": "42086",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "Linux: {HOST.NAME} has been restarted"
+    },
+    {
+      "alert_key": "vibe-wazuh-siem|linux-macro-has-been-restarted",
+      "triggerid": "33957",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "Linux: {HOST.NAME} has been restarted"
+    },
+    {
+      "alert_key": "vibe-zabbix-server|linux-macro-has-been-restarted",
+      "triggerid": "22388",
+      "host": "Vibe - Zabbix server",
+      "description": "Linux: {HOST.NAME} has been restarted"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|linux-macro-has-been-restarted",
+      "triggerid": "24128",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Linux: {HOST.NAME} has been restarted"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "42086",
+    "description_raw": "Linux: {HOST.NAME} has been restarted",
+    "description_normalized": "linux-macro-has-been-restarted",
+    "expression_raw": "{57233}<10m",
+    "expression_expanded": "last(/mstracker-vm/system.uptime)<10m",
+    "expression_signature": "last(/{HOST}/system.uptime)<10m",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Linux: {HOST.NAME} has been restarted (uptime < 10m)",
+    "comments": "The host uptime is less than 10 minutes.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63901",
+        "key_": "system.uptime",
+        "name": "Linux: System uptime",
+        "units": "uptime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "30s"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:06f7df220b692f1b35035adb074c0663ddfd8512b0c54dc937f7f18af8be8246",
+    "family_source_hash": "sha256:0652cc92259088c91ffa5ac7b1d689de83849e60ef5758ace8489acf7a03b54e",
+    "representative_of_family": true,
+    "family_instance_count": 4
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

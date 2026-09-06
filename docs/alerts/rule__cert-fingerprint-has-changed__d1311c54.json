@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cert-fingerprint-has-changed|d1311c54",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cert-fingerprint-has-changed|d1311c54",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-certificado-e2ip|cert-fingerprint-has-changed",
+      "triggerid": "73483",
+      "host": "SAQ_Certificado - E2Ip",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "saq-certificado-e2ip-bankry|cert-fingerprint-has-changed",
+      "triggerid": "73525",
+      "host": "SAQ_Certificado - E2Ip -  Bankry",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "saq-certificado-e2ip-cartwavehub|cert-fingerprint-has-changed",
+      "triggerid": "73521",
+      "host": "SAQ_Certificado - E2Ip - Cartwavehub",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "saq-certificado-simpay|cert-fingerprint-has-changed",
+      "triggerid": "73529",
+      "host": "SAQ_Certificado - Simpay",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-nonprod|cert-fingerprint-has-changed",
+      "triggerid": "73513",
+      "host": "SAQ_Certificado - qrcodes.saq - Nonprod",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-prod|cert-fingerprint-has-changed",
+      "triggerid": "73509",
+      "host": "SAQ_Certificado - qrcodes.saq - Prod",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "vibe-certificado-dnxbrasil-com|cert-fingerprint-has-changed",
+      "triggerid": "26216",
+      "host": "Vibe - Certificado dnxbrasil.com",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "vibe-certificado-dnxbrasil-com-br|cert-fingerprint-has-changed",
+      "triggerid": "26219",
+      "host": "Vibe - Certificado dnxbrasil.com.br",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "vibe-certificado-mastersupport-com-br|cert-fingerprint-has-changed",
+      "triggerid": "25979",
+      "host": "Vibe - Certificado mastersupport.com.br",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "vibe-certificado-vibedesenv-com|cert-fingerprint-has-changed",
+      "triggerid": "26197",
+      "host": "Vibe - Certificado vibedesenv.com",
+      "description": "Cert: Fingerprint has changed"
+    },
+    {
+      "alert_key": "vibe-certificado-vibetecnologia-com|cert-fingerprint-has-changed",
+      "triggerid": "26194",
+      "host": "Vibe - Certificado vibetecnologia.com",
+      "description": "Cert: Fingerprint has changed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "73525",
+    "description_raw": "Cert: Fingerprint has changed",
+    "description_normalized": "cert-fingerprint-has-changed",
+    "expression_raw": "{91720} <> {91721}",
+    "expression_expanded": "last(/SAQ_Certificado - E2Ip -  Bankry/cert.sha1_fingerprint) <> last(/SAQ_Certificado - E2Ip -  Bankry/cert.sha1_fingerprint,#2)",
+    "expression_signature": "last(/{HOST}/cert.sha1_fingerprint)<>last(/{HOST}/cert.sha1_fingerprint,#2)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Cert: Fingerprint has changed (new version: {ITEM.VALUE})",
+    "comments": "The SSL certificate fingerprint has changed. If you did not update the certificate, it may mean your certificate has been hacked. Acknowledge to close the problem manually.\r\nThere could be multiple valid certificates on some installations. In this case, the trigger will have a false positive. You can ignore it or disable the trigger.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10872",
+      "host": "SAQ_Certificado - E2Ip -  Bankry",
+      "name": "SAQ_Certificado - E2Ip -  Bankry",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "SAQ Certificados"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "99600",
+        "key_": "cert.sha1_fingerprint",
+        "name": "Cert: Fingerprint",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:82cd58e282926bec39222a1a41a1d40a9c5169512ae983d173f67a097e09f130",
+    "family_source_hash": "sha256:215208ef7d84387d453e844c0e08a74d66a4f16182f587b31acdf2ff2f09c1e2",
+    "representative_of_family": true,
+    "family_instance_count": 11
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

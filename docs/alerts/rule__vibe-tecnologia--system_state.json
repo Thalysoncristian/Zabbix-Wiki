@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--system_state",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|linux-configured-max-number-of-open-filedescriptors-is-too-low|2cf14e5d",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:25Z",
+  "last_modified_at": "2026-09-06T14:38:25.249660Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "33947",
+    "description_raw": "Linux: Configured max number of open filedescriptors is too low",
+    "description_normalized": "linux-configured-max-number-of-open-filedescriptors-is-too-low",
+    "expression_raw": "{47681}<{$KERNEL.MAXFILES.MIN}",
+    "expression_expanded": "last(/Vibe - Wazuh SIEM/kernel.maxfiles)<\"{$KERNEL.MAXFILES.MIN}\"",
+    "expression_signature": "last(/{HOST}/kernel.maxfiles)<\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Linux: Configured max number of open filedescriptors is too low (< {$KERNEL.MAXFILES.MIN})",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "monitoramento",
+        "value": "excecao"
+      },
+      {
+        "tag": "scope",
+        "value": "excecao"
+      }
+    ],
+    "host": {
+      "hostid": "10743",
+      "host": "Vibe - Wazuh SIEM",
+      "name": "Vibe - Wazuh SIEM",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "60998",
+        "key_": "kernel.maxfiles",
+        "name": "Linux: Maximum number of open file descriptors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a83653a8290c7a0f5f15ddf2b08fdb13a0e8058d991cbe558d8882dac9682ea9"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Estado do sistema operacional — Vibe Tecnologia",
+    "objective": "Perceber reinicio, mudanca de inventario e limites de kernel apertados.",
+    "symptoms": [
+      "'Host has been restarted'",
+      "'Operating system description has changed'",
+      "'System name has changed'",
+      "'Configured max number of processes/filedescriptors is too low'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao"
+    ],
+    "validation": "",
+    "risks": [
+      "Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao"
+    ],
+    "meaning": "18 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Information=11, Warning=7. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar se o reinicio foi programado -- a maioria destes alertas e informativa",
+      "Para limites de kernel: verificar se ja houve impacto ou e so recomendacao"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|hw-sensor-discovery|sensor-sensor-name-temperatura-acima-de-70-c",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|hw-sensor-discovery|sensor-sensor-name-temperatura-acima-de-70-c",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|sensor-cpu-on-die-temperature-temperatura-acima-de-70-c",
+      "triggerid": "64504",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Sensor CPU ON-DIE Temperature:  Temperatura acima de 70°C"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sensor-mv1548-temperature-temperatura-acima-de-70-c",
+      "triggerid": "64503",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Sensor MV1548 Temperature:  Temperatura acima de 70°C"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sensor-mv1680-temperature-temperatura-acima-de-70-c",
+      "triggerid": "64502",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Sensor MV1680 Temperature:  Temperatura acima de 70°C"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sensor-psu-1-temperatura-acima-de-70-c",
+      "triggerid": "64505",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Sensor PSU [1]:  Temperatura acima de 70°C"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sensor-psu-2-temperatura-acima-de-70-c",
+      "triggerid": "64501",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Sensor PSU [2]:  Temperatura acima de 70°C"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "64505",
+    "description_raw": "Sensor PSU [1]:  Temperatura acima de 70°C",
+    "description_normalized": "sensor-psu-1-temperatura-acima-de-70-c",
+    "expression_raw": "{82523}>=70",
+    "expression_expanded": "last(/Vibe - Proxy Fortigate/hw.sensor.value[fgHwSensorEntValue.1])>=70",
+    "expression_signature": "last(/{HOST}/hw.sensor.value[fgHwSensorEntValue.1])>=70",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Trigger criada a partir do chamado: 1025-000764",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52464",
+      "name": "Hardware sensors discovery",
+      "key_": "hw.sensor.discovery"
+    },
+    "prototype_description": "Sensor {#SENSOR.NAME}:  Temperatura acima de 70°C",
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52568",
+        "key_": "hw.sensor.value[fgHwSensorEntValue.1]",
+        "name": "Sensor PSU [1]: Value",
+        "units": "ºC",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:756feb5978056694fc57bb33afe24f99b47857585b6d251050ccc38afbf178fb",
+    "family_source_hash": "sha256:b4b3c9ee42d386db6106e626ab88dfe9146ec13e16ed5a45c26659b59b1b0568",
+    "representative_of_family": true,
+    "family_instance_count": 5
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|onesecure-api-indisponivel-http-200-219-199-10-9009-health|f686cf99",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|onesecure-api-indisponivel-http-200-219-199-10-9009-health|f686cf99",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:36:12.806869Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "onesecure|onesecure-api-indisponivel-http-200-219-199-10-9009-health",
+      "triggerid": "725546",
+      "host": "ONESecure",
+      "description": "ONESecure: API indisponivel (http://200.219.199.10:9009/health)"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "725546",
+    "description_raw": "ONESecure: API indisponivel (http://200.219.199.10:9009/health)",
+    "description_normalized": "onesecure-api-indisponivel-http-200-219-199-10-9009-health",
+    "expression_raw": "{945808}=0 or {945809}=1",
+    "expression_expanded": "sum(/ONESecure/onesecure.api.available,5m)=0 or nodata(/ONESecure/onesecure.api.available,5m)=1",
+    "expression_signature": "sum(/{HOST}/onesecure.api.available,5m)=0ornodata(/{HOST}/onesecure.api.available,5m)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Estado atual: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "O endpoint /health nao respondeu \"ok\" ou nao retorna dados. Enquanto a API estiver indisponivel, tickets e incidentes nao sao coletados.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "16409",
+      "host": "ONESecure",
+      "name": "ONESecure",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Master Support"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1232574",
+        "key_": "onesecure.api.available",
+        "name": "ONESecure: API disponivel",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6d1a19d118f941bdc06728ac0c6577eb3b4ab82baf5c3df4294e36d8124a1cbe",
+    "family_source_hash": "sha256:1eefe0da72433e4b2de6e1429a8610227854033f0d5dcae31e80dfa166da8132",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "ONESecure — API indisponivel",
+    "objective": "",
+    "symptoms": [
+      "'ONESecure: API indisponivel' — checar o link de status"
+    ],
+    "actions": [
+      "Validar no link de status. Se persistir por mais de 5 min, abrir chamado com evidencias e horarios. Se for recorrente, pedir ajuste de trigger."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "API do ONESecure fora do ar (http://200.219.199.10:9009/health).",
+    "probable_cause": "Falha na plataforma ONESecure ou na rede ate ela.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Validar no link de status do SOC"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "SOC",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager -> fila SOC",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": 5,
+      "to": "analista SOC",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Link de status volta a responder normalmente.",
+    "notes": "Severidade: Alta. SLA: 5 min. Pagina de status: https://wiki-noc.prod.cloud.dnxbrasil.com.br/pt-br/vibe/Seguranca/SOC/Procedimentos/status. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

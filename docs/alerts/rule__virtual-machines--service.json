@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|virtual-machines--service",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|windows-bob|service-discovery|service-name-service-displayname-is-not-running",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:51:18Z",
+  "last_modified_at": "2026-09-06T00:51:18.457428Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "35682",
+    "description_raw": "\"AWSLiteAgent\" (AWS Lite Guest Agent) is not running",
+    "description_normalized": "awsliteagent-aws-lite-guest-agent-is-not-running",
+    "expression_raw": "{49773}<>0",
+    "expression_expanded": "min(/Windows bob/service.info[\"AWSLiteAgent\",state],#3)<>0",
+    "expression_signature": "min(/{HOST}/service.info[\"AWSLiteAgent\",state],#3)<>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "\"AWSLiteAgent\" (AWS Lite Guest Agent) is not running (startup type automatic)",
+    "comments": "The service has a state other than \"Running\" for the last three times.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61687",
+      "name": "Windows services discovery",
+      "key_": "service.discovery"
+    },
+    "prototype_description": "\"{#SERVICE.NAME}\" ({#SERVICE.DISPLAYNAME}) is not running",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61717",
+        "key_": "service.info[\"AWSLiteAgent\",state]",
+        "name": "State of service \"AWSLiteAgent\" (AWS Lite Guest Agent)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:9f693a6130b60c0b3e98963c0a4bfa5061c67eae6257a8eea5c3b02297fb63be"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Serviço do Windows parado — Windows bob (VM)",
+    "objective": "Reagir a servicos de infraestrutura do Windows (agentes AWS, rede, seguranca) parados na VM 'Windows bob'.",
+    "symptoms": [
+      "'\"NomeDoServico\" (Descricao) is not running'"
+    ],
+    "actions": [
+      "[A DEFINIR] Se reinicio do servico e autorizado sem abertura previa de chamado"
+    ],
+    "validation": "",
+    "risks": [
+      "Servicos de agente AWS (SSM, EC2Launch) parados podem indicar problema maior na instancia EC2, nao so o servico isolado"
+    ],
+    "meaning": "48 alertas, 48 instancias -- 1 alerta por servico, todos no mesmo host 'Windows bob', severidade uniforme Average. Boa parte sao agentes AWS (AWSLiteAgent, Amazon EC2Launch, AmazonSSMAgent) -- sugere que e uma instancia EC2, nao um servidor fisico.",
+    "probable_cause": "Servico do Windows travado ou parado apos atualizacao/reinicio.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar se e servico de agente de nuvem (AWS) ou servico core do Windows"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, 1 familia (mesma regra tecnica do Windows Services discovery).",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

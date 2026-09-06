@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|uso-de-disco-acima-de-90-zabbix-dnxbrasil|78455e70",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|uso-de-disco-acima-de-90-zabbix-dnxbrasil|78455e70",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-influxdb|uso-de-disco-acima-de-90-zabbix-dnxbrasil",
+      "triggerid": "23460",
+      "host": "Vibe - Influxdb",
+      "description": "Uso de Disco acima de 90% - zabbix-dnxBrasil"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23460",
+    "description_raw": "Uso de Disco acima de 90% - zabbix-dnxBrasil",
+    "description_normalized": "uso-de-disco-acima-de-90-zabbix-dnxbrasil",
+    "expression_raw": "{673710}>=95",
+    "expression_expanded": "last(/Vibe - Influxdb/pdiscousado[zabbix-dnxBrasil])>=95",
+    "expression_signature": "last(/{HOST}/pdiscousado[zabbix-dnxBrasil])>=95",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "23344",
+        "description": "/: Disk space is critically low",
+        "host": "Vibe - Zabbix server"
+      },
+      {
+        "triggerid": "23345",
+        "description": "/: Disk space is low",
+        "host": "Vibe - Zabbix server"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46229",
+        "key_": "pdiscousado[zabbix-dnxBrasil]",
+        "name": "Disco Usado % / - zabbix-dnxBrasil",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:79125c81c96cd12907612a79edbfe77ee0473d853c304f544d42978b038f35a3",
+    "family_source_hash": "sha256:03f749655a0af059ce6dc4439db0019d2ae3f7d5fddcb665f53544cb70da8d9c",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|https-api-integration-carguero-com-br-health|a03c81ad",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|https-api-integration-carguero-com-br-health|a03c81ad",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "carguero-api-monitor-down|https-api-integration-carguero-com-br-health",
+      "triggerid": "58622",
+      "host": "Carguero - API Monitor Down",
+      "description": "https://api-integration.carguero.com.br/health"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "58622",
+    "description_raw": "https://api-integration.carguero.com.br/health",
+    "description_normalized": "https-api-integration-carguero-com-br-health",
+    "expression_raw": "{75822}<6 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_expanded": "count(/Carguero - API Monitor Down/health[URL],10m,\"eq\",\"200\")<6 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_signature": "count(/{HOST}/health[URL],10m,\"eq\",\"200\")<6and((dayofweek()<6and(time()>180000ortime()<080000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "80830",
+        "key_": "health[URL]",
+        "name": "https://api-integration.carguero.com.br/health",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:20ca43f8a298434a8ba397f6bd8aa50f6276764a2bb6b75829411bf6cfd6d297",
+    "family_source_hash": "sha256:75c070ad0e4d4ae7b7d2eb59c4a0d26538f94ddfb7ec1742a7fee82a7accd45b",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

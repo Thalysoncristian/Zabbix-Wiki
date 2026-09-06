@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|onesecure|onesecure-incidents-discovery|onesecure-incidente-em-preparacao-incident-id-incident-title",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|onesecure|onesecure-incidents-discovery|onesecure-incidente-em-preparacao-incident-id-incident-title",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc-agp-0000000003-alteracao-no-grupo-de-usuarios-de-dominio-detectada",
+      "triggerid": "725560",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC-AGP-0000000003]: Alteração no Grupo de Usuários de Domínio Detectada"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc-agp-0000000043-falhas-multiplas-de-logon-no-windows",
+      "triggerid": "767757",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC-AGP-0000000043]: Falhas Múltiplas de Logon no Windows"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc-agp-0000000045-tentativas-multiplas-de-logon-com-falha-no-windows",
+      "triggerid": "793830",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC-AGP-0000000045]: Tentativas Múltiplas de Logon com Falha no Windows"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc-agp-0000000094-falhas-multiplas-de-logon-no-windows",
+      "triggerid": "810735",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC-AGP-0000000094]: Falhas Múltiplas de Logon no Windows"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000009822-mitre-sshd-attempt-to-login-using-a-non-existent-user",
+      "triggerid": "725565",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000009822]: [MITRE] sshd: Attempt to login using a non-existent user"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000009823-mitre-sshd-brute-force-trying-to-get-access-to-the-system-non-existent-user",
+      "triggerid": "725564",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000009823]: [MITRE] sshd: brute force trying to get access to the system. Non existent user."
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000009824-mitre-possible-kernel-level-rootkit",
+      "triggerid": "725563",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000009824]: [MITRE] Possible kernel level rootkit"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000009826-teste",
+      "triggerid": "725562",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000009826]: Teste"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000010170-tentativa-de-enumeracao-de-de-subdominios",
+      "triggerid": "725561",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000010170]: Tentativa de enumeração de de subdominios"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000015296-mitre-the-audit-log-was-cleared",
+      "triggerid": "725559",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000015296]: [MITRE] The audit log was cleared"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000016673-falhas-multiplas-de-logon-no-windows",
+      "triggerid": "725558",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000016673]: Falhas Múltiplas de Logon no Windows"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000017779-vulnerabilidade-git-exposed",
+      "triggerid": "725557",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000017779]: Vulnerabilidade git exposed"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000020169-mitre-system-user-successfully-logged-to-the-system",
+      "triggerid": "725556",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000020169]: [MITRE] System user successfully logged to the system."
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000020303-alteracao-no-grupo-de-administradores-detectada",
+      "triggerid": "725555",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000020303]: Alteração no Grupo de Administradores Detectada"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000020497-mitre-administrators-group-changed",
+      "triggerid": "725554",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000020497]: [MITRE] Administrators Group Changed"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000020687-mitre-high-amount-of-post-requests-in-a-small-period-of-time-likely-bot",
+      "triggerid": "725553",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000020687]: [MITRE] High amount of POST requests in a small period of time (likely bot)."
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000021214-tentativas-multiplas-de-logon-com-falha-no-windows",
+      "triggerid": "725552",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000021214]: Tentativas Múltiplas de Logon com Falha no Windows"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000021893-mitre-windows-logon-success",
+      "triggerid": "725551",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000021893]: [MITRE] Windows Logon Success"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000021896-mitre-user-account-changed",
+      "triggerid": "725550",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000021896]: [MITRE] User account changed"
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000022118-mitre-system-running-out-of-memory-availability-of-the-system-is-in-risk",
+      "triggerid": "742739",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000022118]: [MITRE] System running out of memory. Availability of the system is in risk."
+    },
+    {
+      "alert_key": "onesecure|onesecure-incidente-em-preparacao-inc0000022404-a-maquina-tec028228-da-colaboradora-da-thais-oliveira-do-juridico",
+      "triggerid": "810736",
+      "host": "ONESecure",
+      "description": "ONESecure: Incidente em Preparacao [INC0000022404]: A máquina TEC028228 da colaboradora da Thais Oliveira do Jurídico"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "725562",
+    "description_raw": "ONESecure: Incidente em Preparacao [INC0000009826]: Teste",
+    "description_normalized": "onesecure-incidente-em-preparacao-inc0000009826-teste",
+    "expression_raw": "{937337}=1",
+    "expression_expanded": "find(/ONESecure/onesecure.incident.phase['INC0000009826'],,\"regexp\",\"^(Prepara|Detec|Conten)\")=1",
+    "expression_signature": "find(/{HOST}/onesecure.incident.phase['INC0000009826'],,\"regexp\",\"^(Prepara|Detec|Conten)\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Fase: {ITEM.LASTVALUE1} | Severidade: CRITICA | Host: Não listado",
+    "event_name": "",
+    "comments": "",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "1232582",
+      "name": "Incidentes discovery",
+      "key_": "onesecure.incidents.discovery"
+    },
+    "prototype_description": "ONESecure: Incidente em Preparacao [{#INCIDENT.ID}]: {#INCIDENT.TITLE}",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "onesecure-host",
+        "value": "Não listado"
+      },
+      {
+        "tag": "onesecure-incident",
+        "value": "INC0000009826"
+      },
+      {
+        "tag": "onesecure-severity",
+        "value": "CRITICA"
+      },
+      {
+        "tag": "scope",
+        "value": "security"
+      }
+    ],
+    "host": {
+      "hostid": "16409",
+      "host": "ONESecure",
+      "name": "ONESecure",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Master Support"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1232642",
+        "key_": "onesecure.incident.phase['INC0000009826']",
+        "name": "Incidente [INC0000009826]: fase",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:35ca67e6bde4deca42f0d56a836e916f14a1be9e69392e24c8343312e3bf6661",
+    "family_source_hash": "sha256:6046a3225cf70198373affaa42124eebd7fe1ff83e2321d0dbcda51872d40a4c",
+    "representative_of_family": true,
+    "family_instance_count": 21
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

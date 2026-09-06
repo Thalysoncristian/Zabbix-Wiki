@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|saq--cloud",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|saq-aws|aws-check-py-access-key-aws-access-key-secret-key-aws-secret-key-region-aws-region-service-lambda-action-discover|lambda-function-name-esta-a-registrar-erros",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:46:57Z",
+  "last_modified_at": "2026-09-06T00:46:57.021340Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "55118",
+    "description_raw": "Lambda company-notification-cashout-created-event-prod-handle-sqs está a registrar erros",
+    "description_normalized": "lambda-company-notification-cashout-created-event-prod-handle-sqs-esta-a-registrar-erros",
+    "expression_raw": "{71870} >= 5",
+    "expression_expanded": "avg(/Saq - AWS/aws_check.py[--access-key, \"[REDACTED:ad7e751f]\", --secret-key, \"[REDACTED:7c3e8452]\", --region, \"sa-east-1\", --service, \"lambda\", --action, \"get-metric\", --namespace, \"AWS/Lambda\", --metric-name, \"Errors\", --dimension-name, \"FunctionName\", --dimension-value, \"company-notification-cashout-created-event-prod-handle-sqs\", --statistic, \"Sum\"],5m) >= 5",
+    "expression_signature": "avg(/{HOST}/aws_check.py[--access-key,\"[REDACTED:ad7e751f]\",--secret-key,\"[REDACTED:7c3e8452]\",--region,\"sa-east-1\",--service,\"lambda\",--action,\"get-metric\",--namespace,\"AWS/Lambda\",--metric-name,\"Errors\",--dimension-name,\"FunctionName\",--dimension-value,\"company-notification-cashout-created-event-prod-handle-sqs\",--statistic,\"Sum\"],5m)>=5",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "A função Lambda company-notification-cashout-created-event-prod-handle-sqs registou em média mais de 5 erros nos últimos 5 minutos.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "72183",
+      "name": "Descoberta de Funções Lambda",
+      "key_": "aws_check.py[--access-key, \"{$AWS.ACCESS.KEY}\", --secret-key, \"{$AWS.SECRET.KEY}\", --region, \"{$AWS.REGION}\", --service, \"lambda\", --action, \"discover\"]"
+    },
+    "prototype_description": "Lambda {#FUNCTION_NAME} está a registrar erros",
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10842",
+      "host": "Saq - AWS",
+      "name": "Saq - AWS",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Saq"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "76159",
+        "key_": "aws_check.py[--access-key, \"{$AWS.ACCESS.KEY}\", --secret-key, \"{$AWS.SECRET.KEY}\", --region, \"{$AWS.REGION}\", --service, \"lambda\", --action, \"get-metric\", --namespace, \"AWS/Lambda\", --metric-name, \"Errors\", --dimension-name, \"FunctionName\", --dimension-value, \"company-notification-cashout-created-event-prod-handle-sqs\", --statistic, \"Sum\"]",
+        "name": "Lambda company-notification-cashout-created-event-prod-handle-sqs: Erros",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "2m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:c5b11bd554c6677356ee9620c19a71e0b1cf3832c92ea04fd9839db3a5862760"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Falha em funcao Lambda / recurso AWS (Saq)",
+    "objective": "Reagir a falhas de execucao das funcoes Lambda que sustentam as notificacoes e integracoes da Saq.",
+    "symptoms": [
+      "'Lambda <nome-da-funcao>: <mensagem de erro>'"
+    ],
+    "actions": [
+      "[A DEFINIR] Time responsavel pelas Lambdas da Saq -- provavelmente Suporte DEV, mas nao confirmado"
+    ],
+    "validation": "",
+    "risks": [
+      "O item `--access-key` aparece como uma das 'instancias' -- e um artefato da chave de item que expõe parametro de linha de comando (`aws_check.py --access-key ...`), o VALOR ja vem redigido pela coleta (ver secao 17 do README), mas o parametro em si nao deveria ser uma instancia de negocio -- revisar a extracao de instancia para esta regra"
+    ],
+    "meaning": "57 alertas, 28 instancias (nomes de fila/lambda: company-notification-cashout-created-event-prod-handle-sqs, company-notification-cashout-success-event-prod-handle-sqs, lambda-aws-apix-files-consumer-event-prod-on-dict-consult, lambda-aws-cashout-monitor-prod-schedule, lambda-aws-dlq-monitor-prod-schedule e outras), host unico 'Saq - AWS'. Severidade so High (31) e Warning (26) -- nada abaixo disso, ou seja, todo alerta desta regra ja e prioritario.",
+    "probable_cause": "Erro de execucao na funcao Lambda, fila SQS parada ou credencial/permissao expirada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar logs da funcao Lambda no CloudWatch",
+      "Checar se a fila SQS relacionada esta acumulando mensagens (DLQ)"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 6 familias tecnicas.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

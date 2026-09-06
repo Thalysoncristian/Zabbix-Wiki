@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--certificate",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|cert-fingerprint-has-changed|d1311c54",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:51:46Z",
+  "last_modified_at": "2026-09-06T00:51:46.283652Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "25979",
+    "description_raw": "Cert: Fingerprint has changed",
+    "description_normalized": "cert-fingerprint-has-changed",
+    "expression_raw": "{38031} <> {38032}",
+    "expression_expanded": "last(/Vibe - Certificado mastersupport.com.br/cert.sha1_fingerprint) <> last(/Vibe - Certificado mastersupport.com.br/cert.sha1_fingerprint,#2)",
+    "expression_signature": "last(/{HOST}/cert.sha1_fingerprint)<>last(/{HOST}/cert.sha1_fingerprint,#2)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Cert: Fingerprint has changed (new version: {ITEM.VALUE})",
+    "comments": "The SSL certificate fingerprint has changed. If you did not update the certificate, it may mean your certificate has been hacked. Acknowledge to close the problem manually.\r\nThere could be multiple valid certificates on some installations. In this case, the trigger will have a false positive. You can ignore it or disable the trigger.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10722",
+      "host": "Vibe - Certificado mastersupport.com.br",
+      "name": "Vibe - Certificado mastersupport.com.br",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Dominios e Certificados",
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "56768",
+        "key_": "cert.sha1_fingerprint",
+        "name": "Cert: Fingerprint",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:c32fc9d1ed92a4ce9c950b32df69ab8c904c485dc3fe58992bdb87ec88130b41"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Certificado/dominio proximo do vencimento ou invalido — domínios Vibe",
+    "objective": "Renovar certificados TLS e dominios da empresa antes do vencimento.",
+    "symptoms": [
+      "'Cert: SSL certificate expires soon'",
+      "'Cert: SSL certificate is invalid'",
+      "'Cert: Fingerprint has changed'",
+      "'Certificado prestes a vencer (<= 15 dias)'"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem detem a conta do provedor de certificado/dominio para renovar"
+    ],
+    "validation": "",
+    "risks": [
+      "'Fingerprint has changed' pode ser renovacao legitima OU sinal de certificado trocado sem autorizacao -- nao tratar como o mesmo caso de 'expira em breve'"
+    ],
+    "meaning": "36 alertas, 11 hosts (um por dominio/certificado: dnxbrasil.com, dnxbrasil.com.br, mastersupport.com.br, vibedesenv.com, vibetecnologia.com -- cada um com host de Certificado E host de Dominio separados -- mais SSO Azure).",
+    "probable_cause": "Certificado nao renovado a tempo, ou renovacao automatica falhou.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar qual dominio/certificado especifico (vem no titulo)",
+      "Verificar se ha renovacao automatica configurada (Let's Encrypt, etc.) e por que falhou"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 7 familias tecnicas. MESMO CONJUNTO de dominios que a regra 'dominios-e-certificados--certificate' (grupo diferente, hosts quase identicos) -- mesma duplicacao estrutural ja vista em Control-M e nas APs. Ver nota na outra ficha.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

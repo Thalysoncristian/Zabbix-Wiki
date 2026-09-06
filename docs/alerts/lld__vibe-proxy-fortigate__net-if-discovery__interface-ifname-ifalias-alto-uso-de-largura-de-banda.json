@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-alto-uso-de-largura-de-banda",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-alto-uso-de-largura-de-banda",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-interno2-interno2-alto-uso-de-largura-de-banda",
+      "triggerid": "24656",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface INTERNO2(INTERNO2): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto1-alto-uso-de-largura-de-banda",
+      "triggerid": "105387",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO1(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto2-alto-uso-de-largura-de-banda",
+      "triggerid": "105398",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO2(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-banpara-alto-uso-de-largura-de-banda",
+      "triggerid": "42733",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VIBE_BANPARA(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-visitante-visitante-alto-uso-de-largura-de-banda",
+      "triggerid": "24665",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VISITANTE(VISITANTE): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnbkp-alto-uso-de-largura-de-banda",
+      "triggerid": "24657",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNBKP(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnvibe-alto-uso-de-largura-de-banda",
+      "triggerid": "24663",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNVIBE(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-a-alto-uso-de-largura-de-banda",
+      "triggerid": "24666",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface a(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-b-alto-uso-de-largura-de-banda",
+      "triggerid": "24658",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface b(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-fortilink-alto-uso-de-largura-de-banda",
+      "triggerid": "24669",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface fortilink(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal-alto-uso-de-largura-de-banda",
+      "triggerid": "24662",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal1-alto-uso-de-largura-de-banda",
+      "triggerid": "24659",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal1(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal2-oi-alto-uso-de-largura-de-banda",
+      "triggerid": "24664",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal2(Oi): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal3-lan-alto-uso-de-largura-de-banda",
+      "triggerid": "24660",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal3(LAN): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal4-alto-uso-de-largura-de-banda",
+      "triggerid": "24670",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal4(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal5-banpara-alto-uso-de-largura-de-banda",
+      "triggerid": "24674",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal5(BANPARA): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal6-alto-uso-de-largura-de-banda",
+      "triggerid": "24668",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal6(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-l2t-root-alto-uso-de-largura-de-banda",
+      "triggerid": "24672",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface l2t.root(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-naf-root-alto-uso-de-largura-de-banda",
+      "triggerid": "24671",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface naf.root(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-ssl-root-ssl-vpn-interface-alto-uso-de-largura-de-banda",
+      "triggerid": "24667",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface ssl.root(SSL VPN interface): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-master-alto-uso-de-largura-de-banda",
+      "triggerid": "24673",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface vibe_master(): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan1-wan-ebt-alto-uso-de-largura-de-banda",
+      "triggerid": "24675",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan1(WAN_EBT): Alto uso de largura de banda"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan2-interconect-alto-uso-de-largura-de-banda",
+      "triggerid": "24661",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan2(INTERCONECT): Alto uso de largura de banda"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24666",
+    "description_raw": "Interface a(): Alto uso de largura de banda",
+    "description_normalized": "interface-a-alto-uso-de-largura-de-banda",
+    "expression_raw": "({35857}>({$IF.UTIL.MAX:\"a\"}/100)*{35858} or \r\n{35859}>({$IF.UTIL.MAX:\"a\"}/100)*{35858}) and \r\n{35858}>0",
+    "expression_expanded": "(avg(/Vibe - Proxy Fortigate/net.if.in[ifHCInOctets.19],15m)>(\"{$IF.UTIL.MAX:\\\"a\\\"}\"/100)*last(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19]) or \r\navg(/Vibe - Proxy Fortigate/net.if.out[ifHCOutOctets.19],15m)>(\"{$IF.UTIL.MAX:\\\"a\\\"}\"/100)*last(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19])) and \r\nlast(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19])>0",
+    "expression_signature": "(avg(/{HOST}/net.if.in[ifHCInOctets.19],15m)>(\"{MACRO}\"/100)*last(/{HOST}/net.if.speed[ifHighSpeed.19])oravg(/{HOST}/net.if.out[ifHCOutOctets.19],15m)>(\"{MACRO}\"/100)*last(/{HOST}/net.if.speed[ifHighSpeed.19]))andlast(/{HOST}/net.if.speed[ifHighSpeed.19])>0",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{35857}<(({$IF.UTIL.MAX:\"a\"}-3)/100)*{35858} and \r\n{35859}<(({$IF.UTIL.MAX:\"a\"}-3)/100)*{35858}",
+    "recovery_expression_expanded": "avg(/Vibe - Proxy Fortigate/net.if.in[ifHCInOctets.19],15m)<((\"{$IF.UTIL.MAX:\\\"a\\\"}\"-3)/100)*last(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19]) and \r\navg(/Vibe - Proxy Fortigate/net.if.out[ifHCOutOctets.19],15m)<((\"{$IF.UTIL.MAX:\\\"a\\\"}\"-3)/100)*last(/Vibe - Proxy Fortigate/net.if.speed[ifHighSpeed.19])",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "Interface a(): Alto uso de largura de banda (>{$IF.UTIL.MAX:\"a\"}%)",
+    "comments": "The utilization of the network interface is close to its estimated maximum bandwidth.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52465",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Alto uso de largura de banda",
+    "dependencies": [
+      {
+        "triggerid": "24726",
+        "description": "Interface a(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52652",
+        "key_": "net.if.in[ifHCInOctets.19]",
+        "name": "Interface a(): Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52712",
+        "key_": "net.if.out[ifHCOutOctets.19]",
+        "name": "Interface a(): Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52732",
+        "key_": "net.if.speed[ifHighSpeed.19]",
+        "name": "Interface a(): Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:aa856a98b9d1fab6217494eef3a1891828cbc8bc1bce3588bcebb1941ecf7c73",
+    "family_source_hash": "sha256:3d73da1a027e01250233eb9ac728f802345f1c0ba4e59eda88a45670663a3513",
+    "representative_of_family": true,
+    "family_instance_count": 23
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

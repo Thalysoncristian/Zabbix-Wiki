@@ -293,7 +293,7 @@ rota(/^\/$/, async () => {
         el('span', { class: 'chip' }, `${num(w.documented)} documentadas`),
         el('span', { class: 'chip' }, `${num(w.confirmed)} confirmadas`)),
       el('div', { style: 'margin-top:14px' },
-        el('a', { class: 'cta', href: '/groups' }, 'ESCOLHER GRUPO PARA DOCUMENTAR'))),
+        el('a', { class: 'cta', href: '/groups' }, 'Escolher grupo para documentar'))),
 
     w.next_rules.length ? el('section', {},
       el('h2', {}, 'Próximas regras'),
@@ -654,8 +654,8 @@ rota(/^\/groups\/([^/]+)$/, async ([id], params) => {
 
 function cardRegra(r) {
   const proc = r.procedure || {};
-  const acao = proc.status === 'missing' ? 'DOCUMENTAR'
-    : proc.status === 'draft' ? 'CONTINUAR' : 'REVISAR';
+  const acao = proc.status === 'missing' ? 'Documentar'
+    : proc.status === 'draft' ? 'Continuar' : 'Revisar';
   return el('a', { class: 'work-card', href: `/rules/${r.id}` },
     el('h3', {}, r.label),
     el('div', { class: 'meta' },
@@ -668,7 +668,9 @@ function cardRegra(r) {
       r.overlaps_with && r.overlaps_with.length
         ? el('span', { class: 'conf conf-low', title: 'Mesmos alertas que outra regra — provavelmente host em mais de um host group' },
           '⚠ sobreposta') : null),
-    el('div', {}, el('span', { class: 'cta', style: 'padding:6px 14px;font-size:13px' }, acao)));
+    // O card inteiro já é o link: um botão cheio aqui seria peso repetido
+    // em cada card da grade, competindo com a severidade e a confiança.
+    el('div', { class: 'card-action' }, acao));
 }
 
 const rotuloStatus = (s) => ({

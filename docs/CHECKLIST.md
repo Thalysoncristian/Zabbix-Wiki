@@ -218,6 +218,15 @@ marcado aqui, com a data e o commit.
   tirou as `not_applicable` do denominador. Antes, alerta de teste contava como
   dívida e a cobertura nunca chegaria a 100% por mais que o time documentasse
   tudo que importa — 2026-09-06 `dbfaee1`
+- [x] **Repaginada visual da interface** — escala tipográfica e de espaçamento
+  em variáveis, tema claro/escuro consistente, foco visível e estilo de
+  impressão (o procedimento vai impresso para a mesa do plantão). Duas correções
+  de fundo, não de enfeite: os seis botões "DOCUMENTAR" eram botão falso dentro
+  de um card que já era link inteiro, e competiam com a severidade; e a coluna
+  do **procedimento validado** — o que se lê e se escreve de verdade — dividia a
+  largura em três partes iguais com as camadas de contexto, ficando com
+  textareas de três linhas. Continua sem build: CSS e JS servidos direto, uma
+  dependência externa só — 2026-09-06
 
 ---
 

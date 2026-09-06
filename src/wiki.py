@@ -39,6 +39,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from .clients import NAO_CLASSIFICADO, ClientRegistry
 from .core.models import SCOPE_MANUAL
 from .core.repository import AlertRepository
 from .core.status import DOCUMENTED_STATUSES
@@ -96,6 +97,9 @@ class Entrada:
     titulo: str
     operacional: dict[str, Any]
     categoria: str
+    #: Id do cliente dono dos alertas. A wiki abre por aqui: o mesmo "disco
+    #: cheio" tem contato e SLA diferentes conforme o dono do host.
+    cliente: str = NAO_CLASSIFICADO
     alertas: list[str] = field(default_factory=list)
     hosts: list[str] = field(default_factory=list)
     severidades: list[str] = field(default_factory=list)
@@ -160,9 +164,16 @@ def _assinatura(operacional: dict[str, Any]) -> str:
     return json.dumps(interessa, sort_keys=True, ensure_ascii=False)
 
 
-def coletar_entradas(docs_dir: str | Path) -> list[Entrada]:
-    """Lê as fichas validadas e agrupa as que compartilham procedimento."""
-    por_assinatura: dict[str, Entrada] = {}
+def coletar_entradas(docs_dir: str | Path,
+                     registry: ClientRegistry | None = None) -> list[Entrada]:
+    """Lê as fichas validadas e agrupa as que compartilham procedimento.
+
+    O agrupamento é por `(cliente, procedimento)`, não só por procedimento:
+    dois clientes podem ter o mesmo texto técnico e ainda assim precisam de
+    entradas separadas, porque o contato e o SLA são de quem é o host.
+    """
+    registry = registry or ClientRegistry.load()
+    por_assinatura: dict[tuple[str, str], Entrada] = {}
 
     for doc in AlertRepository(docs_dir).all():
         operacional = doc.operational or {}
@@ -173,6 +184,11 @@ def coletar_entradas(docs_dir: str | Path) -> list[Entrada]:
         zbx = doc.zabbix or {}
         if manual:
             categoria = SECAO_MANUAL
+            # Sem host não há como resolver o dono pelo nome. A ficha pode
+            # declarar `client` explicitamente; sem isso fica não classificada
+            # — chutar o cliente mandaria o operador acionar quem não tem nada
+            # a ver com o alerta.
+            cliente = str(operacional.get("client") or NAO_CLASSIFICADO)
         else:
             classificacao = classify({"zabbix": zbx})
             categoria = (
@@ -180,14 +196,16 @@ def coletar_entradas(docs_dir: str | Path) -> list[Entrada]:
                 if classificacao.category_id != UNCATEGORIZED
                 else "Outros"
             )
+            cliente = str(operacional.get("client") or registry.resolve_alert({"zabbix": zbx}))
 
-        chave = _assinatura(operacional)
+        chave = (cliente, _assinatura(operacional))
         entrada = por_assinatura.get(chave)
         if entrada is None:
             entrada = Entrada(
                 titulo=str(operacional.get("title") or doc.alert_key),
                 operacional=operacional,
                 categoria=categoria,
+                cliente=cliente,
                 manual=manual,
             )
             por_assinatura[chave] = entrada
@@ -207,7 +225,7 @@ def coletar_entradas(docs_dir: str | Path) -> list[Entrada]:
         entrada.alertas = sorted(set(entrada.alertas))
         entrada.hosts.sort()
 
-    return sorted(por_assinatura.values(), key=lambda e: (e.categoria, e.titulo))
+    return sorted(por_assinatura.values(), key=lambda e: (e.cliente, e.categoria, e.titulo))
 
 
 def _ordem_secao(nome: str) -> tuple[int, str]:
@@ -386,46 +404,100 @@ flowchart TD
 """
 
 
-def gerar_wiki(docs_dir: str | Path = "docs/alerts", *, gerado_em: str | None = None) -> str:
-    """Monta a página inteira. Determinística: mesma entrada, mesmos bytes."""
-    entradas = coletar_entradas(docs_dir)
+def _bloco_do_cliente(registry: ClientRegistry, cliente_id: str,
+                      entradas: list[Entrada]) -> list[str]:
+    """A seção de um cliente: matriz própria e o catálogo por categoria."""
+    cliente = registry.by_id(cliente_id)
+    rotulo = registry.label_of(cliente_id)
+    hosts = sorted({h for e in entradas for h in e.hosts})
+    alertas = sum(len(e.alertas) for e in entradas)
 
-    por_secao: dict[str, list[Entrada]] = {}
+    bloco = [f"### {rotulo}\n"]
+    resumo = f"**{alertas} alerta(s)** em {len(entradas)} procedimento(s)"
+    if hosts:
+        resumo += f" · {len(hosts)} host(s): " + ", ".join(f"`{h}`" for h in hosts[:8])
+        if len(hosts) > 8:
+            resumo += f" e mais {len(hosts) - 8}"
+    bloco.extend([resumo, ""])
+
+    if cliente_id == NAO_CLASSIFICADO:
+        bloco.append(
+            "> Estes alertas não foram atribuídos a nenhum cliente. Não é erro de\n"
+            "> coleta: é configuração faltando em `clients.json`. Atribuir por palpite\n"
+            "> mandaria o operador acionar quem não tem nada a ver com o alerta.\n"
+            "{.is-warning}\n"
+        )
+    elif cliente and cliente.note:
+        bloco.extend([f"> {cliente.note}\n{{.is-info}}\n"])
+
+    bloco.append("#### ☎️ Acionamento\n")
+    bloco.extend(_matriz_de_acionamento(entradas))
+
+    por_categoria: dict[str, list[Entrada]] = {}
     for entrada in entradas:
-        por_secao.setdefault(entrada.categoria, []).append(entrada)
+        por_categoria.setdefault(entrada.categoria, []).append(entrada)
+
+    for secao, itens in sorted(por_categoria.items(), key=lambda kv: _ordem_secao(kv[0])):
+        bloco.append(f"#### {secao}\n")
+        if secao == SECAO_MANUAL:
+            bloco.append(
+                "> Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de "
+                "origem, por e-mail ou webhook. Não espere encontrá-los no painel.\n"
+                "{.is-warning}\n"
+            )
+        bloco.extend(_tabela_acao_rapida(itens))
+        bloco.extend(_referencia_tecnica(secao, itens))
+        for entrada in itens:
+            bloco.extend(_detalhe_do_procedimento(entrada))
+
+    return bloco
+
+
+def gerar_wiki(docs_dir: str | Path = "docs/alerts", *, gerado_em: str | None = None,
+               clients_file: str | Path | None = None) -> str:
+    """Monta a página inteira. Determinística: mesma entrada, mesmos bytes.
+
+    A wiki abre por **cliente** porque é assim que o plantão funciona: o mesmo
+    "disco cheio" tem contato, fila e SLA diferentes conforme o dono do host.
+    Cliente atendido por outro NOC fica de fora — procedimento que não é nosso
+    só atrapalha quem está de plantão.
+    """
+    registry = ClientRegistry.load(clients_file)
+    entradas = coletar_entradas(docs_dir, registry)
+
+    de_fora = [e for e in entradas if not registry.is_monitored(e.cliente)]
+    entradas = [e for e in entradas if registry.is_monitored(e.cliente)]
+
+    por_cliente: dict[str, list[Entrada]] = {}
+    for entrada in entradas:
+        por_cliente.setdefault(entrada.cliente, []).append(entrada)
+
+    #: Ordem: por volume de alertas, com o não classificado sempre por último,
+    #: para não abrir a página com o que não se sabe.
+    def ordem(item: tuple[str, list[Entrada]]) -> tuple[int, int, str]:
+        cliente_id, itens = item
+        return (1 if cliente_id == NAO_CLASSIFICADO else 0,
+                -sum(len(e.alertas) for e in itens),
+                registry.label_of(cliente_id))
 
     partes: list[str] = [CABECALHO, FLUXO]
 
     if entradas:
-        partes.append("## ☎️ Matriz de acionamento\n")
-        partes.append("\n".join(_matriz_de_acionamento(entradas)))
         partes.append(
-            "## 🧭 Onde procurar o alerta\n\n"
-            "| Categoria | Alertas | Hosts |\n| :--- | ---: | :--- |\n"
+            "## 🏢 Clientes\n\n"
+            "| Cliente | Procedimentos | Alertas | Hosts |\n| :--- | ---: | ---: | ---: |\n"
             + "\n".join(
-                f"| {_celula(secao)} "
+                f"| **{_celula(registry.label_of(cid))}** | {len(itens)} "
                 f"| {sum(len(e.alertas) for e in itens)} "
-                f"| {_celula(sorted({h for e in itens for h in e.hosts})[:6] or 'fora do Zabbix')} |"
-                for secao, itens in sorted(por_secao.items(), key=lambda kv: _ordem_secao(kv[0]))
+                f"| {len({h for e in itens for h in e.hosts})} |"
+                for cid, itens in sorted(por_cliente.items(), key=ordem)
             )
             + "\n"
         )
 
-        partes.append("## 📋 Catálogo por categoria {.tabset}\n")
-        for secao, itens in sorted(por_secao.items(), key=lambda kv: _ordem_secao(kv[0])):
-            bloco = [f"### {secao}\n"]
-            if secao == SECAO_MANUAL:
-                bloco.append(
-                    "> Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de "
-                    "origem, por e-mail ou webhook. Não espere encontrá-los no painel.\n"
-                    "{.is-warning}\n"
-                )
-            bloco.extend(_tabela_acao_rapida(itens))
-            bloco.extend(_referencia_tecnica(secao, itens))
-            bloco.append("#### Procedimentos\n")
-            for entrada in itens:
-                bloco.extend(_detalhe_do_procedimento(entrada))
-            partes.append("\n".join(bloco))
+        partes.append("## 📋 Catálogo por cliente {.tabset}\n")
+        for cliente_id, itens in sorted(por_cliente.items(), key=ordem):
+            partes.append("\n".join(_bloco_do_cliente(registry, cliente_id, itens)))
     else:
         partes.append(
             "> Nenhuma ficha validada ainda. Documente um procedimento em "
@@ -434,20 +506,31 @@ def gerar_wiki(docs_dir: str | Path = "docs/alerts", *, gerado_em: str | None = 
 
     carimbo = gerado_em or datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     total_alertas = sum(len(e.alertas) for e in entradas)
-    partes.append(
+    rodape = (
         "---\n\n"
         f"Gerado em {carimbo} · {len(entradas)} procedimento(s) validado(s) "
-        f"cobrindo {total_alertas} alerta(s) · fonte: `docs/alerts/` do Zabbix-Wiki.\n"
+        f"cobrindo {total_alertas} alerta(s) em {len(por_cliente)} cliente(s) · "
+        "fonte: `docs/alerts/` do Zabbix-Wiki."
     )
+    if de_fora:
+        clientes_fora = sorted({registry.label_of(e.cliente) for e in de_fora})
+        rodape += (f"\n\nFora desta página, por serem atendidos por outro NOC: "
+                   f"{', '.join(clientes_fora)}.")
+    partes.append(rodape + "\n")
 
     return "\n".join(partes).replace("\n\n\n", "\n\n").rstrip() + "\n"
 
 
 def escrever_wiki(destino: str | Path, docs_dir: str | Path = "docs/alerts",
-                  *, gerado_em: str | None = None) -> tuple[Path, int]:
-    """Grava a página e devolve `(caminho, procedimentos)`."""
-    conteudo = gerar_wiki(docs_dir, gerado_em=gerado_em)
+                  *, gerado_em: str | None = None,
+                  clients_file: str | Path | None = None) -> tuple[Path, int]:
+    """Grava a página e devolve `(caminho, procedimentos_publicados)`."""
+    conteudo = gerar_wiki(docs_dir, gerado_em=gerado_em, clients_file=clients_file)
     caminho = Path(destino)
     caminho.parent.mkdir(parents=True, exist_ok=True)
     caminho.write_text(conteudo, encoding="utf-8")
-    return caminho, len(coletar_entradas(docs_dir))
+
+    registry = ClientRegistry.load(clients_file)
+    publicados = [e for e in coletar_entradas(docs_dir, registry)
+                  if registry.is_monitored(e.cliente)]
+    return caminho, len(publicados)

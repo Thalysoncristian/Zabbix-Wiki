@@ -1403,6 +1403,46 @@ python main.py wiki          # docs/alerts/*.json  ->  wiki.md
 O último elo: a página que o NOC consulta, gerada a partir das fichas em vez
 de escrita à mão.
 
+### A wiki abre por CLIENTE
+
+O Master Support presta NOC para vários clientes, e o mesmo alerta técnico —
+"disco cheio" — tem contato, fila e SLA diferentes conforme o dono do host.
+Por isso o primeiro nível da página é o cliente, e a categoria técnica é a
+subdivisão. Cada cliente traz a **sua** matriz de acionamento: os contatos da
+Chubb não aparecem na aba da Vibe.
+
+O host group do Zabbix não serve para isso: `Ativos de Rede` tem roteador de
+operadora e AP de escritório, `Applications` tem Control-M da Chubb e Grafana
+de três clientes. Quem carrega a informação de dono é o **nome do host**. O
+mapa fica em `clients.json`:
+
+```json
+{
+  "clients": [
+    { "id": "banpara", "label": "Banpará", "monitored_by_us": false,
+      "host_patterns": ["Vibe Crédito Banpará*", "Banpara*"] },
+    { "id": "chubb", "label": "Chubb",
+      "hosts": ["Control-M server [IN01]"], "host_patterns": ["Chubb*"] },
+    { "id": "vibe", "label": "Vibe Tecnologia",
+      "host_patterns": ["Vibe*"], "host_groups": ["Vibe Tecnologia"] }
+  ]
+}
+```
+
+Resolução em três passos, e **a ordem do arquivo importa**: nome exato,
+depois curinga, e host group só como último recurso. `Vibe Crédito Banpará` é
+host do Banpará — se `Vibe*` fosse avaliado antes, o alerta apareceria na aba
+errada, com o contato errado no meio da madrugada. Um teste trava essa ordem.
+
+`monitored_by_us: false` tira o cliente da página: procedimento de plantão que
+não é nosso só atrapalha quem está de plantão. O rodapé diz quem ficou de
+fora, para a omissão não passar despercebida.
+
+Host que não casa com ninguém vira **Não classificado** e aparece assim, com o
+aviso de que falta configuração. Atribuir por palpite seria pior: mandaria o
+operador acionar quem não tem nada a ver com o alerta. Uma ficha sem host
+(as de `scope: manual`) pode declarar o dono em `operational.client`.
+
 ### Por que gerar, e não escrever
 
 Uma wiki escrita à mão **não tem como saber que envelheceu**. Quando um

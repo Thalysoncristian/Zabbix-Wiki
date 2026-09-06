@@ -1,0 +1,120 @@
+{
+  "_comment": [
+    "Quem é o dono de cada alerta.",
+    "",
+    "O Master Support presta NOC para vários clientes, e o mesmo alerta técnico",
+    "('disco cheio') tem contato, fila e SLA diferentes dependendo de quem é o",
+    "host. Por isso a wiki abre por CLIENTE, e a categoria técnica é a",
+    "subdivisão — não o contrário.",
+    "",
+    "O host group do Zabbix não serve para isso: 'Ativos de Rede', 'Servidores'",
+    "e 'Applications' são recortes técnicos e misturam clientes. Quem carrega a",
+    "informação é o NOME do host ('Chubb - SQLDB', 'Vibe - Zabbix server').",
+    "",
+    "COMO A RESOLUÇÃO FUNCIONA — a ordem importa, o primeiro que casar vence:",
+    "  1. hosts          nome exato, sem diferenciar maiúsculas",
+    "  2. host_patterns  curinga (*), avaliado na ordem desta lista",
+    "  3. host_groups    último recurso, para host sem prefixo de cliente",
+    "",
+    "Por isso clientes com nome ambíguo vêm ANTES: 'Vibe Crédito Banpará' é",
+    "host do Banpará, não da Vibe, e seria capturado por 'Vibe *' se a ordem",
+    "fosse outra.",
+    "",
+    "monitored_by_us=false: o cliente existe no Zabbix mas quem atende é outro",
+    "NOC. Fica FORA da wiki gerada — documentar procedimento de plantão que não",
+    "é nosso confunde quem está de plantão. Continua visível na interface local.",
+    "",
+    "Host que não casar com nada aparece como 'Não classificado', de propósito:",
+    "esconder o que não se entende é pior do que mostrar que não se sabe."
+  ],
+
+  "clients": [
+    {
+      "id": "banpara",
+      "label": "Banpará",
+      "monitored_by_us": false,
+      "note": "Outro NOC atende. Vem antes da Vibe por causa de 'Vibe Crédito Banpará'.",
+      "host_patterns": ["Vibe Crédito Banpará*", "Banpara*", "Banpará*"]
+    },
+    {
+      "id": "carguero",
+      "label": "Carguero",
+      "monitored_by_us": false,
+      "note": "Outro NOC atende.",
+      "host_patterns": ["Carguero*"]
+    },
+    {
+      "id": "hocta",
+      "label": "Hocta",
+      "monitored_by_us": false,
+      "note": "Outro NOC atende.",
+      "host_patterns": ["Hocta*"]
+    },
+    {
+      "id": "pagol",
+      "label": "Pagol",
+      "monitored_by_us": false,
+      "note": "Outro NOC atende.",
+      "host_patterns": ["Pagol*"]
+    },
+
+    {
+      "id": "chubb",
+      "label": "Chubb",
+      "monitored_by_us": true,
+      "note": "Inclui a plataforma Control-M SaaS (IN01 e SaaS Master), confirmada como dedicada à Chubb, e a Azure Function do App Enel.",
+      "hosts": [
+        "Control-M server [IN01]",
+        "Control-M SaaS Master",
+        "App - Enel Azure"
+      ],
+      "host_patterns": ["Chubb*"]
+    },
+    {
+      "id": "votorantim",
+      "label": "Votorantim",
+      "monitored_by_us": true,
+      "note": "O host PRD tem ~16 mil alertas de job e está excluído do escopo do NOC em scopes.json — o cliente é monitorado, aquele host específico não é analisado no plantão.",
+      "host_patterns": ["Control-M PRD Votorantim", "Control-M DEV Votorantim", "*Votorantim*"]
+    },
+    {
+      "id": "saq",
+      "label": "SAQ (pagamentos)",
+      "monitored_by_us": true,
+      "host_patterns": ["Saq*", "SAQ*"]
+    },
+    {
+      "id": "strada",
+      "label": "Strada",
+      "monitored_by_us": true,
+      "host_patterns": ["Strada*"]
+    },
+    {
+      "id": "master-support",
+      "label": "Master Support (interno)",
+      "monitored_by_us": true,
+      "note": "Nossa própria infraestrutura: ONESecure, Desk Manager, n8n.",
+      "hosts": ["ONESecure", "Desk Manager", "N8N - Master Support"],
+      "host_groups": ["Master Support"]
+    },
+    {
+      "id": "vibe",
+      "label": "Vibe Tecnologia",
+      "monitored_by_us": true,
+      "note": "Vem por último entre os monitorados: o host group 'Vibe Tecnologia' é usado como guarda-chuva de infraestrutura compartilhada (links de operadora, câmeras, servidores sem prefixo).",
+      "host_patterns": ["Vibe*"],
+      "host_groups": [
+        "Vibe Tecnologia",
+        "Zabbix servers",
+        "Ativos de Rede",
+        "Pontos de Acesso",
+        "Roteadores",
+        "Servidores",
+        "Virtual machines",
+        "IOT",
+        "Dominios e Certificados",
+        "Suporte_infra"
+      ]
+    }
+  ]
+}

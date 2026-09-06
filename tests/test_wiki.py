@@ -11,10 +11,12 @@ O que estes testes protegem, em ordem de gravidade:
 
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
+from src.clients import NAO_CLASSIFICADO, ClientRegistry
 from src.core.models import LEVEL_FAMILY, SCOPE_MANUAL, AlertDoc, empty_operational
 from src.core.repository import AlertRepository
 from src.wiki import SECAO_MANUAL, coletar_entradas, gerar_wiki
@@ -47,10 +49,27 @@ def zabbix(descricao="/: Disk space is low", host="srv-01", severidade="Warning"
     }
 
 
+#: Mapa próprio, para os testes não dependerem do `clients.json` do projeto —
+#: que é configuração viva e vai mudar conforme os clientes mudarem.
+CLIENTES = {
+    "clients": [
+        {"id": "chubb", "label": "Chubb", "host_patterns": ["Chubb*"]},
+        {"id": "outro-noc", "label": "Outro NOC", "monitored_by_us": False,
+         "host_patterns": ["Terceiro*"]},
+        {"id": "vibe", "label": "Vibe Tecnologia",
+         "host_patterns": ["srv-*", "Vibe*"], "host_groups": ["Vibe Tecnologia"]},
+    ]
+}
+
+
 class BaseWiki(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
-        self.docs = Path(self._tmp.name)
+        raiz = Path(self._tmp.name)
+        self.docs = raiz / "alerts"
+        self.docs.mkdir()
+        self.clientes = raiz / "clients.json"
+        self.clientes.write_text(json.dumps(CLIENTES), encoding="utf-8")
         self.repo = AlertRepository(self.docs)
 
     def tearDown(self):
@@ -61,6 +80,12 @@ class BaseWiki(unittest.TestCase):
             alert_key=chave, scope=scope, doc_level=LEVEL_FAMILY, family_key=chave,
             zabbix=zbx, operational=op))
 
+    def pagina(self, **kwargs):
+        return gerar_wiki(self.docs, clients_file=self.clientes, **kwargs)
+
+    def entradas(self):
+        return coletar_entradas(self.docs, ClientRegistry.load(self.clientes))
+
 
 class TestSoEntraOQueFoiValidado(BaseWiki):
     def test_rascunho_nao_entra_na_pagina(self):
@@ -68,21 +93,21 @@ class TestSoEntraOQueFoiValidado(BaseWiki):
         self.gravar("a", operacional(title="Validado"), zabbix())
         self.gravar("b", operacional(title="Rascunho perigoso", doc_status="pending_review"), zabbix())
 
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertIn("Validado", pagina)
         self.assertNotIn("Rascunho perigoso", pagina)
 
     def test_undocumented_nao_entra(self):
         self.gravar("a", operacional(title="Nao escrito", doc_status="undocumented"), zabbix())
-        self.assertNotIn("Nao escrito", gerar_wiki(self.docs))
+        self.assertNotIn("Nao escrito", self.pagina())
 
     def test_reviewed_entra(self):
         self.gravar("a", operacional(title="Revisado", doc_status="reviewed"), zabbix())
-        self.assertIn("Revisado", gerar_wiki(self.docs))
+        self.assertIn("Revisado", self.pagina())
 
     def test_pagina_sem_ficha_validada_avisa_em_vez_de_mentir(self):
         self.gravar("a", operacional(doc_status="pending_review"), zabbix())
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertIn("Nenhuma ficha validada", pagina)
 
 
@@ -95,11 +120,11 @@ class TestAgrupamento(BaseWiki):
             self.gravar(f"enel-{i}", operacional(title="API ENEL indisponível"),
                         zabbix(descricao=f"ENEL API {i} Indisponível", item="services.x[Bearer]"))
 
-        entradas = coletar_entradas(self.docs)
+        entradas = self.entradas()
         self.assertEqual(len(entradas), 1)
         self.assertEqual(len(entradas[0].alertas), 3)
 
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertIn("Cobre 3 alertas", pagina)
         self.assertIn("ENEL API 0 Indisponível", pagina)
 
@@ -107,13 +132,13 @@ class TestAgrupamento(BaseWiki):
         self.gravar("a", operacional(title="Disco", actions=["Liberar espaço"]), zabbix())
         self.gravar("b", operacional(title="Rede", actions=["Trocar cabo"]),
                     zabbix(descricao="Link down", item="net.if.in[eth0]"))
-        self.assertEqual(len(coletar_entradas(self.docs)), 2)
+        self.assertEqual(len(self.entradas()), 2)
 
     def test_titulo_diferente_com_mesmo_procedimento_ainda_agrupa(self):
         """O título não faz parte da identidade do procedimento — só o conteúdo."""
         self.gravar("a", operacional(title="Toner preto"), zabbix(descricao="Toner Preto"))
         self.gravar("b", operacional(title="Toner ciano"), zabbix(descricao="Toner Ciano"))
-        self.assertEqual(len(coletar_entradas(self.docs)), 1)
+        self.assertEqual(len(self.entradas()), 1)
 
 
 class TestAlertasManuais(BaseWiki):
@@ -121,17 +146,17 @@ class TestAlertasManuais(BaseWiki):
         """Quem lê precisa saber que o Zabbix não avisa desse aqui."""
         self.gravar("manual|rh", operacional(title="RH Cloud — PagamentoNegativo"),
                     None, scope=SCOPE_MANUAL)
-        entradas = coletar_entradas(self.docs)
+        entradas = self.entradas()
         self.assertEqual(entradas[0].categoria, SECAO_MANUAL)
         self.assertTrue(entradas[0].manual)
 
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertIn(SECAO_MANUAL, pagina)
         self.assertIn("não vêm do Zabbix", pagina)
 
     def test_ficha_sem_bloco_zabbix_nao_quebra(self):
         self.gravar("manual|x", operacional(title="Sem trigger"), None, scope=SCOPE_MANUAL)
-        self.assertIn("Sem trigger", gerar_wiki(self.docs))
+        self.assertIn("Sem trigger", self.pagina())
 
 
 class TestFormato(BaseWiki):
@@ -141,18 +166,18 @@ class TestFormato(BaseWiki):
         self.gravar("b", operacional(title="Outro", actions=["Outra ação"]),
                     zabbix(descricao="Link down", item="net.if.in[eth0]"))
         carimbo = "2026-09-06T00:00:00Z"
-        self.assertEqual(gerar_wiki(self.docs, gerado_em=carimbo),
-                         gerar_wiki(self.docs, gerado_em=carimbo))
+        self.assertEqual(self.pagina(gerado_em=carimbo),
+                         self.pagina(gerado_em=carimbo))
 
     def test_pipe_no_conteudo_nao_quebra_a_tabela(self):
         """Descrição de trigger com `|` fecharia a célula no meio."""
         self.gravar("a", operacional(title="Interface Gi0/0 | LAN | uplink"), zabbix())
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertIn(r"Interface Gi0/0 \| LAN \| uplink", pagina)
 
     def test_quebra_de_linha_no_conteudo_nao_quebra_a_tabela(self):
         self.gravar("a", operacional(meaning="linha um\nlinha dois"), zabbix())
-        for linha in gerar_wiki(self.docs).splitlines():
+        for linha in self.pagina().splitlines():
             if linha.startswith("|") and "linha um" in linha:
                 self.assertIn("linha um linha dois", linha)
                 break
@@ -161,20 +186,85 @@ class TestFormato(BaseWiki):
 
     def test_usa_o_dialeto_do_wikijs(self):
         self.gravar("a", operacional(), zabbix())
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         for marcador in ("{.is-warning}", "{.is-info}", "{.tabset}", "<details>", "```mermaid"):
             self.assertIn(marcador, pagina, f"faltou {marcador}")
 
     def test_severidade_vira_icone(self):
         self.gravar("a", operacional(), zabbix(severidade="Disaster"))
-        self.assertIn("🔴", gerar_wiki(self.docs))
+        self.assertIn("🔴", self.pagina())
 
     def test_entrada_com_varios_alertas_mostra_a_severidade_mais_grave(self):
         self.gravar("a", operacional(), zabbix(descricao="Aviso", severidade="Warning"))
         self.gravar("b", operacional(), zabbix(descricao="Grave", severidade="Disaster"))
-        entradas = coletar_entradas(self.docs)
+        entradas = self.entradas()
         self.assertEqual(len(entradas), 1, "mesmo procedimento, uma entrada")
         self.assertEqual(entradas[0].severidade, "Disaster")
+
+
+class TestOrganizacaoPorCliente(BaseWiki):
+    """A wiki abre por cliente, não por categoria técnica.
+
+    O Master Support atende vários clientes: o mesmo "disco cheio" tem
+    contato, fila e SLA diferentes conforme o dono do host.
+    """
+
+    def test_cada_cliente_vira_uma_secao(self):
+        self.gravar("a", operacional(title="Disco Vibe"), zabbix(host="Vibe - Zabbix server"))
+        self.gravar("b", operacional(title="Disco Chubb", actions=["Outra ação"]),
+                    zabbix(host="Chubb - SQLDB"))
+
+        pagina = self.pagina()
+        self.assertIn("### Vibe Tecnologia", pagina)
+        self.assertIn("### Chubb", pagina)
+        self.assertIn("{.tabset}", pagina)
+
+    def test_mesmo_procedimento_em_clientes_diferentes_nao_se_funde(self):
+        """Texto técnico igual, donos diferentes: o contato é de quem é o host."""
+        self.gravar("a", operacional(), zabbix(host="Vibe - Zabbix server"))
+        self.gravar("b", operacional(), zabbix(host="Chubb - SQLDB"))
+
+        entradas = self.entradas()
+        self.assertEqual(len(entradas), 2, "não pode fundir clientes diferentes")
+        self.assertEqual({e.cliente for e in entradas}, {"vibe", "chubb"})
+
+    def test_cliente_de_outro_noc_fica_de_fora(self):
+        """Procedimento que não é nosso só atrapalha quem está de plantão."""
+        self.gravar("a", operacional(title="Nosso"), zabbix(host="Vibe - Zabbix server"))
+        self.gravar("b", operacional(title="Do outro NOC", actions=["Não é conosco"]),
+                    zabbix(host="Terceiro - Servidor"))
+
+        pagina = self.pagina()
+        self.assertIn("Nosso", pagina)
+        self.assertNotIn("Do outro NOC", pagina)
+        self.assertIn("atendidos por outro NOC", pagina, "quem ficou de fora precisa ser dito")
+
+    def test_indice_de_clientes_no_topo(self):
+        self.gravar("a", operacional(), zabbix(host="Vibe - Zabbix server"))
+        pagina = self.pagina()
+        self.assertIn("## 🏢 Clientes", pagina)
+        self.assertIn("| Cliente | Procedimentos | Alertas | Hosts |", pagina)
+
+    def test_ficha_manual_sem_cliente_fica_visivel_como_nao_classificada(self):
+        """Chutar o dono mandaria o operador acionar quem não tem a ver."""
+        self.gravar("manual|x", operacional(title="MSMonitor STALL"), None, scope=SCOPE_MANUAL)
+        entradas = self.entradas()
+        self.assertEqual(entradas[0].cliente, NAO_CLASSIFICADO)
+
+        pagina = self.pagina()
+        self.assertIn("Não classificado", pagina)
+        self.assertIn("clients.json", pagina, "a página precisa dizer como resolver")
+
+    def test_ficha_pode_declarar_o_cliente(self):
+        """Saída para o que não tem host: a ficha declara o dono."""
+        self.gravar("manual|x", operacional(title="MSMonitor STALL", client="vibe"),
+                    None, scope=SCOPE_MANUAL)
+        self.assertEqual(self.entradas()[0].cliente, "vibe")
+
+    def test_cliente_declarado_vence_o_host(self):
+        """Exceção explícita: host da Vibe, mas o alerta é de outro dono."""
+        self.gravar("a", operacional(client="chubb"), zabbix(host="Vibe - Zabbix server"))
+        self.assertEqual(self.entradas()[0].cliente, "chubb")
 
 
 class TestMatrizDeAcionamento(BaseWiki):
@@ -185,7 +275,7 @@ class TestMatrizDeAcionamento(BaseWiki):
         op_soc["routing"] = {**op_soc["routing"], "team": "SOC", "ticket_queue": "fila SOC"}
         self.gravar("b", op_soc, zabbix(descricao="Incidente", item="onesecure.incident"))
 
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertIn("**Infraestrutura**", pagina)
         self.assertIn("**SOC**", pagina)
         self.assertIn("fila SOC", pagina)
@@ -194,7 +284,7 @@ class TestMatrizDeAcionamento(BaseWiki):
         op = operacional()
         op["routing"] = {**op["routing"], "team": ""}
         self.gravar("a", op, zabbix())
-        pagina = gerar_wiki(self.docs)
+        pagina = self.pagina()
         self.assertNotIn("| **| ", pagina)
 
 

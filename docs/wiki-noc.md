@@ -47,41 +47,378 @@ flowchart TD
 > assim que o alerta for validado.
 {.is-info}
 
-## ☎️ Matriz de acionamento
+## 🏢 Clientes
+
+| Cliente | Procedimentos | Alertas | Hosts |
+| :--- | ---: | ---: | ---: |
+| **Vibe Tecnologia** | 14 | 14 | 7 |
+| **Chubb** | 3 | 10 | 2 |
+| **Master Support (interno)** | 2 | 2 | 1 |
+| **Não classificado** | 12 | 12 | 0 |
+
+## 📋 Catálogo por cliente {.tabset}
+
+### Vibe Tecnologia
+
+**14 alerta(s)** em 14 procedimento(s) · 7 host(s): `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Ferramentas Internas`, `Vibe - Impressora [HP]`, `Vibe - MSTracker-vm Hom`, `Vibe - Proxy [Fortigate]`, `Vibe - Wazuh SIEM`, `Vibe - Zabbix-Proxy`
+
+> Vem por último entre os monitorados: o host group 'Vibe Tecnologia' é usado como guarda-chuva de infraestrutura compartilhada (links de operadora, câmeras, servidores sem prefixo).
+{.is-info}
+
+#### ☎️ Acionamento
 
 | Fila / Time | Canal | Escalonamento | Alertas cobertos |
 | :--- | :--- | :--- | ---: |
-| **Administrativo** | DeskManager · E-mail | — | 4 |
 | **Carlos Favacho** | DeskManager | Carlos Favacho | 1 |
 | **Infraestrutura** | DeskManager | Rafael Sales | 7 |
-| **NOC** | DeskManager · e-mail para contatos Chubb | Mayara Polonio, Gabriel Chakrian, Jajyta Biadolla, Priscila Costa (Chubb) — copiar João Queiroz (Vibe) | 11 |
 | **NOC / GE** | Central de Servicos | — | 5 |
 | **NOC / Infra** | DeskManager | — | 1 |
-| **RH** | DeskManager | — | 2 |
-| **SOC** | DeskManager -> fila SOC | analista SOC · analista SOC (somente horario comercial) | 2 |
-| **Sobreaviso MSMonitor** | Telefone | Jordy — (91) 99165-4121 | 2 |
-| **Suporte DEV** | DeskManager | — | 2 |
-| **Suporte Oracle** | DeskManager | — | 2 |
+
+#### Rede / Conectividade
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Alta perda de pacotes ICMP — AP REUNIAO | 🟡 | Vibe - AP REUNIAO [Ubiquiti] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
+| Impressora HP inacessivel (ICMP) | 🟡 | Vibe - Impressora [HP] | Verificar presencialmente na fabrica e abrir chamado. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Rede / Conectividade</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Alta perda de pacotes ICMP — AP REUNIAO | Perda de pacotes na comunicacao com o AP. | Intermitencia wireless (AirOS). | — |
+| Impressora HP inacessivel (ICMP) | Impressora inacessivel na rede da fabrica. | Equipamento desligado ou falha de rede. | Verificar presencialmente na fabrica |
+
+</details>
+
+##### 🟡 Alta perda de pacotes ICMP — AP REUNIAO
+
+**Sintomas:**
+* 'Ubiquiti AirOS: High ICMP ping loss' no host Vibe - AP REUNIAO Ubiquiti
+
+**Ações:**
+* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
+
+**Critério de resolução:** Perda de pacotes volta ao normal.
+
+**Observações:** Severidade: Media. SLA: 7 min (5m tolerancia + 2m espera de retorno do chamado). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🟡 Impressora HP inacessivel (ICMP)
+
+**Sintomas:**
+* 'ICMP: Unavailable by ICMP ping' no host Vibe - Impressora HP
+
+**Verificações antes de agir:**
+* Verificar presencialmente na fabrica
+
+**Ações:**
+* Verificar presencialmente na fabrica e abrir chamado.
+
+**Critério de resolução:** Impressora volta a responder ao ping.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Horario: NOC/GE atende 24x7. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+#### Rede / Interfaces
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| VPNBKP com baixo trafego (Proxy Fortigate) | 🟡 | Vibe - Proxy [Fortigate] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Rede / Interfaces</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| VPNBKP com baixo trafego (Proxy Fortigate) | Trafego abaixo do normal na VPN de backup. | Intermitencia IPsec. | — |
+
+</details>
+
+##### 🟡 VPNBKP com baixo trafego (Proxy Fortigate)
+
+**Sintomas:**
+* 'Interface VPNBKP(): Baixo Trafego' no host Vibe - Proxy Fortigate
+
+**Ações:**
+* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
+
+**Critério de resolução:** Trafego da VPN de backup volta ao patamar normal.
+
+**Observações:** Severidade: Media. SLA: 7 min (5m + 2m). SLA MAIS ESPECIFICO que o da regra 'Rede / Interfaces' do grupo Ativos de Rede (12 min) -- esta ficha prevalece para esta interface especifica. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+#### Disco / Filesystem
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Disco (/) acima de 80% no Wazuh SIEM | 🟡 | Vibe - Wazuh SIEM | Abrir chamado informando o alerta e o host afetado. | Infraestrutura · DeskManager | ⏱️ Imediato |
+| Disco critico (/) no Zabbix-Proxy | 🟡 | Vibe - Zabbix-Proxy | Abrir ou transferir chamado solicitando liberacao de espaco. | Infraestrutura · DeskManager | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Disco / Filesystem</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Disco (/) acima de 80% no Wazuh SIEM | Espaco da particao raiz (/) acima de 80%. | Geracao excessiva de logs pelo firewall. | Checar volume de logs recentes no SIEM |
+| Disco critico (/) no Zabbix-Proxy | Espaco da particao raiz em nivel critico. Tende a durar dias ate a intervencao. | Crescimento de logs ou arquivos temporarios. | Confirmar o percentual livre atual no host |
+
+</details>
+
+##### 🟡 Disco (/) acima de 80% no Wazuh SIEM
+
+**Sintomas:**
+* '/: Disk space is low (used > 80%)' no host Vibe - Wazuh SIEM
+
+**Verificações antes de agir:**
+* Checar volume de logs recentes no SIEM
+
+**Ações:**
+* Abrir chamado informando o alerta e o host afetado.
+
+**Critério de resolução:** Uso volta a ficar abaixo de 80%.
+
+**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🟡 Disco critico (/) no Zabbix-Proxy
+
+**Sintomas:**
+* '/: Disk space is critically low' no host Vibe - Zabbix-Proxy
+
+**Verificações antes de agir:**
+* Confirmar o percentual livre atual no host
+
+**Ações:**
+* Abrir ou transferir chamado solicitando liberacao de espaco.
+
+**Critério de resolução:** Espaco livre volta a ficar acima do limite critico configurado no trigger.
+
+**Observações:** Severidade: Critica. SLA: Imediato. Ref. chamado 0726-001673 (caso anterior). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+#### Disco / Desempenho de I-O
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Disco (sda) com tempo de resposta alto no Zabbix-Proxy | 🟡 | Vibe - Zabbix-Proxy | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Disco / Desempenho de I-O</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Disco (sda) com tempo de resposta alto no Zabbix-Proxy | Tempo de espera (await) muito alto no disco do servidor. | Gargalo de I/O no disco. | Verificar uso de I/O e processos consumindo disco no host |
+
+</details>
+
+##### 🟡 Disco (sda) com tempo de resposta alto no Zabbix-Proxy
+
+**Sintomas:**
+* 'sda: Disk read/write request responses are too high' no host Vibe - Zabbix-Proxy
+
+**Verificações antes de agir:**
+* Verificar uso de I/O e processos consumindo disco no host
+
+**Ações:**
+* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
+
+**Critério de resolução:** Tempo de resposta do disco volta ao normal.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+#### Agente Zabbix
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Zabbix agent indisponivel no Wazuh SIEM | 🟡 | Vibe - MSTracker-vm Hom | Transferir para a Infraestrutura (chamado teste do setor). | NOC / Infra · DeskManager | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Agente Zabbix</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Zabbix agent indisponivel no Wazuh SIEM | Agente Zabbix parado ou host indisponivel (mensagem padrao inclui aviso sobre agentes passive-only). | Falha de rede ou porta 10050 bloqueada. | Confirmar se e chamado teste do setor antes de escalar |
+
+</details>
+
+##### 🟡 Zabbix agent indisponivel no Wazuh SIEM
+
+**Sintomas:**
+* 'Linux: Zabbix agent is not available' no host Vibe - Wazuh SIEM
+
+**Verificações antes de agir:**
+* Confirmar se e chamado teste do setor antes de escalar
+
+**Ações:**
+* Transferir para a Infraestrutura (chamado teste do setor).
+
+**Critério de resolução:** Agente volta a responder / host volta a 'monitored'.
+
+**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+#### APIs e checagens web
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Instabilidade na plataforma Feedz | 🔴 | Vibe - Ferramentas Internas | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
+| Instabilidade na plataforma Feedz (falha de step do cenario web) | 🔴 | Vibe - Ferramentas Internas | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
+| Instabilidade no Portal RH Cloud | 🔴 | Vibe - Ferramentas Internas | Reportar a instabilidade do Portal. | Carlos Favacho · DeskManager | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — APIs e checagens web</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Instabilidade na plataforma Feedz | Instabilidade na plataforma Feedz. | Falha de conexao externa. | — |
+| Instabilidade na plataforma Feedz (falha de step do cenario web) | Instabilidade na plataforma Feedz. | Falha de conexao externa. | — |
+| Instabilidade no Portal RH Cloud | Erro na resposta HTTP do Portal RH Cloud. | Causa nao informada na fonte original — investigar na ocorrencia. | — |
+
+</details>
+
+##### 🔴 Instabilidade na plataforma Feedz
+
+**Sintomas:**
+* 'Http response - Feedz' no host Vibe - Ferramentas Internas
+
+**Ações:**
+* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
+
+**Critério de resolução:** Cenario web volta a responder com sucesso.
+
+**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🔴 Instabilidade na plataforma Feedz (falha de step do cenario web)
+
+**Sintomas:**
+* 'Failed step of scenario "Http Response - Feedz".' no host Vibe - Ferramentas Internas
+
+**Ações:**
+* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
+
+**Critério de resolução:** Cenario web volta a responder com sucesso.
+
+**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🔴 Instabilidade no Portal RH Cloud
+
+**Sintomas:**
+* 'Http Response - Portal RH Cloud' no host Vibe - Ferramentas Internas
+
+**Ações:**
+* Reportar a instabilidade do Portal.
+
+**Critério de resolução:** Portal volta a responder com HTTP 200.
+
+**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+#### Outros
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| Toner Amarelo abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+| Toner Ciano abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+| Toner Magenta abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+| Toner Preto abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Outros</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| Toner Amarelo abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
+| Toner Ciano abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
+| Toner Magenta abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
+| Toner Preto abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
+
+</details>
+
+##### 🟡 Toner Amarelo abaixo de 5% (Impressora HP)
+
+**Sintomas:**
+* 'Toner Amarelo abaixo de 5%' no host Vibe - Impressora HP
+
+**Ações:**
+* Solicitar substituicao e fazer teste de impressao apos a troca.
+
+**Critério de resolução:** Teste de impressao apos a troca sai correto.
+
+**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🟡 Toner Ciano abaixo de 5% (Impressora HP)
+
+**Sintomas:**
+* 'Toner Ciano abaixo de 5%' no host Vibe - Impressora HP
+
+**Ações:**
+* Solicitar substituicao e fazer teste de impressao apos a troca.
+
+**Critério de resolução:** Teste de impressao apos a troca sai correto.
+
+**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🟡 Toner Magenta abaixo de 5% (Impressora HP)
+
+**Sintomas:**
+* 'Toner Magenta abaixo de 5%' no host Vibe - Impressora HP
+
+**Ações:**
+* Solicitar substituicao e fazer teste de impressao apos a troca.
+
+**Critério de resolução:** Teste de impressao apos a troca sai correto.
+
+**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🟡 Toner Preto abaixo de 5% (Impressora HP)
+
+**Sintomas:**
+* 'Toner Preto abaixo de 5%' no host Vibe - Impressora HP
+
+**Ações:**
+* Solicitar substituicao e fazer teste de impressao apos a troca.
+
+**Critério de resolução:** Teste de impressao apos a troca sai correto.
+
+**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+### Chubb
+
+**10 alerta(s)** em 3 procedimento(s) · 2 host(s): `Chubb - Links de API`, `Control-M server [IN01]`
+
+> Inclui a plataforma Control-M SaaS (IN01 e SaaS Master), confirmada como dedicada à Chubb, e a Azure Function do App Enel.
+{.is-info}
+
+#### ☎️ Acionamento
+
+| Fila / Time | Canal | Escalonamento | Alertas cobertos |
+| :--- | :--- | :--- | ---: |
+| **NOC** | e-mail para contatos Chubb | Mayara Polonio, Gabriel Chakrian, Jajyta Biadolla, Priscila Costa (Chubb) — copiar João Queiroz (Vibe) | 9 |
 | **Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao)** | DeskManager | — | 1 |
 
-## 🧭 Onde procurar o alerta
-
-| Categoria | Alertas | Hosts |
-| :--- | ---: | :--- |
-| Rede / Conectividade | 13 | Chubb - Links de API · Vibe - AP REUNIAO [Ubiquiti] · Vibe - Impressora [HP] · Vibe Crédito Banpará (máquinas) |
-| Rede / Interfaces | 1 | Vibe - Proxy [Fortigate] |
-| Disco / Filesystem | 2 | Vibe - Wazuh SIEM · Vibe - Zabbix-Proxy |
-| Disco / Desempenho de I-O | 1 | Vibe - Zabbix-Proxy |
-| Agente Zabbix | 1 | Vibe - MSTracker-vm Hom |
-| APIs e checagens web | 3 | Vibe - Ferramentas Internas |
-| Segurança e integridade | 2 | ONESecure |
-| Jobs e agendamentos | 1 | Control-M server [IN01] |
-| Outros | 4 | Vibe - Impressora [HP] |
-| Fora do Zabbix | 12 | fora do Zabbix |
-
-## 📋 Catálogo por categoria {.tabset}
-
-### Rede / Conectividade
+#### Rede / Conectividade
 
 <div style="width: 100%; overflow-x: auto;">
 
@@ -89,10 +426,6 @@ flowchart TD
 | :--- | :---: | :--- | :--- | :--- | :--- |
 | API ENEL Token autenticador indisponivel (erro 401) | 🔴 | Chubb - Links de API | Seguir o video de atualizacao manual do token (anexado ao procedimento original) para o passo a passo | NOC | ⏱️ — |
 | API ENEL indisponivel (endpoint especifico) | 🟠 | Chubb - Links de API | Analisar o alerta e notificar os contatos da Chubb via e-mail | NOC · e-mail para contatos Chubb | ⏱️ — |
-| Alta perda de pacotes ICMP — AP REUNIAO | 🟡 | Vibe - AP REUNIAO [Ubiquiti] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
-| Impressora HP inacessivel (ICMP) | 🟡 | Vibe - Impressora [HP] | Verificar presencialmente na fabrica e abrir chamado. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Porta RDP 10.0.20.217 fora (Banpara) | 🟠 | Vibe Crédito Banpará (máquinas) | Validar no MSMonitor/Zabbix e testar com ping e telnet. | NOC · DeskManager | ⏱️ Imediato |
-| Porta RDP 10.0.20.25 fora (Banpara) | 🟠 | Vibe Crédito Banpará (máquinas) | Validar no MSMonitor/Zabbix e testar com ping e telnet. | NOC · DeskManager | ⏱️ Imediato |
 
 </div>
 
@@ -103,14 +436,8 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | API ENEL Token autenticador indisponivel (erro 401) | Item `autorization.enel.item`, host 'Chubb - Links de API'. Erros 401 nas APIs ENEL estao associados a necessidade de renovar o token de autorizacao, que expira a cada 1 hora pela complexidade da implementacao — NAO e, em si, uma indisponibilidade da API. | Token de autorizacao expirado (renovacao necessaria a cada 1h). | Priorizar a atualizacao do token ANTES de tratar como incidente · Acessar o link do Zabbix do host Chubb (filtro latest.view, hostids=10705) · Selecionar o host, clicar em atualizar, recarregar a pagina e verificar a ultima checagem · Atualizar cada estado individualmente |
 | API ENEL indisponivel (endpoint especifico) | Item `services.<endpoint>.<regiao>.[Bearer]`, host 'Chubb - Links de API'. Endpoints monitorados: adesao/subscription (CE), faturamento/invoice (SP), customer-address (CE), request-history (RJ). | Indisponibilidade do lado ENEL (externa) ou falha de token/autenticacao (ver ficha propria de token). | Primeiro descartar o caso do token vencido (ver ficha 'API ENEL Token autenticador indisponivel') · Validar a indisponibilidade diretamente, se possivel |
-| Alta perda de pacotes ICMP — AP REUNIAO | Perda de pacotes na comunicacao com o AP. | Intermitencia wireless (AirOS). | — |
-| Impressora HP inacessivel (ICMP) | Impressora inacessivel na rede da fabrica. | Equipamento desligado ou falha de rede. | Verificar presencialmente na fabrica |
-| Porta RDP 10.0.20.217 fora (Banpara) | Porta RDP inacessivel — afeta acessos da equipe de Credito/Sustentacao (24x7). | Falha de conectividade com o banco. | Validar no MSMonitor/Zabbix · Testar com ping · Testar com telnet na porta |
-| Porta RDP 10.0.20.25 fora (Banpara) | Porta RDP inacessivel — afeta acessos da equipe de Credito/Sustentacao (24x7). | Falha de conectividade com o banco. | Validar no MSMonitor/Zabbix · Testar com ping · Testar com telnet na porta |
 
 </details>
-
-#### Procedimentos
 
 ##### 🔴 API ENEL Token autenticador indisponivel (erro 401)
 
@@ -172,287 +499,80 @@ Validar indisponibilidade real de um endpoint ENEL e notificar os contatos da Ch
 
 **Observações:** Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Contatos em docs/escalation_matrix.md, secao Chubb.
 
-##### 🟡 Alta perda de pacotes ICMP — AP REUNIAO
-
-**Sintomas:**
-* 'Ubiquiti AirOS: High ICMP ping loss' no host Vibe - AP REUNIAO Ubiquiti
-
-**Ações:**
-* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
-
-**Critério de resolução:** Perda de pacotes volta ao normal.
-
-**Observações:** Severidade: Media. SLA: 7 min (5m tolerancia + 2m espera de retorno do chamado). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🟡 Impressora HP inacessivel (ICMP)
-
-**Sintomas:**
-* 'ICMP: Unavailable by ICMP ping' no host Vibe - Impressora HP
-
-**Verificações antes de agir:**
-* Verificar presencialmente na fabrica
-
-**Ações:**
-* Verificar presencialmente na fabrica e abrir chamado.
-
-**Critério de resolução:** Impressora volta a responder ao ping.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Horario: NOC/GE atende 24x7. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🟠 Porta RDP 10.0.20.217 fora (Banpara)
-
-**Sintomas:**
-* 'Porta RDP 10.0.20.217 fora' no host Vibe Credito Banpara
-
-**Verificações antes de agir:**
-* Validar no MSMonitor/Zabbix
-* Testar com ping
-* Testar com telnet na porta
-
-**Ações:**
-* Validar no MSMonitor/Zabbix e testar com ping e telnet.
-
-**Critério de resolução:** Porta volta a responder no teste de telnet.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🟠 Porta RDP 10.0.20.25 fora (Banpara)
-
-**Sintomas:**
-* 'Porta RDP 10.0.20.25 fora' no host Vibe Credito Banpara
-
-**Verificações antes de agir:**
-* Validar no MSMonitor/Zabbix
-* Testar com ping
-* Testar com telnet na porta
-
-**Ações:**
-* Validar no MSMonitor/Zabbix e testar com ping e telnet.
-
-**Critério de resolução:** Porta volta a responder no teste de telnet.
-
-**Observações:** [DIVERGENCIA COM A FONTE] No catalogo original o segundo IP era 10.0.10.25 -- no ambiente coletado hoje o alerta real e para 10.0.20.25. Confirme qual IP e o correto. Severidade: Alta. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-### Rede / Interfaces
+#### Jobs e agendamentos
 
 <div style="width: 100%; overflow-x: auto;">
 
 | Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
 | :--- | :---: | :--- | :--- | :--- | :--- |
-| VPNBKP com baixo trafego (Proxy Fortigate) | 🟡 | Vibe - Proxy [Fortigate] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
+| Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC) | 🟠 | Control-M server [IN01] | Arvore de decisao para job Database Oracle (VibeCloud): | Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao) · DeskManager | ⏱️ Imediato |
 
 </div>
 
 <details>
-<summary>🔍 <strong>Referência técnica — Rede / Interfaces</strong></summary>
+<summary>🔍 <strong>Referência técnica — Jobs e agendamentos</strong></summary>
 
 | Alerta | O que significa | Causa provável | Verificações antes de agir |
 | :--- | :--- | :--- | :--- |
-| VPNBKP com baixo trafego (Proxy Fortigate) | Trafego abaixo do normal na VPN de backup. | Intermitencia IPsec. | — |
+| Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC) | 157 alertas, 66 instancias (nomes de job/agente: ABRIR_CHAMADO, ACK, BuscarAlertas, CLAIM, COLETA_FEEDZ, DECIDIR, Disparo3-4, Disparo52, ENDO-FW, ENVIAR, ENVIA_MSG_TEAMS, EnviaMsgZap3-4 e outros). Severidade concentrada em Warning (142), com 5 Disaster e 3 High -- os casos graves tendem a ser 'Server disconnected'/'Server is down', nao falha pontual de um job. Todo job do tipo 'Database Oracle' e relacionado ao VibeCloud. | Perda de comunicacao entre o Control-M e o servidor monitorado, ou falha real na execucao do job/agente nomeado. Para jobs do tipo Database Oracle, a causa se separa em duas: falha da propria procedure (ex.: erro do FLASH) ou falha do Control-M/integracao com o Oracle. | Verificar no console do Control-M se o servidor/agente aparece conectado · Se for job do tipo Database Oracle: abrir o OUTPUT do job e checar se a procedure chegou a iniciar · Confirmar se e um evento isolado ou se varios jobs do mesmo agente falharam junto (sintoma de queda do agente, nao dos jobs) |
 
 </details>
 
-#### Procedimentos
+##### 🟠 Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC)
 
-##### 🟡 VPNBKP com baixo trafego (Proxy Fortigate)
-
-**Sintomas:**
-* 'Interface VPNBKP(): Baixo Trafego' no host Vibe - Proxy Fortigate
-
-**Ações:**
-* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
-
-**Critério de resolução:** Trafego da VPN de backup volta ao patamar normal.
-
-**Observações:** Severidade: Media. SLA: 7 min (5m + 2m). SLA MAIS ESPECIFICO que o da regra 'Rede / Interfaces' do grupo Ativos de Rede (12 min) -- esta ficha prevalece para esta interface especifica. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-### Disco / Filesystem
-
-<div style="width: 100%; overflow-x: auto;">
-
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Disco (/) acima de 80% no Wazuh SIEM | 🟡 | Vibe - Wazuh SIEM | Abrir chamado informando o alerta e o host afetado. | Infraestrutura · DeskManager | ⏱️ Imediato |
-| Disco critico (/) no Zabbix-Proxy | 🟡 | Vibe - Zabbix-Proxy | Abrir ou transferir chamado solicitando liberacao de espaco. | Infraestrutura · DeskManager | ⏱️ Imediato |
-
-</div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Disco / Filesystem</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Disco (/) acima de 80% no Wazuh SIEM | Espaco da particao raiz (/) acima de 80%. | Geracao excessiva de logs pelo firewall. | Checar volume de logs recentes no SIEM |
-| Disco critico (/) no Zabbix-Proxy | Espaco da particao raiz em nivel critico. Tende a durar dias ate a intervencao. | Crescimento de logs ou arquivos temporarios. | Confirmar o percentual livre atual no host |
-
-</details>
-
-#### Procedimentos
-
-##### 🟡 Disco (/) acima de 80% no Wazuh SIEM
+Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Suporte Oracle e a fila Suporte BMC.
 
 **Sintomas:**
-* '/: Disk space is low (used > 80%)' no host Vibe - Wazuh SIEM
+* 'Control-M: Server disconnected' / 'Server error' / 'Server is down'
+* 'Control-M: Server version has changed'
+* 'Control-M: Job [NOME] - SubApplication X - (ODate: N): status [...]' -- ex. real: Job [STP_PROCESSA_PEDIDO]
 
 **Verificações antes de agir:**
-* Checar volume de logs recentes no SIEM
+* Verificar no console do Control-M se o servidor/agente aparece conectado
+* Se for job do tipo Database Oracle: abrir o OUTPUT do job e checar se a procedure chegou a iniciar
+* Confirmar se e um evento isolado ou se varios jobs do mesmo agente falharam junto (sintoma de queda do agente, nao dos jobs)
 
 **Ações:**
-* Abrir chamado informando o alerta e o host afetado.
+* Arvore de decisao para job Database Oracle (VibeCloud):
+* 1) Procedure INICIOU mas deu erro do FLASH ou de outra plataforma externa -> problema na propria procedure -> abrir chamado na fila Suporte Oracle, anexando as evidencias do output.
+* 2) Procedure NAO iniciou / falha de conexao Control-M <-> Oracle -> problema no Control-M ou na integracao -> abrir chamado na fila Suporte BMC.
+* Exemplo real: Job [STP_PROCESSA_PEDIDO] falhou com Exit Code 20000 na proc VIBE_LJ.STP_PROCESSA_PEDIDO por HTTP 502/Status 400 do provedor FLASH -- procedure iniciou e falhou externamente -> Suporte Oracle.
+* Para RotinaComFalha/CargaComFalha (RH Cloud, fora do Zabbix): se o erro mudar numa reexecucao, nao abrir chamado duplicado -- vincular ao chamado existente ou abrir novo somente se o erro for inedito.
+* --- Excecao: job TransfereArquivoChubb (SubApplication ENEL, cliente Chubb) ---
+* Regra de Long Run (geral, qualquer job): apos abrir o chamado, acompanhar por ate 10 minutos antes de qualquer tratativa. Se normalizar dentro da janela, o chamado pode ser fechado pelo N1, desde que o motivo da normalizacao seja registrado no ITSM.
+* Especifico do step TransfereArquivoChubb_Conciliado em Long Run:
+* 1) Verificar no container 'arquivos' do Azure Storage se o arquivo conciliado foi gerado.
+* 2) Se o arquivo NAO foi gerado: analisar imediatamente e escalonar se necessario.
+* 3) Se o arquivo FOI gerado: parar a execucao do step, reexecutar; se persistir Long Run apos a reexecucao, abrir chamado para analise.
+* NUNCA interromper/reexecutar o step sem confirmar que o arquivo ja foi gerado.
+* Para os DEMAIS erros deste job (nao Long Run): registrar no ITSM, anexar print do alerta + print do output do job (obrigatorio antes de escalonar), e encaminhar para a fila Suporte-BMC -- exceto severidade Critica, que aciona por telefone imediatamente.
 
-**Critério de resolução:** Uso volta a ficar abaixo de 80%.
+**Riscos e ressalvas:**
+* A regra 'applications--job' cobre o MESMO host (Control-M server [IN01]) porque ele pertence a dois host groups (Applications e Control-M/IN01). Esta e a ficha primaria -- nao documentar a mesma coisa duas vezes.
+* O time Suporte BMC nao tem acao quando a procedure iniciou e falhou por erro de plataforma externa -- nao escalar para BMC nesse caso.
+* O alert_key deste job muda todo dia (o ODate entra na chave: '...odate-260904...' vs '...odate-260905...'). Documentar por override de alert_key ficaria orfao em 24h -- por isso este caso esta na REGRA (agrupa por nome do job, estavel), nao num override.
+* TransfereArquivoChubb NAO e job do tipo 'Database Oracle' -- a arvore Suporte Oracle x Suporte BMC descrita acima NAO se aplica a ele. Confirmar visualmente o nome/tipo do job antes de aplicar a arvore de decisao Oracle x BMC.
 
-**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+**Critério de resolução:** Job volta a executar com sucesso (Ended OK) na proxima janela, ou o servidor/agente Control-M volta a aparecer conectado.
 
-##### 🟡 Disco critico (/) no Zabbix-Proxy
+**Observações:** Horario de atendimento do Suporte BMC/Oracle: A CONFIRMAR com os times (nao veio definido na fonte original). Ver docs/escalation_matrix.md. Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Contato critico Control-M: Bruno Rezegue Mendes (91) 98298-4301; Marcos Paulo Pinheiro Correa tambem consta como contato critico, mas SEM TELEFONE registrado na fonte -- confirmar. Duvida em aberto: o texto geral diz que N1/NOC pode reexecutar jobs 'quando permitido', mas a secao especifica de Control-M atribui reexecucao (ate 3x) ao N2 (Bruno Mendes) -- confirmar quem executa de fato antes de agir.
 
-**Sintomas:**
-* '/: Disk space is critically low' no host Vibe - Zabbix-Proxy
+**Evidências obrigatórias no chamado:** Output completo do job · ODate · Codigo/nome do pedido ou processo afetado · Print do alerta · Print do output do job (obrigatorios antes de qualquer escalonamento deste job)
 
-**Verificações antes de agir:**
-* Confirmar o percentual livre atual no host
+### Master Support (interno)
 
-**Ações:**
-* Abrir ou transferir chamado solicitando liberacao de espaco.
+**2 alerta(s)** em 2 procedimento(s) · 1 host(s): `ONESecure`
 
-**Critério de resolução:** Espaco livre volta a ficar acima do limite critico configurado no trigger.
+> Nossa própria infraestrutura: ONESecure, Desk Manager, n8n.
+{.is-info}
 
-**Observações:** Severidade: Critica. SLA: Imediato. Ref. chamado 0726-001673 (caso anterior). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+#### ☎️ Acionamento
 
-### Disco / Desempenho de I-O
+| Fila / Time | Canal | Escalonamento | Alertas cobertos |
+| :--- | :--- | :--- | ---: |
+| **SOC** | DeskManager -> fila SOC | analista SOC · analista SOC (somente horario comercial) | 2 |
 
-<div style="width: 100%; overflow-x: auto;">
-
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Disco (sda) com tempo de resposta alto no Zabbix-Proxy | 🟡 | Vibe - Zabbix-Proxy | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
-
-</div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Disco / Desempenho de I-O</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Disco (sda) com tempo de resposta alto no Zabbix-Proxy | Tempo de espera (await) muito alto no disco do servidor. | Gargalo de I/O no disco. | Verificar uso de I/O e processos consumindo disco no host |
-
-</details>
-
-#### Procedimentos
-
-##### 🟡 Disco (sda) com tempo de resposta alto no Zabbix-Proxy
-
-**Sintomas:**
-* 'sda: Disk read/write request responses are too high' no host Vibe - Zabbix-Proxy
-
-**Verificações antes de agir:**
-* Verificar uso de I/O e processos consumindo disco no host
-
-**Ações:**
-* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
-
-**Critério de resolução:** Tempo de resposta do disco volta ao normal.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-### Agente Zabbix
-
-<div style="width: 100%; overflow-x: auto;">
-
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Zabbix agent indisponivel no Wazuh SIEM | 🟡 | Vibe - MSTracker-vm Hom | Transferir para a Infraestrutura (chamado teste do setor). | NOC / Infra · DeskManager | ⏱️ Imediato |
-
-</div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Agente Zabbix</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Zabbix agent indisponivel no Wazuh SIEM | Agente Zabbix parado ou host indisponivel (mensagem padrao inclui aviso sobre agentes passive-only). | Falha de rede ou porta 10050 bloqueada. | Confirmar se e chamado teste do setor antes de escalar |
-
-</details>
-
-#### Procedimentos
-
-##### 🟡 Zabbix agent indisponivel no Wazuh SIEM
-
-**Sintomas:**
-* 'Linux: Zabbix agent is not available' no host Vibe - Wazuh SIEM
-
-**Verificações antes de agir:**
-* Confirmar se e chamado teste do setor antes de escalar
-
-**Ações:**
-* Transferir para a Infraestrutura (chamado teste do setor).
-
-**Critério de resolução:** Agente volta a responder / host volta a 'monitored'.
-
-**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-### APIs e checagens web
-
-<div style="width: 100%; overflow-x: auto;">
-
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Instabilidade na plataforma Feedz | 🔴 | Vibe - Ferramentas Internas | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
-| Instabilidade na plataforma Feedz (falha de step do cenario web) | 🔴 | Vibe - Ferramentas Internas | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
-| Instabilidade no Portal RH Cloud | 🔴 | Vibe - Ferramentas Internas | Reportar a instabilidade do Portal. | Carlos Favacho · DeskManager | ⏱️ Imediato |
-
-</div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — APIs e checagens web</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Instabilidade na plataforma Feedz | Instabilidade na plataforma Feedz. | Falha de conexao externa. | — |
-| Instabilidade na plataforma Feedz (falha de step do cenario web) | Instabilidade na plataforma Feedz. | Falha de conexao externa. | — |
-| Instabilidade no Portal RH Cloud | Erro na resposta HTTP do Portal RH Cloud. | Causa nao informada na fonte original — investigar na ocorrencia. | — |
-
-</details>
-
-#### Procedimentos
-
-##### 🔴 Instabilidade na plataforma Feedz
-
-**Sintomas:**
-* 'Http response - Feedz' no host Vibe - Ferramentas Internas
-
-**Ações:**
-* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
-
-**Critério de resolução:** Cenario web volta a responder com sucesso.
-
-**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🔴 Instabilidade na plataforma Feedz (falha de step do cenario web)
-
-**Sintomas:**
-* 'Failed step of scenario "Http Response - Feedz".' no host Vibe - Ferramentas Internas
-
-**Ações:**
-* Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales).
-
-**Critério de resolução:** Cenario web volta a responder com sucesso.
-
-**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🔴 Instabilidade no Portal RH Cloud
-
-**Sintomas:**
-* 'Http Response - Portal RH Cloud' no host Vibe - Ferramentas Internas
-
-**Ações:**
-* Reportar a instabilidade do Portal.
-
-**Critério de resolução:** Portal volta a responder com HTTP 200.
-
-**Observações:** Severidade: Media. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-### Segurança e integridade
+#### Segurança e integridade
 
 <div style="width: 100%; overflow-x: auto;">
 
@@ -472,8 +592,6 @@ Validar indisponibilidade real de um endpoint ENEL e notificar os contatos da Ch
 | SOC / ONESecure — Triagem N1 de incidentes (Alto/Critico) | 29 alertas no host 'ONESecure' (grupo Master Support), 27 instancias (numeros de incidente/ticket: INC-AGP-..., INC00000...). Severidades: 18 Disaster, 5 High, 4 Average, 2 Warning. O N1 atua SOMENTE em incidentes Alto ou Critico -- classificacao por 'rule.level': 0-6 Baixo (fora do escopo), 7-11 Medio (fora do escopo), 12-14 Alto (triagem), 15+ Critico (triagem). | Evento de seguranca real detectado pela plataforma (MITRE ATT&CK / monitoramento de logs) classificado como Alto ou Critico. | Home -> Visao tecnica -> Incidentes: existe registro Alto ou Critico? Se nao, encerrar o fluxo. · Se sim: Detectar -> Dashboard MITRE ATT&CK, filtros Severidade=Alta/Critica e periodo=ultima 1 hora, localizar o evento. · Evento nao localizado no dashboard: Detectar -> Monitoramento de logs, filtrar por rule.level, periodo=ultimos 30 minutos. |
 
 </details>
-
-#### Procedimentos
 
 ##### 🟠 ONESecure — API indisponivel
 
@@ -523,144 +641,26 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 
 **Evidências obrigatórias no chamado:** Data/hora · Severidade (rule.level) · Nome/descricao do alerta · Host/agente afetado · Log/output (JSON)
 
-### Jobs e agendamentos
+### Não classificado
 
-<div style="width: 100%; overflow-x: auto;">
+**12 alerta(s)** em 12 procedimento(s)
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC) | 🟠 | Control-M server [IN01] | Arvore de decisao para job Database Oracle (VibeCloud): | Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao) · DeskManager | ⏱️ Imediato |
+> Estes alertas não foram atribuídos a nenhum cliente. Não é erro de
+> coleta: é configuração faltando em `clients.json`. Atribuir por palpite
+> mandaria o operador acionar quem não tem nada a ver com o alerta.
+{.is-warning}
 
-</div>
+#### ☎️ Acionamento
 
-<details>
-<summary>🔍 <strong>Referência técnica — Jobs e agendamentos</strong></summary>
+| Fila / Time | Canal | Escalonamento | Alertas cobertos |
+| :--- | :--- | :--- | ---: |
+| **Administrativo** | DeskManager · E-mail | — | 4 |
+| **RH** | DeskManager | — | 2 |
+| **Sobreaviso MSMonitor** | Telefone | Jordy — (91) 99165-4121 | 2 |
+| **Suporte DEV** | DeskManager | — | 2 |
+| **Suporte Oracle** | DeskManager | — | 2 |
 
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC) | 157 alertas, 66 instancias (nomes de job/agente: ABRIR_CHAMADO, ACK, BuscarAlertas, CLAIM, COLETA_FEEDZ, DECIDIR, Disparo3-4, Disparo52, ENDO-FW, ENVIAR, ENVIA_MSG_TEAMS, EnviaMsgZap3-4 e outros). Severidade concentrada em Warning (142), com 5 Disaster e 3 High -- os casos graves tendem a ser 'Server disconnected'/'Server is down', nao falha pontual de um job. Todo job do tipo 'Database Oracle' e relacionado ao VibeCloud. | Perda de comunicacao entre o Control-M e o servidor monitorado, ou falha real na execucao do job/agente nomeado. Para jobs do tipo Database Oracle, a causa se separa em duas: falha da propria procedure (ex.: erro do FLASH) ou falha do Control-M/integracao com o Oracle. | Verificar no console do Control-M se o servidor/agente aparece conectado · Se for job do tipo Database Oracle: abrir o OUTPUT do job e checar se a procedure chegou a iniciar · Confirmar se e um evento isolado ou se varios jobs do mesmo agente falharam junto (sintoma de queda do agente, nao dos jobs) |
-
-</details>
-
-#### Procedimentos
-
-##### 🟠 Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC)
-
-Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Suporte Oracle e a fila Suporte BMC.
-
-**Sintomas:**
-* 'Control-M: Server disconnected' / 'Server error' / 'Server is down'
-* 'Control-M: Server version has changed'
-* 'Control-M: Job [NOME] - SubApplication X - (ODate: N): status [...]' -- ex. real: Job [STP_PROCESSA_PEDIDO]
-
-**Verificações antes de agir:**
-* Verificar no console do Control-M se o servidor/agente aparece conectado
-* Se for job do tipo Database Oracle: abrir o OUTPUT do job e checar se a procedure chegou a iniciar
-* Confirmar se e um evento isolado ou se varios jobs do mesmo agente falharam junto (sintoma de queda do agente, nao dos jobs)
-
-**Ações:**
-* Arvore de decisao para job Database Oracle (VibeCloud):
-* 1) Procedure INICIOU mas deu erro do FLASH ou de outra plataforma externa -> problema na propria procedure -> abrir chamado na fila Suporte Oracle, anexando as evidencias do output.
-* 2) Procedure NAO iniciou / falha de conexao Control-M <-> Oracle -> problema no Control-M ou na integracao -> abrir chamado na fila Suporte BMC.
-* Exemplo real: Job [STP_PROCESSA_PEDIDO] falhou com Exit Code 20000 na proc VIBE_LJ.STP_PROCESSA_PEDIDO por HTTP 502/Status 400 do provedor FLASH -- procedure iniciou e falhou externamente -> Suporte Oracle.
-* Para RotinaComFalha/CargaComFalha (RH Cloud, fora do Zabbix): se o erro mudar numa reexecucao, nao abrir chamado duplicado -- vincular ao chamado existente ou abrir novo somente se o erro for inedito.
-* --- Excecao: job TransfereArquivoChubb (SubApplication ENEL, cliente Chubb) ---
-* Regra de Long Run (geral, qualquer job): apos abrir o chamado, acompanhar por ate 10 minutos antes de qualquer tratativa. Se normalizar dentro da janela, o chamado pode ser fechado pelo N1, desde que o motivo da normalizacao seja registrado no ITSM.
-* Especifico do step TransfereArquivoChubb_Conciliado em Long Run:
-* 1) Verificar no container 'arquivos' do Azure Storage se o arquivo conciliado foi gerado.
-* 2) Se o arquivo NAO foi gerado: analisar imediatamente e escalonar se necessario.
-* 3) Se o arquivo FOI gerado: parar a execucao do step, reexecutar; se persistir Long Run apos a reexecucao, abrir chamado para analise.
-* NUNCA interromper/reexecutar o step sem confirmar que o arquivo ja foi gerado.
-* Para os DEMAIS erros deste job (nao Long Run): registrar no ITSM, anexar print do alerta + print do output do job (obrigatorio antes de escalonar), e encaminhar para a fila Suporte-BMC -- exceto severidade Critica, que aciona por telefone imediatamente.
-
-**Riscos e ressalvas:**
-* A regra 'applications--job' cobre o MESMO host (Control-M server [IN01]) porque ele pertence a dois host groups (Applications e Control-M/IN01). Esta e a ficha primaria -- nao documentar a mesma coisa duas vezes.
-* O time Suporte BMC nao tem acao quando a procedure iniciou e falhou por erro de plataforma externa -- nao escalar para BMC nesse caso.
-* O alert_key deste job muda todo dia (o ODate entra na chave: '...odate-260904...' vs '...odate-260905...'). Documentar por override de alert_key ficaria orfao em 24h -- por isso este caso esta na REGRA (agrupa por nome do job, estavel), nao num override.
-* TransfereArquivoChubb NAO e job do tipo 'Database Oracle' -- a arvore Suporte Oracle x Suporte BMC descrita acima NAO se aplica a ele. Confirmar visualmente o nome/tipo do job antes de aplicar a arvore de decisao Oracle x BMC.
-
-**Critério de resolução:** Job volta a executar com sucesso (Ended OK) na proxima janela, ou o servidor/agente Control-M volta a aparecer conectado.
-
-**Observações:** Horario de atendimento do Suporte BMC/Oracle: A CONFIRMAR com os times (nao veio definido na fonte original). Ver docs/escalation_matrix.md. Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Contato critico Control-M: Bruno Rezegue Mendes (91) 98298-4301; Marcos Paulo Pinheiro Correa tambem consta como contato critico, mas SEM TELEFONE registrado na fonte -- confirmar. Duvida em aberto: o texto geral diz que N1/NOC pode reexecutar jobs 'quando permitido', mas a secao especifica de Control-M atribui reexecucao (ate 3x) ao N2 (Bruno Mendes) -- confirmar quem executa de fato antes de agir.
-
-**Evidências obrigatórias no chamado:** Output completo do job · ODate · Codigo/nome do pedido ou processo afetado · Print do alerta · Print do output do job (obrigatorios antes de qualquer escalonamento deste job)
-
-### Outros
-
-<div style="width: 100%; overflow-x: auto;">
-
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Toner Amarelo abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Toner Ciano abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Toner Magenta abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Toner Preto abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-
-</div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Outros</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Toner Amarelo abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-| Toner Ciano abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-| Toner Magenta abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-| Toner Preto abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-
-</details>
-
-#### Procedimentos
-
-##### 🟡 Toner Amarelo abaixo de 5% (Impressora HP)
-
-**Sintomas:**
-* 'Toner Amarelo abaixo de 5%' no host Vibe - Impressora HP
-
-**Ações:**
-* Solicitar substituicao e fazer teste de impressao apos a troca.
-
-**Critério de resolução:** Teste de impressao apos a troca sai correto.
-
-**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🟡 Toner Ciano abaixo de 5% (Impressora HP)
-
-**Sintomas:**
-* 'Toner Ciano abaixo de 5%' no host Vibe - Impressora HP
-
-**Ações:**
-* Solicitar substituicao e fazer teste de impressao apos a troca.
-
-**Critério de resolução:** Teste de impressao apos a troca sai correto.
-
-**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🟡 Toner Magenta abaixo de 5% (Impressora HP)
-
-**Sintomas:**
-* 'Toner Magenta abaixo de 5%' no host Vibe - Impressora HP
-
-**Ações:**
-* Solicitar substituicao e fazer teste de impressao apos a troca.
-
-**Critério de resolução:** Teste de impressao apos a troca sai correto.
-
-**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-##### 🟡 Toner Preto abaixo de 5% (Impressora HP)
-
-**Sintomas:**
-* 'Toner Preto abaixo de 5%' no host Vibe - Impressora HP
-
-**Ações:**
-* Solicitar substituicao e fazer teste de impressao apos a troca.
-
-**Critério de resolução:** Teste de impressao apos a troca sai correto.
-
-**Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
-
-### Fora do Zabbix
+#### Fora do Zabbix
 
 > Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de origem, por e-mail ou webhook. Não espere encontrá-los no painel.
 {.is-warning}
@@ -703,8 +703,6 @@ Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Supo
 | Zabbix Integration — Falha na conexao ao executar operacao | MSMonitor falhando ao se conectar na API do Zabbix. | Instabilidade de rede/API. | — |
 
 </details>
-
-#### Procedimentos
 
 ##### ⚪ Grafana Integration — Connection prematurely closed BEFORE response
 
@@ -858,4 +856,6 @@ Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Supo
 
 ---
 
-Gerado em 2026-09-06T19:29:03Z · 33 procedimento(s) validado(s) cobrindo 40 alerta(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T19:52:04Z · 31 procedimento(s) validado(s) cobrindo 38 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+
+Fora desta página, por serem atendidos por outro NOC: Banpará.

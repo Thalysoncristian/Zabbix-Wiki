@@ -20,6 +20,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Sequence
 
+from .clients import NAO_CLASSIFICADO, ClientRegistry
 from .collect import RawSnapshot, collect_raw, partial_snapshot_of
 from .config import ConfigError, load_settings
 from .core.repository import AlertRepository
@@ -198,6 +199,8 @@ def build_parser() -> argparse.ArgumentParser:
     wk.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
     wk.add_argument("--output", default="wiki.md", help="arquivo de saída (padrão: wiki.md)")
     wk.add_argument("--stdout", action="store_true", help="imprime na saída padrão em vez de gravar")
+    wk.add_argument("--clients-file", default=None,
+                    help="mapa de clientes por host (padrão: clients.json)")
     return parser
 
 
@@ -688,10 +691,11 @@ def cmd_wiki(args: argparse.Namespace) -> int:
     parece procedimento é lido como procedimento.
     """
     docs_dir = args.docs_dir or "docs/alerts"
-    entradas = coletar_entradas(docs_dir)
+    registry = ClientRegistry.load(args.clients_file)
+    entradas = coletar_entradas(docs_dir, registry)
 
     if args.stdout:
-        print(gerar_wiki(docs_dir))
+        print(gerar_wiki(docs_dir, clients_file=args.clients_file))
         return EXIT_OK
 
     if not entradas:
@@ -699,14 +703,29 @@ def cmd_wiki(args: argparse.Namespace) -> int:
         print("Documente um procedimento (`python main.py serve`) e rode de novo.")
         return EXIT_OK
 
-    caminho, total = escrever_wiki(args.output, docs_dir)
-    alertas = sum(len(e.alertas) for e in entradas)
-    manuais = sum(1 for e in entradas if e.manual)
+    publicadas = [e for e in entradas if registry.is_monitored(e.cliente)]
+    de_fora = [e for e in entradas if not registry.is_monitored(e.cliente)]
+    caminho, total = escrever_wiki(args.output, docs_dir, clients_file=args.clients_file)
+    alertas = sum(len(e.alertas) for e in publicadas)
+    manuais = sum(1 for e in publicadas if e.manual)
 
     print(f"✓ {caminho}")
     print(f"  {total} procedimento(s) validado(s), cobrindo {alertas} alerta(s)")
+
+    por_cliente: dict[str, int] = {}
+    for entrada in publicadas:
+        por_cliente[entrada.cliente] = por_cliente.get(entrada.cliente, 0) + len(entrada.alertas)
+    for cliente_id, quantidade in sorted(por_cliente.items(), key=lambda kv: -kv[1]):
+        print(f"    {registry.label_of(cliente_id):26} {quantidade:>4} alerta(s)")
+
     if manuais:
-        print(f"  {manuais} deles fora do Zabbix (avisados pelo sistema de origem)")
+        print(f"  {manuais} procedimento(s) fora do Zabbix (avisados pelo sistema de origem)")
+    if de_fora:
+        rotulos = sorted({registry.label_of(e.cliente) for e in de_fora})
+        print(f"  {len(de_fora)} ficha(s) de fora — atendidas por outro NOC: {', '.join(rotulos)}")
+    nao_classificados = sum(1 for e in publicadas if e.cliente == NAO_CLASSIFICADO)
+    if nao_classificados:
+        print(f"  ⚠ {nao_classificados} procedimento(s) sem cliente definido — ajuste clients.json")
 
     repositorio = AlertRepository(docs_dir)
     rascunhos = sum(1 for d in repositorio.all()

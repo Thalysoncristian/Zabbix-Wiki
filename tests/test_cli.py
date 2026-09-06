@@ -52,5 +52,40 @@ class TestCliCollect(unittest.TestCase):
             self.assertEqual(codigo, cli.EXIT_CONFIG)
 
 
+class TestSaidaNoConsoleWindows(unittest.TestCase):
+    """O console do Windows usa cp1252, que não tem os símbolos do relatório.
+
+    Um `python main.py scope` real morria com `UnicodeEncodeError` na
+    primeira linha (`→ Snapshot : ...`), antes de imprimir qualquer dado.
+    """
+
+    #: Os caracteres que o CLI de fato imprime e que o cp1252 não conhece.
+    SIMBOLOS = "→ ✓ ✗ ⚠ ── 🆕"
+
+    @staticmethod
+    def _console_cp1252() -> io.TextIOWrapper:
+        return io.TextIOWrapper(io.BytesIO(), encoding="cp1252", newline="")
+
+    def test_console_cp1252_quebraria_sem_a_correcao(self):
+        """Prova que o cenário do bug é real, não hipotético."""
+        console = self._console_cp1252()
+        with self.assertRaises(UnicodeEncodeError):
+            console.write(self.SIMBOLOS)
+            console.flush()
+
+    def test_configure_console_encoding_deixa_a_saida_passar(self):
+        console = self._console_cp1252()
+        with mock.patch("sys.stdout", console), mock.patch("sys.stderr", console):
+            cli.configure_console_encoding()
+            console.write(self.SIMBOLOS)
+            console.flush()
+        self.assertEqual(console.encoding, "utf-8")
+
+    def test_stream_sem_reconfigure_nao_quebra(self):
+        """`StringIO` (usado nos próprios testes) não tem `reconfigure`."""
+        with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+            cli.configure_console_encoding()  # não pode levantar nada
+
+
 if __name__ == "__main__":
     unittest.main()

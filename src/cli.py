@@ -36,6 +36,30 @@ EXIT_CONFIG = 2
 EXIT_ZABBIX = 3
 
 
+def configure_console_encoding() -> None:
+    """Garante que a saída aguenta os caracteres que o CLI realmente imprime.
+
+    O console do Windows usa cp1252 por padrão, que não tem `→`, `✓`, `──`
+    nem `🆕`. Sem isto, **um caractere de enfeite derruba o comando inteiro**
+    com `UnicodeEncodeError` — foi exatamente o que aconteceu com
+    `python main.py scope`, que morria na primeira linha do relatório antes
+    de mostrar qualquer dado útil.
+
+    `errors="replace"` é a rede de segurança: num terminal que não renderize
+    UTF-8, o pior caso vira um `?` no lugar do símbolo — nunca um comando
+    abortado no meio. Streams sem `reconfigure` (um `StringIO` capturado em
+    teste, um pipe já encapsulado) são deixados como estão.
+    """
+    for fluxo in (sys.stdout, sys.stderr):
+        reconfigure = getattr(fluxo, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        try:
+            reconfigure(encoding="utf-8", errors="replace")
+        except (ValueError, OSError):  # pragma: no cover - depende do terminal
+            pass
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python main.py",
@@ -650,6 +674,7 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    configure_console_encoding()
     args = build_parser().parse_args(argv)
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.WARNING,

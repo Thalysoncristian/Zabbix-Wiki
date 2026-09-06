@@ -201,6 +201,8 @@ def build_parser() -> argparse.ArgumentParser:
     wk.add_argument("--stdout", action="store_true", help="imprime na saída padrão em vez de gravar")
     wk.add_argument("--clients-file", default=None,
                     help="mapa de clientes por host (padrão: clients.json)")
+    wk.add_argument("--output-dir", default=None,
+                    help="diretório dos snapshots, usado para deduplicar regras sobrepostas")
     return parser
 
 
@@ -715,8 +717,17 @@ def cmd_wiki(args: argparse.Namespace) -> int:
     registry = ClientRegistry.load(args.clients_file)
     entradas = coletar_entradas(docs_dir, registry)
 
+    # O snapshot serve para saber quais regras se sobrepõem — duas regras que
+    # cobrem os mesmos alertas viram a mesma orientação repetida na página.
+    # Sem snapshot a página sai igual, só sem a deduplicação.
+    from .web.readmodel import resolve_snapshot
+    try:
+        snapshot_dir = resolve_snapshot(args.output_dir or "output", None)
+    except (FileNotFoundError, OSError):
+        snapshot_dir = None
+
     if args.stdout:
-        print(gerar_wiki(docs_dir, clients_file=args.clients_file))
+        print(gerar_wiki(docs_dir, clients_file=args.clients_file, snapshot_dir=snapshot_dir))
         return EXIT_OK
 
     if not entradas:
@@ -726,7 +737,8 @@ def cmd_wiki(args: argparse.Namespace) -> int:
 
     publicadas = [e for e in entradas if registry.is_monitored(e.cliente)]
     de_fora = [e for e in entradas if not registry.is_monitored(e.cliente)]
-    caminho, total = escrever_wiki(args.output, docs_dir, clients_file=args.clients_file)
+    caminho, total = escrever_wiki(args.output, docs_dir, clients_file=args.clients_file,
+                                   snapshot_dir=snapshot_dir)
     alertas = sum(len(e.alertas) for e in publicadas)
     manuais = sum(1 for e in publicadas if e.manual)
 

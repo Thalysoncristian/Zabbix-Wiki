@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:17:16Z",
   "last_modified_at": "2026-09-06T00:17:16.212331Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -108,8 +108,7 @@
       "Texto indica 'Chamado Expirado', 'Aguardando cliente' ou 'defasado'"
     ],
     "actions": [
-      "[A DEFINIR] Fila/time correto para cada tipo de chamado (o alerta traz o grupo em '{#NOMEGRUPO}' quando presente)",
-      "[A DEFINIR] Se aplicavel escalar automaticamente ou apenas registrar"
+      "Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento."
     ],
     "validation": "",
     "risks": [
@@ -143,7 +142,7 @@
       "channel": ""
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho gerado a partir da evidencia tecnica do agrupamento 'Chamados e filas' (confianca alta, 1111 alertas, 277 instancias/chamados, host unico 'Vibe - DeskManager API'). Time, fila e SLA precisam ser preenchidos por quem opera o DeskManager -- nao inferidos pelo Zabbix. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho gerado a partir da evidencia tecnica do agrupamento 'Chamados e filas' (confianca alta, 1111 alertas, 277 instancias/chamados, host unico 'Vibe - DeskManager API'). Time, fila e SLA precisam ser preenchidos por quem opera o DeskManager -- nao inferidos pelo Zabbix. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Fila/time correto para cada tipo de chamado (o alerta traz o grupo em '{#NOMEGRUPO}' quando presente) Se aplicavel escalar automaticamente ou apenas registrar.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

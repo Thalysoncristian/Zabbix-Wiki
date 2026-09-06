@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:51:55Z",
   "last_modified_at": "2026-09-06T00:51:55.861178Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -99,7 +99,7 @@
       "'Cisco IOS: Host has been restarted'"
     ],
     "actions": [
-      "[A DEFINIR] Procedimento de substituicao de hardware -- provavelmente exige RMA/fornecedor, fora do escopo de resolucao imediata do NOC"
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
     ],
     "validation": "",
     "risks": [
@@ -132,7 +132,7 @@
       "channel": "Teams"
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho tecnico -- confianca alta, reune 14 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho tecnico -- confianca alta, reune 14 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Procedimento de substituicao de hardware -- provavelmente exige RMA/fornecedor, fora do escopo de resolucao imediata do NOC.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

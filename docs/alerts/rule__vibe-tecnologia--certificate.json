@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:51:46Z",
   "last_modified_at": "2026-09-06T00:51:46.283652Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -100,7 +100,7 @@
       "'Certificado prestes a vencer (<= 15 dias)'"
     ],
     "actions": [
-      "[A DEFINIR] Quem detem a conta do provedor de certificado/dominio para renovar"
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
     ],
     "validation": "",
     "risks": [
@@ -133,7 +133,7 @@
       "channel": "Teams"
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho tecnico -- confianca alta, reune 7 familias tecnicas. MESMO CONJUNTO de dominios que a regra 'dominios-e-certificados--certificate' (grupo diferente, hosts quase identicos) -- mesma duplicacao estrutural ja vista em Control-M e nas APs. Ver nota na outra ficha. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho tecnico -- confianca alta, reune 7 familias tecnicas. MESMO CONJUNTO de dominios que a regra 'dominios-e-certificados--certificate' (grupo diferente, hosts quase identicos) -- mesma duplicacao estrutural ja vista em Control-M e nas APs. Ver nota na outra ficha. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem detem a conta do provedor de certificado/dominio para renovar.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
   "last_modified_at": "2026-09-06T21:07:02.725862Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [
@@ -1777,8 +1777,7 @@
       "'<código>: <assunto> - Aguardando cliente (5 dias uteis)' — ex.: '0325-000383: Vibe Cloud - RH - Melhoria - Aguardando cliente (5 dias uteis)'"
     ],
     "actions": [
-      "[A DEFINIR] Quem cobra o retorno do cliente — o time dono do chamado ou o NOC",
-      "[A DEFINIR] Se o alerta gera ação ou é só indicador de SLA para relatório"
+      "Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento."
     ],
     "validation": "",
     "risks": [
@@ -1813,7 +1812,7 @@
       "channel": ""
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem cobra o retorno do cliente — o time dono do chamado ou o NOC Se o alerta gera ação ou é só indicador de SLA para relatório.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

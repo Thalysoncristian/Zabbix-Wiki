@@ -25,6 +25,22 @@ Uma linha por sessão, mais recente no topo:
 
 ## Sessões
 
+### 2026-09-06 — Claude (ação padrão e deduplicação)
+
+- **Preencheu 56 fichas** que tinham `[A DEFINIR]` no campo de ação com o texto
+  que o time forneceu: *"Abrir chamado para o time de Infraestrutura. Caso o
+  problema permaneça sem resposta, acionar o Rafael Sales via Teams."* — e o
+  equivalente para NOC, NOC/GE, SOC e Suporte DEV. As perguntas em aberto saíram
+  de `actions` e viraram `EM ABERTO:` nas observações: pergunta no meio da ação
+  paralisa quem está de plantão.
+- **Deduplicou a página:** regras sobrepostas agora publicam só a entrada mais
+  completa. A wiki caiu de 106 para 103 procedimentos — os 3 removidos eram
+  repetição, não conteúdo.
+- **Corrigiu um erro do próprio critério:** a primeira versão escolhia a regra
+  de maior volume, e teria descartado a ficha do Control-M com o procedimento
+  inteiro (157 alertas) em favor da que se declara duplicata (16.479). O critério
+  passou a ser densidade de conteúdo.
+
 ### 2026-09-06 — Claude (aprovação em lote dos rascunhos)
 
 O time decidiu aprovar tudo e corrigir o que aparecer de errado no uso. Como os

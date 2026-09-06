@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:17:26Z",
   "last_modified_at": "2026-09-06T20:46:28.662647Z",
-  "revision": 3,
+  "revision": 4,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -131,7 +131,7 @@
       "'Ubiquiti AirOS: Interface athX: High bandwidth usage'"
     ],
     "actions": [
-      "[A DEFINIR] Se este grupo de baixo impacto justifica abertura de chamado ou so registro/observacao"
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
     ],
     "validation": "",
     "risks": [],
@@ -162,7 +162,7 @@
       "channel": "Teams"
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho tecnico -- confianca alta, reune 12 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho tecnico -- confianca alta, reune 12 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se este grupo de baixo impacto justifica abertura de chamado ou so registro/observacao.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

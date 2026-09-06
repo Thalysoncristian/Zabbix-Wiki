@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:46:46Z",
   "last_modified_at": "2026-09-06T00:46:46.787487Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -101,7 +101,7 @@
       "'Zabbix proxy is not supported' / 'Zabbix proxy is outdated'"
     ],
     "actions": [
-      "[A DEFINIR] Quem reinicia o servico -- provavelmente o mesmo time que administra o Zabbix, nao o NOC de plantao"
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
     ],
     "validation": "",
     "risks": [
@@ -135,7 +135,7 @@
       "channel": ""
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o servico -- provavelmente o mesmo time que administra o Zabbix, nao o NOC de plantao.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

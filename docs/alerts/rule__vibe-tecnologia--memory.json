@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T14:38:34Z",
   "last_modified_at": "2026-09-06T14:38:34.021647Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -98,7 +98,7 @@
       "'High swap space usage'"
     ],
     "actions": [
-      "[A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao"
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
     ],
     "validation": "",
     "risks": [
@@ -132,7 +132,7 @@
       "channel": "Teams"
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho tecnico da Fase 2 (confianca high, 10 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 10 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reiniciar servico e permitido ao NOC ou exige aprovacao.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

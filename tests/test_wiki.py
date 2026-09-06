@@ -19,7 +19,7 @@ from pathlib import Path
 from src.clients import NAO_CLASSIFICADO, ClientRegistry
 from src.core.models import LEVEL_FAMILY, SCOPE_MANUAL, AlertDoc, empty_operational
 from src.core.repository import AlertRepository
-from src.wiki import COLUNAS, SECAO_MANUAL, coletar_entradas, gerar_wiki
+from src.wiki import COLUNAS, SECAO_MANUAL, _densidade, coletar_entradas, gerar_wiki
 
 
 def operacional(**campos):
@@ -265,6 +265,39 @@ class TestOrganizacaoPorCliente(BaseWiki):
         """Exceção explícita: host da Vibe, mas o alerta é de outro dono."""
         self.gravar("a", operacional(client="chubb"), zabbix(host="Vibe - Zabbix server"))
         self.assertEqual(self.entradas()[0].cliente, "chubb")
+
+
+class TestDeduplicacaoDeRegras(BaseWiki):
+    """Regras sobrepostas viram UMA entrada na página.
+
+    Um host em dois host groups gera duas regras cobrindo os mesmos alertas.
+    Publicar as duas repete a orientação e quem lê não sabe qual seguir.
+    """
+
+    def _entrada(self, titulo, **campos):
+        op = operacional(title=titulo, **campos)
+        from src.wiki import Entrada
+        return Entrada(titulo=titulo, operacional=op, categoria="x")
+
+    def test_vence_a_de_mais_conteudo_nao_a_de_mais_alertas(self):
+        """No caso real do Control-M, a regra de 16.479 alertas era a marcada
+        como duplicata, e a de 157 tinha o procedimento inteiro."""
+        completa = self._entrada("Control-M — falha de job",
+                                 meaning="x" * 400, risks=["um risco longo" * 10])
+        vazia = self._entrada("[DUPLICATA DE ESCOPO] Ver a outra regra", meaning="ver a outra")
+        self.assertGreater(_densidade(completa), _densidade(vazia))
+
+    def test_ficha_que_se_declara_duplicata_nunca_vence(self):
+        """Mesmo que por acaso tenha mais texto, ela aponta para outra."""
+        duplicata = self._entrada("[DUPLICATA] Ver a outra", meaning="y" * 5000)
+        real = self._entrada("A boa", meaning="curto")
+        self.assertLess(_densidade(duplicata), _densidade(real))
+
+    def test_sem_snapshot_nao_deduplica(self):
+        """A deduplicação depende de saber quais regras se sobrepõem; sem
+        snapshot a página sai igual, só sem esse filtro."""
+        self.gravar("a", operacional(), zabbix())
+        self.assertIn("Disco cheio", self.pagina())
 
 
 class TestCatalogo(BaseWiki):

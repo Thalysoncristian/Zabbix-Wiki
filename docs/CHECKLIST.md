@@ -4,7 +4,7 @@ Estado do projeto e o que falta. Atualizado a cada entrega — item concluído �
 marcado aqui, com a data e o commit.
 
 **Atualizado em:** 2026-09-06
-**Situação:** 119 validadas · 11 rascunhos · 450 sem procedimento · 24 não aplicáveis · wiki com 106 procedimentos
+**Situação:** 119 validadas · 11 rascunhos · 450 sem procedimento · 24 não aplicáveis · wiki com 103 procedimentos
 
 ---
 
@@ -141,10 +141,10 @@ marcado aqui, com a data e o commit.
   o caso do `TransfereArquivoChubb` foi documentado na regra, não como override.
   → Corrigir exigiria tratar `{#JOB.ORDERDATE}` como ruído na chave.
 
-- [ ] **Deduplicar regras sobrepostas**
-  Hoje o sistema **avisa** (`⚠ sobreposta`) quando duas regras cobrem os mesmos
-  alertas — 27 de 85 regras, 24 grupos. Documentar uma vale pelas outras, mas o
-  operador precisa saber disso lendo o aviso.
+- [ ] **Definir a tolerância de "pico curto" antes de abrir chamado**
+  Várias fichas de CPU, memória e I/O dizem para não abrir chamado por pico
+  pontual, mas nenhuma diz quanto tempo é "pontual". Ficou registrado em
+  `EM ABERTO` nas observações dessas fichas.
 
 ---
 

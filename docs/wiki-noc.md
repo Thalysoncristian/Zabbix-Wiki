@@ -52,8 +52,8 @@ flowchart TD
 
 | Cliente | Procedimentos | Alertas | Hosts |
 | :--- | ---: | ---: | ---: |
-| **Vibe Tecnologia** | 79 | 79 | 20 |
-| **Chubb** | 15 | 25 | 3 |
+| **Vibe Tecnologia** | 77 | 77 | 20 |
+| **Chubb** | 14 | 24 | 3 |
 | **Master Support (interno)** | 6 | 6 | 1 |
 | **Votorantim** | 6 | 6 | 2 |
 
@@ -61,7 +61,7 @@ flowchart TD
 
 ### Vibe Tecnologia
 
-**79 alerta(s)** em 79 procedimento(s) · 20 host(s): `Embratel - Roteador [Cisco]`, `Interconect - Roteador`, `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Certificado mastersupport.com.br`, `Vibe - DeskManager API`, `Vibe - Ferramentas Internas`, `Vibe - Grafana`, `Vibe - Impressora [HP]` e mais 12
+**77 alerta(s)** em 77 procedimento(s) · 20 host(s): `Embratel - Roteador [Cisco]`, `Interconect - Roteador`, `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Certificado mastersupport.com.br`, `Vibe - DeskManager API`, `Vibe - Ferramentas Internas`, `Vibe - Grafana`, `Vibe - Impressora [HP]` e mais 12
 
 > Vem por último entre os monitorados: o host group 'Vibe Tecnologia' é usado como guarda-chuva de infraestrutura compartilhada (links de operadora, câmeras, servidores sem prefixo).
 {.is-info}
@@ -72,7 +72,7 @@ flowchart TD
 | :--- | :--- | :--- | ---: |
 | **Administrativo** | DeskManager · E-mail | — | 4 |
 | **Carlos Favacho** | DeskManager | Carlos Favacho | 1 |
-| **Infraestrutura** | DeskManager | Rafael Sales | 51 |
+| **Infraestrutura** | DeskManager | Rafael Sales | 49 |
 | **NOC** | DeskManager | — | 2 |
 | **NOC / GE** | Central de Servicos | — | 5 |
 | **NOC / Infra** | DeskManager | — | 6 |
@@ -90,11 +90,11 @@ flowchart TD
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `Alta perda de pacotes ICMP — AP REUNIAO` | Vibe - AP REUNIAO [Ubiquiti] | 🟡 Média | Perda de pacotes na comunicacao com o AP. | Intermitencia wireless (AirOS). | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | 5 min | — |
-| `Conectividade (ICMP/TCP) — Ativos de Rede` | Embratel - Roteador [Cisco] | 🔵 Baixa | 20 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. Severidades: Information=2, High=6, Warning=10, Disaster=2. 18 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Conectividade (ICMP/TCP) — IOT` | Vibe - Impressora [HP] | 🟡 Média | 8 alertas em 2 host(s) do grupo 'IOT': Vibe - Impressora [HP], Vibe - Porta [Intelbras]. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. Severidades: Warning=7, High=1. 7 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Conectividade (ICMP/TCP) — Servidores` | Vibe - Servidor iDRAC [DELL] | 🟡 Média | 6 alertas em 2 host(s) do grupo 'Servidores': Vibe - Servidor iDRAC [DELL], Vibe - VMware. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. Severidades: Warning=4, High=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Conectividade (ICMP/TCP) — Zabbix servers` | Vibe - Zabbix-Proxy-Gateway | 🔴 Crítica | 6 alertas em 3 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy, Vibe - Zabbix-Proxy-Gateway. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 1 instancia(s): tcp. Severidades: Disaster=3, Warning=2, High=1. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Host/servico indisponivel por ICMP ou TCP — grupo Vibe Tecnologia` | Vibe - Influxdb | 🔴 Crítica | 38 alertas, 16 hosts heterogeneos (firewalls Banpara, roteadores Interconect/Oi/Cisco, cameras IP, InfluxDB, CorreiosDB). Severidade grave: 7 Disaster + 10 High de 38. | Equipamento desligado, falha de rede/link, ou host sem enviar dados ha muito tempo. | [A DEFINIR] Este grupo mistura ativos MUITO diferentes (cameras de seguranca, firewall de cliente, banco de dados interno) -- provavelmente precisa de mais de um procedimento, nao um so | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Conectividade (ICMP/TCP) — Ativos de Rede` | Embratel - Roteador [Cisco] | 🔵 Baixa | 20 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. Severidades: Information=2, High=6, Warning=10, Disaster=2. 18 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Conectividade (ICMP/TCP) — IOT` | Vibe - Impressora [HP] | 🟡 Média | 8 alertas em 2 host(s) do grupo 'IOT': Vibe - Impressora [HP], Vibe - Porta [Intelbras]. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. Severidades: Warning=7, High=1. 7 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Conectividade (ICMP/TCP) — Servidores` | Vibe - Servidor iDRAC [DELL] | 🟡 Média | 6 alertas em 2 host(s) do grupo 'Servidores': Vibe - Servidor iDRAC [DELL], Vibe - VMware. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. Severidades: Warning=4, High=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Conectividade (ICMP/TCP) — Zabbix servers` | Vibe - Zabbix-Proxy-Gateway | 🔴 Crítica | 6 alertas em 3 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy, Vibe - Zabbix-Proxy-Gateway. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 1 instancia(s): tcp. Severidades: Disaster=3, Warning=2, High=1. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Host/servico indisponivel por ICMP ou TCP — grupo Vibe Tecnologia` | Vibe - Influxdb | 🔴 Crítica | 38 alertas, 16 hosts heterogeneos (firewalls Banpara, roteadores Interconect/Oi/Cisco, cameras IP, InfluxDB, CorreiosDB). Severidade grave: 7 Disaster + 10 High de 38. | Equipamento desligado, falha de rede/link, ou host sem enviar dados ha muito tempo. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 | `Impressora HP inacessivel (ICMP)` | Vibe - Impressora [HP] | 🟡 Média | Impressora inacessivel na rede da fabrica. | Equipamento desligado ou falha de rede. | Verificar presencialmente na fabrica e abrir chamado. | NOC / GE | Central de Servicos | Imediato | — |
 | `Link PRINCIPAL da fábrica (Embratel) indisponível` | Embratel - Roteador [Cisco] | 🔴 Crítica | Host 'Embratel - Roteador [Cisco]'. É o link PRINCIPAL da fábrica. Com ele fora, a operação depende do link de backup (Interconnect/Vellon) — se os dois caírem, a fábrica fica sem conectividade. | Falha do circuito da operadora, equipamento no local, ou rompimento. | Acionar a Embratel pelo portal WebSIR com o código de designação, ou pelo 0800 721 1021 / caebt@claroatendimento.com.br | NOC → operadora | Desk Manager (com o protocolo da operadora) / Portal/telefone da operadora, conforme o link (líderes + NOC (e-mail com protocolo)) | Imediato | — |
 | `Link de BACKUP da fábrica (Interconnect/Vellon) indisponível` | Interconect - Roteador | 🔴 Crítica | Alerta no próprio host 'Interconect - Roteador'. É o link de BACKUP da fábrica; o principal é a Embratel. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora | Desk Manager (com o protocolo da operadora) / Portal/telefone da operadora, conforme o link (líderes + NOC (e-mail com protocolo)) | Imediato | — |
@@ -131,7 +131,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 * Confirmar se ha manutencao ou reinicio programado
 
 **Ações:**
-* [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'
@@ -139,7 +139,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem aciona quando e link de operadora vs equipamento interno.
 
 ##### 🟡 Conectividade (ICMP/TCP) — IOT
 
@@ -156,14 +156,14 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 * Confirmar se ha manutencao ou reinicio programado
 
 **Ações:**
-* [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem aciona quando e link de operadora vs equipamento interno.
 
 ##### 🟡 Conectividade (ICMP/TCP) — Servidores
 
@@ -180,14 +180,14 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 * Confirmar se ha manutencao ou reinicio programado
 
 **Ações:**
-* [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 6 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 6 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem aciona quando e link de operadora vs equipamento interno.
 
 ##### 🔴 Conectividade (ICMP/TCP) — Zabbix servers
 
@@ -204,7 +204,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 * Confirmar se ha manutencao ou reinicio programado
 
 **Ações:**
-* [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'
@@ -212,7 +212,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem aciona quando e link de operadora vs equipamento interno.
 
 ##### 🔴 Host/servico indisponivel por ICMP ou TCP — grupo Vibe Tecnologia
 
@@ -227,14 +227,14 @@ Reagir a perda de conectividade basica (ping ICMP ou porta TCP) em 16 hosts vari
 * Identificar o host exato (grupo muito heterogeneo -- camera de seguranca e firewall pedem tratamento diferente)
 
 **Ações:**
-* [A DEFINIR] Este grupo mistura ativos MUITO diferentes (cameras de seguranca, firewall de cliente, banco de dados interno) -- provavelmente precisa de mais de um procedimento, nao um so
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Agrupar cameras de seguranca com firewalls de cliente bancario sob o mesmo procedimento pode subestimar a urgencia de um dos dois
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Este grupo mistura ativos MUITO diferentes (cameras de seguranca, firewall de cliente, banco de dados interno) -- provavelmente precisa de mais de um procedimento, nao um so.
 
 ##### 🟡 Impressora HP inacessivel (ICMP)
 
@@ -356,35 +356,14 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Interfaces de Access Points Ubiquiti com erro ou degradacao` | Vibe - AP REUNIAO [Ubiquiti] | 🔵 Baixa | 120 alertas, 56 instancias (ifInErrors.2, .4, .5... por AP), 3 hosts (AP REUNIAO, AP SALA, AP14_VIBE). Severidade: 30 Information, 60 Warning, 30 Average -- nenhum caso Disaster/High, sugerindo que esta familia especifica e majoritariamente de baixo impacto (Wi-Fi de escritorio, nao core de rede). | Interferencia de radio, excesso de clientes conectados ou cabo/porta com problema fisico no AP. | [A DEFINIR] Se este grupo de baixo impacto justifica abertura de chamado ou so registro/observacao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Interfaces de rede (roteador/AP) com erro, queda ou degradacao` | Embratel - Roteador [Cisco] | 🟡 Média | Itens `net.if*` monitoram estado/erros/utilizacao de interfaces em 5 hosts (Embratel-Roteador Cisco, 3 APs Ubiquiti Vibe, Proxy Fortigate). 269 alertas cobrem 128 interfaces distintas (Gi0/0, ifHCInOctets.*, INTERNO2, VISITANTE...). Severidade varia de Information a Disaster -- nao e um alerta so, e uma familia com niveis de gravidade reais. | Cabo/porta com problema fisico, negociacao de velocidade incorreta, saturacao de link ou equipamento remoto reiniciando. | [A DEFINIR] Procedimento por severidade -- Disaster (23 casos) provavelmente exige acao imediata, Information (57 casos) pode so precisar de registro | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Interfaces de rede — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🔵 Baixa | 12 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 3 instancia(s): Intel, ens160, ens192. Severidades: Information=3, Warning=6, Average=3. 9 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link. | [A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Interfaces de rede — Virtual machines` | Windows bob | 🔵 Baixa | 4 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 1 instancia(s): Amazon Elastic Network Adapter. Severidades: Information=1, Warning=2, Average=1. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link. | [A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Interfaces de rede — Zabbix servers` | Vibe - Zabbix server | 🔵 Baixa | 8 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 2 instancia(s): ens192, ens5. Severidades: Information=2, Warning=4, Average=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link. | [A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Interfaces de rede (roteador/AP) com erro, queda ou degradacao` | Embratel - Roteador [Cisco] | 🟡 Média | Itens `net.if*` monitoram estado/erros/utilizacao de interfaces em 5 hosts (Embratel-Roteador Cisco, 3 APs Ubiquiti Vibe, Proxy Fortigate). 269 alertas cobrem 128 interfaces distintas (Gi0/0, ifHCInOctets.*, INTERNO2, VISITANTE...). Severidade varia de Information a Disaster -- nao e um alerta so, e uma familia com niveis de gravidade reais. | Cabo/porta com problema fisico, negociacao de velocidade incorreta, saturacao de link ou equipamento remoto reiniciando. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Interfaces de rede — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🔵 Baixa | 12 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 3 instancia(s): Intel, ens160, ens192. Severidades: Information=3, Warning=6, Average=3. 9 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Interfaces de rede — Virtual machines` | Windows bob | 🔵 Baixa | 4 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 1 instancia(s): Amazon Elastic Network Adapter. Severidades: Information=1, Warning=2, Average=1. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Interfaces de rede — Zabbix servers` | Vibe - Zabbix server | 🔵 Baixa | 8 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `net.if*` medem estado operacional, erros e trafego das interfaces. 2 instancia(s): ens192, ens5. Severidades: Information=2, Warning=4, Average=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Cabo/porta com defeito, negociacao de velocidade incorreta ou saturacao real do link. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 | `VPNBKP com baixo trafego (Proxy Fortigate)` | Vibe - Proxy [Fortigate] | 🟡 Média | Trafego abaixo do normal na VPN de backup. | Intermitencia IPsec. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | 5 min | — |
 
 </div>
 </div>
-
-##### 🔵 Interfaces de Access Points Ubiquiti com erro ou degradacao
-
-Reagir a erros de interface (ifInErrors) e degradacao de link nos 3 APs Ubiquiti do escritorio.
-
-**Sintomas:**
-* 'Ubiquiti AirOS: Interface athX: High error rate'
-* 'Ubiquiti AirOS: Interface athX: Ethernet has changed to lower speed'
-* 'Ubiquiti AirOS: Interface athX: High bandwidth usage'
-
-**Verificações antes de agir:**
-* Confirmar qual AP e interface (nome vem no titulo)
-* Checar se ha reclamacao de usuario relacionada (rede lenta/instavel na sala)
-
-**Ações:**
-* [A DEFINIR] Se este grupo de baixo impacto justifica abertura de chamado ou so registro/observacao
-
-**Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
-
-**Observações:** Rascunho tecnico -- confianca alta, reune 12 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
 
 ##### 🟡 Interfaces de rede (roteador/AP) com erro, queda ou degradacao
 
@@ -401,14 +380,14 @@ Reagir a interfaces de rede fora do estado esperado (link down, half-duplex, alt
 * Verificar se ha impacto perceptivel (rede visitante x rede interna tem prioridades diferentes)
 
 **Ações:**
-* [A DEFINIR] Procedimento por severidade -- Disaster (23 casos) provavelmente exige acao imediata, Information (57 casos) pode so precisar de registro
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'VISITANTE' e 'INTERNO2' sao redes de propositos diferentes -- mesma regra tecnica, urgencia de negocio pode ser diferente
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico. Esta regra reune 24 familias tecnicas (confianca alta). Antes de tratar como um unico procedimento, considerar separar por severidade ou por rede (corporativa x visitante) na revisao humana. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico. Esta regra reune 24 familias tecnicas (confianca alta). Antes de tratar como um unico procedimento, considerar separar por severidade ou por rede (corporativa x visitante) na revisao humana. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Procedimento por severidade -- Disaster (23 casos) provavelmente exige acao imediata, Information (57 casos) pode so precisar de registro.
 
 ##### 🔵 Interfaces de rede — Vibe Tecnologia
 
@@ -426,14 +405,14 @@ Reagir a queda, degradacao ou saturacao de interface.
 * Conferir se coincide com manutencao
 
 **Ações:**
-* [A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'High bandwidth usage' pode ser uso legitimo (backup, replicacao) -- confirmar antes de tratar como incidente
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 12 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 12 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Prioridade por interface -- nem toda interface do host tem o mesmo peso.
 
 ##### 🔵 Interfaces de rede — Virtual machines
 
@@ -451,14 +430,14 @@ Reagir a queda, degradacao ou saturacao de interface.
 * Conferir se coincide com manutencao
 
 **Ações:**
-* [A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'High bandwidth usage' pode ser uso legitimo (backup, replicacao) -- confirmar antes de tratar como incidente
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Prioridade por interface -- nem toda interface do host tem o mesmo peso.
 
 ##### 🔵 Interfaces de rede — Zabbix servers
 
@@ -476,14 +455,14 @@ Reagir a queda, degradacao ou saturacao de interface.
 * Conferir se coincide com manutencao
 
 **Ações:**
-* [A DEFINIR] Prioridade por interface -- nem toda interface do host tem o mesmo peso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'High bandwidth usage' pode ser uso legitimo (backup, replicacao) -- confirmar antes de tratar como incidente
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Prioridade por interface -- nem toda interface do host tem o mesmo peso.
 
 ##### 🟡 VPNBKP com baixo trafego (Proxy Fortigate)
 
@@ -505,7 +484,7 @@ Reagir a queda, degradacao ou saturacao de interface.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Tunel VPN ou link SD-WAN degradado (Fortigate)` | Vibe - VPN [Fortigate] API | 🟠 Alta | 56 alertas, 17 instancias (Default_AWS, Default_FortiGuard, Default_Gmail, Default_Google Search, Default_Office_365, MASTER_VOTO1, Master_Algar, Master_Algar2, Master_Algar3, VIBE_BANPARA_01, VOTO2...), 2 hosts (Vibe - Proxy [Fortigate], Vibe - VPN [Fortigate] API). Severidade grave: 22 High + 19 Disaster de 56 -- a maioria dos casos desta regra ja e critica. | Instabilidade do provedor de link, saturacao de banda ou falha de configuracao do tunel IPsec/SD-WAN. | [A DEFINIR] VOTO2/MASTER_VOTO1 sao do cliente Votorantim -- confirmar se ha SLA/contato especifico do cliente para esses links | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Tunel VPN ou link SD-WAN degradado (Fortigate)` | Vibe - VPN [Fortigate] API | 🟠 Alta | 56 alertas, 17 instancias (Default_AWS, Default_FortiGuard, Default_Gmail, Default_Google Search, Default_Office_365, MASTER_VOTO1, Master_Algar, Master_Algar2, Master_Algar3, VIBE_BANPARA_01, VOTO2...), 2 hosts (Vibe - Proxy [Fortigate], Vibe - VPN [Fortigate] API). Severidade grave: 22 High + 19 Disaster de 56 -- a maioria dos casos desta regra ja e critica. | Instabilidade do provedor de link, saturacao de banda ou falha de configuracao do tunel IPsec/SD-WAN. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -524,14 +503,14 @@ Reagir a perda de pacotes ou queda de tuneis SD-WAN/VPN entre a matriz e os link
 * Checar se o problema e so perda de pacotes ou queda total do tunel
 
 **Ações:**
-* [A DEFINIR] VOTO2/MASTER_VOTO1 sao do cliente Votorantim -- confirmar se ha SLA/contato especifico do cliente para esses links
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Links de clientes especificos (Votorantim, Banpara, Algar) podem ter SLA contratual diferente do generico da Infraestrutura -- nao tratar todos os 17 links com a mesma prioridade sem confirmar
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 10 familias tecnicas. Nao confundir com a ficha 'Interface VPNBKP(): Baixo Trafego' (ja documentada, SLA 7min) -- aquela e uma interface especifica do Proxy Fortigate, classificada como 'Rede / Interfaces', nao 'VPN e SD-WAN'. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 10 familias tecnicas. Nao confundir com a ficha 'Interface VPNBKP(): Baixo Trafego' (ja documentada, SLA 7min) -- aquela e uma interface especifica do Proxy Fortigate, classificada como 'Rede / Interfaces', nao 'VPN e SD-WAN'. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: VOTO2/MASTER_VOTO1 sao do cliente Votorantim -- confirmar se ha SLA/contato especifico do cliente para esses links.
 
 #### Disco / Filesystem
 
@@ -543,10 +522,10 @@ Reagir a perda de pacotes ou queda de tuneis SD-WAN/VPN entre a matriz e os link
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `Disco (/) acima de 80% no Wazuh SIEM` | Vibe - Wazuh SIEM | 🟡 Média | Espaco da particao raiz (/) acima de 80%. | Geracao excessiva de logs pelo firewall. | Abrir chamado informando o alerta e o host afetado. | Infraestrutura | DeskManager | Imediato | — |
 | `Disco critico (/) no Zabbix-Proxy` | Vibe - Zabbix-Proxy | 🟡 Média | Espaco da particao raiz em nivel critico. Tende a durar dias ate a intervencao. | Crescimento de logs ou arquivos temporarios. | Abrir ou transferir chamado solicitando liberacao de espaco. | Infraestrutura | DeskManager | Imediato | Ref: 0726-001673 |
-| `Espaco em disco / filesystem — Ativos de Rede` | Vibe - Switch [Fortigate] | 🟡 Média | 4 alertas em 2 host(s) do grupo 'Ativos de Rede': Vibe - Proxy [Fortigate], Vibe - Switch [Fortigate]. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. Severidades: Warning=2, High=2. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Espaco em disco / filesystem — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🟡 Média | 23 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. 3 instancia(s): /, /boot, C:. Severidades: Average=13, Warning=10. 9 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Espaco em disco / filesystem — Virtual machines` | Windows bob | 🟡 Média | 2 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. 1 instancia(s): C:. Severidades: Average=1, Warning=1. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Espaco em disco / filesystem — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 15 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. 2 instancia(s): /, /boot. Severidades: Average=9, Warning=6. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Espaco em disco / filesystem — Ativos de Rede` | Vibe - Switch [Fortigate] | 🟡 Média | 4 alertas em 2 host(s) do grupo 'Ativos de Rede': Vibe - Proxy [Fortigate], Vibe - Switch [Fortigate]. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. Severidades: Warning=2, High=2. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Espaco em disco / filesystem — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🟡 Média | 23 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. 3 instancia(s): /, /boot, C:. Severidades: Average=13, Warning=10. 9 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Espaco em disco / filesystem — Virtual machines` | Windows bob | 🟡 Média | 2 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. 1 instancia(s): C:. Severidades: Average=1, Warning=1. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Espaco em disco / filesystem — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 15 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vfs.fs*` medem espaco livre, inodes e estado (read-only) das particoes. 2 instancia(s): /, /boot. Severidades: Average=9, Warning=6. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Crescimento de log, arquivo temporario acumulado ou volume subdimensionado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -597,14 +576,14 @@ Evitar que uma particao cheia derrube o servico antes de alguem perceber.
 * Confirmar se e crescimento continuo ou pico pontual
 
 **Ações:**
-* [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'read-only' e categoria a parte: o filesystem entrou em protecao e quase sempre indica problema de disco, nao falta de espaco
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura.
 
 ##### 🟡 Espaco em disco / filesystem — Vibe Tecnologia
 
@@ -622,14 +601,14 @@ Evitar que uma particao cheia derrube o servico antes de alguem perceber.
 * Confirmar se e crescimento continuo ou pico pontual
 
 **Ações:**
-* [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'read-only' e categoria a parte: o filesystem entrou em protecao e quase sempre indica problema de disco, nao falta de espaco
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura.
 
 ##### 🟡 Espaco em disco / filesystem — Virtual machines
 
@@ -647,14 +626,14 @@ Evitar que uma particao cheia derrube o servico antes de alguem perceber.
 * Confirmar se e crescimento continuo ou pico pontual
 
 **Ações:**
-* [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'read-only' e categoria a parte: o filesystem entrou em protecao e quase sempre indica problema de disco, nao falta de espaco
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura.
 
 ##### 🟡 Espaco em disco / filesystem — Zabbix servers
 
@@ -672,14 +651,14 @@ Evitar que uma particao cheia derrube o servico antes de alguem perceber.
 * Confirmar se e crescimento continuo ou pico pontual
 
 **Ações:**
-* [A DEFINIR] Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'read-only' e categoria a parte: o filesystem entrou em protecao e quase sempre indica problema de disco, nao falta de espaco
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o NOC pode liberar espaco direto ou se abre chamado para a Infraestrutura.
 
 #### Disco / Desempenho de I-O
 
@@ -690,8 +669,8 @@ Evitar que uma particao cheia derrube o servico antes de alguem perceber.
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `Disco (sda) com tempo de resposta alto no Zabbix-Proxy` | Vibe - Zabbix-Proxy | 🟡 Média | Tempo de espera (await) muito alto no disco do servidor. | Gargalo de I/O no disco. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Latencia de disco (I/O) — Vibe Tecnologia` | Vibe - MSTracker-vm Hom | 🟡 Média | 3 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - MSTracker-vm Hom. Itens `vfs.dev*` medem tempo de resposta de leitura/escrita dos dispositivos. 2 instancia(s): sda, sdb. Severidades: Warning=3. | Disco saturado, concorrencia de processos ou storage compartilhado sob carga. | [A DEFINIR] Limite de tolerancia -- I/O alto durante backup costuma ser esperado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Latencia de disco (I/O) — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vfs.dev*` medem tempo de resposta de leitura/escrita dos dispositivos. 2 instancia(s): nvme0n1, sda. Severidades: Warning=2. | Disco saturado, concorrencia de processos ou storage compartilhado sob carga. | [A DEFINIR] Limite de tolerancia -- I/O alto durante backup costuma ser esperado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Latencia de disco (I/O) — Vibe Tecnologia` | Vibe - MSTracker-vm Hom | 🟡 Média | 3 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - MSTracker-vm Hom. Itens `vfs.dev*` medem tempo de resposta de leitura/escrita dos dispositivos. 2 instancia(s): sda, sdb. Severidades: Warning=3. | Disco saturado, concorrencia de processos ou storage compartilhado sob carga. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Latencia de disco (I/O) — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vfs.dev*` medem tempo de resposta de leitura/escrita dos dispositivos. 2 instancia(s): nvme0n1, sda. Severidades: Warning=2. | Disco saturado, concorrencia de processos ou storage compartilhado sob carga. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -724,11 +703,11 @@ Identificar gargalo de I/O antes que vire lentidao percebida pelo usuario.
 * Conferir se e disco local ou storage compartilhado
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia -- I/O alto durante backup costuma ser esperado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia -- I/O alto durante backup costuma ser esperado.
 
 ##### 🟡 Latencia de disco (I/O) — Zabbix servers
 
@@ -743,11 +722,11 @@ Identificar gargalo de I/O antes que vire lentidao percebida pelo usuario.
 * Conferir se e disco local ou storage compartilhado
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia -- I/O alto durante backup costuma ser esperado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia -- I/O alto durante backup costuma ser esperado.
 
 #### CPU / Processamento
 
@@ -757,11 +736,11 @@ Identificar gargalo de I/O antes que vire lentidao percebida pelo usuario.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `CPU / carga de processamento — Applications` | Vibe - Grafana | ⚪ Não classificada | 7 alertas em 5 host(s) do grupo 'Applications': Carguero - Grafana, Pagol - Grafana, Strada - Grafana Bank, Strada - Grafana Log, Vibe - Grafana. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 6 instancia(s): CPU Load - Zabbix host=zabbix-dnxBrasil, CPU RDS > 70% DBInstanceIdentifier=orcl-prod-tipbank-db, Host com CPU acima de 90% CW undefined, RDS Uso CPU 90% - Bankeiro - Non prod, Uso de CPU > 70% - Zabbix (AWS)  host=zabbix-dnxBrasil. Severidades: Not classified=5, High=2. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `CPU / carga de processamento — Ativos de Rede` | Embratel - Roteador [Cisco] | 🟡 Média | 7 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 4 instancia(s): 1, CPU ON-DIE Temperature, fgSysCpuUsage.0, loadValue.2. Severidades: Warning=6, High=1. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `CPU / carga de processamento — Vibe Tecnologia` | Vibe - Influxdb | 🟡 Média | 18 alertas em 4 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - Influxdb, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 12 instancia(s): 0 C:, \Memory\Free System Page Table Entries, \Memory\Pages/sec, \Processor Information(_total)\% Interrupt Time, \Processor Information(_total)\% Privileged Time. Severidades: Average=7, Warning=11. 8 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `CPU / carga de processamento — Virtual machines` | Windows bob | 🟡 Média | 9 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 6 instancia(s): 0 C:, \Memory\Free System Page Table Entries, \Memory\Pages/sec, \Processor Information(_total)\% Interrupt Time, \Processor Information(_total)\% Privileged Time. Severidades: Warning=9. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `CPU / carga de processamento — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 4 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 1 instancia(s): avg15. Severidades: Warning=2, Average=2. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `CPU / carga de processamento — Applications` | Vibe - Grafana | ⚪ Não classificada | 7 alertas em 5 host(s) do grupo 'Applications': Carguero - Grafana, Pagol - Grafana, Strada - Grafana Bank, Strada - Grafana Log, Vibe - Grafana. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 6 instancia(s): CPU Load - Zabbix host=zabbix-dnxBrasil, CPU RDS > 70% DBInstanceIdentifier=orcl-prod-tipbank-db, Host com CPU acima de 90% CW undefined, RDS Uso CPU 90% - Bankeiro - Non prod, Uso de CPU > 70% - Zabbix (AWS)  host=zabbix-dnxBrasil. Severidades: Not classified=5, High=2. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `CPU / carga de processamento — Ativos de Rede` | Embratel - Roteador [Cisco] | 🟡 Média | 7 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 4 instancia(s): 1, CPU ON-DIE Temperature, fgSysCpuUsage.0, loadValue.2. Severidades: Warning=6, High=1. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `CPU / carga de processamento — Vibe Tecnologia` | Vibe - Influxdb | 🟡 Média | 18 alertas em 4 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - Influxdb, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 12 instancia(s): 0 C:, \Memory\Free System Page Table Entries, \Memory\Pages/sec, \Processor Information(_total)\% Interrupt Time, \Processor Information(_total)\% Privileged Time. Severidades: Average=7, Warning=11. 8 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `CPU / carga de processamento — Virtual machines` | Windows bob | 🟡 Média | 9 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 6 instancia(s): 0 C:, \Memory\Free System Page Table Entries, \Memory\Pages/sec, \Processor Information(_total)\% Interrupt Time, \Processor Information(_total)\% Privileged Time. Severidades: Warning=9. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `CPU / carga de processamento — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 4 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 1 instancia(s): avg15. Severidades: Warning=2, Average=2. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -781,7 +760,7 @@ Distinguir pico normal de saturacao real de CPU.
 * Conferir se coincide com janela de batch/backup conhecida
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * ALERTAS DE TESTE EM PRODUCAO: as descricoes trazem o prefixo 'TESTE'. Antes de documentar procedimento, confirmar com o time se estes triggers deveriam existir no ambiente de producao — pode ser configuracao esquecida ligada. Aqui 5 de 7 alertas sao 'Not classified' e varios trazem 'TESTE' ou '(copy)'.
@@ -789,7 +768,7 @@ Distinguir pico normal de saturacao real de CPU.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.
 
 ##### 🟡 CPU / carga de processamento — Ativos de Rede
 
@@ -806,14 +785,14 @@ Distinguir pico normal de saturacao real de CPU.
 * Conferir se coincide com janela de batch/backup conhecida
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Esta regra cobre os mesmos alertas de: pontos-de-acesso--cpu, roteadores--cpu (hosts em mais de um host group). ESTA e a ficha primaria — documentar aqui vale para todas; nao escrever de novo nas outras.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.
 
 ##### 🟡 CPU / carga de processamento — Vibe Tecnologia
 
@@ -830,14 +809,14 @@ Distinguir pico normal de saturacao real de CPU.
 * Conferir se coincide com janela de batch/backup conhecida
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Mistura containers/servicos (centralizador, grafana, ords-dev-vibe) com contadores de performance do Windows. Sao realidades diferentes sob a mesma categoria.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 16 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 16 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.
 
 ##### 🟡 CPU / carga de processamento — Virtual machines
 
@@ -854,14 +833,14 @@ Distinguir pico normal de saturacao real de CPU.
 * Conferir se coincide com janela de batch/backup conhecida
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * O agrupamento mistura CPU com DISCO: varios alertas sao '0 C:: Disk is overloaded' e 'Disk read/write request responses are too high', que sao I/O, nao processamento. Entraram aqui pelo prefixo `perf_counter_en` do Windows, que serve as duas coisas.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 9 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 9 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.
 
 ##### 🟡 CPU / carga de processamento — Zabbix servers
 
@@ -878,11 +857,11 @@ Distinguir pico normal de saturacao real de CPU.
 * Conferir se coincide com janela de batch/backup conhecida
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.
 
 #### Memória
 
@@ -892,10 +871,10 @@ Distinguir pico normal de saturacao real de CPU.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Memoria e swap — Ativos de Rede` | Vibe - Switch [Fortigate] | 🟡 Média | 7 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. 4 instancia(s): I/O, Processor, memoryUsedPercentage, memoryUsedPercentage.0. Severidades: Average=7. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Memoria e swap — Vibe Tecnologia` | Vibe - Influxdb | 🟠 Alta | 13 alertas em 4 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - Influxdb, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. 5 instancia(s): centralizador, grafana, ords-dev-vibe, ords-prod-vibe, zabbix-dnxBrasil. Severidades: High=5, Average=5, Warning=3. 7 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Memoria e swap — Virtual machines` | Windows bob | 🟡 Média | 2 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. Severidades: Average=1, Warning=1. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Memoria e swap — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 6 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. Severidades: Average=4, Warning=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Memoria e swap — Ativos de Rede` | Vibe - Switch [Fortigate] | 🟡 Média | 7 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. 4 instancia(s): I/O, Processor, memoryUsedPercentage, memoryUsedPercentage.0. Severidades: Average=7. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Memoria e swap — Vibe Tecnologia` | Vibe - Influxdb | 🟠 Alta | 13 alertas em 4 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - Influxdb, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. 5 instancia(s): centralizador, grafana, ords-dev-vibe, ords-prod-vibe, zabbix-dnxBrasil. Severidades: High=5, Average=5, Warning=3. 7 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Memoria e swap — Virtual machines` | Windows bob | 🟡 Média | 2 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. Severidades: Average=1, Warning=1. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Memoria e swap — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 6 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vm.memory*` e `system.swap*` medem memoria disponivel e uso de swap. Severidades: Average=4, Warning=2. 6 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Vazamento de memoria, carga acima do dimensionado ou cache legitimo do SO. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -915,7 +894,7 @@ Reagir a falta de memoria antes do OOM matar processo em producao.
 * Ver se o swap esta sendo usado de fato ou so alocado
 
 **Ações:**
-* [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Lack of available memory' e mais grave que 'High memory utilization': o primeiro significa que ja nao ha memoria para alocar, o segundo e so uso alto
@@ -923,7 +902,7 @@ Reagir a falta de memoria antes do OOM matar processo em producao.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reiniciar servico e permitido ao NOC ou exige aprovacao.
 
 ##### 🟠 Memoria e swap — Vibe Tecnologia
 
@@ -940,14 +919,14 @@ Reagir a falta de memoria antes do OOM matar processo em producao.
 * Ver se o swap esta sendo usado de fato ou so alocado
 
 **Ações:**
-* [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Lack of available memory' e mais grave que 'High memory utilization': o primeiro significa que ja nao ha memoria para alocar, o segundo e so uso alto
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 10 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 10 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reiniciar servico e permitido ao NOC ou exige aprovacao.
 
 ##### 🟡 Memoria e swap — Virtual machines
 
@@ -964,14 +943,14 @@ Reagir a falta de memoria antes do OOM matar processo em producao.
 * Ver se o swap esta sendo usado de fato ou so alocado
 
 **Ações:**
-* [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Lack of available memory' e mais grave que 'High memory utilization': o primeiro significa que ja nao ha memoria para alocar, o segundo e so uso alto
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reiniciar servico e permitido ao NOC ou exige aprovacao.
 
 ##### 🟡 Memoria e swap — Zabbix servers
 
@@ -988,14 +967,14 @@ Reagir a falta de memoria antes do OOM matar processo em producao.
 * Ver se o swap esta sendo usado de fato ou so alocado
 
 **Ações:**
-* [A DEFINIR] Se reiniciar servico e permitido ao NOC ou exige aprovacao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Lack of available memory' e mais grave que 'High memory utilization': o primeiro significa que ja nao ha memoria para alocar, o segundo e so uso alto
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reiniciar servico e permitido ao NOC ou exige aprovacao.
 
 #### Sistema operacional
 
@@ -1005,11 +984,11 @@ Reagir a falta de memoria antes do OOM matar processo em producao.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Estado do sistema operacional — Ativos de Rede` | Embratel - Roteador [Cisco] | 🔵 Baixa | 9 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. 2 instancia(s): fgSysUpTime.0, sysDescr.0. Severidades: Information=9. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Estado do sistema operacional — Servidores` | Vibe - Servidor iDRAC [DELL] | 🔵 Baixa | 1 alertas em 1 host(s) do grupo 'Servidores': Vibe - Servidor iDRAC [DELL]. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. 1 instancia(s): systemOSName. Severidades: Information=1. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Estado do sistema operacional — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🔵 Baixa | 18 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Information=11, Warning=7. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Estado do sistema operacional — Virtual machines` | Windows bob | 🟡 Média | 4 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Warning=2, Information=2. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Estado do sistema operacional — Zabbix servers` | Vibe - Zabbix server | 🔵 Baixa | 15 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Information=8, Warning=6, High=1. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Estado do sistema operacional — Ativos de Rede` | Embratel - Roteador [Cisco] | 🔵 Baixa | 9 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. 2 instancia(s): fgSysUpTime.0, sysDescr.0. Severidades: Information=9. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Estado do sistema operacional — Servidores` | Vibe - Servidor iDRAC [DELL] | 🔵 Baixa | 1 alertas em 1 host(s) do grupo 'Servidores': Vibe - Servidor iDRAC [DELL]. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. 1 instancia(s): systemOSName. Severidades: Information=1. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Estado do sistema operacional — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🔵 Baixa | 18 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Information=11, Warning=7. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Estado do sistema operacional — Virtual machines` | Windows bob | 🟡 Média | 4 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Warning=2, Information=2. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Estado do sistema operacional — Zabbix servers` | Vibe - Zabbix server | 🔵 Baixa | 15 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `system.uptime`, `system.sw`, `system.hostname` e `kernel.max*`. Severidades: Information=8, Warning=6, High=1. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Reinicio (programado ou nao), atualizacao de pacote, ou limite de kernel abaixo do recomendado. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1029,7 +1008,7 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 * Para limites de kernel: verificar se ja houve impacto ou e so recomendacao
 
 **Ações:**
-* [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao
@@ -1037,7 +1016,7 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reinicio nao programado exige chamado ou apenas registro no plantao.
 
 ##### 🔵 Estado do sistema operacional — Servidores
 
@@ -1054,7 +1033,7 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 * Para limites de kernel: verificar se ja houve impacto ou e so recomendacao
 
 **Ações:**
-* [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao
@@ -1062,7 +1041,7 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reinicio nao programado exige chamado ou apenas registro no plantao.
 
 ##### 🔵 Estado do sistema operacional — Vibe Tecnologia
 
@@ -1079,14 +1058,14 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 * Para limites de kernel: verificar se ja houve impacto ou e so recomendacao
 
 **Ações:**
-* [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reinicio nao programado exige chamado ou apenas registro no plantao.
 
 ##### 🟡 Estado do sistema operacional — Virtual machines
 
@@ -1103,14 +1082,14 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 * Para limites de kernel: verificar se ja houve impacto ou e so recomendacao
 
 **Ações:**
-* [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reinicio nao programado exige chamado ou apenas registro no plantao.
 
 ##### 🔵 Estado do sistema operacional — Zabbix servers
 
@@ -1127,14 +1106,14 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 * Para limites de kernel: verificar se ja houve impacto ou e so recomendacao
 
 **Ações:**
-* [A DEFINIR] Se reinicio nao programado exige chamado ou apenas registro no plantao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Boa parte destes alertas e Information: sao mudancas registradas, nao falhas. Tratar todos como incidente gera ruido e cansa o plantao
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 8 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reinicio nao programado exige chamado ou apenas registro no plantao.
 
 #### Agente Zabbix
 
@@ -1144,11 +1123,11 @@ Perceber reinicio, mudanca de inventario e limites de kernel apertados.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Agente/Proxy Zabbix indisponivel ou desatualizado (Zabbix server / Zabbix-Proxy)` | Vibe - Zabbix server | 🟡 Média | 79 alertas, 9 instancias (Zabbix_Proxy_Fabrica, process, queue, rcache, uptime, vcache, version, vmware, wcache), 2 hosts (Vibe - Zabbix server, Vibe - Zabbix-Proxy). Severidade concentrada em Average (69) -- e o proprio sistema de monitoramento avisando sobre si mesmo, entao um problema aqui pode significar outros alertas parando de chegar. | Servico do agente/proxy parado, porta 10050/10051 bloqueada, ou versao do proxy desatualizada em relacao ao servidor. | [A DEFINIR] Quem reinicia o servico -- provavelmente o mesmo time que administra o Zabbix, nao o NOC de plantao | NOC / Infra | DeskManager | Imediato | — |
-| `Coleta indisponivel (agente/SNMP) — Ativos de Rede` | Embratel - Roteador [Cisco] | 🔵 Baixa | 6 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. 1 instancia(s): snmp. Severidades: Information=1, Warning=5. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso | NOC / Infra | DeskManager | Imediato | — |
-| `Coleta indisponivel (agente/SNMP) — Servidores` | Vibe - Servidor iDRAC [DELL] | 🟡 Média | 1 alertas em 1 host(s) do grupo 'Servidores': Vibe - Servidor iDRAC [DELL]. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. 1 instancia(s): snmp. Severidades: Warning=1. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso | NOC / Infra | DeskManager | Imediato | — |
-| `Coleta indisponivel (agente/SNMP) — Vibe Tecnologia` | Vibe - MSTracker-vm Hom | 🟡 Média | 3 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. Severidades: Average=3. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso | NOC / Infra | DeskManager | Imediato | — |
-| `Coleta indisponivel (agente/SNMP) — Virtual machines` | Windows bob | 🟡 Média | 1 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. Severidades: Average=1. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso | NOC / Infra | DeskManager | Imediato | — |
+| `Agente/Proxy Zabbix indisponivel ou desatualizado (Zabbix server / Zabbix-Proxy)` | Vibe - Zabbix server | 🟡 Média | 79 alertas, 9 instancias (Zabbix_Proxy_Fabrica, process, queue, rcache, uptime, vcache, version, vmware, wcache), 2 hosts (Vibe - Zabbix server, Vibe - Zabbix-Proxy). Severidade concentrada em Average (69) -- e o proprio sistema de monitoramento avisando sobre si mesmo, entao um problema aqui pode significar outros alertas parando de chegar. | Servico do agente/proxy parado, porta 10050/10051 bloqueada, ou versao do proxy desatualizada em relacao ao servidor. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | NOC / Infra | DeskManager | Imediato | — |
+| `Coleta indisponivel (agente/SNMP) — Ativos de Rede` | Embratel - Roteador [Cisco] | 🔵 Baixa | 6 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. 1 instancia(s): snmp. Severidades: Information=1, Warning=5. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | NOC / Infra | DeskManager | Imediato | — |
+| `Coleta indisponivel (agente/SNMP) — Servidores` | Vibe - Servidor iDRAC [DELL] | 🟡 Média | 1 alertas em 1 host(s) do grupo 'Servidores': Vibe - Servidor iDRAC [DELL]. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. 1 instancia(s): snmp. Severidades: Warning=1. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | NOC / Infra | DeskManager | Imediato | — |
+| `Coleta indisponivel (agente/SNMP) — Vibe Tecnologia` | Vibe - MSTracker-vm Hom | 🟡 Média | 3 alertas em 3 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. Severidades: Average=3. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | NOC / Infra | DeskManager | Imediato | — |
+| `Coleta indisponivel (agente/SNMP) — Virtual machines` | Windows bob | 🟡 Média | 1 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. Severidades: Average=1. | Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | NOC / Infra | DeskManager | Imediato | — |
 | `Zabbix agent indisponivel no Wazuh SIEM` | Vibe - MSTracker-vm Hom | 🟡 Média | Agente Zabbix parado ou host indisponivel (mensagem padrao inclui aviso sobre agentes passive-only). | Falha de rede ou porta 10050 bloqueada. | Transferir para a Infraestrutura (chamado teste do setor). | NOC / Infra | DeskManager | Imediato | — |
 
 </div>
@@ -1169,14 +1148,14 @@ Garantir que o agente e o proxy Zabbix que sustentam a propria coleta de alertas
 * Checar a versao do proxy contra a versao do servidor Zabbix
 
 **Ações:**
-* [A DEFINIR] Quem reinicia o servico -- provavelmente o mesmo time que administra o Zabbix, nao o NOC de plantao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Este e o monitoramento monitorando a si mesmo: se o proxy cair, os alertas dos hosts atras dele param de chegar silenciosamente -- tratar com prioridade mesmo sendo severidade 'Average'
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o servico -- provavelmente o mesmo time que administra o Zabbix, nao o NOC de plantao.
 
 ##### 🔵 Coleta indisponivel (agente/SNMP) — Ativos de Rede
 
@@ -1192,7 +1171,7 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 * Checar firewall na porta de coleta
 
 **Ações:**
-* [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * FALHA SILENCIOSA: enquanto a coleta esta fora, nenhum outro alerta deste host dispara. A ausencia de alertas nao significa que esta tudo bem
@@ -1200,7 +1179,7 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o agente e se o NOC tem acesso para isso.
 
 ##### 🟡 Coleta indisponivel (agente/SNMP) — Servidores
 
@@ -1216,7 +1195,7 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 * Checar firewall na porta de coleta
 
 **Ações:**
-* [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * FALHA SILENCIOSA: enquanto a coleta esta fora, nenhum outro alerta deste host dispara. A ausencia de alertas nao significa que esta tudo bem
@@ -1224,7 +1203,7 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o agente e se o NOC tem acesso para isso.
 
 ##### 🟡 Coleta indisponivel (agente/SNMP) — Vibe Tecnologia
 
@@ -1240,14 +1219,14 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 * Checar firewall na porta de coleta
 
 **Ações:**
-* [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * FALHA SILENCIOSA: enquanto a coleta esta fora, nenhum outro alerta deste host dispara. A ausencia de alertas nao significa que esta tudo bem
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o agente e se o NOC tem acesso para isso.
 
 ##### 🟡 Coleta indisponivel (agente/SNMP) — Virtual machines
 
@@ -1263,14 +1242,14 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 * Checar firewall na porta de coleta
 
 **Ações:**
-* [A DEFINIR] Quem reinicia o agente e se o NOC tem acesso para isso
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * FALHA SILENCIOSA: enquanto a coleta esta fora, nenhum outro alerta deste host dispara. A ausencia de alertas nao significa que esta tudo bem
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o agente e se o NOC tem acesso para isso.
 
 ##### 🟡 Zabbix agent indisponivel no Wazuh SIEM
 
@@ -1295,9 +1274,9 @@ Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Servico do Windows/Linux parado ou perto do limite de processos` | Vibe - Wazuh SIEM | 🟡 Média | 64 alertas, 62 instancias (nomes de servico: AudioEndpointBuilder, Audiosrv, BFE, BrokerInfrastructure, CoreMessagingRegistrar, CryptSvc, DPS, DcomLaunch, Dhcp, DiagTrack, DispBrokerDesktopSvc, Dnscache e outros), 3 hosts (SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM). A maioria e servico essencial do Windows (audio, DNS, DHCP, criptografia) -- nem sempre a parada afeta a operacao de negocio diretamente. | Servico do Windows travado/crashado, ou processo Linux proximo do limite configurado no SO. | [A DEFINIR] Se o procedimento e so reiniciar o servico ou se precisa investigar a causa da parada antes | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Servicos e limite de processos — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `service.info*` e `proc.num*` medem estado de servico e contagem de processos. Severidades: Warning=2. | Servico travado apos atualizacao/reinicio, ou processo vazando handles. | [A DEFINIR] Se reiniciar servico e autorizado ao NOC sem chamado previo | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Serviço do Windows parado — Windows bob (VM)` | Windows bob | 🟡 Média | 48 alertas, 48 instancias -- 1 alerta por servico, todos no mesmo host 'Windows bob', severidade uniforme Average. Boa parte sao agentes AWS (AWSLiteAgent, Amazon EC2Launch, AmazonSSMAgent) -- sugere que e uma instancia EC2, nao um servidor fisico. | Servico do Windows travado ou parado apos atualizacao/reinicio. | [A DEFINIR] Se reinicio do servico e autorizado sem abertura previa de chamado | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Servico do Windows/Linux parado ou perto do limite de processos` | Vibe - Wazuh SIEM | 🟡 Média | 64 alertas, 62 instancias (nomes de servico: AudioEndpointBuilder, Audiosrv, BFE, BrokerInfrastructure, CoreMessagingRegistrar, CryptSvc, DPS, DcomLaunch, Dhcp, DiagTrack, DispBrokerDesktopSvc, Dnscache e outros), 3 hosts (SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM). A maioria e servico essencial do Windows (audio, DNS, DHCP, criptografia) -- nem sempre a parada afeta a operacao de negocio diretamente. | Servico do Windows travado/crashado, ou processo Linux proximo do limite configurado no SO. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Servicos e limite de processos — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `service.info*` e `proc.num*` medem estado de servico e contagem de processos. Severidades: Warning=2. | Servico travado apos atualizacao/reinicio, ou processo vazando handles. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Serviço do Windows parado — Windows bob (VM)` | Windows bob | 🟡 Média | 48 alertas, 48 instancias -- 1 alerta por servico, todos no mesmo host 'Windows bob', severidade uniforme Average. Boa parte sao agentes AWS (AWSLiteAgent, Amazon EC2Launch, AmazonSSMAgent) -- sugere que e uma instancia EC2, nao um servidor fisico. | Servico do Windows travado ou parado apos atualizacao/reinicio. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1315,14 +1294,14 @@ Reagir a servicos criticos de SO parados (Windows) ou ao sistema perto do limite
 * Verificar se e um servico essencial ao funcionamento da aplicacao do host ou um servico generico do Windows
 
 **Ações:**
-* [A DEFINIR] Se o procedimento e so reiniciar o servico ou se precisa investigar a causa da parada antes
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 62 instancias de servicos do Windows sao, em sua maioria, servicos genericos do SO (audio, DNS, broker) -- nem todo servico parado justifica o mesmo nivel de urgencia
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 2 familias tecnicas (servico parado + limite de processos). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 2 familias tecnicas (servico parado + limite de processos). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o procedimento e so reiniciar o servico ou se precisa investigar a causa da parada antes.
 
 ##### 🟡 Servicos e limite de processos — Zabbix servers
 
@@ -1337,11 +1316,11 @@ Reagir a servico parado ou sistema perto do limite de processos.
 * Verificar se parou sozinho ou foi parado por alguem
 
 **Ações:**
-* [A DEFINIR] Se reiniciar servico e autorizado ao NOC sem chamado previo
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reiniciar servico e autorizado ao NOC sem chamado previo.
 
 ##### 🟡 Serviço do Windows parado — Windows bob (VM)
 
@@ -1354,14 +1333,14 @@ Reagir a servicos de infraestrutura do Windows (agentes AWS, rede, seguranca) pa
 * Confirmar se e servico de agente de nuvem (AWS) ou servico core do Windows
 
 **Ações:**
-* [A DEFINIR] Se reinicio do servico e autorizado sem abertura previa de chamado
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Servicos de agente AWS (SSM, EC2Launch) parados podem indicar problema maior na instancia EC2, nao so o servico isolado
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, 1 familia (mesma regra tecnica do Windows Services discovery). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, 1 familia (mesma regra tecnica do Windows Services discovery). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se reinicio do servico e autorizado sem abertura previa de chamado.
 
 #### APIs e checagens web
 
@@ -1371,7 +1350,7 @@ Reagir a servicos de infraestrutura do Windows (agentes AWS, rede, seguranca) pa
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Endpoint web / API indisponivel ou lenta — Vibe Tecnologia` | Vibe - Ferramentas Internas | 🔴 Crítica | 13 alertas em 4 host(s) do grupo 'Vibe Tecnologia': Vibe -  Bot Zap, Vibe - Ferramentas Internas, Vibe - MSTracker API, Vibe - MSTracker-vm Hom. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 9 instancia(s): Checar status do bot, Waha SAQ API Status, https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom, https://app.feedz.com.br/, https://app2.pontomais.com.br/login. Severidades: Disaster=10, Average=1, High=2. | Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho. | [A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Endpoint web / API indisponivel ou lenta — Vibe Tecnologia` | Vibe - Ferramentas Internas | 🔴 Crítica | 13 alertas em 4 host(s) do grupo 'Vibe Tecnologia': Vibe -  Bot Zap, Vibe - Ferramentas Internas, Vibe - MSTracker API, Vibe - MSTracker-vm Hom. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 9 instancia(s): Checar status do bot, Waha SAQ API Status, https://apex.prod.cloud.dnxbrasil.com.br/ords/r/vibecloud/rh/hom, https://app.feedz.com.br/, https://app2.pontomais.com.br/login. Severidades: Disaster=10, Average=1, High=2. | Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 | `Instabilidade na plataforma Feedz` | Vibe - Ferramentas Internas | 🔴 Crítica | Instabilidade na plataforma Feedz. | Falha de conexao externa. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 | `Instabilidade na plataforma Feedz (falha de step do cenario web)` | Vibe - Ferramentas Internas | 🔴 Crítica | Instabilidade na plataforma Feedz. | Falha de conexao externa. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 | `Instabilidade no Portal RH Cloud` | Vibe - Ferramentas Internas | 🔴 Crítica | Erro na resposta HTTP do Portal RH Cloud. | Causa nao informada na fonte original — investigar na ocorrencia. | Reportar a instabilidade do Portal. | Carlos Favacho | DeskManager / Teams (Carlos Favacho) | Imediato | — |
@@ -1395,7 +1374,7 @@ Confirmar indisponibilidade de endpoint e acionar quem responde por ele.
 * Conferir se e ambiente de producao ou dev/homologacao
 
 **Ações:**
-* [A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Endpoints de dev/homologacao costumam nao merecer o mesmo tratamento de producao -- confirmar a lista antes de tratar todos igual
@@ -1404,7 +1383,7 @@ Confirmar indisponibilidade de endpoint e acionar quem responde por ele.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 13 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 13 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Responsavel por endpoint -- a lista mistura sistemas de donos diferentes.
 
 ##### 🔴 Instabilidade na plataforma Feedz
 
@@ -1450,7 +1429,7 @@ Confirmar indisponibilidade de endpoint e acionar quem responde por ele.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Banco de dados — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 11 alertas em 1 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server. Itens `mysql*` / `mssql*` / `db.*` medem desempenho, buffer, backup e conexao. Severidades: Warning=5, Information=3, Average=2, High=1. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Carga alta, configuracao subdimensionada, ou credencial/coleta quebrada. | [A DEFINIR] DBA responsavel | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Banco de dados — Zabbix servers` | Vibe - Zabbix server | 🟡 Média | 11 alertas em 1 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server. Itens `mysql*` / `mssql*` / `db.*` medem desempenho, buffer, backup e conexao. Severidades: Warning=5, Information=3, Average=2, High=1. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Carga alta, configuracao subdimensionada, ou credencial/coleta quebrada. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1469,7 +1448,7 @@ Reagir a degradacao ou falha de coleta do banco.
 * Verificar se ha impacto percebido na aplicacao
 
 **Ações:**
-* [A DEFINIR] DBA responsavel
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Failed to fetch info data' significa que o Zabbix perdeu acesso ao banco -- enquanto durar, as outras metricas deste banco nao valem nada
@@ -1477,7 +1456,7 @@ Reagir a degradacao ou falha de coleta do banco.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: DBA responsavel.
 
 #### Certificados e domínios
 
@@ -1487,9 +1466,8 @@ Reagir a degradacao ou falha de coleta do banco.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Certificado/dominio proximo do vencimento ou invalido — domínios Vibe` | Vibe - Certificado mastersupport.com.br | 🔵 Baixa | 36 alertas, 11 hosts (um por dominio/certificado: dnxbrasil.com, dnxbrasil.com.br, mastersupport.com.br, vibedesenv.com, vibetecnologia.com -- cada um com host de Certificado E host de Dominio separados -- mais SSO Azure). | Certificado nao renovado a tempo, ou renovacao automatica falhou. | [A DEFINIR] Quem detem a conta do provedor de certificado/dominio para renovar | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Certificados, dominios e licencas com validade — Ativos de Rede` | Vibe - Proxy [Fortigate] | 🟠 Alta | 3 alertas em 1 host(s) do grupo 'Ativos de Rede': Vibe - Proxy [Fortigate]. Itens `cert.*` / `domain_check_expiry` medem validade e integridade. Severidades: High=3. | Renovacao nao feita a tempo ou automacao de renovacao falhando. | [A DEFINIR] Responsavel pela renovacao | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `[POSSIVEL DUPLICATA] Ver regra 'vibe-tecnologia--certificate'` | Vibe - Certificado mastersupport.com.br | 🔵 Baixa | Mesmos 10 dominios/certificados (dnxbrasil.com, dnxbrasil.com.br, mastersupport.com.br, vibedesenv.com, vibetecnologia.com) que a regra 'vibe-tecnologia--certificate' -- os hosts pertencem a dois grupos (Vibe Tecnologia e Dominios e Certificados). | — | Nao documentar aqui -- usar 'vibe-tecnologia--certificate' como fonte unica de verdade | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Certificado/dominio proximo do vencimento ou invalido — domínios Vibe` | Vibe - Certificado mastersupport.com.br | 🔵 Baixa | 36 alertas, 11 hosts (um por dominio/certificado: dnxbrasil.com, dnxbrasil.com.br, mastersupport.com.br, vibedesenv.com, vibetecnologia.com -- cada um com host de Certificado E host de Dominio separados -- mais SSO Azure). | Certificado nao renovado a tempo, ou renovacao automatica falhou. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Certificados, dominios e licencas com validade — Ativos de Rede` | Vibe - Proxy [Fortigate] | 🟠 Alta | 3 alertas em 1 host(s) do grupo 'Ativos de Rede': Vibe - Proxy [Fortigate]. Itens `cert.*` / `domain_check_expiry` medem validade e integridade. Severidades: High=3. | Renovacao nao feita a tempo ou automacao de renovacao falhando. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1509,14 +1487,14 @@ Renovar certificados TLS e dominios da empresa antes do vencimento.
 * Verificar se ha renovacao automatica configurada (Let's Encrypt, etc.) e por que falhou
 
 **Ações:**
-* [A DEFINIR] Quem detem a conta do provedor de certificado/dominio para renovar
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Fingerprint has changed' pode ser renovacao legitima OU sinal de certificado trocado sem autorizacao -- nao tratar como o mesmo caso de 'expira em breve'
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 7 familias tecnicas. MESMO CONJUNTO de dominios que a regra 'dominios-e-certificados--certificate' (grupo diferente, hosts quase identicos) -- mesma duplicacao estrutural ja vista em Control-M e nas APs. Ver nota na outra ficha. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 7 familias tecnicas. MESMO CONJUNTO de dominios que a regra 'dominios-e-certificados--certificate' (grupo diferente, hosts quase identicos) -- mesma duplicacao estrutural ja vista em Control-M e nas APs. Ver nota na outra ficha. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem detem a conta do provedor de certificado/dominio para renovar.
 
 ##### 🟠 Certificados, dominios e licencas com validade — Ativos de Rede
 
@@ -1532,7 +1510,7 @@ Renovar antes do vencimento.
 * Confirmar quem detem a conta do provedor
 
 **Ações:**
-* [A DEFINIR] Responsavel pela renovacao
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Fingerprint has changed' pode ser renovacao legitima OU troca nao autorizada -- nao tratar igual a 'expira em breve'
@@ -1541,16 +1519,7 @@ Renovar antes do vencimento.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca low, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
-
-##### 🔵 [POSSIVEL DUPLICATA] Ver regra 'vibe-tecnologia--certificate'
-
-**Ações:**
-* Nao documentar aqui -- usar 'vibe-tecnologia--certificate' como fonte unica de verdade
-
-**Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
-
-**Observações:** Ver 'vibe-tecnologia--certificate'. Mesma duplicacao estrutural do Control-M/IN01 e das APs -- vale corrigir a engine de regras para nao contar host 2x quando ele esta em 2 grupos. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca low, 3 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Responsavel pela renovacao.
 
 #### Licenças
 
@@ -1560,7 +1529,7 @@ Renovar antes do vencimento.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Licenca Microsoft 365 em 100% de uso` | Vibe - Licencas [Microsoft] | 🔴 Crítica | 58 alertas, 19 instancias (CCIBOTS_PRIVPREV_VIRAL, DYN365_TEAM_MEMBERS, Dynamics_365_Onboarding_SKU, Exchange Online (Plano 2), FLOW_FREE, FLOW_PER_USER, Microsoft 365 Business Premium, Office 365 F3, POWERAPPS_DEV, POWERAPPS_VIRAL, POWER_BI_STANDARD, PROJECTPROFESSIONAL...), host unico 'Vibe - Licencas [Microsoft]'. 20 dos 58 alertas ja sao Disaster -- indica que a licenca ja esgotou, nao que esta perto de esgotar. | Crescimento do numero de usuarios/uso sem compra proporcional de licencas adicionais do SKU. | [A DEFINIR] Se a compra de licenca adicional e decisao do NOC/Infra ou precisa ser escalada para Administrativo/Compras | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Licenca Microsoft 365 em 100% de uso` | Vibe - Licencas [Microsoft] | 🔴 Crítica | 58 alertas, 19 instancias (CCIBOTS_PRIVPREV_VIRAL, DYN365_TEAM_MEMBERS, Dynamics_365_Onboarding_SKU, Exchange Online (Plano 2), FLOW_FREE, FLOW_PER_USER, Microsoft 365 Business Premium, Office 365 F3, POWERAPPS_DEV, POWERAPPS_VIRAL, POWER_BI_STANDARD, PROJECTPROFESSIONAL...), host unico 'Vibe - Licencas [Microsoft]'. 20 dos 58 alertas ja sao Disaster -- indica que a licenca ja esgotou, nao que esta perto de esgotar. | Crescimento do numero de usuarios/uso sem compra proporcional de licencas adicionais do SKU. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1577,14 +1546,14 @@ Identificar quando um pool de licencas Microsoft 365 (Teams, Power Platform, Exc
 * Verificar se ha licencas ociosas em outro SKU que podem ser realocadas
 
 **Ações:**
-* [A DEFINIR] Se a compra de licenca adicional e decisao do NOC/Infra ou precisa ser escalada para Administrativo/Compras
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Severidade Disaster aqui nao significa indisponibilidade tecnica -- significa impacto de negocio (usuario novo sem poder ser provisionado). Nao tratar como incidente de infraestrutura.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta. Categoria 'Licencas' foi criada especificamente porque o prefixo de item `pusado.`/`usados.` parecia disco e na verdade e percentual de licenca usada (achado durante a validacao com dados reais, ver src/rules/taxonomy.py). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta. Categoria 'Licencas' foi criada especificamente porque o prefixo de item `pusado.`/`usados.` parecia disco e na verdade e percentual de licenca usada (achado durante a validacao com dados reais, ver src/rules/taxonomy.py). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se a compra de licenca adicional e decisao do NOC/Infra ou precisa ser escalada para Administrativo/Compras.
 
 #### Segurança e integridade
 
@@ -1594,8 +1563,8 @@ Identificar quando um pool de licencas Microsoft 365 (Teams, Power Platform, Exc
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Integridade de arquivo de sistema — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🔵 Baixa | 2 alertas em 2 host(s) do grupo 'Vibe Tecnologia': Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Item `vfs.file.cksum` compara o checksum do arquivo entre coletas. 1 instancia(s): /etc/passwd. Severidades: Information=2. | Criacao/remocao legitima de usuario, ou alteracao nao autorizada. | [A DEFINIR] Se alteracao nao explicada vira chamado para o SOC | SOC | DeskManager → fila SOC / Teams (analista SOC (somente horário comercial)) | Imediato | — |
-| `Integridade de arquivo de sistema — Zabbix servers` | Vibe - Zabbix server | 🔵 Baixa | 2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Item `vfs.file.cksum` compara o checksum do arquivo entre coletas. 1 instancia(s): /etc/passwd. Severidades: Information=2. | Criacao/remocao legitima de usuario, ou alteracao nao autorizada. | [A DEFINIR] Se alteracao nao explicada vira chamado para o SOC | SOC | DeskManager → fila SOC / Teams (analista SOC (somente horário comercial)) | Imediato | — |
+| `Integridade de arquivo de sistema — Vibe Tecnologia` | Vibe - Wazuh SIEM | 🔵 Baixa | 2 alertas em 2 host(s) do grupo 'Vibe Tecnologia': Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Item `vfs.file.cksum` compara o checksum do arquivo entre coletas. 1 instancia(s): /etc/passwd. Severidades: Information=2. | Criacao/remocao legitima de usuario, ou alteracao nao autorizada. | Abrir chamado e encaminhar para a fila do SOC. | SOC | DeskManager → fila SOC / Teams (analista SOC (somente horário comercial)) | Imediato | — |
+| `Integridade de arquivo de sistema — Zabbix servers` | Vibe - Zabbix server | 🔵 Baixa | 2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Item `vfs.file.cksum` compara o checksum do arquivo entre coletas. 1 instancia(s): /etc/passwd. Severidades: Information=2. | Criacao/remocao legitima de usuario, ou alteracao nao autorizada. | Abrir chamado e encaminhar para a fila do SOC. | SOC | DeskManager → fila SOC / Teams (analista SOC (somente horário comercial)) | Imediato | — |
 
 </div>
 </div>
@@ -1613,14 +1582,14 @@ Confirmar se a alteracao foi legitima -- mudanca em /etc/passwd nao se ignora.
 * Comparar com a janela de alguma atividade conhecida
 
 **Ações:**
-* [A DEFINIR] Se alteracao nao explicada vira chamado para o SOC
+* Abrir chamado e encaminhar para a fila do SOC.
 
 **Riscos e ressalvas:**
 * Severidade Information subestima o caso: alteracao NAO explicada em /etc/passwd e assunto de seguranca, nao de infraestrutura
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se alteracao nao explicada vira chamado para o SOC.
 
 ##### 🔵 Integridade de arquivo de sistema — Zabbix servers
 
@@ -1635,14 +1604,14 @@ Confirmar se a alteracao foi legitima -- mudanca em /etc/passwd nao se ignora.
 * Comparar com a janela de alguma atividade conhecida
 
 **Ações:**
-* [A DEFINIR] Se alteracao nao explicada vira chamado para o SOC
+* Abrir chamado e encaminhar para a fila do SOC.
 
 **Riscos e ressalvas:**
 * Severidade Information subestima o caso: alteracao NAO explicada em /etc/passwd e assunto de seguranca, nao de infraestrutura
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se alteracao nao explicada vira chamado para o SOC.
 
 #### Chamados e filas
 
@@ -1652,8 +1621,8 @@ Confirmar se a alteracao foi legitima -- mudanca em /etc/passwd nao se ignora.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Chamado do DeskManager aguardando retorno do cliente (5 dias úteis)` | Vibe - DeskManager API | 🔵 Baixa | 277 alertas no host 'Vibe - DeskManager API', um por chamado aberto. O item `temporestante2.[<código do chamado>]` mede o tempo restante de atendimento; este trigger dispara quando o chamado fica 5 dias úteis aguardando retorno do CLIENTE. Severidade uniforme Information — o alerta é de acompanhamento de SLA, não de falha técnica. Vem da regra de LLD 'Atualiza', que descobre um item por chamado aberto. | O chamado depende de informação ou aprovação do cliente e não teve movimentação no prazo acordado. Não é falha de sistema. | [A DEFINIR] Quem cobra o retorno do cliente — o time dono do chamado ou o NOC | NOC | DeskManager | Imediato | — |
-| `Chamados e filas de atendimento (DeskManager) sem movimentacao dentro do prazo` | Vibe - DeskManager API | 🔵 Baixa | O item `temporestante2*` mede o tempo restante para atendimento de um chamado especifico no DeskManager (host 'Vibe - DeskManager API'). O alerta dispara quando esse tempo cai abaixo de limiares (1h, 8h) ou quando o chamado fica 'aguardando cliente/setor' ou 'defasado' por dias uteis sem movimentacao. Severidade unica no snapshot (Information), mas 833 dependencias entre triggers indicam que varios estagios do mesmo chamado (aviso -> critico) estao amarrados. | Chamado sem retorno do time responsavel ou aguardando resposta do cliente ha mais tempo que o SLA acordado. | [A DEFINIR] Fila/time correto para cada tipo de chamado (o alerta traz o grupo em '{#NOMEGRUPO}' quando presente) | NOC | DeskManager | Imediato | — |
+| `Chamado do DeskManager aguardando retorno do cliente (5 dias úteis)` | Vibe - DeskManager API | 🔵 Baixa | 277 alertas no host 'Vibe - DeskManager API', um por chamado aberto. O item `temporestante2.[<código do chamado>]` mede o tempo restante de atendimento; este trigger dispara quando o chamado fica 5 dias úteis aguardando retorno do CLIENTE. Severidade uniforme Information — o alerta é de acompanhamento de SLA, não de falha técnica. Vem da regra de LLD 'Atualiza', que descobre um item por chamado aberto. | O chamado depende de informação ou aprovação do cliente e não teve movimentação no prazo acordado. Não é falha de sistema. | Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento. | NOC | DeskManager | Imediato | — |
+| `Chamados e filas de atendimento (DeskManager) sem movimentacao dentro do prazo` | Vibe - DeskManager API | 🔵 Baixa | O item `temporestante2*` mede o tempo restante para atendimento de um chamado especifico no DeskManager (host 'Vibe - DeskManager API'). O alerta dispara quando esse tempo cai abaixo de limiares (1h, 8h) ou quando o chamado fica 'aguardando cliente/setor' ou 'defasado' por dias uteis sem movimentacao. Severidade unica no snapshot (Information), mas 833 dependencias entre triggers indicam que varios estagios do mesmo chamado (aviso -> critico) estao amarrados. | Chamado sem retorno do time responsavel ou aguardando resposta do cliente ha mais tempo que o SLA acordado. | Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento. | NOC | DeskManager | Imediato | — |
 
 </div>
 </div>
@@ -1669,8 +1638,7 @@ Confirmar se a alteracao foi legitima -- mudanca em /etc/passwd nao se ignora.
 * Verificar a data da última interação registrada
 
 **Ações:**
-* [A DEFINIR] Quem cobra o retorno do cliente — o time dono do chamado ou o NOC
-* [A DEFINIR] Se o alerta gera ação ou é só indicador de SLA para relatório
+* Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento.
 
 **Riscos e ressalvas:**
 * O host 'Vibe - DeskManager API' concentra 1.111 alertas em 7 famílias parecidas (aguardando cliente, aguardando setor, chamado defasado, chamado aguardando grupo). São estágios diferentes do MESMO chamado e há 833 dependências entre triggers — não tratar cada alerta como um incidente distinto.
@@ -1678,7 +1646,7 @@ Confirmar se a alteracao foi legitima -- mudanca em /etc/passwd nao se ignora.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem cobra o retorno do cliente — o time dono do chamado ou o NOC Se o alerta gera ação ou é só indicador de SLA para relatório.
 
 ##### 🔵 Chamados e filas de atendimento (DeskManager) sem movimentacao dentro do prazo
 
@@ -1695,15 +1663,14 @@ Identificar chamados no DeskManager que estouraram o tempo de resposta/atendimen
 * Confirmar se a pendencia e do cliente ou do time interno
 
 **Ações:**
-* [A DEFINIR] Fila/time correto para cada tipo de chamado (o alerta traz o grupo em '{#NOMEGRUPO}' quando presente)
-* [A DEFINIR] Se aplicavel escalar automaticamente ou apenas registrar
+* Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento.
 
 **Riscos e ressalvas:**
 * 833 dependencias entre triggers: o mesmo chamado pode gerar mais de um alerta em estagios diferentes -- nao tratar como 833 incidentes distintos
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho gerado a partir da evidencia tecnica do agrupamento 'Chamados e filas' (confianca alta, 1111 alertas, 277 instancias/chamados, host unico 'Vibe - DeskManager API'). Time, fila e SLA precisam ser preenchidos por quem opera o DeskManager -- nao inferidos pelo Zabbix. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho gerado a partir da evidencia tecnica do agrupamento 'Chamados e filas' (confianca alta, 1111 alertas, 277 instancias/chamados, host unico 'Vibe - DeskManager API'). Time, fila e SLA precisam ser preenchidos por quem opera o DeskManager -- nao inferidos pelo Zabbix. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Fila/time correto para cada tipo de chamado (o alerta traz o grupo em '{#NOMEGRUPO}' quando presente) Se aplicavel escalar automaticamente ou apenas registrar.
 
 #### Hardware e ambiente
 
@@ -1713,9 +1680,9 @@ Identificar chamados no DeskManager que estouraram o tempo de resposta/atendimen
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Hardware de rede — temperatura, fonte, chassi (roteadores/APs/Fortigate)` | Embratel - Roteador [Cisco] | 🔵 Baixa | 36 alertas, 14 instancias (fontes, ventoinhas, sensores de temperatura), 6 hosts. 26 de 36 sao LLD (discovered) -- a maioria vem de descoberta automatica de sensores. | Falha real de componente fisico (fonte, ventoinha) ou substituicao de equipamento nao comunicada. | [A DEFINIR] Procedimento de substituicao de hardware -- provavelmente exige RMA/fornecedor, fora do escopo de resolucao imediata do NOC | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Hardware do servidor DELL (iDRAC) — temperatura, fonte, disco fisico, RAID` | Vibe - Servidor iDRAC [DELL] | 🟠 Alta | 35 alertas, 12 instancias (CPU1/2 Temp, PS1/2 Status, discos fisicos, controladora RAID, status global do sistema), host unico 'Vibe - Servidor iDRAC [DELL]'. 28 de 35 sao LLD. | Falha real de componente (fonte, disco, ventoinha) ou ambiente com temperatura elevada no rack. | [A DEFINIR] Procedimento de troca de disco/fonte -- normalmente hot-swap, mas confirmar quem executa | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
-| `Hardware e sensores — Vibe Tecnologia` | Vibe - Influxdb | 🟠 Alta | 1 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - Influxdb. Itens `sensor.*` e `system.hw*` medem temperatura, fontes, ventoinhas e estado do chassi. 1 instancia(s): grafana. Severidades: High=1. | Falha de componente ou ambiente (temperatura do rack). | [A DEFINIR] Fluxo de acionamento de fornecedor/RMA | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Hardware de rede — temperatura, fonte, chassi (roteadores/APs/Fortigate)` | Embratel - Roteador [Cisco] | 🔵 Baixa | 36 alertas, 14 instancias (fontes, ventoinhas, sensores de temperatura), 6 hosts. 26 de 36 sao LLD (discovered) -- a maioria vem de descoberta automatica de sensores. | Falha real de componente fisico (fonte, ventoinha) ou substituicao de equipamento nao comunicada. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Hardware do servidor DELL (iDRAC) — temperatura, fonte, disco fisico, RAID` | Vibe - Servidor iDRAC [DELL] | 🟠 Alta | 35 alertas, 12 instancias (CPU1/2 Temp, PS1/2 Status, discos fisicos, controladora RAID, status global do sistema), host unico 'Vibe - Servidor iDRAC [DELL]'. 28 de 35 sao LLD. | Falha real de componente (fonte, disco, ventoinha) ou ambiente com temperatura elevada no rack. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Hardware e sensores — Vibe Tecnologia` | Vibe - Influxdb | 🟠 Alta | 1 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - Influxdb. Itens `sensor.*` e `system.hw*` medem temperatura, fontes, ventoinhas e estado do chassi. 1 instancia(s): grafana. Severidades: High=1. | Falha de componente ou ambiente (temperatura do rack). | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1734,14 +1701,14 @@ Reagir a alertas fisicos de hardware (fonte, temperatura, ventoinha, chassi troc
 * 'Device has been replaced' pode ser troca planejada -- confirmar antes de tratar como incidente
 
 **Ações:**
-* [A DEFINIR] Procedimento de substituicao de hardware -- provavelmente exige RMA/fornecedor, fora do escopo de resolucao imediata do NOC
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * 'Device has been replaced' e 'Host has been restarted' sao eventos informativos, nao necessariamente falha -- confirmar antes de escalar como incidente
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 14 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 14 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Procedimento de substituicao de hardware -- provavelmente exige RMA/fornecedor, fora do escopo de resolucao imediata do NOC.
 
 ##### 🟠 Hardware do servidor DELL (iDRAC) — temperatura, fonte, disco fisico, RAID
 
@@ -1756,14 +1723,14 @@ Reagir a alertas de saude fisica do servidor DELL via iDRAC (temperatura, fonte,
 * Verificar se ha disco fisico marcado como falho no RAID (indica risco de perda de dados, nao so degradacao)
 
 **Ações:**
-* [A DEFINIR] Procedimento de troca de disco/fonte -- normalmente hot-swap, mas confirmar quem executa
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * Disco fisico com falha em array RAID e o caso mais serio desta regra (risco real de perda de dados) -- nao tratar com a mesma prioridade que uma temperatura alta pontual
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 26 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 26 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Procedimento de troca de disco/fonte -- normalmente hot-swap, mas confirmar quem executa.
 
 ##### 🟠 Hardware e sensores — Vibe Tecnologia
 
@@ -1777,7 +1744,7 @@ Reagir a falha de componente fisico.
 * Confirmar pelo console de gerencia do equipamento (iDRAC, etc.)
 
 **Ações:**
-* [A DEFINIR] Fluxo de acionamento de fornecedor/RMA
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * CLASSIFICACAO PROVAVELMENTE ERRADA: o alerta e 'Uso de Disco acima de 90% - grafana' e caiu em 'Hardware' porque 'grafana' contem 'fan'. E disco, nao ventoinha. Corrigir a taxonomia antes de documentar.
@@ -1785,7 +1752,7 @@ Reagir a falha de componente fisico.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Fluxo de acionamento de fornecedor/RMA.
 
 #### Nuvem (AWS/Lambda)
 
@@ -1795,7 +1762,7 @@ Reagir a falha de componente fisico.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Recursos em nuvem — Vibe Tecnologia` | Vibe - Influxdb | 🟠 Alta | 2 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - Influxdb. Itens `aws_check*` / `aws.*` consultam recursos da conta. 2 instancia(s): ords-dev-vibe, ords-prod-vibe. Severidades: High=2. | Erro no recurso, credencial expirada ou indisponibilidade do provedor. | [A DEFINIR] Time responsavel pela conta de nuvem | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Recursos em nuvem — Vibe Tecnologia` | Vibe - Influxdb | 🟠 Alta | 2 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - Influxdb. Itens `aws_check*` / `aws.*` consultam recursos da conta. 2 instancia(s): ords-dev-vibe, ords-prod-vibe. Severidades: High=2. | Erro no recurso, credencial expirada ou indisponibilidade do provedor. | Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams. | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
 </div>
@@ -1812,7 +1779,7 @@ Reagir a falha de recurso gerenciado em nuvem.
 * Conferir validade da credencial usada no check
 
 **Ações:**
-* [A DEFINIR] Time responsavel pela conta de nuvem
+* Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams.
 
 **Riscos e ressalvas:**
 * CLASSIFICACAO PROVAVELMENTE ERRADA: os 2 alertas sao 'Uso de Disco acima de 90%' (ords-dev-vibe, ords-prod-vibe) e cairam em 'Nuvem' porque a palavra 'ords' contem 'rds'. E disco, nao nuvem. Corrigir a taxonomia antes de documentar — a ficha certa e a de filesystem.
@@ -1820,7 +1787,7 @@ Reagir a falha de recurso gerenciado em nuvem.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca low, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca low, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Time responsavel pela conta de nuvem.
 
 #### Outros
 
@@ -2007,7 +1974,7 @@ Reagir a falha de recurso gerenciado em nuvem.
 
 ### Chubb
 
-**25 alerta(s)** em 15 procedimento(s) · 3 host(s): `Chubb - Links de API`, `Chubb - SQLDB`, `Control-M server [IN01]`
+**24 alerta(s)** em 14 procedimento(s) · 3 host(s): `Chubb - Links de API`, `Chubb - SQLDB`, `Control-M server [IN01]`
 
 > Inclui a plataforma Control-M SaaS (IN01 e SaaS Master), confirmada como dedicada à Chubb, e a Azure Function do App Enel.
 {.is-info}
@@ -2017,7 +1984,6 @@ Reagir a falha de recurso gerenciado em nuvem.
 | Fila / Time | Canal | Escalonamento | Alertas cobertos |
 | :--- | :--- | :--- | ---: |
 | **NOC** | DeskManager · e-mail para contatos Chubb | Mayara Polonio, Gabriel Chakrian, Jajyta Biadolla, Priscila Costa (Chubb) — copiar João Queiroz (Vibe) · contatos Chubb (ver escalation_matrix.md) | 22 |
-| **NOC (N1) → Suporte BMC** | DeskManager | Bruno Rezegue Mendes (91) 98298-4301 | 1 |
 | **Suporte DEV** | DeskManager | — | 1 |
 | **Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao)** | DeskManager | — | 1 |
 
@@ -2031,7 +1997,7 @@ Reagir a falha de recurso gerenciado em nuvem.
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `API ENEL Token autenticador indisponivel (erro 401)` | Chubb - Links de API | 🔴 Crítica | Item `autorization.enel.item`, host 'Chubb - Links de API'. Erros 401 nas APIs ENEL estao associados a necessidade de renovar o token de autorizacao, que expira a cada 1 hora pela complexidade da implementacao — NAO e, em si, uma indisponibilidade da API. | Token de autorizacao expirado (renovacao necessaria a cada 1h). | Seguir o video de atualizacao manual do token (anexado ao procedimento original) para o passo a passo | NOC | — | — | — |
 | `API ENEL indisponivel (endpoint especifico)` | Chubb - Links de API | 🟠 Alta | Item `services.<endpoint>.<regiao>.[Bearer]`, host 'Chubb - Links de API'. Endpoints monitorados: adesao/subscription (CE), faturamento/invoice (SP), customer-address (CE), request-history (RJ). | Indisponibilidade do lado ENEL (externa) ou falha de token/autenticacao (ver ficha propria de token). | Analisar o alerta e notificar os contatos da Chubb via e-mail | NOC | e-mail para contatos Chubb / E-mail (Mayara Polonio, Gabriel Chakrian, Jajyta Biadolla, Priscila Costa (Chu) | — | — |
-| `Conectividade (ICMP/TCP) — Cliente_chubb` | Chubb - Links de API | 🔴 Crítica | 12 alertas em 2 host(s) do grupo 'Cliente_chubb': Chubb - Links de API, Chubb - SQLDB. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 4 instancia(s): Bearer, https, ssh, tcp. Severidades: Disaster=5, Warning=4, High=3. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno | NOC | DeskManager | Imediato | — |
+| `Conectividade (ICMP/TCP) — Cliente_chubb` | Chubb - Links de API | 🔴 Crítica | 12 alertas em 2 host(s) do grupo 'Cliente_chubb': Chubb - Links de API, Chubb - SQLDB. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 4 instancia(s): Bearer, https, ssh, tcp. Severidades: Disaster=5, Warning=4, High=3. 3 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona. | Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada. | Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento. | NOC | DeskManager | Imediato | — |
 | `FTP Chubb Indisponivel (https://mft.chubblatinamerica.com:9443/Login) — SEM PROCEDIMENTO NO MANUAL` | Chubb - Links de API | 🔴 Crítica | Alerta real no host 'Chubb - Links de API', nao mencionado em nenhuma secao do manual 'Control-M SaaS Chubb'. | — | — | NOC | DeskManager | Imediato | — |
 | `FTP Chubb Indisponivel — SEM PROCEDIMENTO NO MANUAL` | Chubb - Links de API | 🔴 Crítica | Alerta real no host 'Chubb - Links de API', nao mencionado em nenhuma secao do manual 'Control-M SaaS Chubb'. | — | — | NOC | DeskManager | Imediato | — |
 | `SSH Chubb Indisponivel (http://mft.chubblatinamerica.com:1224) — SEM PROCEDIMENTO NO MANUAL` | Chubb - Links de API | 🔴 Crítica | Alerta real no host 'Chubb - Links de API', nao mencionado em nenhuma secao do manual 'Control-M SaaS Chubb'. | — | — | NOC | DeskManager | Imediato | — |
@@ -2114,7 +2080,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 * Confirmar se ha manutencao ou reinicio programado
 
 **Ações:**
-* [A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno
+* Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento.
 
 **Riscos e ressalvas:**
 * 'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'
@@ -2122,7 +2088,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca high, 12 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca high, 12 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem aciona quando e link de operadora vs equipamento interno.
 
 ##### 🔴 FTP Chubb Indisponivel (https://mft.chubblatinamerica.com:9443/Login) — SEM PROCEDIMENTO NO MANUAL
 
@@ -2169,7 +2135,7 @@ Confirmar se o equipamento/servico esta mesmo fora antes de escalar.
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `API - Vibe (processamento) indisponivel — SEM PROCEDIMENTO NO MANUAL` | Chubb - Links de API | 🔴 Crítica | Alerta real no host 'Chubb - Links de API', nao mencionado em nenhuma secao do manual 'Control-M SaaS Chubb'. | — | — | NOC | DeskManager | Imediato | — |
-| `CPU / carga de processamento — Cliente_chubb` | Chubb - Links de API | 🔴 Crítica | 1 alertas em 1 host(s) do grupo 'Cliente_chubb': Chubb - Links de API. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. Severidades: Disaster=1. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado | NOC | DeskManager | Imediato | — |
+| `CPU / carga de processamento — Cliente_chubb` | Chubb - Links de API | 🔴 Crítica | 1 alertas em 1 host(s) do grupo 'Cliente_chubb': Chubb - Links de API. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. Severidades: Disaster=1. | Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O. | Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento. | NOC | DeskManager | Imediato | — |
 
 </div>
 </div>
@@ -2201,7 +2167,7 @@ Distinguir pico normal de saturacao real de CPU.
 * Conferir se coincide com janela de batch/backup conhecida
 
 **Ações:**
-* [A DEFINIR] Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado
+* Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento.
 
 **Riscos e ressalvas:**
 * CLASSIFICACAO PROVAVELMENTE ERRADA: o alerta e 'API - Vibe (processamento) indisponivel' e caiu em 'CPU' porque menciona 'processamento'. E uma API. Ja existe ficha propria dele (rule|api-vibe-processamento-indisponivel) marcada como gap do manual da Chubb.
@@ -2209,7 +2175,7 @@ Distinguir pico normal de saturacao real de CPU.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.
 
 #### APIs e checagens web
 
@@ -2220,7 +2186,7 @@ Distinguir pico normal de saturacao real de CPU.
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `Arquivo de integracao ENEL nao gerado / gerado em branco` | Chubb - Links de API | 🟠 Alta | Item `monitoramento.arquivo.[Bearer]` ou `monitoramento.arquivo.rec.[Bearer]`, host 'Chubb - Links de API'. | — | [NAO CITADO NO MANUAL] Inferencia: pode se relacionar a falha da Azure Function que gera o arquivo (secao C do manual) -- CONFIRMAR com o time antes de tratar como oficial | NOC | DeskManager | Imediato | — |
-| `Endpoint web / API indisponivel ou lenta — Cliente_chubb` | Chubb - Links de API | 🟠 Alta | 4 alertas em 2 host(s) do grupo 'Cliente_chubb': App - Enel Azure, Chubb - Links de API. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 2 instancia(s): Bearer, Check Disponibilidade App Enel. Severidades: High=3, Warning=1. | Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho. | [A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes | NOC | DeskManager | Imediato | — |
+| `Endpoint web / API indisponivel ou lenta — Cliente_chubb` | Chubb - Links de API | 🟠 Alta | 4 alertas em 2 host(s) do grupo 'Cliente_chubb': App - Enel Azure, Chubb - Links de API. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 2 instancia(s): Bearer, Check Disponibilidade App Enel. Severidades: High=3, Warning=1. | Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho. | Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento. | NOC | DeskManager | Imediato | — |
 
 </div>
 </div>
@@ -2262,7 +2228,7 @@ Confirmar indisponibilidade de endpoint e acionar quem responde por ele.
 * Conferir se e ambiente de producao ou dev/homologacao
 
 **Ações:**
-* [A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes
+* Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento.
 
 **Riscos e ressalvas:**
 * Endpoints de dev/homologacao costumam nao merecer o mesmo tratamento de producao -- confirmar a lista antes de tratar todos igual
@@ -2270,7 +2236,7 @@ Confirmar indisponibilidade de endpoint e acionar quem responde por ele.
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico da Fase 2 (confianca medium, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Responsavel por endpoint -- a lista mistura sistemas de donos diferentes.
 
 #### Banco de dados
 
@@ -2280,7 +2246,7 @@ Confirmar indisponibilidade de endpoint e acionar quem responde por ele.
 
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Banco de dados Azure SQL — Chubb (CPU, locks, backup, tamanho)` | Chubb - SQLDB | 🟠 Alta | 37 alertas, 5 instancias (blocked_sessions, cpu_percent, db_size_mb, locks_count, sqldb-enel-prod), host unico 'Chubb - SQLDB'. Severidade: 9 High, 19 Warning. | Consulta mal otimizada, crescimento organico do banco, ou pico de carga. | [A DEFINIR] Se o DBA responsavel e interno ou do proprio cliente Chubb | Suporte DEV | DeskManager | Imediato | — |
+| `Banco de dados Azure SQL — Chubb (CPU, locks, backup, tamanho)` | Chubb - SQLDB | 🟠 Alta | 37 alertas, 5 instancias (blocked_sessions, cpu_percent, db_size_mb, locks_count, sqldb-enel-prod), host unico 'Chubb - SQLDB'. Severidade: 9 High, 19 Warning. | Consulta mal otimizada, crescimento organico do banco, ou pico de carga. | Abrir chamado para o Suporte DEV. | Suporte DEV | DeskManager | Imediato | — |
 
 </div>
 </div>
@@ -2300,14 +2266,14 @@ Reagir a problemas de desempenho e capacidade no banco Azure SQL do cliente Chub
 * Identificar a query/sessao responsavel pelo bloqueio, se for o caso de locks
 
 **Ações:**
-* [A DEFINIR] Se o DBA responsavel e interno ou do proprio cliente Chubb
+* Abrir chamado para o Suporte DEV.
 
 **Riscos e ressalvas:**
 * E banco de dados de um cliente especifico -- pode ter SLA/contrato proprio diferente do generico
 
 **Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
 
-**Observações:** Rascunho tecnico -- confianca alta, reune 33 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
+**Observações:** Rascunho tecnico -- confianca alta, reune 33 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o DBA responsavel e interno ou do proprio cliente Chubb.
 
 #### Jobs e agendamentos
 
@@ -2318,7 +2284,6 @@ Reagir a problemas de desempenho e capacidade no banco Azure SQL do cliente Chub
 | Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC)` | Control-M server [IN01] | 🟠 Alta | 157 alertas, 66 instancias (nomes de job/agente: ABRIR_CHAMADO, ACK, BuscarAlertas, CLAIM, COLETA_FEEDZ, DECIDIR, Disparo3-4, Disparo52, ENDO-FW, ENVIAR, ENVIA_MSG_TEAMS, EnviaMsgZap3-4 e outros). Severidade concentrada em Warning (142), com 5 Disaster e 3 High -- os casos graves tendem a ser 'Server disconnected'/'Server is down', nao falha pontual de um job. Todo job do tipo 'Database Oracle' e relacionado ao VibeCloud. | Perda de comunicacao entre o Control-M e o servidor monitorado, ou falha real na execucao do job/agente nomeado. Para jobs do tipo Database Oracle, a causa se separa em duas: falha da propria procedure (ex.: erro do FLASH) ou falha do Control-M/integracao com o Oracle. | Arvore de decisao para job Database Oracle (VibeCloud): | Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao) | DeskManager | Imediato | — |
-| `[DUPLICATA DE ESCOPO] Ver regra 'control-m-in01--job'` | Control-M server [IN01] | 🟠 Alta | Esta regra cobre os mesmos 2 hosts (Control-M DEV Votorantim e Control-M server [IN01]) e essencialmente o mesmo conjunto de instancias que 'control-m-in01--job'. A duplicacao existe porque o host 'Control-M server [IN01]' pertence a dois host groups (Applications e Control-M/IN01), e a regra e agrupada por (host group x categoria). | — | Nao documentar aqui -- usar a ficha da regra 'control-m-in01--job' como fonte unica de verdade | NOC (N1) → Suporte BMC | DeskManager / Teams (Bruno Rezegue Mendes (91) 98298-4301) | Imediato | — |
 
 </div>
 </div>
@@ -2363,15 +2328,6 @@ Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Supo
 **Observações:** Horario de atendimento do Suporte BMC/Oracle: A CONFIRMAR com os times (nao veio definido na fonte original). Ver docs/escalation_matrix.md. Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Contato critico Control-M: Bruno Rezegue Mendes (91) 98298-4301; Marcos Paulo Pinheiro Correa tambem consta como contato critico, mas SEM TELEFONE registrado na fonte -- confirmar. Duvida em aberto: o texto geral diz que N1/NOC pode reexecutar jobs 'quando permitido', mas a secao especifica de Control-M atribui reexecucao (ate 3x) ao N2 (Bruno Mendes) -- confirmar quem executa de fato antes de agir.
 
 **Evidências obrigatórias no chamado:** Output completo do job · ODate · Codigo/nome do pedido ou processo afetado · Print do alerta · Print do output do job (obrigatorios antes de qualquer escalonamento deste job)
-
-##### 🟠 [DUPLICATA DE ESCOPO] Ver regra 'control-m-in01--job'
-
-**Ações:**
-* Nao documentar aqui -- usar a ficha da regra 'control-m-in01--job' como fonte unica de verdade
-
-**Critério de resolução:** Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]
-
-**Observações:** Ver 'control-m-in01--job'. Sugestao para a Fase 5+: considerar deduplicar regras que cobrem o mesmo conjunto de hosts em host groups diferentes. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.
 
 #### Outros
 
@@ -2763,6 +2719,6 @@ Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
 
 ---
 
-Gerado em 2026-09-06T21:13:27Z · 106 procedimento(s) validado(s) cobrindo 116 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T21:34:55Z · 103 procedimento(s) validado(s) cobrindo 113 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
 
 Fora desta página, por serem atendidos por outro NOC: Banpará.

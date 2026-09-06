@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:51:28Z",
   "last_modified_at": "2026-09-06T00:51:28.463674Z",
-  "revision": 2,
+  "revision": 3,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "documented",
   "instances": [],
@@ -98,7 +98,7 @@
       "'DNX Influxdb indisponivel - 10m sem novos dados'"
     ],
     "actions": [
-      "[A DEFINIR] Este grupo mistura ativos MUITO diferentes (cameras de seguranca, firewall de cliente, banco de dados interno) -- provavelmente precisa de mais de um procedimento, nao um so"
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
     ],
     "validation": "",
     "risks": [
@@ -130,7 +130,7 @@
       "channel": "Teams"
     },
     "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
-    "notes": "Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "notes": "Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Este grupo mistura ativos MUITO diferentes (cameras de seguranca, firewall de cliente, banco de dados interno) -- provavelmente precisa de mais de um procedimento, nao um so.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

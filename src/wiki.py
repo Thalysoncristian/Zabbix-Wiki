@@ -117,6 +117,9 @@ class Entrada:
     hosts: list[str] = field(default_factory=list)
     severidades: list[str] = field(default_factory=list)
     manual: bool = False
+    #: `alert_key` das fichas que formaram esta entrada. O agrupamento por
+    #: procedimento idêntico junta várias, então é lista.
+    chaves: list[str] = field(default_factory=list)
 
     @property
     def severidade(self) -> str:
@@ -274,6 +277,7 @@ def coletar_entradas(docs_dir: str | Path,
                 manual=manual,
             )
             por_assinatura[chave] = entrada
+        entrada.chaves.append(doc.alert_key)
 
         if manual:
             entrada.alertas.append(str(operacional.get("title") or doc.alert_key))
@@ -522,8 +526,74 @@ def _bloco_do_cliente(registry: ClientRegistry, cliente_id: str,
     return bloco
 
 
+def _grupos_de_regras_sobrepostas(snapshot_dir: str | Path) -> list[set[str]]:
+    """Conjuntos de fichas de regra que cobrem os mesmos alertas.
+
+    Um host em mais de um host group gera uma regra por grupo, cobrindo os
+    MESMOS alertas — na wiki isso vira a mesma orientação duas vezes, com
+    títulos parecidos, e quem lê não sabe qual seguir.
+    """
+    caminho = Path(snapshot_dir) / "normalized" / "alerts.json"
+    if not caminho.is_file():
+        return []
+
+    from .rules.candidates import build_candidates
+
+    alertas = json.loads(caminho.read_text(encoding="utf-8")).get("alerts") or []
+    grupos: list[set[str]] = []
+    vistos: set[str] = set()
+    for identificador, candidato in build_candidates(alertas).items():
+        if not candidato.overlaps_with or identificador in vistos:
+            continue
+        grupo = {f"rule|{i}" for i in (identificador, *candidato.overlaps_with)}
+        vistos.update({identificador, *candidato.overlaps_with})
+        grupos.append(grupo)
+    return grupos
+
+
+def _densidade(entrada: "Entrada") -> int:
+    """Quanto procedimento a entrada realmente carrega.
+
+    Serve para escolher qual sobrevive entre regras sobrepostas — e o critério
+    NÃO pode ser volume de alertas. No caso real do Control-M, a regra de maior
+    volume era justamente a marcada como "[DUPLICATA DE ESCOPO] ver a outra",
+    enquanto a de 157 alertas continha o procedimento inteiro. Ganha quem tem
+    conteúdo, não quem tem número.
+    """
+    operacional = entrada.operacional
+    total = 0
+    for campo in ("meaning", "objective", "probable_cause", "validation",
+                  "resolution_criteria", "notes"):
+        total += len(str(operacional.get(campo) or ""))
+    for campo in ("symptoms", "checks_before_action", "actions", "risks", "evidence_required"):
+        total += sum(len(str(item)) for item in _lista(operacional.get(campo)))
+    # Uma ficha que se declara duplicata nunca deve vencer a que ela aponta.
+    if "DUPLICATA" in entrada.titulo.upper():
+        total -= 10_000
+    return total
+
+
+def _descartar_sobrepostas(entradas: list["Entrada"], snapshot_dir: str | Path) -> list["Entrada"]:
+    """Mantém, de cada grupo de regras sobrepostas, só a entrada mais completa."""
+    grupos = _grupos_de_regras_sobrepostas(snapshot_dir)
+    if not grupos:
+        return entradas
+
+    descartar: set[int] = set()
+    for grupo in grupos:
+        candidatas = [e for e in entradas if set(e.chaves) & grupo]
+        if len(candidatas) < 2:
+            continue
+        vencedora = max(candidatas, key=lambda e: (_densidade(e), e.titulo))
+        for entrada in candidatas:
+            if entrada is not vencedora:
+                descartar.add(id(entrada))
+    return [e for e in entradas if id(e) not in descartar]
+
+
 def gerar_wiki(docs_dir: str | Path = "docs/alerts", *, gerado_em: str | None = None,
-               clients_file: str | Path | None = None) -> str:
+               clients_file: str | Path | None = None,
+               snapshot_dir: str | Path | None = None) -> str:
     """Monta a página inteira. Determinística: mesma entrada, mesmos bytes.
 
     A wiki abre por **cliente** porque é assim que o plantão funciona: o mesmo
@@ -533,6 +603,9 @@ def gerar_wiki(docs_dir: str | Path = "docs/alerts", *, gerado_em: str | None = 
     """
     registry = ClientRegistry.load(clients_file)
     entradas = coletar_entradas(docs_dir, registry)
+
+    if snapshot_dir:
+        entradas = _descartar_sobrepostas(entradas, snapshot_dir)
 
     de_fora = [e for e in entradas if not registry.is_monitored(e.cliente)]
     entradas = [e for e in entradas if registry.is_monitored(e.cliente)]
@@ -592,14 +665,19 @@ def gerar_wiki(docs_dir: str | Path = "docs/alerts", *, gerado_em: str | None = 
 
 def escrever_wiki(destino: str | Path, docs_dir: str | Path = "docs/alerts",
                   *, gerado_em: str | None = None,
-                  clients_file: str | Path | None = None) -> tuple[Path, int]:
+                  clients_file: str | Path | None = None,
+                  snapshot_dir: str | Path | None = None) -> tuple[Path, int]:
     """Grava a página e devolve `(caminho, procedimentos_publicados)`."""
-    conteudo = gerar_wiki(docs_dir, gerado_em=gerado_em, clients_file=clients_file)
+    conteudo = gerar_wiki(docs_dir, gerado_em=gerado_em, clients_file=clients_file,
+                          snapshot_dir=snapshot_dir)
     caminho = Path(destino)
     caminho.parent.mkdir(parents=True, exist_ok=True)
     caminho.write_text(conteudo, encoding="utf-8")
 
     registry = ClientRegistry.load(clients_file)
-    publicados = [e for e in coletar_entradas(docs_dir, registry)
-                  if registry.is_monitored(e.cliente)]
-    return caminho, len(publicados)
+    publicados = coletar_entradas(docs_dir, registry)
+    if snapshot_dir:
+        # O contador precisa refletir o que foi PARA a página, não o que havia
+        # em disco: com a deduplicação, os dois números divergem.
+        publicados = _descartar_sobrepostas(publicados, snapshot_dir)
+    return caminho, len([e for e in publicados if registry.is_monitored(e.cliente)])

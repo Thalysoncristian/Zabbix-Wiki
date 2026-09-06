@@ -7,7 +7,7 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:39:44Z",
   "last_modified_at": "2026-09-06T00:39:44.417360Z",
-  "revision": 0,
+  "revision": 1,
   "last_seen_at": null,
   "procedure_status": "documented",
   "instances": [],
@@ -53,6 +53,7 @@
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,
-    "last_zabbix_hash_at_review": null
+    "last_zabbix_hash_at_review": null,
+    "client": "vibe"
   }
 }

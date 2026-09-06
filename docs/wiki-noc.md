@@ -51,16 +51,15 @@ flowchart TD
 
 | Cliente | Procedimentos | Alertas | Hosts |
 | :--- | ---: | ---: | ---: |
-| **Vibe Tecnologia** | 14 | 14 | 7 |
+| **Vibe Tecnologia** | 22 | 22 | 7 |
 | **Chubb** | 3 | 10 | 2 |
-| **Master Support (interno)** | 2 | 2 | 1 |
-| **Não classificado** | 12 | 12 | 0 |
+| **Master Support (interno)** | 6 | 6 | 1 |
 
 ## 📋 Catálogo por cliente {.tabset}
 
 ### Vibe Tecnologia
 
-**14 alerta(s)** em 14 procedimento(s) · 7 host(s): `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Ferramentas Internas`, `Vibe - Impressora [HP]`, `Vibe - MSTracker-vm Hom`, `Vibe - Proxy [Fortigate]`, `Vibe - Wazuh SIEM`, `Vibe - Zabbix-Proxy`
+**22 alerta(s)** em 22 procedimento(s) · 7 host(s): `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Ferramentas Internas`, `Vibe - Impressora [HP]`, `Vibe - MSTracker-vm Hom`, `Vibe - Proxy [Fortigate]`, `Vibe - Wazuh SIEM`, `Vibe - Zabbix-Proxy`
 
 > Vem por último entre os monitorados: o host group 'Vibe Tecnologia' é usado como guarda-chuva de infraestrutura compartilhada (links de operadora, câmeras, servidores sem prefixo).
 {.is-info}
@@ -69,10 +68,13 @@ flowchart TD
 
 | Fila / Time | Canal | Escalonamento | Alertas cobertos |
 | :--- | :--- | :--- | ---: |
+| **Administrativo** | DeskManager · E-mail | — | 4 |
 | **Carlos Favacho** | DeskManager | Carlos Favacho | 1 |
 | **Infraestrutura** | DeskManager | Rafael Sales | 7 |
 | **NOC / GE** | Central de Servicos | — | 5 |
 | **NOC / Infra** | DeskManager | — | 1 |
+| **RH** | DeskManager | — | 2 |
+| **Suporte Oracle** | DeskManager | — | 2 |
 
 #### Rede / Conectividade
 
@@ -404,6 +406,138 @@ flowchart TD
 
 **Observações:** Severidade: Baixa. SLA: Imediato. Mesmo procedimento vale para as 3 outras cores (ver fichas irmas). Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
 
+#### Fora do Zabbix
+
+> Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de origem, por e-mail ou webhook. Não espere encontrá-los no painel.
+{.is-warning}
+
+<div style="width: 100%; overflow-x: auto;">
+
+| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| RH Cloud — BeneficioNaoDisponibilizado | ⚪ | fora do Zabbix | Criar chamado reportando a falha de integracao e transferir. | RH · DeskManager | ⏱️ Imediato |
+| RH Cloud — CargaComFalha | ⚪ | fora do Zabbix | Transferir chamado informando o erro. | Suporte Oracle · DeskManager | ⏱️ Imediato |
+| RH Cloud — CentroDeCustoIncompleto | ⚪ | fora do Zabbix | Transferir chamado para o setor competente. | Administrativo · DeskManager | ⏱️ Imediato |
+| RH Cloud — ColaboradorNaoAtivado | ⚪ | fora do Zabbix | Transferir chamado informando a matricula afetada. | RH · DeskManager | ⏱️ Imediato |
+| RH Cloud — PagamentoNaoConciliado | ⚪ | fora do Zabbix | Transferir chamado relatando a divergencia. | Administrativo · DeskManager | ⏱️ Imediato |
+| RH Cloud — PagamentoNaoProcessado | ⚪ | fora do Zabbix | Transferir chamado relatando o erro sistemico. | Administrativo · DeskManager | ⏱️ Imediato |
+| RH Cloud — PagamentoNegativo | ⚪ | fora do Zabbix | Enviar e-mail para o setor e buscar historico de casos similares. | Administrativo · E-mail | ⏱️ — |
+| RH Cloud — RotinaComFalha | ⚪ | fora do Zabbix | Se o erro mudar numa reexecucao, nao abrir chamado duplicado: vincular ao chamado existente ou abrir novo apenas se for inedito. | Suporte Oracle · DeskManager | ⏱️ Imediato |
+
+</div>
+
+<details>
+<summary>🔍 <strong>Referência técnica — Fora do Zabbix</strong></summary>
+
+| Alerta | O que significa | Causa provável | Verificações antes de agir |
+| :--- | :--- | :--- | :--- |
+| RH Cloud — BeneficioNaoDisponibilizado | Beneficio do funcionario nao foi disponibilizado. | Causa desconhecida (falha de integracao). | — |
+| RH Cloud — CargaComFalha | Falha de carga sistemica no RH Cloud. | Erros diversos do sistema. | — |
+| RH Cloud — CentroDeCustoIncompleto | Colaborador com centro de custo em 0%. | Cadastro incompleto. | — |
+| RH Cloud — ColaboradorNaoAtivado | Contratacao iniciada, mas o perfil segue inativo. | Fluxo de ativacao travado. | — |
+| RH Cloud — PagamentoNaoConciliado | Falha na conciliacao dos valores de pagamento. | Causa desconhecida. | — |
+| RH Cloud — PagamentoNaoProcessado | Falha sistemica no fluxo de pagamento. | Causa desconhecida. | — |
+| RH Cloud — PagamentoNegativo | Contracheque com saldo negativo. | Erro de calculo. | — |
+| RH Cloud — RotinaComFalha | Falha na execucao de uma rotina do RH Cloud. | Erros diversos do sistema. | — |
+
+</details>
+
+##### ⚪ RH Cloud — BeneficioNaoDisponibilizado
+
+**Sintomas:**
+* Notificacao 'BeneficioNaoDisponibilizado' do RH Cloud
+
+**Ações:**
+* Criar chamado reportando a falha de integracao e transferir.
+
+**Critério de resolução:** Beneficio disponibilizado ao colaborador.
+
+**Observações:** Severidade: Media. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — CargaComFalha
+
+**Sintomas:**
+* Notificacao 'CargaComFalha' do RH Cloud
+
+**Ações:**
+* Transferir chamado informando o erro.
+
+**Critério de resolução:** Carga volta a processar com sucesso.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — CentroDeCustoIncompleto
+
+**Sintomas:**
+* Notificacao 'CentroDeCustoIncompleto' do RH Cloud
+
+**Ações:**
+* Transferir chamado para o setor competente.
+
+**Critério de resolução:** Centro de custo preenchido corretamente.
+
+**Observações:** Severidade: Baixa. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — ColaboradorNaoAtivado
+
+**Sintomas:**
+* Notificacao 'ColaboradorNaoAtivado' do RH Cloud
+
+**Ações:**
+* Transferir chamado informando a matricula afetada.
+
+**Critério de resolução:** Perfil do colaborador ativado.
+
+**Observações:** Severidade: Media. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — PagamentoNaoConciliado
+
+**Sintomas:**
+* Notificacao 'PagamentoNaoConciliado' do RH Cloud
+
+**Ações:**
+* Transferir chamado relatando a divergencia.
+
+**Critério de resolução:** Valores conciliados.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — PagamentoNaoProcessado
+
+**Sintomas:**
+* Notificacao 'PagamentoNaoProcessado' do RH Cloud
+
+**Ações:**
+* Transferir chamado relatando o erro sistemico.
+
+**Critério de resolução:** Pagamento processado com sucesso.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — PagamentoNegativo
+
+**Sintomas:**
+* Notificacao 'PagamentoNegativo' do RH Cloud
+
+**Ações:**
+* Enviar e-mail para o setor e buscar historico de casos similares.
+
+**Critério de resolução:** Saldo do contracheque corrigido/confirmado pelo setor.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
+##### ⚪ RH Cloud — RotinaComFalha
+
+**Sintomas:**
+* Notificacao 'RotinaComFalha' do RH Cloud
+
+**Ações:**
+* Se o erro mudar numa reexecucao, nao abrir chamado duplicado: vincular ao chamado existente ou abrir novo apenas se for inedito.
+
+**Critério de resolução:** Rotina volta a executar com sucesso.
+
+**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
+
 ### Chubb
 
 **10 alerta(s)** em 3 procedimento(s) · 2 host(s): `Chubb - Links de API`, `Control-M server [IN01]`
@@ -561,7 +695,7 @@ Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Supo
 
 ### Master Support (interno)
 
-**2 alerta(s)** em 2 procedimento(s) · 1 host(s): `ONESecure`
+**6 alerta(s)** em 6 procedimento(s) · 1 host(s): `ONESecure`
 
 > Nossa própria infraestrutura: ONESecure, Desk Manager, n8n.
 {.is-info}
@@ -571,6 +705,8 @@ Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Supo
 | Fila / Time | Canal | Escalonamento | Alertas cobertos |
 | :--- | :--- | :--- | ---: |
 | **SOC** | DeskManager -> fila SOC | analista SOC · analista SOC (somente horario comercial) | 2 |
+| **Sobreaviso MSMonitor** | Telefone | Jordy — (91) 99165-4121 | 2 |
+| **Suporte DEV** | DeskManager | — | 2 |
 
 #### Segurança e integridade
 
@@ -641,25 +777,6 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 
 **Evidências obrigatórias no chamado:** Data/hora · Severidade (rule.level) · Nome/descricao do alerta · Host/agente afetado · Log/output (JSON)
 
-### Não classificado
-
-**12 alerta(s)** em 12 procedimento(s)
-
-> Estes alertas não foram atribuídos a nenhum cliente. Não é erro de
-> coleta: é configuração faltando em `clients.json`. Atribuir por palpite
-> mandaria o operador acionar quem não tem nada a ver com o alerta.
-{.is-warning}
-
-#### ☎️ Acionamento
-
-| Fila / Time | Canal | Escalonamento | Alertas cobertos |
-| :--- | :--- | :--- | ---: |
-| **Administrativo** | DeskManager · E-mail | — | 4 |
-| **RH** | DeskManager | — | 2 |
-| **Sobreaviso MSMonitor** | Telefone | Jordy — (91) 99165-4121 | 2 |
-| **Suporte DEV** | DeskManager | — | 2 |
-| **Suporte Oracle** | DeskManager | — | 2 |
-
 #### Fora do Zabbix
 
 > Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de origem, por e-mail ou webhook. Não espere encontrá-los no painel.
@@ -672,14 +789,6 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 | Grafana Integration — Connection prematurely closed BEFORE response | ⚪ | fora do Zabbix | Aguardar o tempo limite. Se nao normalizar, abrir chamado. | Suporte DEV · DeskManager | ⏱️ Imediato |
 | MSMonitor — Erro na sincronizacao de integracao | ⚪ | fora do Zabbix | Aguardar a mensagem de 'normalizada'. Se persistir, ligar para o plantao. | Sobreaviso MSMonitor · Telefone | ⏱️ — |
 | MSMonitor — STALL | ⚪ | fora do Zabbix | Aguardar a recuperacao automatica. Se persistir, acionar o plantao. | Sobreaviso MSMonitor · Telefone | ⏱️ — |
-| RH Cloud — BeneficioNaoDisponibilizado | ⚪ | fora do Zabbix | Criar chamado reportando a falha de integracao e transferir. | RH · DeskManager | ⏱️ Imediato |
-| RH Cloud — CargaComFalha | ⚪ | fora do Zabbix | Transferir chamado informando o erro. | Suporte Oracle · DeskManager | ⏱️ Imediato |
-| RH Cloud — CentroDeCustoIncompleto | ⚪ | fora do Zabbix | Transferir chamado para o setor competente. | Administrativo · DeskManager | ⏱️ Imediato |
-| RH Cloud — ColaboradorNaoAtivado | ⚪ | fora do Zabbix | Transferir chamado informando a matricula afetada. | RH · DeskManager | ⏱️ Imediato |
-| RH Cloud — PagamentoNaoConciliado | ⚪ | fora do Zabbix | Transferir chamado relatando a divergencia. | Administrativo · DeskManager | ⏱️ Imediato |
-| RH Cloud — PagamentoNaoProcessado | ⚪ | fora do Zabbix | Transferir chamado relatando o erro sistemico. | Administrativo · DeskManager | ⏱️ Imediato |
-| RH Cloud — PagamentoNegativo | ⚪ | fora do Zabbix | Enviar e-mail para o setor e buscar historico de casos similares. | Administrativo · E-mail | ⏱️ — |
-| RH Cloud — RotinaComFalha | ⚪ | fora do Zabbix | Se o erro mudar numa reexecucao, nao abrir chamado duplicado: vincular ao chamado existente ou abrir novo apenas se for inedito. | Suporte Oracle · DeskManager | ⏱️ Imediato |
 | Zabbix Integration — Falha na conexao ao executar operacao | ⚪ | fora do Zabbix | Aguardar o tempo limite. Se nao normalizar, abrir chamado. | Suporte DEV · DeskManager | ⏱️ Imediato |
 
 </div>
@@ -692,14 +801,6 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 | Grafana Integration — Connection prematurely closed BEFORE response | Conexao encerrada com a API do Grafana antes da resposta. | Instabilidade de rede/API. | — |
 | MSMonitor — Erro na sincronizacao de integracao | Erro ao carregar alertas de uma integracao (ex.: 'zabb', id 12). | Falha no getAlerts com o Zabbix. | Verificar se ja chegou a notificacao 'Integracao normalizada' antes de acionar o sobreaviso |
 | MSMonitor — STALL | Nenhum arquivo de alerta recebido em N verificacoes (coletor parado). | Coletor parado (ex.: cliente Votorantim). | Verificar se ja chegou a notificacao 'Integracao normalizada' antes de acionar o sobreaviso |
-| RH Cloud — BeneficioNaoDisponibilizado | Beneficio do funcionario nao foi disponibilizado. | Causa desconhecida (falha de integracao). | — |
-| RH Cloud — CargaComFalha | Falha de carga sistemica no RH Cloud. | Erros diversos do sistema. | — |
-| RH Cloud — CentroDeCustoIncompleto | Colaborador com centro de custo em 0%. | Cadastro incompleto. | — |
-| RH Cloud — ColaboradorNaoAtivado | Contratacao iniciada, mas o perfil segue inativo. | Fluxo de ativacao travado. | — |
-| RH Cloud — PagamentoNaoConciliado | Falha na conciliacao dos valores de pagamento. | Causa desconhecida. | — |
-| RH Cloud — PagamentoNaoProcessado | Falha sistemica no fluxo de pagamento. | Causa desconhecida. | — |
-| RH Cloud — PagamentoNegativo | Contracheque com saldo negativo. | Erro de calculo. | — |
-| RH Cloud — RotinaComFalha | Falha na execucao de uma rotina do RH Cloud. | Erros diversos do sistema. | — |
 | Zabbix Integration — Falha na conexao ao executar operacao | MSMonitor falhando ao se conectar na API do Zabbix. | Instabilidade de rede/API. | — |
 
 </details>
@@ -746,102 +847,6 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 
 **Observações:** Severidade: Alta. SLA: Imediato (apos validacao). Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
 
-##### ⚪ RH Cloud — BeneficioNaoDisponibilizado
-
-**Sintomas:**
-* Notificacao 'BeneficioNaoDisponibilizado' do RH Cloud
-
-**Ações:**
-* Criar chamado reportando a falha de integracao e transferir.
-
-**Critério de resolução:** Beneficio disponibilizado ao colaborador.
-
-**Observações:** Severidade: Media. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — CargaComFalha
-
-**Sintomas:**
-* Notificacao 'CargaComFalha' do RH Cloud
-
-**Ações:**
-* Transferir chamado informando o erro.
-
-**Critério de resolução:** Carga volta a processar com sucesso.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — CentroDeCustoIncompleto
-
-**Sintomas:**
-* Notificacao 'CentroDeCustoIncompleto' do RH Cloud
-
-**Ações:**
-* Transferir chamado para o setor competente.
-
-**Critério de resolução:** Centro de custo preenchido corretamente.
-
-**Observações:** Severidade: Baixa. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — ColaboradorNaoAtivado
-
-**Sintomas:**
-* Notificacao 'ColaboradorNaoAtivado' do RH Cloud
-
-**Ações:**
-* Transferir chamado informando a matricula afetada.
-
-**Critério de resolução:** Perfil do colaborador ativado.
-
-**Observações:** Severidade: Media. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — PagamentoNaoConciliado
-
-**Sintomas:**
-* Notificacao 'PagamentoNaoConciliado' do RH Cloud
-
-**Ações:**
-* Transferir chamado relatando a divergencia.
-
-**Critério de resolução:** Valores conciliados.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — PagamentoNaoProcessado
-
-**Sintomas:**
-* Notificacao 'PagamentoNaoProcessado' do RH Cloud
-
-**Ações:**
-* Transferir chamado relatando o erro sistemico.
-
-**Critério de resolução:** Pagamento processado com sucesso.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — PagamentoNegativo
-
-**Sintomas:**
-* Notificacao 'PagamentoNegativo' do RH Cloud
-
-**Ações:**
-* Enviar e-mail para o setor e buscar historico de casos similares.
-
-**Critério de resolução:** Saldo do contracheque corrigido/confirmado pelo setor.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
-##### ⚪ RH Cloud — RotinaComFalha
-
-**Sintomas:**
-* Notificacao 'RotinaComFalha' do RH Cloud
-
-**Ações:**
-* Se o erro mudar numa reexecucao, nao abrir chamado duplicado: vincular ao chamado existente ou abrir novo apenas se for inedito.
-
-**Critério de resolução:** Rotina volta a executar com sucesso.
-
-**Observações:** Severidade: Alta. SLA: Imediato. Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.
-
 ##### ⚪ Zabbix Integration — Falha na conexao ao executar operacao
 
 **Sintomas:**
@@ -856,6 +861,6 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 
 ---
 
-Gerado em 2026-09-06T19:52:04Z · 31 procedimento(s) validado(s) cobrindo 38 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T19:53:48Z · 31 procedimento(s) validado(s) cobrindo 38 alerta(s) em 3 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
 
 Fora desta página, por serem atendidos por outro NOC: Banpará.

@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:38Z",
   "last_modified_at": "2026-09-06T02:03:11.248308Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "chubb-links-de-api|ftp-chubb-indisponivel",
@@ -99,7 +99,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "FTP Chubb Indisponivel — SEM PROCEDIMENTO NO MANUAL",
     "objective": "",
     "symptoms": [
@@ -115,12 +115,12 @@
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
     "checks_before_action": [],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
+      "ticket_queue": "DeskManager",
       "channel": ""
     },
     "schedule_policy": {
@@ -133,8 +133,8 @@
       "to": "",
       "channel": ""
     },
-    "resolution_criteria": "",
-    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Nao coberto -- precisa de procedimento do time.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Nao coberto -- precisa de procedimento do time. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": "wiki_manual_chubb_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,

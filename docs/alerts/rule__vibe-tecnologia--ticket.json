@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:17:16Z",
   "last_modified_at": "2026-09-06T00:17:16.212331Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "38254",
@@ -99,7 +99,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Chamados e filas de atendimento (DeskManager) sem movimentacao dentro do prazo",
     "objective": "Identificar chamados no DeskManager que estouraram o tempo de resposta/atendimento esperado antes que o cliente perceba antes do time.",
     "symptoms": [
@@ -124,12 +124,12 @@
       "Verificar status atual, ultima interacao e responsavel designado",
       "Confirmar se a pendencia e do cliente ou do time interno"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
+      "ticket_queue": "DeskManager",
       "channel": ""
     },
     "schedule_policy": {
@@ -142,8 +142,8 @@
       "to": "",
       "channel": ""
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho gerado a partir da evidencia tecnica do agrupamento 'Chamados e filas' (confianca alta, 1111 alertas, 277 instancias/chamados, host unico 'Vibe - DeskManager API'). Time, fila e SLA precisam ser preenchidos por quem opera o DeskManager -- nao inferidos pelo Zabbix.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho gerado a partir da evidencia tecnica do agrupamento 'Chamados e filas' (confianca alta, 1111 alertas, 277 instancias/chamados, host unico 'Vibe - DeskManager API'). Time, fila e SLA precisam ser preenchidos por quem opera o DeskManager -- nao inferidos pelo Zabbix. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

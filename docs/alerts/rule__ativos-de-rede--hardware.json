@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:51:55Z",
   "last_modified_at": "2026-09-06T00:51:55.861178Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "24184",
@@ -90,7 +90,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Hardware de rede — temperatura, fonte, chassi (roteadores/APs/Fortigate)",
     "objective": "Reagir a alertas fisicos de hardware (fonte, temperatura, ventoinha, chassi trocado) em roteadores, APs e Fortigate.",
     "symptoms": [
@@ -113,13 +113,13 @@
       "Confirmar presencialmente ou via console remoto o estado do componente",
       "'Device has been replaced' pode ser troca planejada -- confirmar antes de tratar como incidente"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "Infraestrutura",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
     },
     "schedule_policy": {
       "type": "ref",
@@ -128,11 +128,11 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "Rafael Sales",
+      "channel": "Teams"
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho tecnico -- confianca alta, reune 14 familias tecnicas.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, reune 14 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

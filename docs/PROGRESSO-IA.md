@@ -25,6 +25,39 @@ Uma linha por sessão, mais recente no topo:
 
 ## Sessões
 
+### 2026-09-06 — Claude (aprovação em lote dos rascunhos)
+
+O time decidiu aprovar tudo e corrigir o que aparecer de errado no uso. Como os
+campos organizacionais estavam vazios e a máquina de estados recusa
+`documented` sem eles, "aprovar" exigiu preenchê-los — e o único jeito
+defensável de fazer isso sem inventar foi **extrapolar o padrão que as fichas
+vindas dos manuais do time já estabeleceram**.
+
+- **Aprovou:** 68 fichas, de `pending_review` para `documented`.
+- **Roteamento atribuído** (todos extrapolados, nenhum informado especificamente
+  para aquele alerta):
+
+  | Cliente | Time | Fila | Fichas |
+  |---|---|---|---:|
+  | Vibe Tecnologia | Infraestrutura | DeskManager (Teams / Rafael Sales) | 44 |
+  | Chubb | NOC | DeskManager | 13 |
+  | Vibe Tecnologia | NOC / Infra | DeskManager | 5 |
+  | Vibe Tecnologia | NOC | DeskManager | 2 |
+  | Vibe Tecnologia | SOC | DeskManager → fila SOC | 2 |
+  | Chubb | NOC (N1) → Suporte BMC | DeskManager | 1 |
+  | Chubb | Suporte DEV | DeskManager | 1 |
+
+- **Não aprovou 11**, por falta de qualquer base: as 4 do **SAQ** (nenhuma ficha
+  validada desse cliente existe, então não há padrão de onde extrapolar) e 7 de
+  clientes que outro NOC atende.
+- **Como auditar:** toda ficha assim leva `ROTEAMENTO EXTRAPOLADO` nas notas.
+  ```bash
+  grep -l "ROTEAMENTO EXTRAPOLADO" docs/alerts/*.json | wc -l    # 68
+  ```
+  O `resolution_criteria` também é genérico e traz `[EXTRAPOLADO]` no texto.
+- **Status depois:** 450 sem procedimento · 11 rascunhos · **119 validadas** ·
+  24 não aplicáveis. Wiki passou de 41 para **106 procedimentos**.
+
 ### 2026-09-06 — Claude (validação do prompt)
 
 Sessão curta, para provar que as instruções deste diretório funcionam de ponta

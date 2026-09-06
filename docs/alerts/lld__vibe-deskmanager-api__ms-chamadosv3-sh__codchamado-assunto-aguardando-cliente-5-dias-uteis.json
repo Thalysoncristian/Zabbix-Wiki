@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
   "last_modified_at": "2026-09-06T21:07:02.725862Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "vibe-deskmanager-api|0126-000194-sistemas-e-aplicativos-msmonitor-implementar-aguardando-cliente-5-dias-uteis",
@@ -1770,7 +1770,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Chamado do DeskManager aguardando retorno do cliente (5 dias úteis)",
     "objective": "",
     "symptoms": [
@@ -1794,12 +1794,12 @@
       "Confirmar se a pendência é mesmo do cliente ou se ficou parada do lado interno",
       "Verificar a data da última interação registrada"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
+      "ticket_queue": "DeskManager",
       "channel": ""
     },
     "schedule_policy": {
@@ -1812,8 +1812,8 @@
       "to": "",
       "channel": ""
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

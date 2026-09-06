@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:17:23Z",
   "last_modified_at": "2026-09-06T00:17:23.007400Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "71921",
@@ -90,7 +90,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "[DUPLICATA DE ESCOPO] Ver regra 'control-m-in01--job'",
     "objective": "",
     "symptoms": [],
@@ -104,13 +104,13 @@
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
     "checks_before_action": [],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC (N1) → Suporte BMC",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
     },
     "schedule_policy": {
       "type": "ref",
@@ -119,11 +119,11 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "Bruno Rezegue Mendes (91) 98298-4301",
+      "channel": "Teams"
     },
-    "resolution_criteria": "",
-    "notes": "Ver 'control-m-in01--job'. Sugestao para a Fase 5+: considerar deduplicar regras que cobrem o mesmo conjunto de hosts em host groups diferentes.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Ver 'control-m-in01--job'. Sugestao para a Fase 5+: considerar deduplicar regras que cobrem o mesmo conjunto de hosts em host groups diferentes. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

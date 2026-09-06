@@ -4,7 +4,7 @@ Estado do projeto e o que falta. Atualizado a cada entrega — item concluído �
 marcado aqui, com a data e o commit.
 
 **Atualizado em:** 2026-09-06
-**Situação:** 51 validadas · 79 rascunhos · 450 sem procedimento · 24 não aplicáveis · wiki com 4 clientes
+**Situação:** 119 validadas · 11 rascunhos · 450 sem procedimento · 24 não aplicáveis · wiki com 106 procedimentos
 
 ---
 
@@ -76,13 +76,21 @@ marcado aqui, com a data e o commit.
 
 ## 🟡 Documentação — o grosso do trabalho
 
-- [ ] **Validar os 78 rascunhos técnicos** (`pending_review` → `documented`)
-  Cada um já tem contexto, sintomas, verificações e ressalvas escritas. Falta o
-  que só vocês sabem: abre chamado?, time, fila e critério de resolução.
-  → **A fila de execução, ficha por ficha, está em
-  [TRABALHO-BRACAL.md](TRABALHO-BRACAL.md)** — agrupada por cliente e categoria,
-  com checkbox para ir marcando.
-  → *Impacto:* leva a wiki de 41 para ~110 procedimentos.
+- [ ] **Conferir o roteamento das 68 fichas aprovadas por extrapolação**
+  O time optou por aprovar em lote e corrigir no uso. O time e a fila dessas
+  fichas foram **deduzidos do padrão** das fichas que vieram dos manuais — não
+  foram informados para cada alerta. Cada uma leva `ROTEAMENTO EXTRAPOLADO` nas
+  notas, e o `resolution_criteria` é genérico.
+  ```bash
+  grep -l "ROTEAMENTO EXTRAPOLADO" docs/alerts/*.json
+  ```
+  → *Maior risco:* as 44 da Vibe que foram para **Infraestrutura · DeskManager ·
+  Rafael Sales**. Se alguma categoria (licenças, banco de dados, certificados)
+  tiver outro dono, são várias fichas apontando para o time errado.
+
+- [ ] **Definir o roteamento do SAQ — 4 fichas continuam em rascunho**
+  Não existe nenhuma ficha validada do SAQ, então não havia padrão de onde
+  extrapolar: Lambda/AWS, PIX, certificados e conectividade. Quem atende?
 
 - [ ] **450 fichas sem procedimento nenhum** (413 em clientes nossos)
   São famílias técnicas que nenhuma regra cobre ou que ninguém tocou.

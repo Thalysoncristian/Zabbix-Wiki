@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:51:28Z",
   "last_modified_at": "2026-09-06T00:51:28.463674Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "23463",
@@ -89,7 +89,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Host/servico indisponivel por ICMP ou TCP — grupo Vibe Tecnologia",
     "objective": "Reagir a perda de conectividade basica (ping ICMP ou porta TCP) em 16 hosts variados do grupo Vibe Tecnologia (firewalls, roteadores, cameras, bancos de dados).",
     "symptoms": [
@@ -111,13 +111,13 @@
     "checks_before_action": [
       "Identificar o host exato (grupo muito heterogeneo -- camera de seguranca e firewall pedem tratamento diferente)"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "Infraestrutura",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
     },
     "schedule_policy": {
       "type": "ref",
@@ -126,11 +126,11 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "Rafael Sales",
+      "channel": "Teams"
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

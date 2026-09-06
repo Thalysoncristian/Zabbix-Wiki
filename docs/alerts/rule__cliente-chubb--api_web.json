@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T14:39:21Z",
   "last_modified_at": "2026-09-06T14:39:21.514759Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "29163",
@@ -104,7 +104,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Endpoint web / API indisponivel ou lenta — Cliente_chubb",
     "objective": "Confirmar indisponibilidade de endpoint e acionar quem responde por ele.",
     "symptoms": [
@@ -130,12 +130,12 @@
       "Verificar se e endpoint interno ou de terceiro -- muda quem aciona",
       "Conferir se e ambiente de producao ou dev/homologacao"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
+      "ticket_queue": "DeskManager",
       "channel": ""
     },
     "schedule_policy": {
@@ -148,8 +148,8 @@
       "to": "",
       "channel": ""
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho tecnico da Fase 2 (confianca medium, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca medium, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

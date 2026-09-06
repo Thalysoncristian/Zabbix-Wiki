@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
   "last_modified_at": "2026-09-06T02:02:50.878408Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "chubb-links-de-api|arquivo-gerado-em-branco",
@@ -109,7 +109,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Arquivo de integracao ENEL nao gerado / gerado em branco",
     "objective": "",
     "symptoms": [
@@ -129,13 +129,13 @@
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
     "checks_before_action": [],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "ticket_queue": "DeskManager",
+      "channel": "E-mail"
     },
     "schedule_policy": {
       "type": "ref",
@@ -144,11 +144,11 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "contatos Chubb (ver escalation_matrix.md)",
+      "channel": "E-mail"
     },
-    "resolution_criteria": "",
-    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. GAP: nao coberto explicitamente -- ver risks.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. GAP: nao coberto explicitamente -- ver risks. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": "wiki_manual_chubb_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,

@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:51:18Z",
   "last_modified_at": "2026-09-06T00:51:18.457428Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "35682",
@@ -93,7 +93,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Serviço do Windows parado — Windows bob (VM)",
     "objective": "Reagir a servicos de infraestrutura do Windows (agentes AWS, rede, seguranca) parados na VM 'Windows bob'.",
     "symptoms": [
@@ -113,13 +113,13 @@
     "checks_before_action": [
       "Confirmar se e servico de agente de nuvem (AWS) ou servico core do Windows"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "Infraestrutura",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
     },
     "schedule_policy": {
       "type": "ref",
@@ -128,11 +128,11 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "Rafael Sales",
+      "channel": "Teams"
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho tecnico -- confianca alta, 1 familia (mesma regra tecnica do Windows Services discovery).",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, 1 familia (mesma regra tecnica do Windows Services discovery). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

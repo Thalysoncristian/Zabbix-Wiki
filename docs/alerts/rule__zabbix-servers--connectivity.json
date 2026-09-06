@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T14:39:08Z",
   "last_modified_at": "2026-09-06T14:39:08.632123Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "24770",
@@ -95,7 +95,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Conectividade (ICMP/TCP) — Zabbix servers",
     "objective": "Confirmar se o equipamento/servico esta mesmo fora antes de escalar.",
     "symptoms": [
@@ -120,13 +120,13 @@
       "Verificar se outros hosts do mesmo caminho tambem cairam (indica link, nao host)",
       "Confirmar se ha manutencao ou reinicio programado"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "Infraestrutura",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
     },
     "schedule_policy": {
       "type": "ref",
@@ -135,11 +135,11 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "Rafael Sales",
+      "channel": "Teams"
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

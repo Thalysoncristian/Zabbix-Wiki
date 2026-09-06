@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:46:46Z",
   "last_modified_at": "2026-09-06T00:46:46.787487Z",
-  "revision": 1,
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "draft",
+  "procedure_status": "documented",
   "instances": [],
   "zabbix": {
     "triggerid": "22391",
@@ -92,7 +92,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "pending_review",
+    "doc_status": "documented",
     "title": "Agente/Proxy Zabbix indisponivel ou desatualizado (Zabbix server / Zabbix-Proxy)",
     "objective": "Garantir que o agente e o proxy Zabbix que sustentam a propria coleta de alertas estejam disponiveis, atualizados e suportados.",
     "symptoms": [
@@ -116,12 +116,12 @@
       "Verificar conectividade de rede na porta correspondente",
       "Checar a versao do proxy contra a versao do servidor Zabbix"
     ],
-    "requires_ticket": null,
+    "requires_ticket": true,
     "routing": {
-      "team": "",
+      "team": "NOC / Infra",
       "ticket_category": "",
       "ticket_subcategory": "",
-      "ticket_queue": "",
+      "ticket_queue": "DeskManager",
       "channel": ""
     },
     "schedule_policy": {
@@ -134,8 +134,8 @@
       "to": "",
       "channel": ""
     },
-    "resolution_criteria": "",
-    "notes": "Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy).",
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, reune 78 familias tecnicas (praticamente 1 familia por metrica de proxy). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

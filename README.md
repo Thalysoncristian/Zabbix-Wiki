@@ -233,6 +233,11 @@ python main.py reconcile --dry-run
 # cobertura da documentação
 python main.py status
 
+# gera a página da wiki a partir das fichas validadas (ETAPA 10)
+python main.py wiki
+python main.py wiki --output docs/wiki-noc.md
+python main.py wiki --stdout
+
 # coleta do ambiente inteiro (percorre grupo a grupo, nunca numa requisição só)
 python main.py collect
 
@@ -1386,3 +1391,73 @@ As categorias estão em `src/rules/taxonomy.py`, derivadas dos prefixos de item
 que existem no ambiente coletado. Acrescentar uma categoria só muda o
 agrupamento de quem casar com ela. Se um agrupamento parecer errado, o motivo
 na tela diz qual sinal o produziu — e é por ali que se corrige.
+
+---
+
+## 21. A wiki gerada (ETAPA 10)
+
+```bash
+python main.py wiki          # docs/alerts/*.json  ->  wiki.md
+```
+
+O último elo: a página que o NOC consulta, gerada a partir das fichas em vez
+de escrita à mão.
+
+### Por que gerar, e não escrever
+
+Uma wiki escrita à mão **não tem como saber que envelheceu**. Quando um
+trigger é recriado, renomeado ou apagado no Zabbix, a página continua idêntica
+e convincente — e alguém às 3h segue um procedimento para um alerta que não
+existe mais. A ficha sabe: ela carrega `alert_key`, `source_hash` e o
+`review_needed` que o `reconcile` levanta quando o fato técnico muda.
+
+O conhecimento continua sendo escrito por pessoas, nas fichas. A página é uma
+projeção — e por isso traz, no topo, o aviso de que é gerada e de onde vem.
+
+### Só entra o que foi validado
+
+Somente fichas `documented` ou `reviewed`. Rascunho fica de fora — **nem
+marcado como rascunho**: numa página de plantão, texto que parece procedimento
+é lido como procedimento. Quem quer ver o que ainda falta usa
+`python main.py serve`, que separa os estados com clareza.
+
+O comando diz quantos rascunhos ficaram de fora, para o número não sumir de
+vista:
+
+```
+✓ docs/wiki-noc.md
+  33 procedimento(s) validado(s), cobrindo 40 alerta(s)
+  12 deles fora do Zabbix (avisados pelo sistema de origem)
+  79 rascunho(s) ficaram de fora — só entra o que foi validado
+```
+
+### Um procedimento, uma entrada
+
+Oito famílias de endpoint ENEL receberam o mesmo procedimento. Na página
+viravam oito entradas idênticas — que o operador lê como oito casos
+diferentes. O gerador agrupa por **conteúdo** do procedimento (ignorando o
+título) e lista os alertas cobertos:
+
+```markdown
+##### 🟠 API ENEL indisponível (endpoint específico)
+
+**Cobre 8 alertas:**
+* `ENEL API Adesão(Subscription) CE Indisponível`
+* `ENEL API Faturamento(Invoice) SP Indisponível`
+...
+```
+
+### A matriz de acionamento é derivada
+
+Times, canais e escalonamento saem do `routing` das fichas, não de uma tabela
+paralela. Escrita à mão, a matriz descola com o tempo: alguém muda a fila numa
+ficha e esquece da tabela. Derivando, as duas nunca discordam.
+
+### Dialeto e determinismo
+
+A saída é Markdown no dialeto do **Wiki.js** (`{.is-warning}`, `{.tabset}`,
+`<details>`, mermaid) — o mesmo do catálogo que o NOC já mantém, para que a
+página gerada seja indistinguível, no formato, da que existe hoje.
+
+E é **determinística**: mesma entrada, mesmos bytes. Sem isso não daria para
+versionar o `.md` nem enxergar num diff o que mudou de uma geração para outra.

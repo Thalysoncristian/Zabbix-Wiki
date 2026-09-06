@@ -7,6 +7,7 @@
     python main.py scope          # hosts por volume: quem está dentro e fora do escopo
     python main.py reconcile      # snapshot -> fichas em docs/alerts/
     python main.py status         # cobertura da documentação
+    python main.py wiki           # fichas validadas -> página da wiki (ETAPA 10)
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ from .progress import ConsoleProgress
 from .reconcile import reconcile
 from .report import CHECK, build_report, format_report_lines
 from .snapshot import list_snapshots, load_raw_snapshot, write_json, write_partial_snapshot, write_snapshot
+from .wiki import coletar_entradas, escrever_wiki, gerar_wiki
 from .zabbix_client import ZabbixError, ZabbixReadOnlyClient
 
 EXIT_OK = 0
@@ -191,6 +193,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("status", help="cobertura da documentação nas fichas")
     st.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+
+    wk = sub.add_parser("wiki", help="gera a página da wiki a partir das fichas validadas")
+    wk.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+    wk.add_argument("--output", default="wiki.md", help="arquivo de saída (padrão: wiki.md)")
+    wk.add_argument("--stdout", action="store_true", help="imprime na saída padrão em vez de gravar")
     return parser
 
 
@@ -673,6 +680,42 @@ def cmd_status(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def cmd_wiki(args: argparse.Namespace) -> int:
+    """Gera a página da wiki a partir das fichas validadas.
+
+    Só entra o que uma pessoa aprovou (`documented`/`reviewed`). Rascunho
+    fica de fora, nem marcado como rascunho: numa página de plantão, texto que
+    parece procedimento é lido como procedimento.
+    """
+    docs_dir = args.docs_dir or "docs/alerts"
+    entradas = coletar_entradas(docs_dir)
+
+    if args.stdout:
+        print(gerar_wiki(docs_dir))
+        return EXIT_OK
+
+    if not entradas:
+        print("Nenhuma ficha validada em docs/alerts/ — a página sairia vazia.")
+        print("Documente um procedimento (`python main.py serve`) e rode de novo.")
+        return EXIT_OK
+
+    caminho, total = escrever_wiki(args.output, docs_dir)
+    alertas = sum(len(e.alertas) for e in entradas)
+    manuais = sum(1 for e in entradas if e.manual)
+
+    print(f"✓ {caminho}")
+    print(f"  {total} procedimento(s) validado(s), cobrindo {alertas} alerta(s)")
+    if manuais:
+        print(f"  {manuais} deles fora do Zabbix (avisados pelo sistema de origem)")
+
+    repositorio = AlertRepository(docs_dir)
+    rascunhos = sum(1 for d in repositorio.all()
+                    if (d.operational or {}).get("doc_status") == "pending_review")
+    if rascunhos:
+        print(f"  {rascunhos} rascunho(s) ficaram de fora — só entra o que foi validado")
+    return EXIT_OK
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     configure_console_encoding()
     args = build_parser().parse_args(argv)
@@ -696,6 +739,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_reconcile(args)
         if args.command == "status":
             return cmd_status(args)
+        if args.command == "wiki":
+            return cmd_wiki(args)
     except ConfigError as exc:
         print(f"✗ Configuração inválida: {exc}", file=sys.stderr)
         return EXIT_CONFIG

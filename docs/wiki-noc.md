@@ -1,8 +1,9 @@
 # 📘 Catálogo de Alertas — NOC
 
 Guia operacional para **triagem, abertura de chamado e acionamento correto**
-dos alertas monitorados. Cada categoria traz uma tabela de ação rápida, a
-referência técnica completa e o procedimento detalhado.
+dos alertas monitorados. Cada categoria traz o catálogo completo em tabela —
+descrição, causa, ação, quem acionar, canal e SLA — e o procedimento detalhado
+logo abaixo.
 
 > **Regra de ouro:** nenhum acionamento por Teams ou telefone acontece sem
 > **chamado aberto** e **evidência coletada** (host, horário, print/output).
@@ -80,32 +81,21 @@ flowchart TD
 
 #### Rede / Conectividade
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Alta perda de pacotes ICMP — AP REUNIAO | 🟡 | Vibe - AP REUNIAO [Ubiquiti] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
-| Impressora HP inacessivel (ICMP) | 🟡 | Vibe - Impressora [HP] | Verificar presencialmente na fabrica e abrir chamado. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Link PRINCIPAL da fábrica (Embratel) indisponível | 🔴 | Embratel - Roteador [Cisco] | Acionar a Embratel pelo portal WebSIR com o código de designação, ou pelo 0800 721 1021 / caebt@claroatendimento.com.br | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
-| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível | 🔴 | Interconect - Roteador | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
-| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível — visto pelo Embratel | 🔴 | Embratel - Roteador [Cisco] | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
-| Roteador Embratel inalcançável (ICMP) | 🟠 | Embratel - Roteador [Cisco] | Acionar a Embratel (portal WebSIR com a designação, ou 0800 721 1021) | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Alta perda de pacotes ICMP — AP REUNIAO` | Vibe - AP REUNIAO [Ubiquiti] | 🟡 Média | Perda de pacotes na comunicacao com o AP. | Intermitencia wireless (AirOS). | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | 5 min | — |
+| `Impressora HP inacessivel (ICMP)` | Vibe - Impressora [HP] | 🟡 Média | Impressora inacessivel na rede da fabrica. | Equipamento desligado ou falha de rede. | Verificar presencialmente na fabrica e abrir chamado. | NOC / GE | Central de Servicos | Imediato | — |
+| `Link PRINCIPAL da fábrica (Embratel) indisponível` | Embratel - Roteador [Cisco] | 🔴 Crítica | Host 'Embratel - Roteador [Cisco]'. É o link PRINCIPAL da fábrica. Com ele fora, a operação depende do link de backup (Interconnect/Vellon) — se os dois caírem, a fábrica fica sem conectividade. | Falha do circuito da operadora, equipamento no local, ou rompimento. | Acionar a Embratel pelo portal WebSIR com o código de designação, ou pelo 0800 721 1021 / caebt@claroatendimento.com.br | NOC → operadora | Desk Manager (com o protocolo da operadora) / Portal/telefone da operadora, conforme o link (líderes + NOC (e-mail com protocolo)) | Imediato | — |
+| `Link de BACKUP da fábrica (Interconnect/Vellon) indisponível` | Interconect - Roteador | 🔴 Crítica | Alerta no próprio host 'Interconect - Roteador'. É o link de BACKUP da fábrica; o principal é a Embratel. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora | Desk Manager (com o protocolo da operadora) / Portal/telefone da operadora, conforme o link (líderes + NOC (e-mail com protocolo)) | Imediato | — |
+| `Link de BACKUP da fábrica (Interconnect/Vellon) indisponível — visto pelo Embratel` | Embratel - Roteador [Cisco] | 🔴 Crítica | Alerta no host 'Embratel - Roteador [Cisco]' sinalizando que o link de BACKUP (Interconnect/Vellon) está fora. Sozinho não derruba a operação — mas deixa a fábrica sem redundância. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora | Desk Manager (com o protocolo da operadora) / Portal/telefone da operadora, conforme o link (líderes + NOC (e-mail com protocolo)) | Imediato | — |
+| `Roteador Embratel inalcançável (ICMP)` | Embratel - Roteador [Cisco] | 🟠 Alta | Host 'Embratel - Roteador [Cisco]' não responde a ping — pode ser queda do link ou do equipamento. | Queda do circuito, do equipamento no local, ou falta de energia. | Acionar a Embratel (portal WebSIR com a designação, ou 0800 721 1021) | NOC → operadora | Desk Manager (com o protocolo da operadora) / Portal/telefone da operadora, conforme o link (líderes + NOC) | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Rede / Conectividade</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Alta perda de pacotes ICMP — AP REUNIAO | Perda de pacotes na comunicacao com o AP. | Intermitencia wireless (AirOS). | — |
-| Impressora HP inacessivel (ICMP) | Impressora inacessivel na rede da fabrica. | Equipamento desligado ou falha de rede. | Verificar presencialmente na fabrica |
-| Link PRINCIPAL da fábrica (Embratel) indisponível | Host 'Embratel - Roteador [Cisco]'. É o link PRINCIPAL da fábrica. Com ele fora, a operação depende do link de backup (Interconnect/Vellon) — se os dois caírem, a fábrica fica sem conectividade. | Falha do circuito da operadora, equipamento no local, ou rompimento. | Verificar o aparelho preto no local: lâmpada PON verde = conexão OK; lâmpada SD vermelha = rede instável · Confirmar se o link de backup (Interconnect) assumiu |
-| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível | Alerta no próprio host 'Interconect - Roteador'. É o link de BACKUP da fábrica; o principal é a Embratel. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Confirmar que o link principal (Embratel) segue operando |
-| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível — visto pelo Embratel | Alerta no host 'Embratel - Roteador [Cisco]' sinalizando que o link de BACKUP (Interconnect/Vellon) está fora. Sozinho não derruba a operação — mas deixa a fábrica sem redundância. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Confirmar que o link principal (Embratel) segue operando |
-| Roteador Embratel inalcançável (ICMP) | Host 'Embratel - Roteador [Cisco]' não responde a ping — pode ser queda do link ou do equipamento. | Queda do circuito, do equipamento no local, ou falta de energia. | Verificar as lâmpadas do aparelho preto no local (PON verde = OK, SD vermelha = instável) · Confirmar se o alerta de 'Link Principal indisponível' também disparou |
-
-</details>
+</div>
 
 ##### 🟡 Alta perda de pacotes ICMP — AP REUNIAO
 
@@ -233,22 +223,16 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### Rede / Interfaces
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| VPNBKP com baixo trafego (Proxy Fortigate) | 🟡 | Vibe - Proxy [Fortigate] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `VPNBKP com baixo trafego (Proxy Fortigate)` | Vibe - Proxy [Fortigate] | 🟡 Média | Trafego abaixo do normal na VPN de backup. | Intermitencia IPsec. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | 5 min | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Rede / Interfaces</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| VPNBKP com baixo trafego (Proxy Fortigate) | Trafego abaixo do normal na VPN de backup. | Intermitencia IPsec. | — |
-
-</details>
+</div>
 
 ##### 🟡 VPNBKP com baixo trafego (Proxy Fortigate)
 
@@ -264,24 +248,17 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### Disco / Filesystem
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Disco (/) acima de 80% no Wazuh SIEM | 🟡 | Vibe - Wazuh SIEM | Abrir chamado informando o alerta e o host afetado. | Infraestrutura · DeskManager | ⏱️ Imediato |
-| Disco critico (/) no Zabbix-Proxy | 🟡 | Vibe - Zabbix-Proxy | Abrir ou transferir chamado solicitando liberacao de espaco. | Infraestrutura · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Disco (/) acima de 80% no Wazuh SIEM` | Vibe - Wazuh SIEM | 🟡 Média | Espaco da particao raiz (/) acima de 80%. | Geracao excessiva de logs pelo firewall. | Abrir chamado informando o alerta e o host afetado. | Infraestrutura | DeskManager | Imediato | — |
+| `Disco critico (/) no Zabbix-Proxy` | Vibe - Zabbix-Proxy | 🟡 Média | Espaco da particao raiz em nivel critico. Tende a durar dias ate a intervencao. | Crescimento de logs ou arquivos temporarios. | Abrir ou transferir chamado solicitando liberacao de espaco. | Infraestrutura | DeskManager | Imediato | Ref: 0726-001673 |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Disco / Filesystem</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Disco (/) acima de 80% no Wazuh SIEM | Espaco da particao raiz (/) acima de 80%. | Geracao excessiva de logs pelo firewall. | Checar volume de logs recentes no SIEM |
-| Disco critico (/) no Zabbix-Proxy | Espaco da particao raiz em nivel critico. Tende a durar dias ate a intervencao. | Crescimento de logs ou arquivos temporarios. | Confirmar o percentual livre atual no host |
-
-</details>
+</div>
 
 ##### 🟡 Disco (/) acima de 80% no Wazuh SIEM
 
@@ -315,22 +292,16 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### Disco / Desempenho de I-O
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Disco (sda) com tempo de resposta alto no Zabbix-Proxy | 🟡 | Vibe - Zabbix-Proxy | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Disco (sda) com tempo de resposta alto no Zabbix-Proxy` | Vibe - Zabbix-Proxy | 🟡 Média | Tempo de espera (await) muito alto no disco do servidor. | Gargalo de I/O no disco. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Disco / Desempenho de I-O</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Disco (sda) com tempo de resposta alto no Zabbix-Proxy | Tempo de espera (await) muito alto no disco do servidor. | Gargalo de I/O no disco. | Verificar uso de I/O e processos consumindo disco no host |
-
-</details>
+</div>
 
 ##### 🟡 Disco (sda) com tempo de resposta alto no Zabbix-Proxy
 
@@ -349,22 +320,16 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### Agente Zabbix
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Zabbix agent indisponivel no Wazuh SIEM | 🟡 | Vibe - MSTracker-vm Hom | Transferir para a Infraestrutura (chamado teste do setor). | NOC / Infra · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Zabbix agent indisponivel no Wazuh SIEM` | Vibe - MSTracker-vm Hom | 🟡 Média | Agente Zabbix parado ou host indisponivel (mensagem padrao inclui aviso sobre agentes passive-only). | Falha de rede ou porta 10050 bloqueada. | Transferir para a Infraestrutura (chamado teste do setor). | NOC / Infra | DeskManager | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Agente Zabbix</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Zabbix agent indisponivel no Wazuh SIEM | Agente Zabbix parado ou host indisponivel (mensagem padrao inclui aviso sobre agentes passive-only). | Falha de rede ou porta 10050 bloqueada. | Confirmar se e chamado teste do setor antes de escalar |
-
-</details>
+</div>
 
 ##### 🟡 Zabbix agent indisponivel no Wazuh SIEM
 
@@ -383,26 +348,18 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### APIs e checagens web
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Instabilidade na plataforma Feedz | 🔴 | Vibe - Ferramentas Internas | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
-| Instabilidade na plataforma Feedz (falha de step do cenario web) | 🔴 | Vibe - Ferramentas Internas | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ Imediato |
-| Instabilidade no Portal RH Cloud | 🔴 | Vibe - Ferramentas Internas | Reportar a instabilidade do Portal. | Carlos Favacho · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Instabilidade na plataforma Feedz` | Vibe - Ferramentas Internas | 🔴 Crítica | Instabilidade na plataforma Feedz. | Falha de conexao externa. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Instabilidade na plataforma Feedz (falha de step do cenario web)` | Vibe - Ferramentas Internas | 🔴 Crítica | Instabilidade na plataforma Feedz. | Falha de conexao externa. | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura | DeskManager / Teams (Rafael Sales) | Imediato | — |
+| `Instabilidade no Portal RH Cloud` | Vibe - Ferramentas Internas | 🔴 Crítica | Erro na resposta HTTP do Portal RH Cloud. | Causa nao informada na fonte original — investigar na ocorrencia. | Reportar a instabilidade do Portal. | Carlos Favacho | DeskManager / Teams (Carlos Favacho) | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — APIs e checagens web</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Instabilidade na plataforma Feedz | Instabilidade na plataforma Feedz. | Falha de conexao externa. | — |
-| Instabilidade na plataforma Feedz (falha de step do cenario web) | Instabilidade na plataforma Feedz. | Falha de conexao externa. | — |
-| Instabilidade no Portal RH Cloud | Erro na resposta HTTP do Portal RH Cloud. | Causa nao informada na fonte original — investigar na ocorrencia. | — |
-
-</details>
+</div>
 
 ##### 🔴 Instabilidade na plataforma Feedz
 
@@ -442,28 +399,19 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### Outros
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Toner Amarelo abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Toner Ciano abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Toner Magenta abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
-| Toner Preto abaixo de 5% (Impressora HP) | 🟡 | Vibe - Impressora [HP] | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Toner Amarelo abaixo de 5% (Impressora HP)` | Vibe - Impressora [HP] | 🟡 Média | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE | Central de Servicos | Imediato | — |
+| `Toner Ciano abaixo de 5% (Impressora HP)` | Vibe - Impressora [HP] | 🟡 Média | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE | Central de Servicos | Imediato | — |
+| `Toner Magenta abaixo de 5% (Impressora HP)` | Vibe - Impressora [HP] | 🟡 Média | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE | Central de Servicos | Imediato | — |
+| `Toner Preto abaixo de 5% (Impressora HP)` | Vibe - Impressora [HP] | 🟡 Média | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | Solicitar substituicao e fazer teste de impressao apos a troca. | NOC / GE | Central de Servicos | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Outros</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Toner Amarelo abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-| Toner Ciano abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-| Toner Magenta abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-| Toner Preto abaixo de 5% (Impressora HP) | Baixa qualidade de impressao por falta de suprimento (toner magenta). | Fim da vida util do toner. | — |
-
-</details>
+</div>
 
 ##### 🟡 Toner Amarelo abaixo de 5% (Impressora HP)
 
@@ -518,36 +466,23 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 > Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de origem, por e-mail ou webhook. Não espere encontrá-los no painel.
 {.is-warning}
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| RH Cloud — BeneficioNaoDisponibilizado | ⚪ | fora do Zabbix | Criar chamado reportando a falha de integracao e transferir. | RH · DeskManager | ⏱️ Imediato |
-| RH Cloud — CargaComFalha | ⚪ | fora do Zabbix | Transferir chamado informando o erro. | Suporte Oracle · DeskManager | ⏱️ Imediato |
-| RH Cloud — CentroDeCustoIncompleto | ⚪ | fora do Zabbix | Transferir chamado para o setor competente. | Administrativo · DeskManager | ⏱️ Imediato |
-| RH Cloud — ColaboradorNaoAtivado | ⚪ | fora do Zabbix | Transferir chamado informando a matricula afetada. | RH · DeskManager | ⏱️ Imediato |
-| RH Cloud — PagamentoNaoConciliado | ⚪ | fora do Zabbix | Transferir chamado relatando a divergencia. | Administrativo · DeskManager | ⏱️ Imediato |
-| RH Cloud — PagamentoNaoProcessado | ⚪ | fora do Zabbix | Transferir chamado relatando o erro sistemico. | Administrativo · DeskManager | ⏱️ Imediato |
-| RH Cloud — PagamentoNegativo | ⚪ | fora do Zabbix | Enviar e-mail para o setor e buscar historico de casos similares. | Administrativo · E-mail | ⏱️ — |
-| RH Cloud — RotinaComFalha | ⚪ | fora do Zabbix | Se o erro mudar numa reexecucao, nao abrir chamado duplicado: vincular ao chamado existente ou abrir novo apenas se for inedito. | Suporte Oracle · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `RH Cloud — BeneficioNaoDisponibilizado` | fora do Zabbix | ⚪ Não classificada | Beneficio do funcionario nao foi disponibilizado. | Causa desconhecida (falha de integracao). | Criar chamado reportando a falha de integracao e transferir. | RH | DeskManager | Imediato | — |
+| `RH Cloud — CargaComFalha` | fora do Zabbix | ⚪ Não classificada | Falha de carga sistemica no RH Cloud. | Erros diversos do sistema. | Transferir chamado informando o erro. | Suporte Oracle | DeskManager | Imediato | — |
+| `RH Cloud — CentroDeCustoIncompleto` | fora do Zabbix | ⚪ Não classificada | Colaborador com centro de custo em 0%. | Cadastro incompleto. | Transferir chamado para o setor competente. | Administrativo | DeskManager | Imediato | — |
+| `RH Cloud — ColaboradorNaoAtivado` | fora do Zabbix | ⚪ Não classificada | Contratacao iniciada, mas o perfil segue inativo. | Fluxo de ativacao travado. | Transferir chamado informando a matricula afetada. | RH | DeskManager | Imediato | — |
+| `RH Cloud — PagamentoNaoConciliado` | fora do Zabbix | ⚪ Não classificada | Falha na conciliacao dos valores de pagamento. | Causa desconhecida. | Transferir chamado relatando a divergencia. | Administrativo | DeskManager | Imediato | — |
+| `RH Cloud — PagamentoNaoProcessado` | fora do Zabbix | ⚪ Não classificada | Falha sistemica no fluxo de pagamento. | Causa desconhecida. | Transferir chamado relatando o erro sistemico. | Administrativo | DeskManager | Imediato | — |
+| `RH Cloud — PagamentoNegativo` | fora do Zabbix | ⚪ Não classificada | Contracheque com saldo negativo. | Erro de calculo. | Enviar e-mail para o setor e buscar historico de casos similares. | Administrativo | E-mail / E-mail | — | — |
+| `RH Cloud — RotinaComFalha` | fora do Zabbix | ⚪ Não classificada | Falha na execucao de uma rotina do RH Cloud. | Erros diversos do sistema. | Se o erro mudar numa reexecucao, nao abrir chamado duplicado: vincular ao chamado existente ou abrir novo apenas se for inedito. | Suporte Oracle | DeskManager | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Fora do Zabbix</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| RH Cloud — BeneficioNaoDisponibilizado | Beneficio do funcionario nao foi disponibilizado. | Causa desconhecida (falha de integracao). | — |
-| RH Cloud — CargaComFalha | Falha de carga sistemica no RH Cloud. | Erros diversos do sistema. | — |
-| RH Cloud — CentroDeCustoIncompleto | Colaborador com centro de custo em 0%. | Cadastro incompleto. | — |
-| RH Cloud — ColaboradorNaoAtivado | Contratacao iniciada, mas o perfil segue inativo. | Fluxo de ativacao travado. | — |
-| RH Cloud — PagamentoNaoConciliado | Falha na conciliacao dos valores de pagamento. | Causa desconhecida. | — |
-| RH Cloud — PagamentoNaoProcessado | Falha sistemica no fluxo de pagamento. | Causa desconhecida. | — |
-| RH Cloud — PagamentoNegativo | Contracheque com saldo negativo. | Erro de calculo. | — |
-| RH Cloud — RotinaComFalha | Falha na execucao de uma rotina do RH Cloud. | Erros diversos do sistema. | — |
-
-</details>
+</div>
 
 ##### ⚪ RH Cloud — BeneficioNaoDisponibilizado
 
@@ -661,24 +596,17 @@ Confirmar se o roteador do link principal está fora antes de acionar a operador
 
 #### Rede / Conectividade
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| API ENEL Token autenticador indisponivel (erro 401) | 🔴 | Chubb - Links de API | Seguir o video de atualizacao manual do token (anexado ao procedimento original) para o passo a passo | NOC | ⏱️ — |
-| API ENEL indisponivel (endpoint especifico) | 🟠 | Chubb - Links de API | Analisar o alerta e notificar os contatos da Chubb via e-mail | NOC · e-mail para contatos Chubb | ⏱️ — |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `API ENEL Token autenticador indisponivel (erro 401)` | Chubb - Links de API | 🔴 Crítica | Item `autorization.enel.item`, host 'Chubb - Links de API'. Erros 401 nas APIs ENEL estao associados a necessidade de renovar o token de autorizacao, que expira a cada 1 hora pela complexidade da implementacao — NAO e, em si, uma indisponibilidade da API. | Token de autorizacao expirado (renovacao necessaria a cada 1h). | Seguir o video de atualizacao manual do token (anexado ao procedimento original) para o passo a passo | NOC | — | — | — |
+| `API ENEL indisponivel (endpoint especifico)` | Chubb - Links de API | 🟠 Alta | Item `services.<endpoint>.<regiao>.[Bearer]`, host 'Chubb - Links de API'. Endpoints monitorados: adesao/subscription (CE), faturamento/invoice (SP), customer-address (CE), request-history (RJ). | Indisponibilidade do lado ENEL (externa) ou falha de token/autenticacao (ver ficha propria de token). | Analisar o alerta e notificar os contatos da Chubb via e-mail | NOC | e-mail para contatos Chubb / E-mail (Mayara Polonio, Gabriel Chakrian, Jajyta Biadolla, Priscila Costa (Chu) | — | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Rede / Conectividade</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| API ENEL Token autenticador indisponivel (erro 401) | Item `autorization.enel.item`, host 'Chubb - Links de API'. Erros 401 nas APIs ENEL estao associados a necessidade de renovar o token de autorizacao, que expira a cada 1 hora pela complexidade da implementacao — NAO e, em si, uma indisponibilidade da API. | Token de autorizacao expirado (renovacao necessaria a cada 1h). | Priorizar a atualizacao do token ANTES de tratar como incidente · Acessar o link do Zabbix do host Chubb (filtro latest.view, hostids=10705) · Selecionar o host, clicar em atualizar, recarregar a pagina e verificar a ultima checagem · Atualizar cada estado individualmente |
-| API ENEL indisponivel (endpoint especifico) | Item `services.<endpoint>.<regiao>.[Bearer]`, host 'Chubb - Links de API'. Endpoints monitorados: adesao/subscription (CE), faturamento/invoice (SP), customer-address (CE), request-history (RJ). | Indisponibilidade do lado ENEL (externa) ou falha de token/autenticacao (ver ficha propria de token). | Primeiro descartar o caso do token vencido (ver ficha 'API ENEL Token autenticador indisponivel') · Validar a indisponibilidade diretamente, se possivel |
-
-</details>
+</div>
 
 ##### 🔴 API ENEL Token autenticador indisponivel (erro 401)
 
@@ -742,22 +670,16 @@ Validar indisponibilidade real de um endpoint ENEL e notificar os contatos da Ch
 
 #### Jobs e agendamentos
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC) | 🟠 | Control-M server [IN01] | Arvore de decisao para job Database Oracle (VibeCloud): | Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao) · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC)` | Control-M server [IN01] | 🟠 Alta | 157 alertas, 66 instancias (nomes de job/agente: ABRIR_CHAMADO, ACK, BuscarAlertas, CLAIM, COLETA_FEEDZ, DECIDIR, Disparo3-4, Disparo52, ENDO-FW, ENVIAR, ENVIA_MSG_TEAMS, EnviaMsgZap3-4 e outros). Severidade concentrada em Warning (142), com 5 Disaster e 3 High -- os casos graves tendem a ser 'Server disconnected'/'Server is down', nao falha pontual de um job. Todo job do tipo 'Database Oracle' e relacionado ao VibeCloud. | Perda de comunicacao entre o Control-M e o servidor monitorado, ou falha real na execucao do job/agente nomeado. Para jobs do tipo Database Oracle, a causa se separa em duas: falha da propria procedure (ex.: erro do FLASH) ou falha do Control-M/integracao com o Oracle. | Arvore de decisao para job Database Oracle (VibeCloud): | Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao) | DeskManager | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Jobs e agendamentos</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC) | 157 alertas, 66 instancias (nomes de job/agente: ABRIR_CHAMADO, ACK, BuscarAlertas, CLAIM, COLETA_FEEDZ, DECIDIR, Disparo3-4, Disparo52, ENDO-FW, ENVIAR, ENVIA_MSG_TEAMS, EnviaMsgZap3-4 e outros). Severidade concentrada em Warning (142), com 5 Disaster e 3 High -- os casos graves tendem a ser 'Server disconnected'/'Server is down', nao falha pontual de um job. Todo job do tipo 'Database Oracle' e relacionado ao VibeCloud. | Perda de comunicacao entre o Control-M e o servidor monitorado, ou falha real na execucao do job/agente nomeado. Para jobs do tipo Database Oracle, a causa se separa em duas: falha da propria procedure (ex.: erro do FLASH) ou falha do Control-M/integracao com o Oracle. | Verificar no console do Control-M se o servidor/agente aparece conectado · Se for job do tipo Database Oracle: abrir o OUTPUT do job e checar se a procedure chegou a iniciar · Confirmar se e um evento isolado ou se varios jobs do mesmo agente falharam junto (sintoma de queda do agente, nao dos jobs) |
-
-</details>
+</div>
 
 ##### 🟠 Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC)
 
@@ -817,24 +739,17 @@ Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Supo
 
 #### Segurança e integridade
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| ONESecure — API indisponivel | 🟠 | ONESecure | Validar no link de status. Se persistir por mais de 5 min, abrir chamado com evidencias e horarios. Se for recorrente, pedir ajuste de trigger. | SOC · DeskManager -> fila SOC | ⏱️ 5 min |
-| SOC / ONESecure — Triagem N1 de incidentes (Alto/Critico) | 🟠 | ONESecure | Coletar as 5 evidencias obrigatorias: data/hora (Timestamp/timestamp), severidade (Classificacao do evento ou rule.level), nome/descricao do alerta (Regra/rule.description), host/agente afetado (Agente/agent.name), log/output (JSON ou log do registro). | SOC · DeskManager -> fila SOC | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `ONESecure — API indisponivel` | ONESecure | 🟠 Alta | API do ONESecure fora do ar (http://200.219.199.10:9009/health). | Falha na plataforma ONESecure ou na rede ate ela. | Validar no link de status. Se persistir por mais de 5 min, abrir chamado com evidencias e horarios. Se for recorrente, pedir ajuste de trigger. | SOC | DeskManager -> fila SOC / Teams (analista SOC) | 5 min | [link](https://wiki-noc.prod.cloud.dnxbrasil.com.br/pt-br/vibe/Seguranca/SOC/Procedimentos/status) |
+| `SOC / ONESecure — Triagem N1 de incidentes (Alto/Critico)` | ONESecure | 🟠 Alta | 29 alertas no host 'ONESecure' (grupo Master Support), 27 instancias (numeros de incidente/ticket: INC-AGP-..., INC00000...). Severidades: 18 Disaster, 5 High, 4 Average, 2 Warning. O N1 atua SOMENTE em incidentes Alto ou Critico -- classificacao por 'rule.level': 0-6 Baixo (fora do escopo), 7-11 Medio (fora do escopo), 12-14 Alto (triagem), 15+ Critico (triagem). | Evento de seguranca real detectado pela plataforma (MITRE ATT&CK / monitoramento de logs) classificado como Alto ou Critico. | Coletar as 5 evidencias obrigatorias: data/hora (Timestamp/timestamp), severidade (Classificacao do evento ou rule.level), nome/descricao do alerta (Regra/rule.description), host/agente afetado (Agente/agent.name), log/output (JSON ou log do registro). | SOC | DeskManager -> fila SOC / Teams (analista SOC (somente horario comercial)) | Imediato | [link](https://wiki-noc.prod.cloud.dnxbrasil.com.br/pt-br/vibe/Seguranca/SOC/Procedimentos/status) |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Segurança e integridade</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| ONESecure — API indisponivel | API do ONESecure fora do ar (http://200.219.199.10:9009/health). | Falha na plataforma ONESecure ou na rede ate ela. | Validar no link de status do SOC |
-| SOC / ONESecure — Triagem N1 de incidentes (Alto/Critico) | 29 alertas no host 'ONESecure' (grupo Master Support), 27 instancias (numeros de incidente/ticket: INC-AGP-..., INC00000...). Severidades: 18 Disaster, 5 High, 4 Average, 2 Warning. O N1 atua SOMENTE em incidentes Alto ou Critico -- classificacao por 'rule.level': 0-6 Baixo (fora do escopo), 7-11 Medio (fora do escopo), 12-14 Alto (triagem), 15+ Critico (triagem). | Evento de seguranca real detectado pela plataforma (MITRE ATT&CK / monitoramento de logs) classificado como Alto ou Critico. | Home -> Visao tecnica -> Incidentes: existe registro Alto ou Critico? Se nao, encerrar o fluxo. · Se sim: Detectar -> Dashboard MITRE ATT&CK, filtros Severidade=Alta/Critica e periodo=ultima 1 hora, localizar o evento. · Evento nao localizado no dashboard: Detectar -> Monitoramento de logs, filtrar por rule.level, periodo=ultimos 30 minutos. |
-
-</details>
+</div>
 
 ##### 🟠 ONESecure — API indisponivel
 
@@ -889,28 +804,19 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 > Estes alertas **não vêm do Zabbix**: quem avisa é o próprio sistema de origem, por e-mail ou webhook. Não espere encontrá-los no painel.
 {.is-warning}
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Grafana Integration — Connection prematurely closed BEFORE response | ⚪ | fora do Zabbix | Aguardar o tempo limite. Se nao normalizar, abrir chamado. | Suporte DEV · DeskManager | ⏱️ Imediato |
-| MSMonitor — Erro na sincronizacao de integracao | ⚪ | fora do Zabbix | Aguardar a mensagem de 'normalizada'. Se persistir, ligar para o plantao. | Sobreaviso MSMonitor · Telefone | ⏱️ — |
-| MSMonitor — STALL | ⚪ | fora do Zabbix | Aguardar a recuperacao automatica. Se persistir, acionar o plantao. | Sobreaviso MSMonitor · Telefone | ⏱️ — |
-| Zabbix Integration — Falha na conexao ao executar operacao | ⚪ | fora do Zabbix | Aguardar o tempo limite. Se nao normalizar, abrir chamado. | Suporte DEV · DeskManager | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Grafana Integration — Connection prematurely closed BEFORE response` | fora do Zabbix | ⚪ Não classificada | Conexao encerrada com a API do Grafana antes da resposta. | Instabilidade de rede/API. | Aguardar o tempo limite. Se nao normalizar, abrir chamado. | Suporte DEV | DeskManager | Imediato | — |
+| `MSMonitor — Erro na sincronizacao de integracao` | fora do Zabbix | ⚪ Não classificada | Erro ao carregar alertas de uma integracao (ex.: 'zabb', id 12). | Falha no getAlerts com o Zabbix. | Aguardar a mensagem de 'normalizada'. Se persistir, ligar para o plantao. | Sobreaviso MSMonitor | Telefone (Jordy — (91) 99165-4121) | — | — |
+| `MSMonitor — STALL` | fora do Zabbix | ⚪ Não classificada | Nenhum arquivo de alerta recebido em N verificacoes (coletor parado). | Coletor parado (ex.: cliente Votorantim). | Aguardar a recuperacao automatica. Se persistir, acionar o plantao. | Sobreaviso MSMonitor | Telefone (Jordy — (91) 99165-4121) | — | — |
+| `Zabbix Integration — Falha na conexao ao executar operacao` | fora do Zabbix | ⚪ Não classificada | MSMonitor falhando ao se conectar na API do Zabbix. | Instabilidade de rede/API. | Aguardar o tempo limite. Se nao normalizar, abrir chamado. | Suporte DEV | DeskManager | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Fora do Zabbix</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Grafana Integration — Connection prematurely closed BEFORE response | Conexao encerrada com a API do Grafana antes da resposta. | Instabilidade de rede/API. | — |
-| MSMonitor — Erro na sincronizacao de integracao | Erro ao carregar alertas de uma integracao (ex.: 'zabb', id 12). | Falha no getAlerts com o Zabbix. | Verificar se ja chegou a notificacao 'Integracao normalizada' antes de acionar o sobreaviso |
-| MSMonitor — STALL | Nenhum arquivo de alerta recebido em N verificacoes (coletor parado). | Coletor parado (ex.: cliente Votorantim). | Verificar se ja chegou a notificacao 'Integracao normalizada' antes de acionar o sobreaviso |
-| Zabbix Integration — Falha na conexao ao executar operacao | MSMonitor falhando ao se conectar na API do Zabbix. | Instabilidade de rede/API. | — |
-
-</details>
+</div>
 
 ##### ⚪ Grafana Integration — Connection prematurely closed BEFORE response
 
@@ -981,32 +887,21 @@ Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar 
 
 #### Jobs e agendamentos
 
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">
 
-| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| Agente Control-M desabilitado (disabled) — Votorantim | 🟠 | Control-M PRD Votorantim | FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) — retido no NOC até orientação do N2 | ⏱️ 5 min |
-| Agente Control-M indisponível (Unavailable) — Votorantim | 🟠 | Control-M PRD Votorantim | FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) — retido no NOC até orientação do N2 | ⏱️ 5 min |
-| Control-M Server com erro — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
-| Control-M Server desconectado — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
-| Control-M Server fora do ar — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
-| Control-M Server mudou de versão — Votorantim (DEV) | 🔵 | Control-M DEV Votorantim | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master · ServiceNow (Votorantim) | ⏱️ Imediato |
+<div style="min-width: 1800px;">
+
+| Alerta | Host / Sistema | Severidade | Descrição do Alerta | Causa Provável | Ação Imediata do Operador | Quem Acionar | Canal / Contato | SLA para Escalonar | Link / Referência |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Agente Control-M desabilitado (disabled) — Votorantim` | Control-M PRD Votorantim | 🟠 Alta | Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O agente está desabilitado no Control-M/Server: pode ser desativação manual (manutenção) ou automática após falhas sucessivas. | Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server. | FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha | NOC (N1) → N2 Control-M da Master | ServiceNow (Votorantim) — retido no NOC até orientação do N2 / Teams, com ligação se não houver retorno (N2 de plantão (Roberto Lima (91) 98431-8588 / Jordy Oliveira (91) 9916) | 5 min | — |
+| `Agente Control-M indisponível (Unavailable) — Votorantim` | Control-M PRD Votorantim | 🟠 Alta | Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O Control-M/Server perdeu comunicação com o agente: todos os jobs daquele host param de ser submetidos, com efeito cascata na malha (Late Submission e travamento das cadeias dependentes). | Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server. | FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha | NOC (N1) → N2 Control-M da Master | ServiceNow (Votorantim) — retido no NOC até orientação do N2 / Teams, com ligação se não houver retorno (N2 de plantão (Roberto Lima (91) 98431-8588 / Jordy Oliveira (91) 9916) | 5 min | — |
+| `Control-M Server com erro — Votorantim (DEV)` | Control-M DEV Votorantim | 🔵 Baixa | O servidor Control-M do ambiente DEV reportou erro. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master | ServiceNow (Votorantim) / Teams, com ligação se não houver retorno (N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Ra) | Imediato | — |
+| `Control-M Server desconectado — Votorantim (DEV)` | Control-M DEV Votorantim | 🔵 Baixa | O servidor Control-M do ambiente DEV perdeu conexão. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master | ServiceNow (Votorantim) / Teams, com ligação se não houver retorno (N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Ra) | Imediato | — |
+| `Control-M Server fora do ar — Votorantim (DEV)` | Control-M DEV Votorantim | 🔵 Baixa | O servidor Control-M do ambiente DEV não está respondendo. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master | ServiceNow (Votorantim) / Teams, com ligação se não houver retorno (N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Ra) | Imediato | — |
+| `Control-M Server mudou de versão — Votorantim (DEV)` | Control-M DEV Votorantim | 🔵 Baixa | A versão do servidor Control-M do ambiente DEV mudou — normalmente atualização planejada, mas mudança não comunicada merece confirmação. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Abrir INC no ServiceNow e manter retido no NOC | NOC (N1) → N2 Control-M da Master | ServiceNow (Votorantim) / Teams, com ligação se não houver retorno (N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Ra) | Imediato | — |
 
 </div>
-
-<details>
-<summary>🔍 <strong>Referência técnica — Jobs e agendamentos</strong></summary>
-
-| Alerta | O que significa | Causa provável | Verificações antes de agir |
-| :--- | :--- | :--- | :--- |
-| Agente Control-M desabilitado (disabled) — Votorantim | Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O agente está desabilitado no Control-M/Server: pode ser desativação manual (manutenção) ou automática após falhas sucessivas. | Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server. | FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo · FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha · Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda) · IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar) · Capturar os prints da análise — servem para o chamado e para o e-mail |
-| Agente Control-M indisponível (Unavailable) — Votorantim | Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O Control-M/Server perdeu comunicação com o agente: todos os jobs daquele host param de ser submetidos, com efeito cascata na malha (Late Submission e travamento das cadeias dependentes). | Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server. | FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo · FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha · Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda) · IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar) · Capturar os prints da análise — servem para o chamado e para o e-mail |
-| Control-M Server com erro — Votorantim (DEV) | O servidor Control-M do ambiente DEV reportou erro. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
-| Control-M Server desconectado — Votorantim (DEV) | O servidor Control-M do ambiente DEV perdeu conexão. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
-| Control-M Server fora do ar — Votorantim (DEV) | O servidor Control-M do ambiente DEV não está respondendo. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
-| Control-M Server mudou de versão — Votorantim (DEV) | A versão do servidor Control-M do ambiente DEV mudou — normalmente atualização planejada, mas mudança não comunicada merece confirmação. | Queda, erro ou reinício do Control-M/Server, ou atualização de versão. | Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs · Verificar se houve janela de manutenção comunicada |
-
-</details>
+</div>
 
 ##### 🟠 Agente Control-M desabilitado (disabled) — Votorantim
 
@@ -1169,6 +1064,6 @@ Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
 
 ---
 
-Gerado em 2026-09-06T20:33:10Z · 41 procedimento(s) validado(s) cobrindo 48 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T20:50:16Z · 41 procedimento(s) validado(s) cobrindo 48 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
 
 Fora desta página, por serem atendidos por outro NOC: Banpará.

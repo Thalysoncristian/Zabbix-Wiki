@@ -22,9 +22,10 @@ local, que separa os estados com clareza.
 
 ## Dialeto
 
-Wiki.js — o mesmo do catálogo que o NOC já mantém (`{.is-warning}`,
-`{.tabset}`, `<details>`). O objetivo é que a página gerada seja
-indistinguível, no formato, da que existe hoje; o que muda é a origem.
+Wiki.js — o mesmo do catálogo que o NOC já mantém: `{.is-warning}`,
+`{.tabset}` e a tabela larga de dez colunas dentro do wrapper de rolagem. O
+objetivo é que a página gerada seja indistinguível, no formato, da que existe
+hoje; o que muda é a origem.
 
 A saída é **determinística**: mesma entrada, mesmos bytes. Sem isso não dá
 para versionar o resultado nem enxergar num diff o que mudou de uma geração
@@ -34,6 +35,7 @@ para outra.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -53,6 +55,17 @@ ICONE_SEVERIDADE = {
     "Warning": "🟡",
     "Information": "🔵",
     "Not classified": "⚪",
+}
+
+#: Severidade do Zabbix -> vocabulário do plantão. `Disaster` e
+#: `Not classified` não dizem nada sobre a postura esperada de quem atende.
+SEVERIDADE_PT = {
+    "Disaster": "Crítica",
+    "High": "Alta",
+    "Average": "Média",
+    "Warning": "Média",
+    "Information": "Baixa",
+    "Not classified": "Não classificada",
 }
 
 #: Seção das fichas que não vêm de trigger nenhum. Fica separada de propósito:
@@ -136,6 +149,58 @@ class Entrada:
         if time and canal:
             return f"{time} · {canal}"
         return time or canal or "—"
+
+    @property
+    def quem_acionar(self) -> str:
+        """Só o time. No catálogo ele fica numa coluna própria, separado do
+        canal: quem resolve e por onde falar com ele são perguntas diferentes,
+        e o operador às 3h consulta uma de cada vez."""
+        return str((self.operacional.get("routing") or {}).get("team") or "").strip() or "—"
+
+    @property
+    def canal(self) -> str:
+        """Onde o chamado é aberto e por onde se escala."""
+        rota = self.operacional.get("routing") or {}
+        escalonamento = self.operacional.get("escalation") or {}
+        partes = [
+            str(rota.get("ticket_queue") or "").strip(),
+            str(rota.get("channel") or "").strip(),
+        ]
+        canais = " / ".join(p for p in partes if p)
+        contato = str(escalonamento.get("to") or "").strip()
+        if contato:
+            # Contato entre parênteses colado no canal, como no catálogo do
+            # NOC: "DeskManager / Teams (Rafael Sales)".
+            sufixo = f"({contato[:70]})"
+            return f"{canais} {sufixo}".strip() if canais else sufixo
+        return canais or "—"
+
+    @property
+    def severidade_pt(self) -> str:
+        """Severidade no vocabulário do NOC, não no do Zabbix.
+
+        O operador do plantão fala em Crítica/Alta/Média/Baixa; `Disaster` e
+        `Not classified` são nomes do Zabbix e não dizem nada sobre postura.
+        """
+        return SEVERIDADE_PT.get(self.severidade, self.severidade)
+
+    @property
+    def referencia(self) -> str:
+        """Link ou referência citada no procedimento, se houver.
+
+        Sai do que a pessoa escreveu em `notes` — nunca é inventado. Um
+        procedimento sem referência mostra `—`, e isso é informação: ninguém
+        anexou evidência nem link ainda.
+        """
+        notas = str(self.operacional.get("notes") or "")
+        url = re.search(r"https?://\S+", notas)
+        if url:
+            endereco = url.group(0).rstrip(".,;)")
+            return f"[link]({endereco})"
+        chamado = re.search(r"\b\d{4}-\d{6}\b", notas)  # ex.: 0726-001673
+        if chamado:
+            return f"Ref: {chamado.group(0)}"
+        return "—"
 
 
 def _titulo_do_alerta(doc: Any) -> str:
@@ -235,44 +300,48 @@ def _ordem_secao(nome: str) -> tuple[int, str]:
     return (rotulos.get(nome, len(ORDEM_SECOES) + 1), nome)
 
 
-def _tabela_acao_rapida(entradas: list[Entrada]) -> list[str]:
+#: Colunas do catálogo, na ordem que o NOC já usa na wiki de vocês.
+COLUNAS = (
+    "Alerta", "Host / Sistema", "Severidade", "Descrição do Alerta",
+    "Causa Provável", "Ação Imediata do Operador", "Quem Acionar",
+    "Canal / Contato", "SLA para Escalonar", "Link / Referência",
+)
+
+
+def _tabela_catalogo(entradas: list[Entrada]) -> list[str]:
+    """A tabela larga do catálogo, com o wrapper de rolagem horizontal.
+
+    Dez colunas não cabem na largura de uma página, e sem o `min-width` o
+    navegador espreme as células a ponto de a ação virar uma coluna de duas
+    palavras por linha. O wrapper deixa a tabela rolar em vez de encolher.
+    """
     linhas = [
-        '<div style="width: 100%; overflow-x: auto;">',
+        '<div style="width: 100%; overflow-x: auto; overflow-y: hidden; display: block;">',
         "",
-        "| Alerta | Sev. | Host | Ação imediata do operador | Fila / Contato | Escalonar em |",
-        "| :--- | :---: | :--- | :--- | :--- | :--- |",
+        '<div style="min-width: 1800px;">',
+        "",
+        "| " + " | ".join(COLUNAS) + " |",
+        "| " + " | ".join([":---"] * len(COLUNAS)) + " |",
     ]
     for entrada in entradas:
         acoes = _lista(entrada.operacional.get("actions"))
+        # A primeira ação é a que o operador executa primeiro — por isso abrir
+        # chamado ficou em `actions`, e não em "verificações".
         primeira = acoes[0] if acoes else _lista(entrada.operacional.get("checks_before_action"))
+        hosts = entrada.hosts or ("fora do Zabbix" if entrada.manual else "—")
         linhas.append(
-            f"| {_celula(entrada.titulo)} "
-            f"| {entrada.icone} "
-            f"| {_celula(entrada.hosts or ('—' if not entrada.manual else 'fora do Zabbix'))} "
-            f"| {_celula(primeira)} "
-            f"| {_celula(entrada.fila)} "
-            f"| ⏱️ {_celula(entrada.sla)} |"
-        )
-    linhas.extend(["", "</div>", ""])
-    return linhas
-
-
-def _referencia_tecnica(secao: str, entradas: list[Entrada]) -> list[str]:
-    linhas = [
-        "<details>",
-        f"<summary>🔍 <strong>Referência técnica — {secao}</strong></summary>",
-        "",
-        "| Alerta | O que significa | Causa provável | Verificações antes de agir |",
-        "| :--- | :--- | :--- | :--- |",
-    ]
-    for entrada in entradas:
-        linhas.append(
-            f"| {_celula(entrada.titulo)} "
+            f"| `{_celula(entrada.titulo)}` "
+            f"| {_celula(hosts)} "
+            f"| {entrada.icone} {_celula(entrada.severidade_pt)} "
             f"| {_celula(entrada.operacional.get('meaning'))} "
             f"| {_celula(entrada.operacional.get('probable_cause'))} "
-            f"| {_celula(_lista(entrada.operacional.get('checks_before_action')))} |"
+            f"| {_celula(primeira)} "
+            f"| {_celula(entrada.quem_acionar)} "
+            f"| {_celula(entrada.canal)} "
+            f"| {_celula(entrada.sla)} "
+            f"| {_celula(entrada.referencia)} |"
         )
-    linhas.extend(["", "</details>", ""])
+    linhas.extend(["", "</div>", "</div>", ""])
     return linhas
 
 
@@ -355,8 +424,9 @@ def _matriz_de_acionamento(entradas: list[Entrada]) -> list[str]:
 CABECALHO = """# 📘 Catálogo de Alertas — NOC
 
 Guia operacional para **triagem, abertura de chamado e acionamento correto**
-dos alertas monitorados. Cada categoria traz uma tabela de ação rápida, a
-referência técnica completa e o procedimento detalhado.
+dos alertas monitorados. Cada categoria traz o catálogo completo em tabela —
+descrição, causa, ação, quem acionar, canal e SLA — e o procedimento detalhado
+logo abaixo.
 
 > **Regra de ouro:** nenhum acionamento por Teams ou telefone acontece sem
 > **chamado aberto** e **evidência coletada** (host, horário, print/output).
@@ -445,8 +515,7 @@ def _bloco_do_cliente(registry: ClientRegistry, cliente_id: str,
                 "origem, por e-mail ou webhook. Não espere encontrá-los no painel.\n"
                 "{.is-warning}\n"
             )
-        bloco.extend(_tabela_acao_rapida(itens))
-        bloco.extend(_referencia_tecnica(secao, itens))
+        bloco.extend(_tabela_catalogo(itens))
         for entrada in itens:
             bloco.extend(_detalhe_do_procedimento(entrada))
 

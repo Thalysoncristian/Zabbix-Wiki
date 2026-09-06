@@ -19,7 +19,7 @@ from pathlib import Path
 from src.clients import NAO_CLASSIFICADO, ClientRegistry
 from src.core.models import LEVEL_FAMILY, SCOPE_MANUAL, AlertDoc, empty_operational
 from src.core.repository import AlertRepository
-from src.wiki import SECAO_MANUAL, coletar_entradas, gerar_wiki
+from src.wiki import COLUNAS, SECAO_MANUAL, coletar_entradas, gerar_wiki
 
 
 def operacional(**campos):
@@ -187,7 +187,7 @@ class TestFormato(BaseWiki):
     def test_usa_o_dialeto_do_wikijs(self):
         self.gravar("a", operacional(), zabbix())
         pagina = self.pagina()
-        for marcador in ("{.is-warning}", "{.is-info}", "{.tabset}", "<details>", "```mermaid"):
+        for marcador in ("{.is-warning}", "{.is-info}", "{.tabset}", "```mermaid"):
             self.assertIn(marcador, pagina, f"faltou {marcador}")
 
     def test_severidade_vira_icone(self):
@@ -265,6 +265,56 @@ class TestOrganizacaoPorCliente(BaseWiki):
         """Exceção explícita: host da Vibe, mas o alerta é de outro dono."""
         self.gravar("a", operacional(client="chubb"), zabbix(host="Vibe - Zabbix server"))
         self.assertEqual(self.entradas()[0].cliente, "chubb")
+
+
+class TestCatalogo(BaseWiki):
+    """A tabela larga, no formato que o NOC já usa na wiki de vocês."""
+
+    def test_tem_as_dez_colunas_na_ordem(self):
+        self.gravar("a", operacional(), zabbix())
+        cabecalho = "| " + " | ".join(COLUNAS) + " |"
+        self.assertIn(cabecalho, self.pagina())
+
+    def test_quem_acionar_e_canal_ficam_em_colunas_separadas(self):
+        """São perguntas diferentes: quem resolve, e por onde falar com ele."""
+        op = operacional()
+        op["routing"] = {**op["routing"], "team": "Infraestrutura", "ticket_queue": "DeskManager"}
+        op["escalation"] = {**op["escalation"], "to": "Rafael Sales", "channel": "Teams"}
+        self.gravar("a", op, zabbix())
+
+        linha = next(l for l in self.pagina().splitlines() if l.startswith("| `Disco cheio`"))
+        celulas = [c.strip() for c in linha.strip("|").split("|")]
+        self.assertEqual(celulas[6], "Infraestrutura", "coluna 'Quem Acionar' é só o time")
+        self.assertIn("DeskManager", celulas[7])
+        self.assertIn("(Rafael Sales)", celulas[7], "o contato vem colado no canal")
+
+    def test_severidade_no_vocabulario_do_plantao(self):
+        """`Disaster` não diz nada sobre postura; `Crítica` diz."""
+        self.gravar("a", operacional(), zabbix(severidade="Disaster"))
+        self.assertIn("🔴 Crítica", self.pagina())
+        self.assertNotIn("| Disaster |", self.pagina())
+
+    def test_wrapper_de_rolagem(self):
+        """Dez colunas não cabem na largura da página; sem o min-width o
+        navegador espreme a coluna de ação até virar ilegível."""
+        self.gravar("a", operacional(), zabbix())
+        pagina = self.pagina()
+        self.assertIn('overflow-x: auto', pagina)
+        self.assertIn('min-width: 1800px', pagina)
+
+    def test_referencia_sai_das_notas_e_nao_e_inventada(self):
+        self.gravar("a", operacional(notes="Ver https://wiki.exemplo/status"), zabbix())
+        self.assertIn("[link](https://wiki.exemplo/status)", self.pagina())
+
+        self.gravar("b", operacional(title="Outro", actions=["X"], notes="Ref: 0726-001673"),
+                    zabbix(descricao="Outro alerta"))
+        self.assertIn("Ref: 0726-001673", self.pagina())
+
+    def test_sem_referencia_mostra_travessao(self):
+        """Ausência é informação: ninguém anexou link nem chamado ainda."""
+        self.gravar("a", operacional(notes=""), zabbix())
+        linha = next(l for l in self.pagina().splitlines() if l.startswith("| `Disco cheio`"))
+        self.assertTrue(linha.rstrip().endswith("| — |"))
 
 
 class TestMatrizDeAcionamento(BaseWiki):

@@ -38,7 +38,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
-from ..core.models import build_family_key
+from ..core.models import SCOPE_MANUAL, build_family_key
 from ..core.repository import AlertRepository
 from ..keys import normalize_text, short_hash, slugify
 from ..rules.candidates import build_candidates
@@ -410,11 +410,42 @@ class ReadModel:
         """Lê as fichas de `docs/alerts/` e as liga às famílias pela chave."""
         self.procedures: dict[str, dict[str, Any]] = {}
         repositorio = AlertRepository(self.docs_dir)
-        por_chave = {doc.alert_key: doc for doc in repositorio.all()}
+        fichas = list(repositorio.all())
+        por_chave = {doc.alert_key: doc for doc in fichas}
 
         for familia in self.families.values():
             doc = por_chave.get(familia.key)
             self.procedures[familia.id] = _procedimento(doc, familia)
+
+        self.manual_alerts = self._carregar_manuais(fichas)
+
+    def _carregar_manuais(self, fichas: list[Any]) -> list[dict[str, Any]]:
+        """Fichas de alertas que **não vêm do Zabbix** (`scope: manual`).
+
+        Existem porque nem todo alerta que chega ao NOC nasce de um trigger:
+        RH Cloud e MSMonitor avisam por conta própria (e-mail, webhook). Sem
+        isto, o procedimento fica gravado em disco mas **invisível** para quem
+        só abre a interface — que é exatamente onde o operador procura às 3h.
+
+        Elas não passam pelo filtro de escopo, e não é esquecimento: escopo é
+        recorte por **host**, e um alerta manual não tem host. Aparecem em
+        todas as visões, e a tela diz isso.
+        """
+        manuais = []
+        for doc in fichas:
+            if doc.scope != SCOPE_MANUAL:
+                continue
+            operacional = doc.operational or {}
+            manuais.append({
+                "id": short_hash(doc.alert_key, 12),
+                "alert_key": doc.alert_key,
+                "title": operacional.get("title") or doc.alert_key,
+                "team": (operacional.get("routing") or {}).get("team", ""),
+                "source": operacional.get("imported_from") or "",
+                "procedure": _procedimento(doc, None),
+            })
+        manuais.sort(key=lambda m: m["title"])
+        return manuais
 
     def _construir_regras(self) -> None:
         """Camada de regras operacionais sobre os alertas do escopo.

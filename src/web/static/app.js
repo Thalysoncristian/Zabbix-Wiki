@@ -1125,6 +1125,50 @@ rota(/^\/procedures$/, async (_m, params) => {
   );
 });
 
+/* ------------------------------------------------------- alertas manuais */
+const CAMPOS_MANUAL = [
+  ['meaning', 'O que significa'], ['objective', 'Objetivo'], ['symptoms', 'Sintomas'],
+  ['probable_cause', 'Causa provável'], ['checks_before_action', 'Verificações antes de agir'],
+  ['actions', 'Ações'], ['resolution_criteria', 'Critério de resolução'],
+  ['risks', 'Riscos'], ['notes', 'Observações'],
+];
+
+rota(/^\/manual$/, async (_m, params) => {
+  const dados = await api('/api/manual', params);
+  const { form } = campoBusca(params, 'buscar alerta manual…');
+
+  setView(
+    cabecalho('Alertas manuais',
+      `${num(dados.pagination.total)} alerta(s) documentado(s) que não vêm de trigger do Zabbix`),
+    el('div', { class: 'note' }, dados.note),
+    el('div', { class: 'chips' },
+      el('a', { class: `chip ${!params.status ? 'active' : ''}`, href: comFiltros({ status: '' }) }, 'Todos'),
+      dados.facets.by_status.filter((s) => s.value > 0).map((s) => el('a', {
+        class: `chip ${params.status === s.status ? 'active' : ''}`,
+        href: comFiltros({ status: s.status }),
+      }, `${s.label} (${num(s.value)})`))),
+    form,
+    dados.items.length
+      ? dados.items.map((m) => el('section', { class: 'panel' },
+        el('h2', {}, m.title),
+        el('div', { class: 'chips', style: 'margin-bottom:10px' },
+          badgeProcedimento(m.procedure),
+          m.team ? el('span', { class: 'chip' }, m.team) : null,
+          el('span', { class: 'chip mono' }, m.alert_key)),
+        el('dl', { class: 'kv' },
+          CAMPOS_MANUAL.flatMap(([campo, rotulo]) => {
+            const valor = (m.procedure.operational || {})[campo];
+            const texto = Array.isArray(valor) ? valor.join(' · ') : valor;
+            return texto ? [el('dt', {}, rotulo), el('dd', {}, texto)] : [];
+          }))))
+      : el('div', { class: 'note' }, 'Nenhum alerta manual com este filtro.'),
+    paginador(dados.pagination, (p) => aplicarFiltro({ page: p })),
+    el('div', { class: 'note warn' },
+      'Estas fichas ainda são editadas por arquivo, em docs/alerts/manual__*.json — '
+      + 'a edição pela interface só existe para famílias e regras do snapshot.'),
+  );
+});
+
 /* --------------------------------------------------------------- colisões */
 rota(/^\/collisions$/, async (_m, params) => {
   const dados = await api('/api/collisions', params);

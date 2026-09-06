@@ -388,6 +388,93 @@ class TestProcedimentos(unittest.TestCase):
         self.assertEqual(status, 400)
 
 
+class TestAlertasManuais(unittest.TestCase):
+    """Alertas que não vêm de trigger nenhum (RH Cloud, MSMonitor).
+
+    Existiam em disco e não apareciam na interface: documentados só para quem
+    lesse JSON. O operador às 3h abre a tela, não o `docs/alerts/`.
+    """
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.output = self._tmp.name
+        self.docs = str(Path(self._tmp.name) / "docs" / "alerts")
+        Path(self.docs).mkdir(parents=True, exist_ok=True)
+        montar_snapshot(self.output)
+        self._gravar_manual("manual|rh-cloud-pagamento-negativo", "RH Cloud — PagamentoNegativo",
+                            "Administrativo", "documented")
+        self._gravar_manual("manual|msmonitor-stall", "MSMonitor — STALL",
+                            "Sobreaviso MSMonitor", "pending_review")
+        self.srv = ServidorDeTeste(self.output, self.docs)
+
+    def tearDown(self):
+        self.srv.parar()
+        self._tmp.cleanup()
+
+    def _gravar_manual(self, chave: str, titulo: str, time: str, estado: str) -> None:
+        from src.core.models import SCOPE_MANUAL, AlertDoc, empty_operational
+        from src.core.repository import AlertRepository
+
+        operacional = empty_operational()
+        operacional.update({
+            "doc_status": estado, "title": titulo, "meaning": "Aviso do proprio sistema de origem.",
+            "requires_ticket": True, "resolution_criteria": "Normalizou.",
+            "routing": {**operacional["routing"], "team": time, "ticket_queue": "DeskManager"},
+        })
+        AlertRepository(self.docs).save(AlertDoc(
+            alert_key=chave, scope=SCOPE_MANUAL, family_key=chave, zabbix=None, operational=operacional))
+
+    def get(self, caminho: str) -> Any:
+        status, dados = self.srv.pedir(caminho)
+        self.assertEqual(status, 200, dados)
+        return dados
+
+    def test_lista_os_alertas_manuais(self):
+        dados = self.get("/api/manual")
+        self.assertEqual(dados["pagination"]["total"], 2)
+        titulos = [i["title"] for i in dados["items"]]
+        self.assertEqual(titulos, sorted(titulos), "ordenados por título, para a lista não dançar")
+        self.assertIn("MSMonitor — STALL", titulos)
+
+    def test_traz_o_procedimento_junto(self):
+        item = next(i for i in self.get("/api/manual")["items"] if "PagamentoNegativo" in i["title"])
+        self.assertEqual(item["team"], "Administrativo")
+        self.assertEqual(item["procedure"]["status"], "documented")
+        self.assertEqual(item["procedure"]["operational"]["resolution_criteria"], "Normalizou.")
+
+    def test_filtra_por_estado_do_procedimento(self):
+        dados = self.get("/api/manual?status=draft")
+        self.assertEqual([i["title"] for i in dados["items"]], ["MSMonitor — STALL"])
+        estados = {f["status"]: f["value"] for f in dados["facets"]["by_status"]}
+        self.assertEqual(estados["documented"], 1, "a contagem é do total, não da página filtrada")
+        self.assertEqual(estados["draft"], 1)
+
+    def test_busca_por_texto(self):
+        self.assertEqual(self.get("/api/manual?q=msmonitor")["pagination"]["total"], 1)
+        self.assertEqual(self.get("/api/manual?q=inexistente")["pagination"]["total"], 0)
+
+    def test_estado_invalido_e_recusado(self):
+        """400, o mesmo que `/api/procedures` devolve — filtro inválido é erro
+        de requisição, e as duas rotas não podem divergir nisso."""
+        status, _ = self.srv.pedir("/api/manual?status=talvez")
+        self.assertEqual(status, 400)
+
+    def test_aparecem_no_dashboard(self):
+        """Sem o card, continuariam invisíveis para quem só abre a tela inicial."""
+        cards = {c["key"]: c for c in self.get("/api/dashboard")["cards"]}
+        self.assertEqual(cards["manual"]["value"], 2)
+        self.assertEqual(cards["manual"]["href"], "/manual")
+
+    def test_fichas_de_familia_nao_entram_na_lista_manual(self):
+        """`scope: manual` é o que define a lista — não o nome do arquivo."""
+        familia = self.get("/api/families")["items"][0]
+        status, _ = self.srv.pedir(
+            f"/api/procedures/{familia['id']}", "POST",
+            {"operational": {"doc_status": "pending_review", "meaning": "ficha normal de família"}})
+        self.assertEqual(status, 200)
+        self.assertEqual(self.get("/api/manual")["pagination"]["total"], 2)
+
+
 class TestSeguranca(BaseWeb):
     def test_a_web_nao_importa_o_cliente_zabbix(self):
         """A garantia de somente leitura é estrutural, não uma promessa.

@@ -971,6 +971,7 @@ GET  /api/host-groups            grupos com hosts, alertas e severidades
 GET  /api/host-groups/<slug>     hosts, famílias e alertas do grupo
 GET  /api/procedures             famílias por estado do procedimento
 POST /api/procedures/<família>   grava o procedimento LOCAL  ← única escrita
+GET  /api/manual                 alertas documentados que não vêm do Zabbix
 GET  /api/collisions             colisões com os triggers envolvidos
 GET  /api/status                 snapshot em uso, execução da coleta, redação
 GET  /api/search?q=              busca global agrupada por tipo
@@ -1067,6 +1068,26 @@ python main.py serve       # http://127.0.0.1:8000
 ```bash
 python -m unittest discover -s tests -t .
 ```
+
+---
+
+### Alertas manuais — o que não nasce de um trigger
+
+Nem todo alerta que chega ao NOC vem do Zabbix. RH Cloud e MSMonitor avisam por
+conta própria (e-mail, webhook), e o procedimento deles é tão operacional
+quanto o de um trigger. Essas fichas usam `scope: manual` e vivem na mesma
+`docs/alerts/` — sem repositório paralelo, sem segunda máquina de estados.
+
+Elas aparecem em **Alertas manuais** na barra lateral e num card do dashboard.
+Estar em disco não bastava: um procedimento que só existe para quem lê JSON
+não serve ao operador às 3h, que abre a tela.
+
+O escopo operacional **não** as filtra, e isso é decisão, não esquecimento:
+escopo recorta por host, e um alerta manual não tem host. A tela diz isso.
+
+O `reconcile` também não as toca — ele só marca como ausente o que tem
+`scope: zabbix`, então uma coleta nova nunca declara desaparecido um alerta que
+nunca esteve lá.
 
 ---
 

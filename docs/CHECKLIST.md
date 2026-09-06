@@ -78,8 +78,10 @@ marcado aqui, com a data e o commit.
 
 - [ ] **Validar os 78 rascunhos técnicos** (`pending_review` → `documented`)
   Cada um já tem contexto, sintomas, verificações e ressalvas escritas. Falta o
-  que só vocês sabem: time, fila, SLA e critério de resolução.
-  → `python main.py serve` → Regras → filtrar "Rascunho"
+  que só vocês sabem: abre chamado?, time, fila e critério de resolução.
+  → **A fila de execução, ficha por ficha, está em
+  [TRABALHO-BRACAL.md](TRABALHO-BRACAL.md)** — agrupada por cliente e categoria,
+  com checkbox para ir marcando.
   → *Impacto:* leva a wiki de 41 para ~110 procedimentos.
 
 - [ ] **451 fichas sem procedimento nenhum**

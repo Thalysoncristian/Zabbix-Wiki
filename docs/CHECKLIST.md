@@ -4,7 +4,7 @@ Estado do projeto e o que falta. Atualizado a cada entrega — item concluído �
 marcado aqui, com a data e o commit.
 
 **Atualizado em:** 2026-09-06
-**Situação:** 51 validadas · 78 rascunhos · 451 sem procedimento · 24 não aplicáveis · wiki com 4 clientes
+**Situação:** 51 validadas · 79 rascunhos · 450 sem procedimento · 24 não aplicáveis · wiki com 4 clientes
 
 ---
 
@@ -84,9 +84,12 @@ marcado aqui, com a data e o commit.
   com checkbox para ir marcando.
   → *Impacto:* leva a wiki de 41 para ~110 procedimentos.
 
-- [ ] **451 fichas sem procedimento nenhum**
-  São famílias técnicas que nenhuma regra cobre ou que ninguém tocou. A maioria
-  é cauda longa de baixo volume.
+- [ ] **450 fichas sem procedimento nenhum** (413 em clientes nossos)
+  São famílias técnicas que nenhuma regra cobre ou que ninguém tocou.
+  → **Documentação assistida por IA:** o briefing está em
+  [PROMPT-AGENTE-IA.md](PROMPT-AGENTE-IA.md) e o registro das sessões em
+  [PROGRESSO-IA.md](PROGRESSO-IA.md). A IA escreve o rascunho técnico; time,
+  fila e SLA continuam sendo do humano.
   → `python main.py status` mostra a contagem.
 
 - [ ] **SAQ e Strada ainda não aparecem na wiki**
@@ -147,9 +150,12 @@ marcado aqui, com a data e o commit.
   Quando o Zabbix muda um trigger documentado, a ficha cai nesse estado. Falta
   dono.
 
-- [ ] **Publicar a wiki no Wiki.js**
-  `python main.py wiki` gera [wiki-noc.md](wiki-noc.md) pronto pra colar. Falta
-  definir onde publica e com que frequência regenera.
+- [ ] **Publicar a wiki no Wiki.js** — *prematuro por enquanto*
+  `python main.py wiki` gera [wiki-noc.md](wiki-noc.md) pronto pra colar, mas
+  com 41 procedimentos de um universo de ~110 nos rascunhos (e 450 sem nada), a
+  página ainda cobre pouco do que o plantão encontra. Vale publicar quando os
+  rascunhos estiverem validados. O gerador não envelhece esperando: é um
+  comando, roda quando quiser.
 
 ---
 

@@ -6,10 +6,10 @@
   "family_key": "lld|vibe-deskmanager-api|ms-chamadosv3-sh|codchamado-assunto-aguardando-cliente-5-dias-uteis",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
-  "last_modified_at": "2026-09-06T00:14:39Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T21:07:02.725862Z",
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "draft",
   "instances": [
     {
       "alert_key": "vibe-deskmanager-api|0126-000194-sistemas-e-aplicativos-msmonitor-implementar-aguardando-cliente-5-dias-uteis",
@@ -1770,18 +1770,30 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
+    "doc_status": "pending_review",
+    "title": "Chamado do DeskManager aguardando retorno do cliente (5 dias úteis)",
     "objective": "",
-    "symptoms": [],
-    "actions": [],
+    "symptoms": [
+      "'<código>: <assunto> - Aguardando cliente (5 dias uteis)' — ex.: '0325-000383: Vibe Cloud - RH - Melhoria - Aguardando cliente (5 dias uteis)'"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem cobra o retorno do cliente — o time dono do chamado ou o NOC",
+      "[A DEFINIR] Se o alerta gera ação ou é só indicador de SLA para relatório"
+    ],
     "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "risks": [
+      "O host 'Vibe - DeskManager API' concentra 1.111 alertas em 7 famílias parecidas (aguardando cliente, aguardando setor, chamado defasado, chamado aguardando grupo). São estágios diferentes do MESMO chamado e há 833 dependências entre triggers — não tratar cada alerta como um incidente distinto.",
+      "Severidade Information subestima: é acompanhamento de SLA contratual, não ruído. Mas também não é incidente técnico — confundir os dois gera chamado à toa."
+    ],
+    "meaning": "277 alertas no host 'Vibe - DeskManager API', um por chamado aberto. O item `temporestante2.[<código do chamado>]` mede o tempo restante de atendimento; este trigger dispara quando o chamado fica 5 dias úteis aguardando retorno do CLIENTE. Severidade uniforme Information — o alerta é de acompanhamento de SLA, não de falha técnica. Vem da regra de LLD 'Atualiza', que descobre um item por chamado aberto.",
+    "probable_cause": "O chamado depende de informação ou aprovação do cliente e não teve movimentação no prazo acordado. Não é falha de sistema.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
+    "checks_before_action": [
+      "Abrir o chamado no DeskManager pelo código que vem no início do alerta",
+      "Confirmar se a pendência é mesmo do cliente ou se ficou parada do lado interno",
+      "Verificar a data da última interação registrada"
+    ],
     "requires_ticket": null,
     "routing": {
       "team": "",
@@ -1801,7 +1813,7 @@
       "channel": ""
     },
     "resolution_criteria": "",
-    "notes": "",
+    "notes": "Rascunho técnico escrito por IA a partir do dado do Zabbix (docs/PROMPT-AGENTE-IA.md). Time, fila, SLA e critério de resolução ficam em branco de propósito: são conhecimento organizacional. A regra 'vibe-tecnologia--ticket' agrega esta família e as outras 6.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

@@ -24,7 +24,7 @@ from .clients import NAO_CLASSIFICADO, ClientRegistry
 from .collect import RawSnapshot, collect_raw, partial_snapshot_of
 from .config import ConfigError, load_settings
 from .core.repository import AlertRepository
-from .core.status import DOCUMENTED_STATUSES, UNDOCUMENTED
+from .core.status import DOCUMENTED_STATUSES, NOT_APPLICABLE, UNDOCUMENTED
 from .merge import merge_raw_snapshots
 from .normalize import normalize_snapshot
 from .progress import ConsoleProgress
@@ -683,10 +683,18 @@ def cmd_status(args: argparse.Namespace) -> int:
         por_nivel[doc.doc_level] = por_nivel.get(doc.doc_level, 0) + 1
 
     documentadas = sum(qtd for st, qtd in por_status.items() if st in DOCUMENTED_STATUSES)
-    cobertura = documentadas / len(fichas) * 100
+    # Ficha marcada como não aplicável (alerta de teste, por exemplo) sai do
+    # denominador: ela já foi resolvida — decidiu-se que não tem procedimento.
+    # Mantê-la ali faria a cobertura parecer pior do que é e nunca chegaria a
+    # 100%, por mais que o time documentasse tudo que importa.
+    nao_aplicaveis = por_status.get(NOT_APPLICABLE, 0)
+    pendentes = len(fichas) - nao_aplicaveis
+    cobertura = documentadas / pendentes * 100 if pendentes else 100.0
 
     print(f"Fichas       : {len(fichas)}")
-    print(f"Cobertura    : {documentadas}/{len(fichas)} ({cobertura:.1f}%) documentadas ou revisadas")
+    print(f"Cobertura    : {documentadas}/{pendentes} ({cobertura:.1f}%) documentadas ou revisadas")
+    if nao_aplicaveis:
+        print(f"               ({nao_aplicaveis} não aplicáveis fora da conta — alerta de teste e afins)")
     print(f"Instâncias   : {por_nivel.get('instance', 0)}   Famílias: {por_nivel.get('family', 0)}")
     print(f"Ausentes     : {sum(1 for d in fichas if not d.present_in_zabbix)} não vistas na última coleta do escopo")
     print()

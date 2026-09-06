@@ -1169,6 +1169,6 @@ Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
 
 ---
 
-Gerado em 2026-09-06T20:27:52Z · 41 procedimento(s) validado(s) cobrindo 48 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T20:33:10Z · 41 procedimento(s) validado(s) cobrindo 48 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
 
 Fora desta página, por serem atendidos por outro NOC: Banpará.

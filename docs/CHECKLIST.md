@@ -4,7 +4,7 @@ Estado do projeto e o que falta. Atualizado a cada entrega — item concluído �
 marcado aqui, com a data e o commit.
 
 **Atualizado em:** 2026-09-06
-**Situação:** 51 fichas validadas · 80 rascunhos · 473 sem procedimento · wiki gerando 4 clientes
+**Situação:** 51 validadas · 78 rascunhos · 451 sem procedimento · 24 não aplicáveis · wiki com 4 clientes
 
 ---
 
@@ -53,43 +53,36 @@ marcado aqui, com a data e o commit.
   → Ajuste em [clients.json](../clients.json) e rode `python main.py wiki`.
   *(Os 4 roteadores foram confirmados — ver Concluído.)*
 
-- [ ] **Desabilitar no Zabbix os 5 triggers de teste que são de vocês**
-  | Trigger | Host | Severidade |
-  |---|---|---|
-  | `102365` — TESTE Indisponível | Desk Manager | **Disaster** |
-  | `23404` — Alerte para Teste, Favor Desconciderar | Vibe - Ferramentas Internas | **Disaster** |
-  | `642537` — TESTE TEAMS DENISON - Linux: has been restarted | Vibe - Zabbix server | High |
-  | `24036` — TESTE Uso de CPU > 70% | Vibe - Grafana | Not classified |
-  | `24072` — TESTE CPU Load | Vibe - Grafana | Not classified |
-  → Ação de vocês **no Zabbix**: o Zabbix-Wiki é read-only por construção e
-  nunca escreve lá. Depois, `python main.py collect` e eles somem sozinhos.
-  → *Não criar filtro automático por "TESTE" no nome* — ver a nota em Concluído.
-
-- [ ] **`[TESTE - DENISON]` no Control-M PRD Votorantim — 8.131 alertas**
-  Metade do ambiente inteiro. Já está fora do escopo do NOC (regra de LLD), mas
-  continua existindo no Zabbix do cliente. Vale confirmar com a Votorantim se
-  esse protótipo de trigger deveria estar em produção.
+- [ ] **7 fichas de regra com alerta de teste no meio**
+  Não dava para marcar como não aplicável: cobrem alertas legítimos junto.
+  | Ficha | Teste / total |
+  |---|---|
+  | `rule\|applications--api_web` (Pagol) | 32 de 34 |
+  | `rule\|applications--cpu` | 5 de 7 |
+  | `rule\|applications--job` (Control-M) | 8.127 de 16.479 |
+  | `rule\|cliente-carguero--api_web` | 15 de 44 |
+  | `rule\|applications--service` | 1 de 4 |
+  | `rule\|vibe-tecnologia--api_web` | 1 de 13 |
+  | `rule\|zabbix-servers--system_state` | 1 de 15 |
+  → *Decisão de vocês:* separar os triggers de teste no Zabbix resolveria na
+  origem. Enquanto isso, as regras seguem documentáveis normalmente.
 
 - [ ] **Definir a tolerância de perda de pacotes em link**
   A ficha de `ICMP: High ICMP ping loss` nos roteadores ficou como rascunho por
   causa disso: a wiki de rede não diz por quanto tempo tolerar antes de acionar
   a operadora, e acionar a cada oscilação queima o canal.
 
-- [ ] **`applications--api_web` (Pagol/Bankeiro) é produção?**
-  Os 30 alertas têm prefixo `TESTE`. Cliente atendido por outro NOC — pode ser
-  que nem precise de procedimento nosso.
-
 ---
 
 ## 🟡 Documentação — o grosso do trabalho
 
-- [ ] **Validar os 79 rascunhos técnicos** (`pending_review` → `documented`)
+- [ ] **Validar os 78 rascunhos técnicos** (`pending_review` → `documented`)
   Cada um já tem contexto, sintomas, verificações e ressalvas escritas. Falta o
   que só vocês sabem: time, fila, SLA e critério de resolução.
   → `python main.py serve` → Regras → filtrar "Rascunho"
-  → *Impacto:* leva a wiki de 37 para ~110 procedimentos.
+  → *Impacto:* leva a wiki de 41 para ~110 procedimentos.
 
-- [ ] **479 fichas sem procedimento nenhum**
+- [ ] **451 fichas sem procedimento nenhum**
   São famílias técnicas que nenhuma regra cobre ou que ninguém tocou. A maioria
   é cauda longa de baixo volume.
   → `python main.py status` mostra a contagem.
@@ -199,6 +192,16 @@ marcado aqui, com a data e o commit.
   **Por isso não existe filtro automático por "TESTE"**: ele esconderia jobs de
   produção e um incidente de segurança — exatamente a falha silenciosa que o
   escopo evita — 2026-09-06
+- [x] **Tirar os alertas de teste da base** — 24 fichas marcadas como
+  `not_applicable`, com o motivo registrado. Não foram apagadas de propósito: o
+  `reconcile` da próxima coleta recriaria cada uma como `undocumented` e a
+  poluição voltaria. Uma ficha de regra só foi marcada quando **todos** os
+  alertas cobertos eram de teste — 7 ficaram intocadas por terem alerta
+  legítimo junto — 2026-09-06 `dbfaee1`
+- [x] **Cobertura não conta mais o que não se aplica** — `python main.py status`
+  tirou as `not_applicable` do denominador. Antes, alerta de teste contava como
+  dívida e a cobertura nunca chegaria a 100% por mais que o time documentasse
+  tudo que importa — 2026-09-06 `dbfaee1`
 
 ---
 

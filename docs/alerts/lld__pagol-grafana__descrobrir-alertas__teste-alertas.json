@@ -7,9 +7,9 @@
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:38Z",
   "last_modified_at": "2026-09-06T00:14:38Z",
-  "revision": 0,
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "not_applicable",
   "instances": [
     {
       "alert_key": "pagol-grafana|teste-apigateway-api-conta-bankeiro-plans-prod-com-erros-acima-de-20",
@@ -351,7 +351,7 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
+    "doc_status": "not_applicable",
     "title": "",
     "objective": "",
     "symptoms": [],
@@ -382,7 +382,7 @@
       "channel": ""
     },
     "resolution_criteria": "",
-    "notes": "",
+    "notes": "Alerta de TESTE — não é ocorrência real e não tem procedimento operacional. Marcado como não aplicável para não poluir a base nem os indicadores de cobertura. A ficha é preservada de propósito: apagar o arquivo faria o `reconcile` recriá-la como `undocumented` na próxima coleta.",
     "imported_from": null,
     "reviewed_by": "",
     "reviewed_at": null,

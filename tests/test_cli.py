@@ -87,5 +87,46 @@ class TestSaidaNoConsoleWindows(unittest.TestCase):
             cli.configure_console_encoding()  # não pode levantar nada
 
 
+
+class TestCoberturaIgnoraNaoAplicavel(unittest.TestCase):
+    """Ficha marcada como não aplicável sai do denominador da cobertura.
+
+    Alerta de teste não tem procedimento porque não é ocorrência real — a
+    decisão já foi tomada. Contá-lo como dívida faria a cobertura parecer pior
+    do que é, e ela nunca chegaria a 100% por mais que o time documentasse
+    tudo que importa.
+    """
+
+    def _status(self, estados: list[str]) -> str:
+        from src.core.models import LEVEL_FAMILY, AlertDoc, empty_operational
+        from src.core.repository import AlertRepository
+
+        with tempfile.TemporaryDirectory() as tmp:
+            repositorio = AlertRepository(tmp)
+            for indice, estado in enumerate(estados):
+                operacional = empty_operational()
+                operacional["doc_status"] = estado
+                repositorio.save(AlertDoc(alert_key=f"a{indice}", doc_level=LEVEL_FAMILY,
+                                          zabbix={}, operational=operacional))
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                cli.main(["status", "--docs-dir", tmp])
+            return buffer.getvalue()
+
+    def test_nao_aplicavel_sai_do_denominador(self):
+        saida = self._status(["documented", "undocumented", "not_applicable", "not_applicable"])
+        self.assertIn("1/2", saida, "4 fichas, 2 não aplicáveis: a conta é sobre 2")
+        self.assertIn("2 não aplicáveis fora da conta", saida)
+
+    def test_sem_nao_aplicavel_a_conta_e_sobre_o_total(self):
+        saida = self._status(["documented", "undocumented"])
+        self.assertIn("1/2", saida)
+        self.assertNotIn("fora da conta", saida)
+
+    def test_tudo_nao_aplicavel_nao_divide_por_zero(self):
+        saida = self._status(["not_applicable", "not_applicable"])
+        self.assertIn("100.0%", saida)
+
+
 if __name__ == "__main__":
     unittest.main()

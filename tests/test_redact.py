@@ -130,6 +130,92 @@ class TestEstruturas(unittest.TestCase):
         self.assertIn("REDACTED", relatorio["note"])
 
 
+class TestSegredoSemAspas(unittest.TestCase):
+    """Casos reais achados em triggers de PIX do ambiente coletado.
+
+    Os dois passavam batido: a redação cobria `--clientsecret, "valor"` (com
+    aspas) e deixava `--clientsecret,valor` — o mesmo segredo, escrito do jeito
+    que a chave de item do Zabbix realmente usa.
+    """
+
+    #: Formato real do trigger, com vírgula separando parâmetro e valor.
+    PIX = ('pix.check[--url,{$PIX_API_URL},--clientid,monitor@exemplo.com,'
+           '--clientsecret,21232F297A57A5A743894A0E4A801FC3,'
+           '--hmacsecret,77331094e9ab7c1de9e306b210f4c8a1]')
+
+    def test_clientsecret_separado_por_virgula(self):
+        redigido, _ = redact_text(self.PIX)
+        self.assertNotIn("21232F297A57A5A743894A0E4A801FC3", redigido)
+
+    def test_hmacsecret_tambem_e_segredo(self):
+        """`secret` puro nunca casava dentro de `hmacsecret`: o lookbehind
+        exige começo de palavra, e antes de `secret` vinha `hmac`."""
+        redigido, _ = redact_text(self.PIX)
+        self.assertNotIn("77331094e9ab7c1de9e306b210f4c8a1", redigido)
+
+    def test_o_que_nao_e_segredo_continua_legivel(self):
+        """Redigir não pode destruir a utilidade do alerta."""
+        redigido, total = redact_text(self.PIX)
+        self.assertEqual(total, 2)
+        self.assertIn("pix.check", redigido)
+        self.assertIn("--clientid,monitor@exemplo.com", redigido, "usuário não é segredo")
+        self.assertIn("{$PIX_API_URL}", redigido, "macro é referência, não valor")
+
+    def test_virgula_nao_cria_falso_positivo(self):
+        """A vírgula agora separa nome de valor — não pode redigir parâmetro
+        legítimo de chave de item."""
+        for texto in ("last(/host/trap[token,5m])>0", "min(/host/icmpping,5m)=0"):
+            _, total = redact_text(texto)
+            self.assertEqual(total, 0, texto)
+
+
+class TestAlertaNormalizado(unittest.TestCase):
+    """A redação também precisa alcançar o alerta JÁ normalizado.
+
+    No fluxo normal ela roda antes da normalização, então bastariam os nomes
+    do snapshot bruto. Mas um snapshot coletado por uma versão anterior à
+    redação só pode ser limpo depois — e aí os campos já se chamam
+    `expression_expanded`, `expression_signature` e afins. Sem eles na
+    allowlist, a função não encontrava nada e devolvia "0 valores redigidos"
+    sobre um arquivo que tinha a credencial em texto claro.
+    """
+
+    def _alerta(self):
+        return {
+            "alert_key": "saq-aws|lambda-erro",
+            "alert_key_basis_description": "Lambda com erro",
+            "zabbix": {
+                "triggerid": "77",
+                "description_raw": "Lambda está a registrar erros",
+                "expression_raw": "{71870} >= 5",
+                "expression_expanded": EXPRESSAO_REAL,
+                "expression_signature": EXPRESSAO_REAL.replace("/Saq - AWS/", "/{HOST}/"),
+                "recovery_expression_expanded": "",
+            },
+        }
+
+    def test_redige_os_campos_derivados_da_normalizacao(self):
+        redigido, total = redact_value(self._alerta())
+        zbx = redigido["zabbix"]
+        self.assertGreater(total, 0, "a credencial precisa ser encontrada no alerta normalizado")
+        for campo in ("expression_expanded", "expression_signature"):
+            self.assertNotIn("AKIAIOSFODNN7EXAMPLE", zbx[campo], f"{campo} continuou com a chave")
+            self.assertIn("[REDACTED:", zbx[campo])
+
+    def test_nao_toca_no_que_nao_e_segredo(self):
+        redigido, _ = redact_value(self._alerta())
+        self.assertEqual(redigido["zabbix"]["triggerid"], "77")
+        self.assertEqual(redigido["zabbix"]["description_raw"], "Lambda está a registrar erros")
+
+    def test_redigir_duas_vezes_nao_muda_nada(self):
+        """Idempotência: sem isso, uma segunda passada mudaria o hash e jogaria
+        a documentação inteira em `review_needed` sem motivo."""
+        uma_vez, _ = redact_value(self._alerta())
+        duas_vezes, total = redact_value(uma_vez)
+        self.assertEqual(duas_vezes, uma_vez)
+        self.assertEqual(total, 0)
+
+
 class TestDeteccao(unittest.TestCase):
     def test_contains_secret(self):
         self.assertTrue(contains_secret(EXPRESSAO_REAL))

@@ -82,20 +82,63 @@ class OperationalScope:
     exclude_host_patterns: tuple[str, ...] = ()
     include_hosts: tuple[str, ...] = ()
     include_host_patterns: tuple[str, ...] = ()
+    #: Pares `(host, regra de LLD)` a esconder — o recorte fino, quando excluir
+    #: o host inteiro é grosso demais. Ver `includes_alert`.
+    exclude_discovery_rules: tuple[tuple[str, str], ...] = ()
 
     @property
     def is_everything(self) -> bool:
         """`True` quando o escopo não filtra nada."""
         return not (self.exclude_hosts or self.exclude_host_patterns
-                    or self.include_hosts or self.include_host_patterns)
+                    or self.include_hosts or self.include_host_patterns
+                    or self.exclude_discovery_rules)
 
     @property
     def mode(self) -> str:
         if self.include_hosts or self.include_host_patterns:
             return "include"
-        if self.exclude_hosts or self.exclude_host_patterns:
+        if self.exclude_hosts or self.exclude_host_patterns or self.exclude_discovery_rules:
             return "exclude"
         return "everything"
+
+    def includes_alert(self, alerta: dict[str, Any]) -> bool:
+        """O alerta está no escopo? Decide por host e, depois, por regra de LLD.
+
+        Excluir só por host é grosso demais em um caso real: o host
+        `Control-M PRD Votorantim` tem 16.262 alertas de job — que o NOC não
+        analisa, porque a malha é acompanhada no próprio Control-M — e 60
+        alertas de agente fora, que o NOC **atende** e tem procedimento
+        escrito. Tirar o host inteiro escondia os 60 junto com os 16 mil.
+
+        A regra de descoberta separa os dois sem precisar listar alerta por
+        alerta: `Jobs` sai, `Agent discovery` fica.
+        """
+        zbx = alerta.get("zabbix") or {}
+        host = zbx.get("host") or {}
+        if not self.includes_host(str(host.get("name") or ""), str(host.get("host") or "")):
+            return False
+
+        if not self.exclude_discovery_rules:
+            return True
+
+        regra = str(((zbx.get("discovery_rule") or {}).get("name")) or "")
+        if not regra:
+            # Alerta que não veio de LLD não é alcançado por esta regra: ela
+            # fala de descoberta, e ele não foi descoberto.
+            return True
+
+        nomes = [n for n in (host.get("name"), host.get("host")) if n]
+        for host_padrao, regra_padrao in self.exclude_discovery_rules:
+            casa_host = any(
+                nome.strip().casefold() == host_padrao.strip().casefold()
+                or fnmatch.fnmatch(nome, host_padrao)
+                for nome in nomes
+            )
+            casa_regra = (regra.strip().casefold() == regra_padrao.strip().casefold()
+                          or fnmatch.fnmatch(regra, regra_padrao))
+            if casa_host and casa_regra:
+                return False
+        return True
 
     def includes_host(self, *names: str) -> bool:
         """O host está no escopo?
@@ -136,6 +179,9 @@ class OperationalScope:
             "exclude_host_patterns": list(self.exclude_host_patterns),
             "include_hosts": list(self.include_hosts),
             "include_host_patterns": list(self.include_host_patterns),
+            "exclude_discovery_rules": [
+                {"host": host, "rule": regra} for host, regra in self.exclude_discovery_rules
+            ],
         }
 
 
@@ -178,6 +224,37 @@ def _tupla(valor: Any, campo: str, escopo: str) -> tuple[str, ...]:
     return tuple(v for v in valor if v.strip())
 
 
+def _regras_de_descoberta(valor: Any, escopo: str) -> tuple[tuple[str, str], ...]:
+    """Lê `exclude_discovery_rules`: pares `{host, rule}`.
+
+    Exige os dois campos de propósito. Uma regra sem host valeria para o
+    ambiente inteiro — e `Jobs` é um nome de LLD genérico o bastante para
+    existir em vários clientes, então uma exclusão global esconderia coisa de
+    quem ninguém mandou esconder.
+    """
+    if valor is None:
+        return ()
+    if not isinstance(valor, list):
+        raise ScopeError(f"Escopo {escopo!r}: 'exclude_discovery_rules' precisa ser uma lista.")
+
+    pares: list[tuple[str, str]] = []
+    for item in valor:
+        if not isinstance(item, dict):
+            raise ScopeError(
+                f"Escopo {escopo!r}: cada item de 'exclude_discovery_rules' precisa ser "
+                "um objeto com 'host' e 'rule'."
+            )
+        host = str(item.get("host") or "").strip()
+        regra = str(item.get("rule") or "").strip()
+        if not host or not regra:
+            raise ScopeError(
+                f"Escopo {escopo!r}: 'exclude_discovery_rules' exige 'host' e 'rule' "
+                "preenchidos — uma regra sem host esconderia alertas de outros clientes."
+            )
+        pares.append((host, regra))
+    return tuple(pares)
+
+
 def parse_scopes(payload: dict[str, Any], source: str = "") -> ScopeConfig:
     """Constrói a configuração a partir do dicionário do `scopes.json`."""
     if not isinstance(payload, dict):
@@ -202,6 +279,7 @@ def parse_scopes(payload: dict[str, Any], source: str = "") -> ScopeConfig:
             exclude_host_patterns=_tupla(bruto.get("exclude_host_patterns"), "exclude_host_patterns", identificador),
             include_hosts=_tupla(bruto.get("include_hosts"), "include_hosts", identificador),
             include_host_patterns=_tupla(bruto.get("include_host_patterns"), "include_host_patterns", identificador),
+            exclude_discovery_rules=_regras_de_descoberta(bruto.get("exclude_discovery_rules"), identificador),
         )
         if escopo.mode == "include" and (escopo.exclude_hosts or escopo.exclude_host_patterns):
             raise ScopeError(

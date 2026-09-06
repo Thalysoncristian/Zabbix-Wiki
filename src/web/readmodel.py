@@ -183,7 +183,10 @@ def _particionar(
     dentro: list[dict[str, Any]] = []
     fora: list[dict[str, Any]] = []
     for alerta in alertas:
-        (dentro if scope.includes_host(*_nomes_do_host(alerta)) else fora).append(alerta)
+        # `includes_alert` e não `includes_host`: o escopo também recorta por
+        # regra de descoberta, para poder esconder os 16 mil jobs de um host
+        # sem levar junto os alertas de agente do mesmo host.
+        (dentro if scope.includes_alert(alerta) else fora).append(alerta)
     return dentro, fora
 
 

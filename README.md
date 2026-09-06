@@ -1139,6 +1139,35 @@ perigosa num painel de plantão. `include_hosts` existe para escopos de
 investigação ("só o Control-M", "só o Cliente X"), onde a lista fechada É a
 intenção — nunca para a visão principal.
 
+### Recorte fino: excluir uma família, não o host inteiro
+
+Excluir por host é grosso demais em pelo menos um caso real. O
+`Control-M PRD Votorantim` tem 16.262 alertas de job — que o NOC não analisa,
+porque a malha é acompanhada dentro do Control-M do próprio cliente — e **60
+alertas de agente fora**, que o NOC atende e tem procedimento escrito (fases,
+matriz de tolerância de 5/10 minutos, escalonamento N2→N3).
+
+Excluir o host escondia os 60 junto com os 16 mil. O sintoma só apareceu ao
+documentar: o procedimento existia e o alerta não aparecia no painel.
+
+```json
+"exclude_discovery_rules": [
+  { "host": "Control-M PRD Votorantim", "rule": "Jobs" }
+]
+```
+
+`Jobs` sai, `Agent discovery` fica. Os dois campos são obrigatórios: uma regra
+sem host valeria para o ambiente inteiro, e `Jobs` é um nome de LLD genérico o
+bastante para existir em outros clientes.
+
+Como um host passa a entrar **em parte**, `python main.py scope` deixou de
+dizer só "dentro" ou "FORA" e passa a mostrar a fração:
+
+```
+   alertas     LLD   %amb  escopo        host
+     16326   16322    86%  64 de 16326   Control-M PRD Votorantim
+```
+
 ### Configuração: `scopes.json`
 
 ```json

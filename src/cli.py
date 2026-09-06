@@ -534,10 +534,12 @@ def cmd_scope(args: argparse.Namespace) -> int:
     for item in configuracao.listar():
         marca = "→" if item["id"] == escopo.id else " "
         padrao = " (padrão)" if item["is_default"] else ""
-        regra = ", ".join(item["exclude_hosts"] + item["exclude_host_patterns"]
-                          + item["include_hosts"] + item["include_host_patterns"]) or "sem filtro"
+        filtros = list(item["exclude_hosts"] + item["exclude_host_patterns"]
+                       + item["include_hosts"] + item["include_host_patterns"])
+        filtros += [f"LLD {r['rule']!r} de {r['host']!r}"
+                    for r in item.get("exclude_discovery_rules") or []]
         print(f"  {marca} {item['id']:<12} {item['label']:<20}{padrao}")
-        print(f"      {item['mode']}: {regra[:90]}")
+        print(f"      {item['mode']}: {', '.join(filtros)[:90] or 'sem filtro'}")
 
     print()
     print(f"── Efeito do escopo '{escopo.id}' ──────────────────────────────")
@@ -551,24 +553,35 @@ def cmd_scope(args: argparse.Namespace) -> int:
     # Hosts por volume, com o veredito do escopo em cada linha. Esta é a
     # tabela que a decisão de exclusão precisa.
     por_host: dict[str, dict[str, Any]] = {}
-    for alerta in modelo.alerts + modelo.out_of_scope:
+    for alerta, no_escopo in ([(a, True) for a in modelo.alerts]
+                              + [(a, False) for a in modelo.out_of_scope]):
         zbx = alerta.get("zabbix") or {}
         host = zbx.get("host") or {}
         nome = host.get("name") or host.get("host") or "(sem host)"
-        registro = por_host.setdefault(nome, {"alertas": 0, "tecnico": host.get("host") or "", "lld": 0})
+        registro = por_host.setdefault(
+            nome, {"alertas": 0, "tecnico": host.get("host") or "", "lld": 0, "dentro": 0})
         registro["alertas"] += 1
+        registro["dentro"] += 1 if no_escopo else 0
         if zbx.get("discovered"):
             registro["lld"] += 1
 
     ordenados = sorted(por_host.items(), key=lambda kv: -kv[1]["alertas"])
     print()
     print(f"── Hosts por volume (top {args.top}) ───────────────────────────────")
-    print(f"  {'alertas':>8} {'LLD':>7}  {'%amb':>5}  escopo    host")
+    print(f"  {'alertas':>8} {'LLD':>7}  {'%amb':>5}  escopo      host")
     for nome, registro in ordenados[: max(1, args.top)]:
-        no_escopo = escopo.includes_host(nome, registro["tecnico"])
         pct = registro["alertas"] / ambiente["alerts"] * 100 if ambiente["alerts"] else 0
+        # Com exclusão por regra de descoberta um host pode entrar em PARTE:
+        # dizer só "dentro" ou "FORA" esconderia exatamente o recorte que
+        # motivou a regra.
+        if registro["dentro"] == registro["alertas"]:
+            veredito = "dentro    "
+        elif registro["dentro"] == 0:
+            veredito = "FORA      "
+        else:
+            veredito = f"{registro['dentro']} de {registro['alertas']}".ljust(10)
         print(f"  {registro['alertas']:>8} {registro['lld']:>7}  {pct:>4.0f}%  "
-              f"{'dentro' if no_escopo else 'FORA  '}    {nome[:60]}")
+              f"{veredito}  {nome[:60]}")
     if len(ordenados) > args.top:
         print(f"  ... e mais {len(ordenados) - args.top} host(s). Use --top para ver mais.")
 

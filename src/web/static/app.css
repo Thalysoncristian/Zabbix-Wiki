@@ -168,6 +168,15 @@ a.card:hover { border-color: var(--accent); text-decoration: none; }
 .scope-banner .out { color: var(--text-dim); }
 .out-of-scope { opacity: .55; }
 
+.overlap-banner {
+  display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline;
+  border: 1px solid var(--warning); border-left: 3px solid var(--warning);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 9px 14px; margin-bottom: 14px; font-size: 13px; background: var(--surface);
+  color: var(--warning);
+}
+.overlap-banner a { color: inherit; text-decoration: underline; }
+
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; }
 
 /* ------------------------------------------------------------- severidade */

@@ -68,6 +68,11 @@ class RuleCandidate:
     both_signals: int = 0
     keyword_only: int = 0
     evidence_samples: list[str] = field(default_factory=list)
+    #: Outras regras que cobrem exatamente o mesmo conjunto de alertas — sinal
+    #: de que um host está em mais de um host group (ver `_marcar_sobreposicoes`).
+    #: Documentar aqui documenta lá: a interface precisa avisar antes que
+    #: alguém escreva o mesmo procedimento duas vezes sem saber.
+    overlaps_with: list[str] = field(default_factory=list)
 
     # ------------------------------------------------------------- confiança
     def confidence(self) -> tuple[str, list[str]]:
@@ -151,6 +156,7 @@ class RuleCandidate:
             "confidence_label": CONFIDENCE_LABELS[nivel],
             "reasons": motivos,
             "evidence_samples": self.evidence_samples[:4],
+            "overlaps_with": sorted(self.overlaps_with),
             "status": (decision or {}).get("status", "candidate"),
             "decided_by": (decision or {}).get("decided_by", ""),
             "decided_at": (decision or {}).get("decided_at"),
@@ -209,7 +215,49 @@ def build_candidates(
             onde_esta.setdefault(triggerid, []).append(identificador)
 
     _contar_dependencias(alerts, candidatos, onde_esta)
+    _marcar_sobreposicoes(candidatos)
     return candidatos
+
+
+#: Fração dos alertas do MENOR dos dois conjuntos que precisa estar contida
+#: no outro para contar como sobreposição. Não é igualdade exata de propósito:
+#: o caso real (Control-M em "Applications" x "Control-M/IN01", certificados em
+#: "Vibe Tecnologia" x "Domínios e Certificados") quase nunca bate 100% — um
+#: grupo tem uma ou duas entidades a mais que o outro porque os hosts não
+#: pertencem aos mesmos grupos em tudo. Exigir igualdade exata deixaria passar
+#: batido exatamente o caso que motivou este aviso.
+OVERLAP_THRESHOLD = 0.8
+
+
+def _marcar_sobreposicoes(candidatos: dict[str, RuleCandidate]) -> None:
+    """Detecta regras que cobrem, na prática, o mesmo conjunto de alertas.
+
+    Acontece quando hosts pertencem a mais de um host group (ex.: um servidor
+    Control-M em "Applications" e em "Control-M/IN01"): o mesmo alerta entra
+    no candidato de cada grupo de propósito (ver docstring de
+    `build_candidates`). Quando os dois grupos têm exatamente os mesmos hosts
+    para aquela categoria, as regras batem 100%; quando um grupo tem hosts
+    extras, batem só em parte — mas ainda é o mesmo procedimento sendo escrito
+    duas vezes. Aqui não se decide qual é a "principal" — só se avisa, e a
+    decisão de qual documentar continua humana.
+    """
+    itens = [(identificador, frozenset(candidato.alert_ids))
+             for identificador, candidato in candidatos.items() if candidato.alert_ids]
+
+    sobrepostos: dict[str, set[str]] = {identificador: set() for identificador, _ in itens}
+    for i, (id_a, alertas_a) in enumerate(itens):
+        for id_b, alertas_b in itens[i + 1:]:
+            menor = min(len(alertas_a), len(alertas_b))
+            if menor == 0:
+                continue
+            razao = len(alertas_a & alertas_b) / menor
+            if razao >= OVERLAP_THRESHOLD:
+                sobrepostos[id_a].add(id_b)
+                sobrepostos[id_b].add(id_a)
+
+    for identificador, outros in sobrepostos.items():
+        if outros:
+            candidatos[identificador].overlaps_with = sorted(outros)
 
 
 def _acumular(candidato: RuleCandidate, alerta: dict[str, Any], zbx: dict[str, Any],

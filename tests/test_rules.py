@@ -232,6 +232,61 @@ class TestCandidatos(unittest.TestCase):
         self.assertIn("vibe-tecnologia--filesystem", candidatos)
         self.assertIn("servidores--filesystem", candidatos)
 
+    def test_host_em_dois_grupos_marca_sobreposicao(self):
+        """Mesmo conjunto de alertas em 2 regras: a interface precisa avisar
+        antes que alguém escreva o mesmo procedimento duas vezes sem saber
+        (foi exatamente o que aconteceu documentando o Control-M à mão)."""
+        multi = alerta("60", "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                       grupos=["Vibe Tecnologia", "Servidores"])
+        candidatos = build_candidates([multi])
+        vibe = candidatos["vibe-tecnologia--filesystem"]
+        servidores = candidatos["servidores--filesystem"]
+        self.assertEqual(vibe.overlaps_with, ["servidores--filesystem"])
+        self.assertEqual(servidores.overlaps_with, ["vibe-tecnologia--filesystem"])
+        self.assertEqual(vibe.to_dict()["overlaps_with"], ["servidores--filesystem"])
+
+    def test_grupos_com_alertas_diferentes_nao_sobrepoe(self):
+        """Dois hosts em grupos diferentes, cada um com seu próprio alerta:
+        nenhuma sobreposição — só o mesmo CONJUNTO de alertas conta."""
+        candidatos = build_candidates(DISCO)
+        self.assertEqual(candidatos["vibe-tecnologia--filesystem"].overlaps_with, [])
+
+    def test_sobreposicao_parcial_acima_do_limiar_ainda_avisa(self):
+        """O caso real (Control-M em 'Applications' x 'Control-M/IN01') nunca
+        bate 100% -- um grupo tem hosts a mais. Aqui o grupo B (4 alertas) está
+        inteiro contido no grupo A (5 alertas): ainda é o mesmo procedimento
+        sendo escrito duas vezes, mesmo sem igualdade exata de conjunto."""
+        comuns = [alerta(str(100 + i), "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                         hostid=f"h{i}", grupos=["Grupo A", "Grupo B"]) for i in range(4)]
+        so_no_a = alerta("104", "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                         hostid="h4", grupos=["Grupo A"])
+        candidatos = build_candidates([*comuns, so_no_a])
+        self.assertEqual(candidatos["grupo-a--filesystem"].overlaps_with, ["grupo-b--filesystem"])
+        self.assertEqual(candidatos["grupo-b--filesystem"].overlaps_with, ["grupo-a--filesystem"])
+
+    def test_sobreposicao_abaixo_do_limiar_nao_avisa(self):
+        """Só 3 de 5 alertas em comum (60%, abaixo do limiar de 80%): grupos
+        parecidos o bastante para coincidir em alguns hosts, mas não a ponto
+        de valer o mesmo procedimento."""
+        comuns = [alerta(str(200 + i), "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                         hostid=f"g{i}", grupos=["Grupo C", "Grupo D"]) for i in range(3)]
+        so_no_c = [alerta(str(210 + i), "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                          hostid=f"gc{i}", grupos=["Grupo C"]) for i in range(2)]
+        so_no_d = [alerta(str(220 + i), "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                          hostid=f"gd{i}", grupos=["Grupo D"]) for i in range(2)]
+        candidatos = build_candidates([*comuns, *so_no_c, *so_no_d])
+        self.assertEqual(candidatos["grupo-c--filesystem"].overlaps_with, [])
+        self.assertEqual(candidatos["grupo-d--filesystem"].overlaps_with, [])
+
+    def test_sobreposicao_entre_tres_ou_mais_regras(self):
+        multi = alerta("61", "/: Disk space is low", ["vfs.fs.size[/,pused]"],
+                       grupos=["Grupo A", "Grupo B", "Grupo C"])
+        candidatos = build_candidates([multi])
+        for identificador in ("grupo-a--filesystem", "grupo-b--filesystem", "grupo-c--filesystem"):
+            outros = set(candidatos[identificador].overlaps_with)
+            self.assertEqual(outros, {"grupo-a--filesystem", "grupo-b--filesystem",
+                                       "grupo-c--filesystem"} - {identificador})
+
     def test_regra_reune_varias_familias_tecnicas(self):
         familias = {t: f"fam-{t}" for t in ("1", "2", "3", "4", "5")}
         candidatos = build_candidates(DISCO, familias)

@@ -664,7 +664,10 @@ function cardRegra(r) {
       el('span', { class: `conf ${CONF_CLASS[r.confidence]}` }, `Confiança ${r.confidence_label}`),
       badgeProcedimento(proc),
       r.status !== 'candidate'
-        ? el('span', { class: `status-pill status-${r.status}` }, rotuloStatus(r.status)) : null),
+        ? el('span', { class: `status-pill status-${r.status}` }, rotuloStatus(r.status)) : null,
+      r.overlaps_with && r.overlaps_with.length
+        ? el('span', { class: 'conf conf-low', title: 'Mesmos alertas que outra regra — provavelmente host em mais de um host group' },
+          '⚠ sobreposta') : null),
     el('div', {}, el('span', { class: 'cta', style: 'padding:6px 14px;font-size:13px' }, acao)));
 }
 
@@ -716,6 +719,16 @@ rota(/^\/rules\/([^/]+)$/, async ([id], params) => {
       el('span', {}, el('strong', {}, num(r.hosts)), ' hosts'),
       el('span', { class: `conf ${CONF_CLASS[r.confidence]}` }, `Confiança ${r.confidence_label}`),
       badgeProcedimento(r.procedure)),
+
+    r.overlaps_with && r.overlaps_with.length
+      ? el('div', { class: 'overlap-banner' },
+        el('span', {}, '⚠ Mesmos alertas que: '),
+        ...r.overlaps_with.flatMap((outroId, i) => [
+          i > 0 ? el('span', {}, ', ') : null,
+          el('a', { href: `/rules/${outroId}` }, outroId),
+        ]).filter(Boolean),
+        el('span', {}, ' — provavelmente um host em mais de um host group. Documente uma vez só.'))
+      : null,
 
     blocoDecisao(r, recarregar),
 

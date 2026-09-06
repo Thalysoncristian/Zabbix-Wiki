@@ -6,10 +6,10 @@
   "family_key": "rule|link-principal-fabrica-embratel-indisponivel|2f72fafd",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
-  "last_modified_at": "2026-09-06T00:14:39Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T20:27:00.095500Z",
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "embratel-roteador-cisco|link-principal-fabrica-embratel-indisponivel",
@@ -95,39 +95,54 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
-    "objective": "",
-    "symptoms": [],
-    "actions": [],
+    "doc_status": "documented",
+    "title": "Link PRINCIPAL da fábrica (Embratel) indisponível",
+    "objective": "Restabelecer o link principal da fábrica acionando a Embratel.",
+    "symptoms": [
+      "'Link Principal - Fábrica Embratel indisponível' (Disaster)"
+    ],
+    "actions": [
+      "Acionar a Embratel pelo portal WebSIR com o código de designação, ou pelo 0800 721 1021 / caebt@claroatendimento.com.br",
+      "Informar +55 91 3222-1678 (NOC) como telefone de contato do chamado",
+      "Formalizar por e-mail para líderes e NOC, com o erro e o protocolo",
+      "Abrir chamado no Desk Manager por integração, com o protocolo da operadora"
+    ],
     "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "risks": [
+      "Se o backup também estiver fora, a fábrica está sem conectividade — tratar como indisponibilidade total, não como queda de um link."
+    ],
+    "meaning": "Host 'Embratel - Roteador [Cisco]'. É o link PRINCIPAL da fábrica. Com ele fora, a operação depende do link de backup (Interconnect/Vellon) — se os dois caírem, a fábrica fica sem conectividade.",
+    "probable_cause": "Falha do circuito da operadora, equipamento no local, ou rompimento.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
-    "requires_ticket": null,
+    "checks_before_action": [
+      "Verificar o aparelho preto no local: lâmpada PON verde = conexão OK; lâmpada SD vermelha = rede instável",
+      "Confirmar se o link de backup (Interconnect) assumiu"
+    ],
+    "requires_ticket": true,
     "routing": {
-      "team": "",
-      "ticket_category": "",
-      "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "team": "NOC → operadora",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Link / operadora",
+      "ticket_queue": "Desk Manager (com o protocolo da operadora)",
+      "channel": "Portal/telefone da operadora, conforme o link"
     },
     "schedule_policy": {
       "type": "ref",
       "name": "default_business_hours"
     },
-    "evidence_required": [],
+    "evidence_required": [
+      "Protocolo da Embratel",
+      "Estado das lâmpadas do aparelho (PON/SD)"
+    ],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "líderes + NOC (e-mail com protocolo)",
+      "channel": "E-mail"
     },
-    "resolution_criteria": "",
-    "notes": "",
-    "imported_from": null,
+    "resolution_criteria": "Link principal volta a responder e a operadora confirma o restabelecimento.",
+    "notes": "Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. EMBRATEL (link principal) — Antes de abrir chamado, verificar o aparelho: no primeiro equipamento (preto), lâmpada PON verde = conexão estável; lâmpada SD vermelha = rede instável. Abertura pelo portal WebSIR (link com a designação na wiki de rede), ou 0800 721 1021 / caebt@claroatendimento.com.br. Informar o telefone do NOC como contato: +55 91 3222-1678. Depois formalizar por e-mail (erro + protocolo) para os líderes e o NOC, e abrir chamado no Desk Manager por integração com o protocolo.",
+    "imported_from": "wiki_rede_noc_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,
     "last_zabbix_hash_at_review": null

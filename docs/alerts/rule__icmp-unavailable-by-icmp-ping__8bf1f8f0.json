@@ -6,10 +6,10 @@
   "family_key": "rule|icmp-unavailable-by-icmp-ping|8bf1f8f0",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:38Z",
-  "last_modified_at": "2026-09-06T00:14:38Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T20:27:20.058391Z",
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "banpara-firewall-fwbp01|icmp-unavailable-by-icmp-ping",
@@ -181,39 +181,54 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
-    "objective": "",
-    "symptoms": [],
-    "actions": [],
+    "doc_status": "documented",
+    "title": "Roteador de link inalcançável (ICMP) — Interconnect, Oi ou EBT",
+    "objective": "Acionar a operadora certa conforme o host que disparou.",
+    "symptoms": [
+      "'ICMP: Unavailable by ICMP ping' (High) em um dos três roteadores"
+    ],
+    "actions": [
+      "Interconect - Roteador → Vellon por WhatsApp +55 91 99264-4565 (1 → 1 → CNPJ 13956365000136 → 1 → 1)",
+      "Oi - Roteador [Huawei] → Oi por WhatsApp +55 31 3131-3131",
+      "RT_CISCO_EBT → Embratel (portal WebSIR ou 0800 721 1021), contato +55 91 3222-1678",
+      "Em qualquer caso: formalizar por e-mail para líderes e NOC, e abrir no Desk Manager com o protocolo da operadora"
+    ],
     "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "risks": [
+      "Uma ficha, três operadoras: acionar pelo canal errado atrasa o restabelecimento. Conferir o host antes de abrir o WhatsApp."
+    ],
+    "meaning": "Família compartilhada por três hosts, cada um de uma operadora diferente: 'Interconect - Roteador' (Vellon/Interconnect, link de backup), 'Oi - Roteador [Huawei]' (Oi) e 'RT_CISCO_EBT' (Embratel). O host do alerta é o que decide quem acionar.",
+    "probable_cause": "Queda do circuito da operadora, do equipamento, ou falta de energia no local.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
-    "requires_ticket": null,
+    "checks_before_action": [
+      "IDENTIFICAR O HOST primeiro — cada um tem uma operadora e um canal diferente",
+      "Confirmar a queda com ping/telnet antes de acionar"
+    ],
+    "requires_ticket": true,
     "routing": {
-      "team": "",
-      "ticket_category": "",
-      "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "team": "NOC → operadora",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Link / operadora",
+      "ticket_queue": "Desk Manager (com o protocolo da operadora)",
+      "channel": "Portal/telefone da operadora, conforme o link"
     },
     "schedule_policy": {
       "type": "ref",
       "name": "default_business_hours"
     },
-    "evidence_required": [],
+    "evidence_required": [
+      "Host que disparou",
+      "Protocolo da operadora acionada"
+    ],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "líderes + NOC",
+      "channel": "E-mail"
     },
-    "resolution_criteria": "",
-    "notes": "",
-    "imported_from": null,
+    "resolution_criteria": "Roteador volta a responder ao ping.",
+    "notes": "Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. VELLON TELECOM / INTERCONNECT (link de backup) — Atendimento por WhatsApp: +55 91 99264-4565. Sequência: opção 1 → opção 1 (sou cliente) → CNPJ 13956365000136 → opção 1 → opção 1 → aguardar operador. Formalizar por e-mail para líderes e NOC, e abrir chamado no Desk Manager com o protocolo. OI — Atendimento por WhatsApp: +55 31 3131-3131. Formalizar por e-mail para líderes e NOC, e abrir chamado no Desk Manager com o protocolo. EMBRATEL (link principal) — Antes de abrir chamado, verificar o aparelho: no primeiro equipamento (preto), lâmpada PON verde = conexão estável; lâmpada SD vermelha = rede instável. Abertura pelo portal WebSIR (link com a designação na wiki de rede), ou 0800 721 1021 / caebt@claroatendimento.com.br. Informar o telefone do NOC como contato: +55 91 3222-1678. Depois formalizar por e-mail (erro + protocolo) para os líderes e o NOC, e abrir chamado no Desk Manager por integração com o protocolo.",
+    "imported_from": "wiki_rede_noc_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,
     "last_zabbix_hash_at_review": null

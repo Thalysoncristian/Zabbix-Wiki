@@ -6,10 +6,10 @@
   "family_key": "rule|icmp-high-icmp-ping-loss|087b6ad9",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:38Z",
-  "last_modified_at": "2026-09-06T00:14:38Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T20:27:45.852322Z",
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "draft",
   "instances": [
     {
       "alert_key": "banpara-firewall-fwbp01|icmp-high-icmp-ping-loss",
@@ -191,25 +191,35 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
-    "objective": "",
-    "symptoms": [],
-    "actions": [],
+    "doc_status": "pending_review",
+    "title": "Perda de pacotes no roteador de link (Interconnect, Oi ou EBT)",
+    "objective": "Tratar degradação de link antes que vire queda.",
+    "symptoms": [
+      "'ICMP: High ICMP ping loss' (Warning)"
+    ],
+    "actions": [
+      "Persistindo, acionar a operadora do host (Vellon/Oi/Embratel — ver ficha de indisponibilidade para os canais)",
+      "Formalizar por e-mail e abrir no Desk Manager com o protocolo"
+    ],
     "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "risks": [
+      "Perda de pacotes intermitente é comum e pode normalizar sozinha — acionar a operadora a cada oscilação queima o canal. Confirmar persistência primeiro."
+    ],
+    "meaning": "Perda de pacotes ICMP em 'Interconect - Roteador', 'Oi - Roteador [Huawei]' ou 'RT_CISCO_EBT'. É degradação, não queda — costuma preceder a indisponibilidade.",
+    "probable_cause": "Instabilidade no circuito da operadora ou saturação do link.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
+    "checks_before_action": [
+      "Identificar o host e, portanto, a operadora",
+      "Verificar se a perda é contínua ou pontual antes de acionar"
+    ],
     "requires_ticket": null,
     "routing": {
-      "team": "",
-      "ticket_category": "",
-      "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "team": "NOC → operadora",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Link / operadora",
+      "ticket_queue": "Desk Manager (com o protocolo da operadora)",
+      "channel": "Portal/telefone da operadora, conforme o link"
     },
     "schedule_policy": {
       "type": "ref",
@@ -218,12 +228,12 @@
     "evidence_required": [],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "líderes + NOC, se persistir",
+      "channel": "E-mail"
     },
-    "resolution_criteria": "",
-    "notes": "",
-    "imported_from": null,
+    "resolution_criteria": "Perda de pacotes volta ao normal de forma estável.",
+    "notes": "Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. Canais das operadoras na ficha 'Roteador de link inalcançável'. FALTA DEFINIR: por quanto tempo tolerar a perda de pacotes antes de acionar a operadora. A wiki de rede não define, e sem isso a ficha não pode ser dada como validada.",
+    "imported_from": "wiki_rede_noc_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,
     "last_zabbix_hash_at_review": null

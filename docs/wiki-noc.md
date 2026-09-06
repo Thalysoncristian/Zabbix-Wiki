@@ -51,7 +51,7 @@ flowchart TD
 
 | Cliente | Procedimentos | Alertas | Hosts |
 | :--- | ---: | ---: | ---: |
-| **Vibe Tecnologia** | 22 | 22 | 7 |
+| **Vibe Tecnologia** | 26 | 26 | 9 |
 | **Chubb** | 3 | 10 | 2 |
 | **Master Support (interno)** | 6 | 6 | 1 |
 | **Votorantim** | 6 | 6 | 2 |
@@ -60,7 +60,7 @@ flowchart TD
 
 ### Vibe Tecnologia
 
-**22 alerta(s)** em 22 procedimento(s) · 7 host(s): `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Ferramentas Internas`, `Vibe - Impressora [HP]`, `Vibe - MSTracker-vm Hom`, `Vibe - Proxy [Fortigate]`, `Vibe - Wazuh SIEM`, `Vibe - Zabbix-Proxy`
+**26 alerta(s)** em 26 procedimento(s) · 9 host(s): `Embratel - Roteador [Cisco]`, `Interconect - Roteador`, `Vibe - AP REUNIAO [Ubiquiti]`, `Vibe - Ferramentas Internas`, `Vibe - Impressora [HP]`, `Vibe - MSTracker-vm Hom`, `Vibe - Proxy [Fortigate]`, `Vibe - Wazuh SIEM` e mais 1
 
 > Vem por último entre os monitorados: o host group 'Vibe Tecnologia' é usado como guarda-chuva de infraestrutura compartilhada (links de operadora, câmeras, servidores sem prefixo).
 {.is-info}
@@ -74,6 +74,7 @@ flowchart TD
 | **Infraestrutura** | DeskManager | Rafael Sales | 7 |
 | **NOC / GE** | Central de Servicos | — | 5 |
 | **NOC / Infra** | DeskManager | — | 1 |
+| **NOC → operadora** | Desk Manager (com o protocolo da operadora) | líderes + NOC · líderes + NOC (e-mail com protocolo) | 4 |
 | **RH** | DeskManager | — | 2 |
 | **Suporte Oracle** | DeskManager | — | 2 |
 
@@ -85,6 +86,10 @@ flowchart TD
 | :--- | :---: | :--- | :--- | :--- | :--- |
 | Alta perda de pacotes ICMP — AP REUNIAO | 🟡 | Vibe - AP REUNIAO [Ubiquiti] | Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales). | Infraestrutura · DeskManager | ⏱️ 5 min |
 | Impressora HP inacessivel (ICMP) | 🟡 | Vibe - Impressora [HP] | Verificar presencialmente na fabrica e abrir chamado. | NOC / GE · Central de Servicos | ⏱️ Imediato |
+| Link PRINCIPAL da fábrica (Embratel) indisponível | 🔴 | Embratel - Roteador [Cisco] | Acionar a Embratel pelo portal WebSIR com o código de designação, ou pelo 0800 721 1021 / caebt@claroatendimento.com.br | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
+| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível | 🔴 | Interconect - Roteador | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
+| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível — visto pelo Embratel | 🔴 | Embratel - Roteador [Cisco] | Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
+| Roteador Embratel inalcançável (ICMP) | 🟠 | Embratel - Roteador [Cisco] | Acionar a Embratel (portal WebSIR com a designação, ou 0800 721 1021) | NOC → operadora · Desk Manager (com o protocolo da operadora) | ⏱️ Imediato |
 
 </div>
 
@@ -95,6 +100,10 @@ flowchart TD
 | :--- | :--- | :--- | :--- |
 | Alta perda de pacotes ICMP — AP REUNIAO | Perda de pacotes na comunicacao com o AP. | Intermitencia wireless (AirOS). | — |
 | Impressora HP inacessivel (ICMP) | Impressora inacessivel na rede da fabrica. | Equipamento desligado ou falha de rede. | Verificar presencialmente na fabrica |
+| Link PRINCIPAL da fábrica (Embratel) indisponível | Host 'Embratel - Roteador [Cisco]'. É o link PRINCIPAL da fábrica. Com ele fora, a operação depende do link de backup (Interconnect/Vellon) — se os dois caírem, a fábrica fica sem conectividade. | Falha do circuito da operadora, equipamento no local, ou rompimento. | Verificar o aparelho preto no local: lâmpada PON verde = conexão OK; lâmpada SD vermelha = rede instável · Confirmar se o link de backup (Interconnect) assumiu |
+| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível | Alerta no próprio host 'Interconect - Roteador'. É o link de BACKUP da fábrica; o principal é a Embratel. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Confirmar que o link principal (Embratel) segue operando |
+| Link de BACKUP da fábrica (Interconnect/Vellon) indisponível — visto pelo Embratel | Alerta no host 'Embratel - Roteador [Cisco]' sinalizando que o link de BACKUP (Interconnect/Vellon) está fora. Sozinho não derruba a operação — mas deixa a fábrica sem redundância. | Falha do circuito da Vellon/Interconnect ou do equipamento no local. | Confirmar que o link principal (Embratel) segue operando |
+| Roteador Embratel inalcançável (ICMP) | Host 'Embratel - Roteador [Cisco]' não responde a ping — pode ser queda do link ou do equipamento. | Queda do circuito, do equipamento no local, ou falta de energia. | Verificar as lâmpadas do aparelho preto no local (PON verde = OK, SD vermelha = instável) · Confirmar se o alerta de 'Link Principal indisponível' também disparou |
 
 </details>
 
@@ -124,6 +133,103 @@ flowchart TD
 **Critério de resolução:** Impressora volta a responder ao ping.
 
 **Observações:** Severidade: Alta. SLA: Imediato. Horario: NOC/GE atende 24x7. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.
+
+##### 🔴 Link PRINCIPAL da fábrica (Embratel) indisponível
+
+Restabelecer o link principal da fábrica acionando a Embratel.
+
+**Sintomas:**
+* 'Link Principal - Fábrica Embratel indisponível' (Disaster)
+
+**Verificações antes de agir:**
+* Verificar o aparelho preto no local: lâmpada PON verde = conexão OK; lâmpada SD vermelha = rede instável
+* Confirmar se o link de backup (Interconnect) assumiu
+
+**Ações:**
+* Acionar a Embratel pelo portal WebSIR com o código de designação, ou pelo 0800 721 1021 / caebt@claroatendimento.com.br
+* Informar +55 91 3222-1678 (NOC) como telefone de contato do chamado
+* Formalizar por e-mail para líderes e NOC, com o erro e o protocolo
+* Abrir chamado no Desk Manager por integração, com o protocolo da operadora
+
+**Riscos e ressalvas:**
+* Se o backup também estiver fora, a fábrica está sem conectividade — tratar como indisponibilidade total, não como queda de um link.
+
+**Critério de resolução:** Link principal volta a responder e a operadora confirma o restabelecimento.
+
+**Observações:** Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. EMBRATEL (link principal) — Antes de abrir chamado, verificar o aparelho: no primeiro equipamento (preto), lâmpada PON verde = conexão estável; lâmpada SD vermelha = rede instável. Abertura pelo portal WebSIR (link com a designação na wiki de rede), ou 0800 721 1021 / caebt@claroatendimento.com.br. Informar o telefone do NOC como contato: +55 91 3222-1678. Depois formalizar por e-mail (erro + protocolo) para os líderes e o NOC, e abrir chamado no Desk Manager por integração com o protocolo.
+
+**Evidências obrigatórias no chamado:** Protocolo da Embratel · Estado das lâmpadas do aparelho (PON/SD)
+
+##### 🔴 Link de BACKUP da fábrica (Interconnect/Vellon) indisponível
+
+Restabelecer o link de backup antes que o principal também falhe.
+
+**Sintomas:**
+* 'Link Backup - Fábrica Interconnect indisponível' (Disaster)
+
+**Verificações antes de agir:**
+* Confirmar que o link principal (Embratel) segue operando
+
+**Ações:**
+* Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador
+* Formalizar por e-mail para líderes e NOC com o protocolo
+* Abrir chamado no Desk Manager com o protocolo
+
+**Riscos e ressalvas:**
+* Este alerta e o do host Embratel apontam o MESMO link de backup, por caminhos diferentes. Dois alertas, um incidente — não abrir dois chamados.
+
+**Critério de resolução:** Link de backup volta a responder.
+
+**Observações:** Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. VELLON TELECOM / INTERCONNECT (link de backup) — Atendimento por WhatsApp: +55 91 99264-4565. Sequência: opção 1 → opção 1 (sou cliente) → CNPJ 13956365000136 → opção 1 → opção 1 → aguardar operador. Formalizar por e-mail para líderes e NOC, e abrir chamado no Desk Manager com o protocolo.
+
+**Evidências obrigatórias no chamado:** Protocolo da Vellon · Estado do link principal no momento
+
+##### 🔴 Link de BACKUP da fábrica (Interconnect/Vellon) indisponível — visto pelo Embratel
+
+Restabelecer o link de backup antes que o principal também falhe.
+
+**Sintomas:**
+* 'Link Backup - Fábrica Interconnect indisponível' (Disaster)
+
+**Verificações antes de agir:**
+* Confirmar que o link principal (Embratel) segue operando
+
+**Ações:**
+* Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador
+* Formalizar por e-mail para líderes e NOC com o protocolo
+* Abrir chamado no Desk Manager com o protocolo
+
+**Riscos e ressalvas:**
+* Severidade Disaster, mas sem impacto imediato SE o principal estiver de pé: o risco é ficar sem redundância. Confirmar o estado do principal antes de classificar a urgência.
+
+**Critério de resolução:** Link de backup volta a responder e a redundância é restabelecida.
+
+**Observações:** Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. VELLON TELECOM / INTERCONNECT (link de backup) — Atendimento por WhatsApp: +55 91 99264-4565. Sequência: opção 1 → opção 1 (sou cliente) → CNPJ 13956365000136 → opção 1 → opção 1 → aguardar operador. Formalizar por e-mail para líderes e NOC, e abrir chamado no Desk Manager com o protocolo.
+
+**Evidências obrigatórias no chamado:** Protocolo da Vellon · Estado do link principal no momento
+
+##### 🟠 Roteador Embratel inalcançável (ICMP)
+
+Confirmar se o roteador do link principal está fora antes de acionar a operadora.
+
+**Sintomas:**
+* 'Cisco IOS: Unavailable by ICMP ping' (High)
+
+**Verificações antes de agir:**
+* Verificar as lâmpadas do aparelho preto no local (PON verde = OK, SD vermelha = instável)
+* Confirmar se o alerta de 'Link Principal indisponível' também disparou
+
+**Ações:**
+* Acionar a Embratel (portal WebSIR com a designação, ou 0800 721 1021)
+* Informar +55 91 3222-1678 (NOC) como contato
+* Formalizar por e-mail e abrir no Desk Manager com o protocolo
+
+**Riscos e ressalvas:**
+* Costuma vir junto com 'Link Principal indisponível' — é o mesmo incidente.
+
+**Critério de resolução:** Roteador volta a responder ao ping.
+
+**Observações:** Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. EMBRATEL (link principal) — Antes de abrir chamado, verificar o aparelho: no primeiro equipamento (preto), lâmpada PON verde = conexão estável; lâmpada SD vermelha = rede instável. Abertura pelo portal WebSIR (link com a designação na wiki de rede), ou 0800 721 1021 / caebt@claroatendimento.com.br. Informar o telefone do NOC como contato: +55 91 3222-1678. Depois formalizar por e-mail (erro + protocolo) para os líderes e o NOC, e abrir chamado no Desk Manager por integração com o protocolo.
 
 #### Rede / Interfaces
 
@@ -1063,6 +1169,6 @@ Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.
 
 ---
 
-Gerado em 2026-09-06T20:05:08Z · 37 procedimento(s) validado(s) cobrindo 44 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
+Gerado em 2026-09-06T20:27:52Z · 41 procedimento(s) validado(s) cobrindo 48 alerta(s) em 4 cliente(s) · fonte: `docs/alerts/` do Zabbix-Wiki.
 
 Fora desta página, por serem atendidos por outro NOC: Banpará.

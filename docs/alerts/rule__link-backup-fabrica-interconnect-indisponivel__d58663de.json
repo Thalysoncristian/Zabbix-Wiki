@@ -6,10 +6,10 @@
   "family_key": "rule|link-backup-fabrica-interconnect-indisponivel|d58663de",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:39Z",
-  "last_modified_at": "2026-09-06T00:14:39Z",
-  "revision": 0,
+  "last_modified_at": "2026-09-06T20:27:10.093872Z",
+  "revision": 1,
   "last_seen_at": "2026-09-05T21:15:09Z",
-  "procedure_status": "missing",
+  "procedure_status": "documented",
   "instances": [
     {
       "alert_key": "interconect-roteador|link-backup-fabrica-interconnect-indisponivel",
@@ -100,39 +100,52 @@
   },
   "ai_suggestion": null,
   "operational": {
-    "doc_status": "undocumented",
-    "title": "",
-    "objective": "",
-    "symptoms": [],
-    "actions": [],
+    "doc_status": "documented",
+    "title": "Link de BACKUP da fábrica (Interconnect/Vellon) indisponível",
+    "objective": "Restabelecer o link de backup antes que o principal também falhe.",
+    "symptoms": [
+      "'Link Backup - Fábrica Interconnect indisponível' (Disaster)"
+    ],
+    "actions": [
+      "Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador",
+      "Formalizar por e-mail para líderes e NOC com o protocolo",
+      "Abrir chamado no Desk Manager com o protocolo"
+    ],
     "validation": "",
-    "risks": [],
-    "meaning": "",
-    "probable_cause": "",
+    "risks": [
+      "Este alerta e o do host Embratel apontam o MESMO link de backup, por caminhos diferentes. Dois alertas, um incidente — não abrir dois chamados."
+    ],
+    "meaning": "Alerta no próprio host 'Interconect - Roteador'. É o link de BACKUP da fábrica; o principal é a Embratel.",
+    "probable_cause": "Falha do circuito da Vellon/Interconnect ou do equipamento no local.",
     "self_resolves": null,
     "wait_before_ticket_minutes": null,
-    "checks_before_action": [],
-    "requires_ticket": null,
+    "checks_before_action": [
+      "Confirmar que o link principal (Embratel) segue operando"
+    ],
+    "requires_ticket": true,
     "routing": {
-      "team": "",
-      "ticket_category": "",
-      "ticket_subcategory": "",
-      "ticket_queue": "",
-      "channel": ""
+      "team": "NOC → operadora",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Link / operadora",
+      "ticket_queue": "Desk Manager (com o protocolo da operadora)",
+      "channel": "Portal/telefone da operadora, conforme o link"
     },
     "schedule_policy": {
       "type": "ref",
       "name": "default_business_hours"
     },
-    "evidence_required": [],
+    "evidence_required": [
+      "Protocolo da Vellon",
+      "Estado do link principal no momento"
+    ],
     "escalation": {
       "after_minutes": null,
-      "to": "",
-      "channel": ""
+      "to": "líderes + NOC (e-mail com protocolo)",
+      "channel": "E-mail"
     },
-    "resolution_criteria": "",
-    "notes": "",
-    "imported_from": null,
+    "resolution_criteria": "Link de backup volta a responder.",
+    "notes": "Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. VELLON TELECOM / INTERCONNECT (link de backup) — Atendimento por WhatsApp: +55 91 99264-4565. Sequência: opção 1 → opção 1 (sou cliente) → CNPJ 13956365000136 → opção 1 → opção 1 → aguardar operador. Formalizar por e-mail para líderes e NOC, e abrir chamado no Desk Manager com o protocolo.",
+    "imported_from": "wiki_rede_noc_2026-09-06",
     "reviewed_by": "",
     "reviewed_at": null,
     "last_zabbix_hash_at_review": null

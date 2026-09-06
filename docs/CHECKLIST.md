@@ -4,7 +4,7 @@ Estado do projeto e o que falta. Atualizado a cada entrega — item concluído �
 marcado aqui, com a data e o commit.
 
 **Atualizado em:** 2026-09-06
-**Situação:** 46 fichas validadas · 79 rascunhos · 479 sem procedimento · wiki gerando 4 clientes
+**Situação:** 51 fichas validadas · 80 rascunhos · 473 sem procedimento · wiki gerando 4 clientes
 
 ---
 
@@ -47,24 +47,33 @@ marcado aqui, com a data e o commit.
   Aparece como prioridade de normalização, mas sem regra de escalonamento
   amarrada. O que acontece se passar das 8h?
 
-- [ ] **Confirmar o dono de 8 hosts sem prefixo de cliente**
-  Caíram na Vibe pelo host group, não pelo nome — é palpite meu:
-  `Embratel - Roteador [Cisco]`, `Oi - Roteador [Huawei]`,
-  `Interconect - Roteador`, `RT_CISCO_EBT`, `SRVCYBERARQ`,
-  `SRV_INCONTROL_2026`, `Windows bob`, `test temp`.
+- [ ] **Confirmar o dono de 4 hosts sem prefixo de cliente**
+  Caíram na Vibe pelo host group, não pelo nome — ainda é palpite meu:
+  `SRVCYBERARQ`, `SRV_INCONTROL_2026`, `Windows bob`, `test temp`.
   → Ajuste em [clients.json](../clients.json) e rode `python main.py wiki`.
+  *(Os 4 roteadores foram confirmados — ver Concluído.)*
 
-- [ ] **Alertas de TESTE em produção — 8.200 no total**
-  | Host | Alertas | Observação |
+- [ ] **Desabilitar no Zabbix os 5 triggers de teste que são de vocês**
+  | Trigger | Host | Severidade |
   |---|---|---|
-  | Control-M PRD Votorantim | 8.131 | prefixo `[TESTE - DENISON]`, é metade do ambiente |
-  | Pagol - Grafana | 41 | outro NOC atende |
-  | Carguero (API + Grafana) | 17 | outro NOC atende |
-  | **Control-M server [IN01]** | **5** | **é da Chubb, nosso** |
-  | Vibe - Grafana / Ferramentas / Zabbix server | 4 | nossos |
-  | Desk Manager | 1 | **Disaster**, infra nossa |
-  | ONESecure | 1 | infra nossa |
-  → *Pronto quando:* o time confirmar quais podem ser desligados no Zabbix.
+  | `102365` — TESTE Indisponível | Desk Manager | **Disaster** |
+  | `23404` — Alerte para Teste, Favor Desconciderar | Vibe - Ferramentas Internas | **Disaster** |
+  | `642537` — TESTE TEAMS DENISON - Linux: has been restarted | Vibe - Zabbix server | High |
+  | `24036` — TESTE Uso de CPU > 70% | Vibe - Grafana | Not classified |
+  | `24072` — TESTE CPU Load | Vibe - Grafana | Not classified |
+  → Ação de vocês **no Zabbix**: o Zabbix-Wiki é read-only por construção e
+  nunca escreve lá. Depois, `python main.py collect` e eles somem sozinhos.
+  → *Não criar filtro automático por "TESTE" no nome* — ver a nota em Concluído.
+
+- [ ] **`[TESTE - DENISON]` no Control-M PRD Votorantim — 8.131 alertas**
+  Metade do ambiente inteiro. Já está fora do escopo do NOC (regra de LLD), mas
+  continua existindo no Zabbix do cliente. Vale confirmar com a Votorantim se
+  esse protótipo de trigger deveria estar em produção.
+
+- [ ] **Definir a tolerância de perda de pacotes em link**
+  A ficha de `ICMP: High ICMP ping loss` nos roteadores ficou como rascunho por
+  causa disso: a wiki de rede não diz por quanto tempo tolerar antes de acionar
+  a operadora, e acionar a cada oscilação queima o canal.
 
 - [ ] **`applications--api_web` (Pagol/Bankeiro) é produção?**
   Os 30 alertas têm prefixo `TESTE`. Cliente atendido por outro NOC — pode ser
@@ -176,6 +185,20 @@ marcado aqui, com a data e o commit.
   de tolerância e o escalonamento N2→N3 — 2026-09-06 `a868f36`
 - [x] **Escopo por regra de descoberta** — excluir o host inteiro escondia os 60
   alertas de agente que o NOC atende — 2026-09-06 `47ddbed`
+- [x] **Wiki de rede: acionamento de operadora** — 6 fichas de link e
+  alcançabilidade (Embratel principal, Vellon/Interconnect backup, Oi), com
+  canal e sequência de atendimento de cada operadora — 2026-09-06
+- [x] **Dono dos 4 roteadores confirmado: Vibe Tecnologia** — a wiki de rede
+  mostra que o CNPJ usado nos contratos (`13956365`, E. SANTOS E L. SILVA LTDA)
+  é o mesmo da Vibe. `Embratel - Roteador [Cisco]`, `Interconect - Roteador`,
+  `Oi - Roteador [Huawei]` e `RT_CISCO_EBT` são links da fábrica — 2026-09-06
+- [x] **Triagem dos alertas "TESTE"** — dos 8.200, só 69 aparecem no escopo do
+  NOC e apenas **5 são trigger de teste de verdade**. Os outros 6 do nosso lado
+  são falso positivo do nome: 5 jobs reais da Chubb cuja *SubApplication* se
+  chama TESTE, e um incidente real do ONESecure com "Teste" no título do ticket.
+  **Por isso não existe filtro automático por "TESTE"**: ele esconderia jobs de
+  produção e um incidente de segurança — exatamente a falha silenciosa que o
+  escopo evita — 2026-09-06
 
 ---
 

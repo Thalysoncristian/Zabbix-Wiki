@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-cpu-interrupt-time-is-too-high|c1d8dfc7",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-cpu-interrupt-time-is-too-high|c1d8dfc7",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-cpu-interrupt-time-is-too-high",
+      "triggerid": "77225",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: CPU interrupt time is too high"
+    },
+    {
+      "alert_key": "windows-bob|windows-cpu-interrupt-time-is-too-high",
+      "triggerid": "35657",
+      "host": "Windows bob",
+      "description": "Windows: CPU interrupt time is too high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77225",
+    "description_raw": "Windows: CPU interrupt time is too high",
+    "description_normalized": "windows-cpu-interrupt-time-is-too-high",
+    "expression_raw": "{95462}>{$CPU.INTERRUPT.CRIT.MAX}",
+    "expression_expanded": "min(/SRV_INCONTROL_2026/perf_counter_en[\"\\Processor Information(_total)\\% Interrupt Time\"],5m)>\"{$CPU.INTERRUPT.CRIT.MAX}\"",
+    "expression_signature": "min(/{HOST}/perf_counter_en[\"\\ProcessorInformation(_total)\\%InterruptTime\"],5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Windows: CPU interrupt time is too high (over {$CPU.INTERRUPT.CRIT.MAX}% for 5m)",
+    "comments": "\"The CPU Interrupt Time in the last 5 minutes exceeds {$CPU.INTERRUPT.CRIT.MAX}%.\"\r\nThe Processor Information\\% Interrupt Time is the time the processor spends receiving and servicing\r\nhardware interrupts during sample intervals. This value is an indirect indicator of the activity of\r\ndevices that generate interrupts, such as the system clock, the mouse, disk drivers, data communication\r\nlines, network interface cards and other peripheral devices. This is an easy way to identify a potential\r\nhardware failure. This should never be higher than 20%.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "77228",
+        "description": "Windows: High CPU utilization",
+        "host": "SRV_INCONTROL_2026"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103744",
+        "key_": "perf_counter_en[\"\\Processor Information(_total)\\% Interrupt Time\"]",
+        "name": "Windows: CPU interrupt time",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5a15686b3cd80b63466d5af2563c2e2dd8df68090cc7c172f41ae06b5f4b74b4",
+    "family_source_hash": "sha256:563498399661a8644a0331b2da19306dac0a4d2a6da84ef84266162f2f4b5bbd",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

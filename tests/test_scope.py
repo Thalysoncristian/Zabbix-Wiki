@@ -326,7 +326,17 @@ class TestConfiguracao(unittest.TestCase):
         self.assertEqual(configuracao.default_id, "noc")
         noc = configuracao.get("noc")
         self.assertEqual(noc.mode, "exclude", "o escopo do NOC precisa ser por exclusão")
-        self.assertIn(GIGANTE, noc.exclude_hosts)
+
+    def test_o_projeto_esconde_os_jobs_do_gigante_mas_nao_o_host(self):
+        """O host inteiro NÃO pode voltar para `exclude_hosts`.
+
+        Excluir o host levava junto os 60 alertas de agente Control-M, que o
+        NOC atende e tem procedimento escrito. O recorte é pela regra de LLD.
+        """
+        noc = load_scopes("scopes.json").get("noc")
+        self.assertNotIn(GIGANTE, noc.exclude_hosts,
+                         "excluir o host inteiro esconde também os alertas de agente")
+        self.assertIn((GIGANTE, "Jobs"), noc.exclude_discovery_rules)
 
     def test_escopo_desconhecido_e_erro_claro(self):
         configuracao = parse_scopes({"scopes": [{"id": "noc"}], "default": "noc"})
@@ -353,3 +363,83 @@ class TestConfiguracao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestExclusaoPorRegraDeDescoberta(unittest.TestCase):
+    """Recorte fino: esconder uma família de um host sem esconder o host.
+
+    O caso real: `Control-M PRD Votorantim` tem 16.262 alertas de job — que o
+    NOC não analisa pelo Zabbix — e 60 de agente fora, que ele atende e tem
+    procedimento escrito. Excluir o host inteiro escondia os dois.
+    """
+
+    ESCOPO = parse_scopes({
+        "default": "noc",
+        "scopes": [{
+            "id": "noc",
+            "exclude_discovery_rules": [{"host": "Control-M PRD Votorantim", "rule": "Jobs"}],
+        }],
+    }).get("noc")
+
+    @staticmethod
+    def _alerta(host: str, regra: str | None) -> dict[str, Any]:
+        zbx: dict[str, Any] = {"host": {"name": host, "host": host.lower()}}
+        if regra:
+            zbx["discovery_rule"] = {"name": regra, "key_": regra.lower()}
+            zbx["discovered"] = True
+        return {"zabbix": zbx}
+
+    def test_a_regra_excluida_sai(self):
+        self.assertFalse(self.ESCOPO.includes_alert(
+            self._alerta("Control-M PRD Votorantim", "Jobs")))
+
+    def test_outra_regra_do_mesmo_host_fica(self):
+        """O ponto inteiro da mudança: o agente continua visível."""
+        self.assertTrue(self.ESCOPO.includes_alert(
+            self._alerta("Control-M PRD Votorantim", "Agent discovery")))
+
+    def test_a_mesma_regra_em_outro_host_fica(self):
+        """`Jobs` é nome genérico: excluir globalmente esconderia outro cliente."""
+        self.assertTrue(self.ESCOPO.includes_alert(
+            self._alerta("Control-M server [IN01]", "Jobs")))
+
+    def test_alerta_sem_lld_do_mesmo_host_fica(self):
+        """A regra fala de descoberta; um trigger direto não foi descoberto."""
+        self.assertTrue(self.ESCOPO.includes_alert(
+            self._alerta("Control-M PRD Votorantim", None)))
+
+    def test_o_escopo_nao_e_mais_considerado_vazio(self):
+        self.assertFalse(self.ESCOPO.is_everything)
+        self.assertEqual(self.ESCOPO.mode, "exclude")
+
+    def test_exclusao_por_host_continua_valendo_junto(self):
+        escopo = parse_scopes({"scopes": [{
+            "id": "x",
+            "exclude_hosts": ["Host Banido"],
+            "exclude_discovery_rules": [{"host": "Outro", "rule": "Jobs"}],
+        }]}).get("x")
+        self.assertFalse(escopo.includes_alert(self._alerta("Host Banido", "Agent discovery")))
+        self.assertFalse(escopo.includes_alert(self._alerta("Outro", "Jobs")))
+        self.assertTrue(escopo.includes_alert(self._alerta("Outro", "Agent discovery")))
+
+    def test_curinga_no_host_e_na_regra(self):
+        escopo = parse_scopes({"scopes": [{
+            "id": "x",
+            "exclude_discovery_rules": [{"host": "Control-M * Votorantim", "rule": "Job*"}],
+        }]}).get("x")
+        self.assertFalse(escopo.includes_alert(self._alerta("Control-M PRD Votorantim", "Jobs")))
+        self.assertFalse(escopo.includes_alert(self._alerta("Control-M DEV Votorantim", "Jobs py")))
+        self.assertTrue(escopo.includes_alert(self._alerta("Control-M PRD Votorantim", "Agent discovery")))
+
+    def test_regra_sem_host_e_recusada(self):
+        """Uma regra sem host valeria para o ambiente inteiro."""
+        with self.assertRaises(ScopeError):
+            parse_scopes({"scopes": [{"id": "x", "exclude_discovery_rules": [{"rule": "Jobs"}]}]})
+
+    def test_regra_sem_nome_e_recusada(self):
+        with self.assertRaises(ScopeError):
+            parse_scopes({"scopes": [{"id": "x", "exclude_discovery_rules": [{"host": "H"}]}]})
+
+    def test_formato_errado_e_recusado(self):
+        with self.assertRaises(ScopeError):
+            parse_scopes({"scopes": [{"id": "x", "exclude_discovery_rules": ["Jobs"]}]})

@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|control-m-saas-master|controlm-services-discovery|control-m-sla-service-name-is-not-ok-reason-item-value3",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|control-m-saas-master|controlm-services-discovery|control-m-sla-service-name-is-not-ok-reason-item-value3",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "control-m-saas-master|control-m-sla-enel-chubb-is-not-ok-reason-macro",
+      "triggerid": "810865",
+      "host": "Control-M SaaS Master",
+      "description": "Control-M SLA: Enel Chubb is Not Ok. Reason: {ITEM.VALUE3}"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "810865",
+    "description_raw": "Control-M SLA: Enel Chubb is Not Ok. Reason: {ITEM.VALUE3}",
+    "description_normalized": "control-m-sla-enel-chubb-is-not-ok-reason-macro",
+    "expression_raw": "({1022914}=0\r\nor\r\n{1022914}=10)\r\nand\r\nlength({1022915})>=0",
+    "expression_expanded": "(last(/Control-M SaaS Master/service.status['Enel Chubb','IN01:00tmq'],#1)=0\r\nor\r\nlast(/Control-M SaaS Master/service.status['Enel Chubb','IN01:00tmq'],#1)=10)\r\nand\r\nlength(last(/Control-M SaaS Master/service.error.details['IN01:00tmq']))>=0",
+    "expression_signature": "(last(/{HOST}/service.status['EnelChubb','IN01:00tmq'],#1)=0orlast(/{HOST}/service.status['EnelChubb','IN01:00tmq'],#1)=10)andlength(last(/{HOST}/service.error.details['IN01:00tmq']))>=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The service has encountered an issue.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "95394",
+      "name": "SLA services discovery",
+      "key_": "controlm.services.discovery"
+    },
+    "prototype_description": "Control-M SLA: {#SERVICE.NAME} is Not Ok. Reason: {ITEM.VALUE3}",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10863",
+      "host": "Control-M SaaS Master",
+      "name": "Control-M SaaS Master",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1320529",
+        "key_": "service.error.details['IN01:00tmq']",
+        "name": "Service [Enel Chubb]: error details",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "1320521",
+        "key_": "service.status['Enel Chubb','IN01:00tmq']",
+        "name": "Service [Enel Chubb, IN01:00tmq]: status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:8f4cf4f8b114e0ce914a7444ffe61eb4e2e29bbf0633f12d8314bf7a709bd9dc",
+    "family_source_hash": "sha256:ed109d79fac6e190f52b1193be472244a93918a8a7323bf1623332b97d1e4017",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

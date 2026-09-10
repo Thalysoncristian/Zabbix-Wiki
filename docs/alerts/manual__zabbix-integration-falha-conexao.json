@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "alert_key": "manual|zabbix-integration-falha-conexao",
+  "scope": "manual",
+  "doc_level": "family",
+  "family_key": "manual|zabbix-integration-falha-conexao",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:39:44Z",
+  "last_modified_at": "2026-09-06T00:39:44.417411Z",
+  "revision": 1,
+  "last_seen_at": null,
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": null,
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Zabbix Integration — Falha na conexao ao executar operacao",
+    "objective": "",
+    "symptoms": [
+      "Notificacao 'Falha na conexao ao executar operacao' (Zabbix Integration)"
+    ],
+    "actions": [
+      "Aguardar o tempo limite. Se nao normalizar, abrir chamado."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "MSMonitor falhando ao se conectar na API do Zabbix.",
+    "probable_cause": "Instabilidade de rede/API.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Suporte DEV",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Integracao com o Zabbix volta a responder normalmente.",
+    "notes": "Severidade: Alta. SLA: 7 min (5m + 2m). Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null,
+    "client": "master-support"
+  }
+}

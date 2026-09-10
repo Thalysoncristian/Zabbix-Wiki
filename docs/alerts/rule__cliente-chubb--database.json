@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cliente-chubb--database",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|azure-sql-cpu-alta|0191c65f",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:51:33Z",
+  "last_modified_at": "2026-09-06T02:08:23.199764Z",
+  "revision": 4,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "93449",
+    "description_raw": "Azure SQL: CPU alta",
+    "description_normalized": "azure-sql-cpu-alta",
+    "expression_raw": "{112486}>80",
+    "expression_expanded": "min(/Chubb - SQLDB/db.odbc.select[cpu_percent,AZURE-MSSQL],5m)>80",
+    "expression_signature": "min(/{HOST}/db.odbc.select[cpu_percent,AZURE-MSSQL],5m)>80",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{112487}<70",
+    "recovery_expression_expanded": "max(/Chubb - SQLDB/db.odbc.select[cpu_percent,AZURE-MSSQL],5m)<70",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153901",
+        "key_": "db.odbc.select[cpu_percent,AZURE-MSSQL]",
+        "name": "CPU percent",
+        "units": "%",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:598ae1aa248ca425b33754c7d0fc964a13c8505c0099319bfa672f37926513da"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Banco de dados Azure SQL — Chubb (CPU, locks, backup, tamanho)",
+    "objective": "Reagir a problemas de desempenho e capacidade no banco Azure SQL do cliente Chubb.",
+    "symptoms": [
+      "'Azure SQL: CPU alta'",
+      "'Azure SQL: Database size alto'",
+      "'Azure SQL: Locks altos'",
+      "'Azure SQL: Sessoes bloqueadas'"
+    ],
+    "actions": [
+      "Abrir chamado para o Suporte DEV."
+    ],
+    "validation": "",
+    "risks": [
+      "E banco de dados de um cliente especifico -- pode ter SLA/contrato proprio diferente do generico"
+    ],
+    "meaning": "37 alertas, 5 instancias (blocked_sessions, cpu_percent, db_size_mb, locks_count, sqldb-enel-prod), host unico 'Chubb - SQLDB'. Severidade: 9 High, 19 Warning.",
+    "probable_cause": "Consulta mal otimizada, crescimento organico do banco, ou pico de carga.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar no portal Azure qual metrica especifica disparou",
+      "Identificar a query/sessao responsavel pelo bloqueio, se for o caso de locks"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Suporte DEV",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, reune 33 familias tecnicas. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o DBA responsavel e interno ou do proprio cliente Chubb.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

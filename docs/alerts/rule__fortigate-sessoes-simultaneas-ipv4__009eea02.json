@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-sessoes-simultaneas-ipv4|009eea02",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-sessoes-simultaneas-ipv4|009eea02",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-sessoes-simultaneas-ipv4",
+      "triggerid": "64492",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Sessões simultâneas IPV4"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "64492",
+    "description_raw": "FortiGate: Sessões simultâneas IPV4",
+    "description_normalized": "fortigate-sessoes-simultaneas-ipv4",
+    "expression_raw": "{94418}>=15000",
+    "expression_expanded": "max(/Vibe - Proxy Fortigate/net.ipv4.sessions[fgSysSesCount.0],5m)>=15000",
+    "expression_signature": "max(/{HOST}/net.ipv4.sessions[fgSysSesCount.0],5m)>=15000",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Trigger criada a partir do chamado: 1025-000764\r\nConforme solicitado no chamado: 0126-000157, o threshold da trigger foi alterada de 4000 para 15000 sessões.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52432",
+        "key_": "net.ipv4.sessions[fgSysSesCount.0]",
+        "name": "FortiGate: IPv4 Active sessions",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:4a92f6f7ef262e891f7a8cd770ca8c8cffa4037a63b6cf933b90ebe42a23e0f3",
+    "family_source_hash": "sha256:61a13a17b62b75652c4210189e6c4c8d6663fecf9e55fe38ff88b53dd0340be3",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

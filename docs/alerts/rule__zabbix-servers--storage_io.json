@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-servers--storage_io",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|vibe-zabbix-server|vfs-dev-discovery|devname-disk-read-write-request-responses-are-too-high",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:32Z",
+  "last_modified_at": "2026-09-06T14:39:32.366703Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23353",
+    "description_raw": "nvme0n1: Disk read/write request responses are too high",
+    "description_normalized": "nvme0n1-disk-read-write-request-responses-are-too-high",
+    "expression_raw": "{33139} > {$VFS.DEV.READ.AWAIT.WARN:\"nvme0n1\"} or {33140} > {$VFS.DEV.WRITE.AWAIT.WARN:\"nvme0n1\"}",
+    "expression_expanded": "min(/Vibe - Zabbix server/vfs.dev.read.await[nvme0n1],15m) > \"{$VFS.DEV.READ.AWAIT.WARN:\\\"nvme0n1\\\"}\" or min(/Vibe - Zabbix server/vfs.dev.write.await[nvme0n1],15m) > \"{$VFS.DEV.WRITE.AWAIT.WARN:\\\"nvme0n1\\\"}\"",
+    "expression_signature": "min(/{HOST}/vfs.dev.read.await[nvme0n1],15m)>\"{MACRO}\"ormin(/{HOST}/vfs.dev.write.await[nvme0n1],15m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "nvme0n1: Disk read/write request responses are too high (read > {$VFS.DEV.READ.AWAIT.WARN:\"nvme0n1\"} ms for 15m or write > {$VFS.DEV.WRITE.AWAIT.WARN:\"nvme0n1\"} ms for 15m)",
+    "comments": "This trigger might indicate the disk `nvme0n1` saturation.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "42275",
+      "name": "Block devices discovery",
+      "key_": "vfs.dev.discovery"
+    },
+    "prototype_description": "{#DEVNAME}: Disk read/write request responses are too high",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "45808",
+        "key_": "vfs.dev.read.await[nvme0n1]",
+        "name": "nvme0n1: Disk read request avg waiting time (r_await)",
+        "units": "!ms",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      },
+      {
+        "itemid": "45809",
+        "key_": "vfs.dev.write.await[nvme0n1]",
+        "name": "nvme0n1: Disk write request avg waiting time (w_await)",
+        "units": "!ms",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ab362b77e0fed1d0f1c27d4469a1b7e6b139d8d2d5c5e9831a9cf4c6d35413d1"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Latencia de disco (I/O) — Zabbix servers",
+    "objective": "Identificar gargalo de I/O antes que vire lentidao percebida pelo usuario.",
+    "symptoms": [
+      "'<dispositivo>: Disk read/write request responses are too high'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "2 alertas em 2 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server, Vibe - Zabbix-Proxy. Itens `vfs.dev*` medem tempo de resposta de leitura/escrita dos dispositivos. 2 instancia(s): nvme0n1, sda. Severidades: Warning=2.",
+    "probable_cause": "Disco saturado, concorrencia de processos ou storage compartilhado sob carga.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Identificar o dispositivo (vem no titulo)",
+      "Ver se coincide com backup/batch conhecido",
+      "Conferir se e disco local ou storage compartilhado"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia -- I/O alto durante backup costuma ser esperado.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|espaco-no-datastore-menor-10|d9d5f399",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|espaco-no-datastore-menor-10|d9d5f399",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-vmware|espaco-no-datastore-menor-10",
+      "triggerid": "79827",
+      "host": "Vibe - VMware",
+      "description": "Espaço no Datastore Menor 10%"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "79827",
+    "description_raw": "Espaço no Datastore Menor 10%",
+    "description_normalized": "espaco-no-datastore-menor-10",
+    "expression_raw": "{98212}<10",
+    "expression_expanded": "last(/Vibe - VMware/vmware.datastore.size[https://192.168.14.249/sdk,datastore1,pfree])<10",
+    "expression_signature": "last(/{HOST}/vmware.datastore.size[https://192.168.14.249/sdk,datastore1,pfree])<10",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Espaço no Datastore menor que 10% (VALOR ATUAL: {ITEM.VALUE})",
+    "comments": "Prezados, colodado em manutenção pelo periodo de um dia conforme solicitado pelo Sr Rafael Sales.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10697",
+      "host": "Vibe - VMware",
+      "name": "Vibe - VMware",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51353",
+        "key_": "vmware.datastore.size[https://{$VMWARE.URL},datastore1,pfree]",
+        "name": "VMware: Free space on datastore datastore1 (percentage)",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:e47df4b674a073481e482d033757ce495d3f4c454a56da4034b7c7a832be649e",
+    "family_source_hash": "sha256:d325be8a326876ce36495a901f316ba85357848dd48ed882838b32f3257f178b",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

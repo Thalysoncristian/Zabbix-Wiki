@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--service",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|linux-getting-closer-to-process-limit|cd4d006b",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:46:51Z",
+  "last_modified_at": "2026-09-06T00:46:51.665950Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "33949",
+    "description_raw": "Linux: Getting closer to process limit",
+    "description_normalized": "linux-getting-closer-to-process-limit",
+    "expression_raw": "{47683}/{47684}*100>80",
+    "expression_expanded": "last(/Vibe - Wazuh SIEM/proc.num)/last(/Vibe - Wazuh SIEM/kernel.maxproc)*100>80",
+    "expression_signature": "last(/{HOST}/proc.num)/last(/{HOST}/kernel.maxproc)*100>80",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "{ITEM.LASTVALUE1} active, {ITEM.LASTVALUE2} limit.",
+    "event_name": "Linux: Getting closer to process limit (over 80% used)",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "monitoramento",
+        "value": "excecao"
+      },
+      {
+        "tag": "scope",
+        "value": "excecao"
+      }
+    ],
+    "host": {
+      "hostid": "10743",
+      "host": "Vibe - Wazuh SIEM",
+      "name": "Vibe - Wazuh SIEM",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "60999",
+        "key_": "kernel.maxproc",
+        "name": "Linux: Maximum number of processes",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h"
+      },
+      {
+        "itemid": "61000",
+        "key_": "proc.num",
+        "name": "Linux: Number of processes",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a498a09c8124a988070f5fc0554e0c652b3ecf50de088cb676912121aca38761"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Servico do Windows/Linux parado ou perto do limite de processos",
+    "objective": "Reagir a servicos criticos de SO parados (Windows) ou ao sistema perto do limite de processos (Linux) em 3 hosts.",
+    "symptoms": [
+      "'\"NomeDoServico\" (Descricao) is not running'",
+      "'Linux: Getting closer to process limit'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "62 instancias de servicos do Windows sao, em sua maioria, servicos genericos do SO (audio, DNS, broker) -- nem todo servico parado justifica o mesmo nivel de urgencia"
+    ],
+    "meaning": "64 alertas, 62 instancias (nomes de servico: AudioEndpointBuilder, Audiosrv, BFE, BrokerInfrastructure, CoreMessagingRegistrar, CryptSvc, DPS, DcomLaunch, Dhcp, DiagTrack, DispBrokerDesktopSvc, Dnscache e outros), 3 hosts (SRV_INCONTROL_2026, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM). A maioria e servico essencial do Windows (audio, DNS, DHCP, criptografia) -- nem sempre a parada afeta a operacao de negocio diretamente.",
+    "probable_cause": "Servico do Windows travado/crashado, ou processo Linux proximo do limite configurado no SO.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar no host se o servico realmente esta parado (nome exato vem no titulo)",
+      "Verificar se e um servico essencial ao funcionamento da aplicacao do host ou um servico generico do Windows"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, reune 2 familias tecnicas (servico parado + limite de processos). ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se o procedimento e so reiniciar o servico ou se precisa investigar a causa da parada antes.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

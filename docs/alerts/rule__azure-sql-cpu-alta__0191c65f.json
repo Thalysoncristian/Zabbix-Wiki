@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|azure-sql-cpu-alta|0191c65f",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|azure-sql-cpu-alta|0191c65f",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|azure-sql-cpu-alta",
+      "triggerid": "93449",
+      "host": "Chubb - SQLDB",
+      "description": "Azure SQL: CPU alta"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93449",
+    "description_raw": "Azure SQL: CPU alta",
+    "description_normalized": "azure-sql-cpu-alta",
+    "expression_raw": "{112486}>80",
+    "expression_expanded": "min(/Chubb - SQLDB/db.odbc.select[cpu_percent,AZURE-MSSQL],5m)>80",
+    "expression_signature": "min(/{HOST}/db.odbc.select[cpu_percent,AZURE-MSSQL],5m)>80",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{112487}<70",
+    "recovery_expression_expanded": "max(/Chubb - SQLDB/db.odbc.select[cpu_percent,AZURE-MSSQL],5m)<70",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153901",
+        "key_": "db.odbc.select[cpu_percent,AZURE-MSSQL]",
+        "name": "CPU percent",
+        "units": "%",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:598ae1aa248ca425b33754c7d0fc964a13c8505c0099319bfa672f37926513da",
+    "family_source_hash": "sha256:42c8dadd9c58fadc8a128d33771d99f986ff279e488c6c6105965ad1f159f1d3",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

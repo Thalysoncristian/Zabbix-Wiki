@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-servidor-idrac-dell|temp-cpu-discovery|sensor-locale-temperature-is-too-low",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-servidor-idrac-dell|temp-cpu-discovery|sensor-locale-temperature-is-too-low",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|cpu1-temp-temperature-is-too-low",
+      "triggerid": "24322",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "CPU1 Temp: Temperature is too low"
+    },
+    {
+      "alert_key": "vibe-servidor-idrac-dell|cpu2-temp-temperature-is-too-low",
+      "triggerid": "24323",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "CPU2 Temp: Temperature is too low"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24322",
+    "description_raw": "CPU1 Temp: Temperature is too low",
+    "description_normalized": "cpu1-temp-temperature-is-too-low",
+    "expression_raw": "{34837}<{$TEMP_CRIT_LOW:\"CPU\"}",
+    "expression_expanded": "avg(/Vibe - Servidor iDRAC DELL/sensor.temp.value[temperatureProbeReading.CPU.1.2],5m)<\"{$TEMP_CRIT_LOW:\\\"CPU\\\"}\"",
+    "expression_signature": "avg(/{HOST}/sensor.temp.value[temperatureProbeReading.CPU.1.2],5m)<\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34838}>{$TEMP_CRIT_LOW:\"CPU\"}+3",
+    "recovery_expression_expanded": "min(/Vibe - Servidor iDRAC DELL/sensor.temp.value[temperatureProbeReading.CPU.1.2],5m)>\"{$TEMP_CRIT_LOW:\\\"CPU\\\"}\"+3",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current value: {ITEM.LASTVALUE1}",
+    "event_name": "CPU1 Temp: Temperature is too low: <{$TEMP_CRIT_LOW:\"CPU\"}",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51282",
+      "name": "Temperature CPU Discovery",
+      "key_": "temp.cpu.discovery"
+    },
+    "prototype_description": "{#SENSOR_LOCALE}: Temperature is too low",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51337",
+        "key_": "sensor.temp.value[temperatureProbeReading.CPU.1.2]",
+        "name": "CPU1 Temp: Temperature",
+        "units": "°C",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:7cbe6cd115540e2b4f562361d974f3481ea6468abb24c52d92efde6e836141f0",
+    "family_source_hash": "sha256:f5c9cec0ce93300a2c29dc58e035da9fa6300dbb951cdee4f31a8afc81d566b1",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

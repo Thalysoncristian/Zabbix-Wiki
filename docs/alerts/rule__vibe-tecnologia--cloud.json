@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--cloud",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|uso-de-disco-acima-de-90-ords-dev-vibe|10712c06",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:47Z",
+  "last_modified_at": "2026-09-06T14:39:47.663885Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23462",
+    "description_raw": "Uso de Disco acima de 90% - ords-dev-vibe",
+    "description_normalized": "uso-de-disco-acima-de-90-ords-dev-vibe",
+    "expression_raw": "{33483}>90",
+    "expression_expanded": "last(/Vibe - Influxdb/pdiscousado[ords-dev-vibe])>90",
+    "expression_signature": "last(/{HOST}/pdiscousado[ords-dev-vibe])>90",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46232",
+        "key_": "pdiscousado[ords-dev-vibe]",
+        "name": "Disco Usado % / - ords-dev-vibe",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:01cdd892d07d6a3036da58e6313068a9f4494202b3200819a7f1b685dfb3e93d"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Recursos em nuvem — Vibe Tecnologia",
+    "objective": "Reagir a falha de recurso gerenciado em nuvem.",
+    "symptoms": [
+      "Falha reportada pelo check do recurso"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "CLASSIFICACAO PROVAVELMENTE ERRADA: os 2 alertas sao 'Uso de Disco acima de 90%' (ords-dev-vibe, ords-prod-vibe) e cairam em 'Nuvem' porque a palavra 'ords' contem 'rds'. E disco, nao nuvem. Corrigir a taxonomia antes de documentar — a ficha certa e a de filesystem.",
+      "Confianca BAIXA no agrupamento: revisar se estes alertas sao mesmo uma unidade antes de tratar a ficha como definitiva. Os motivos estao na pagina da regra."
+    ],
+    "meaning": "2 alertas em 1 host(s) do grupo 'Vibe Tecnologia': Vibe - Influxdb. Itens `aws_check*` / `aws.*` consultam recursos da conta. 2 instancia(s): ords-dev-vibe, ords-prod-vibe. Severidades: High=2.",
+    "probable_cause": "Erro no recurso, credencial expirada ou indisponibilidade do provedor.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar no console do provedor",
+      "Conferir validade da credencial usada no check"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca low, 2 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Time responsavel pela conta de nuvem.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-utilization-of-ipmi-manager-processes-is-high|1b3d621a",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-utilization-of-ipmi-manager-processes-is-high|1b3d621a",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-utilization-of-ipmi-manager-processes-is-high",
+      "triggerid": "24144",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: Utilization of ipmi manager processes is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24144",
+    "description_raw": "Zabbix proxy: Utilization of ipmi manager processes is high",
+    "description_normalized": "zabbix-proxy-utilization-of-ipmi-manager-processes-is-high",
+    "expression_raw": "{34454}>{$ZABBIX.PROXY.UTIL.MAX:\"ipmi manager\"}",
+    "expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,ipmi manager,avg,busy],10m)>\"{$ZABBIX.PROXY.UTIL.MAX:\\\"ipmi manager\\\"}\"",
+    "expression_signature": "avg(/{HOST}/zabbix[process,ipmimanager,avg,busy],10m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34454}<{$ZABBIX.PROXY.UTIL.MIN:\"ipmi manager\"}",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,ipmi manager,avg,busy],10m)<\"{$ZABBIX.PROXY.UTIL.MIN:\\\"ipmi manager\\\"}\"",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Zabbix proxy: Utilization of ipmi manager processes over {$ZABBIX.PROXY.UTIL.MAX:\"ipmi manager\"}%",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51013",
+        "key_": "zabbix[process,ipmi manager,avg,busy]",
+        "name": "Zabbix proxy: Utilization of ipmi manager internal processes, in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:e09e64fca3ea6ab4bfead5a1bf3bd820e2ca448036d336e2f31af3761474dc23",
+    "family_source_hash": "sha256:beb0da35ee67b7565f5f005e6a09fa1e0a488c72c0eecb8fda218bb57d935f0b",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

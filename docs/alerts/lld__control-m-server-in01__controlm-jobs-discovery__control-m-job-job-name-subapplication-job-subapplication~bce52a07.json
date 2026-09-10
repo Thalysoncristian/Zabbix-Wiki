@@ -1,0 +1,994 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|control-m-server-in01|controlm-jobs-discovery|control-m-job-job-name-subapplication-job-subapplication-odate-job-orderdate-status-item-value",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|control-m-server-in01|controlm-jobs-discovery|control-m-job-job-name-subapplication-job-subapplication-odate-job-orderdate-status-item-value",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "control-m-server-in01|control-m-job-abrir-chamado-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793887",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ABRIR_CHAMADO] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-abrir-chamado-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802479",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ABRIR_CHAMADO] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-abrir-chamado-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810909",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ABRIR_CHAMADO] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-ack-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793876",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ACK] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-ack-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802468",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ACK] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-ack-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810895",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ACK] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-ack-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793884",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ACK] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-ack-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802476",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ACK] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-ack-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810906",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ACK] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaralertas-subapplication-monitoramento-odate-260904-status-macro",
+      "triggerid": "802463",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [BuscarAlertas] - SubApplication MONITORAMENTO - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-claim-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793881",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [CLAIM] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-claim-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802473",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [CLAIM] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-claim-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810900",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [CLAIM] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-claim-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793889",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [CLAIM] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-claim-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802481",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [CLAIM] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-claim-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810911",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [CLAIM] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-coleta-feedz-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802449",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [COLETA_FEEDZ] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-coleta-feedz-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810888",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [COLETA_FEEDZ] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-decidir-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793880",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [DECIDIR] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-decidir-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802472",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [DECIDIR] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-decidir-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810899",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [DECIDIR] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-decidir-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793888",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [DECIDIR] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-decidir-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802480",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [DECIDIR] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-decidir-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810910",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [DECIDIR] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-disparo3-4-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802455",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [Disparo3-4] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-disparo52-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802456",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [Disparo52] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-endo-fw-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793882",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENDO-FW] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-endo-fw-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802474",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENDO-FW] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-endo-fw-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810901",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENDO-FW] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviar-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793878",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENVIAR] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviar-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802470",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENVIAR] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviar-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810897",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENVIAR] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-envia-msg-teams-subapplication-soc-odate-260904-status-macro",
+      "triggerid": "802467",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENVIA_MSG_TEAMS] - SubApplication SOC - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-envia-msg-teams-subapplication-soc-odate-260905-status-macro",
+      "triggerid": "810904",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ENVIA_MSG_TEAMS] - SubApplication SOC - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviamsgzap3-4-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802457",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviaMsgZap3-4] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviamsgzap52-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802458",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviaMsgZap52] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviaremail-subapplication-monitoramento-odate-260904-status-macro",
+      "triggerid": "802464",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarEmail] - SubApplication MONITORAMENTO - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviarsaldo-subapplication-opensearch-odate-260903-status-macro",
+      "triggerid": "785231",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarSaldo] - SubApplication OPENSEARCH - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviarsaldo-subapplication-opensearch-odate-260904-status-macro",
+      "triggerid": "793855",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarSaldo] - SubApplication OPENSEARCH - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviarsaldo-subapplication-opensearch-odate-260905-status-macro",
+      "triggerid": "802447",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarSaldo] - SubApplication OPENSEARCH - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviarsaldo-subapplication-opensearch-odate-260906-status-macro",
+      "triggerid": "810886",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarSaldo] - SubApplication OPENSEARCH - (ODate: 260906): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviarsaldo-subapplication-teste-odate-260903-status-macro",
+      "triggerid": "802408",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarSaldo] - SubApplication TESTE - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-enviarsaldo-subapplication-teste-odate-260904-status-macro",
+      "triggerid": "810851",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [EnviarSaldo] - SubApplication TESTE - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fim-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793883",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FIM] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fim-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802475",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FIM] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fim-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810905",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FIM] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-chamado-subapplication-deskmanager-odate-260903-status-macro",
+      "triggerid": "793839",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_CHAMADO] - SubApplication DESKMANAGER - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-chamado-subapplication-deskmanager-odate-260904-status-macro",
+      "triggerid": "802426",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_CHAMADO] - SubApplication DESKMANAGER - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-chamado-subapplication-deskmanager-odate-260905-status-macro",
+      "triggerid": "810867",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_CHAMADO] - SubApplication DESKMANAGER - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-mensagem-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793890",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_MENSAGEM] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-mensagem-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802482",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_MENSAGEM] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-mensagem-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810912",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_MENSAGEM] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-soc-subapplication-soc-odate-260903-status-macro",
+      "triggerid": "793836",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_SOC] - SubApplication SOC - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-soc-subapplication-soc-odate-260904-status-macro",
+      "triggerid": "802431",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_SOC] - SubApplication SOC - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-fw-soc-subapplication-soc-odate-260905-status-macro",
+      "triggerid": "810881",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FW_SOC] - SubApplication SOC - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-formatarsaldo-subapplication-opensearch-odate-260903-status-macro",
+      "triggerid": "785230",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FormatarSaldo] - SubApplication OPENSEARCH - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-formatarsaldo-subapplication-opensearch-odate-260904-status-macro",
+      "triggerid": "793854",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FormatarSaldo] - SubApplication OPENSEARCH - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-formatarsaldo-subapplication-opensearch-odate-260905-status-macro",
+      "triggerid": "802446",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FormatarSaldo] - SubApplication OPENSEARCH - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-formatarsaldo-subapplication-opensearch-odate-260906-status-macro",
+      "triggerid": "810885",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FormatarSaldo] - SubApplication OPENSEARCH - (ODate: 260906): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-formatarsaldo-subapplication-teste-odate-260903-status-macro",
+      "triggerid": "802409",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FormatarSaldo] - SubApplication TESTE - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-formatarsaldo-subapplication-teste-odate-260904-status-macro",
+      "triggerid": "810852",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [FormatarSaldo] - SubApplication TESTE - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-get-rhc-colaboradores-subapplication-api-odate-260904-status-macro",
+      "triggerid": "802429",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [GET_RHC_Colaboradores] - SubApplication API - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-email-colaborador-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802452",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_EMAIL_COLABORADOR] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-email-colaborador-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810891",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_EMAIL_COLABORADOR] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-email-lider-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802454",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_EMAIL_LIDER] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-email-lider-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810893",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_EMAIL_LIDER] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-fechamento-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802453",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_FECHAMENTO] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-fechamento-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810892",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_FECHAMENTO] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-registro-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802450",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_REGISTRO] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-registro-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810889",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_REGISTRO] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-triagem-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802451",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_TRIAGEM] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-humor-triagem-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810890",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [HUMOR_TRIAGEM] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-monta-mensagem-subapplication-soc-odate-260904-status-macro",
+      "triggerid": "802466",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [MONTA_MENSAGEM] - SubApplication SOC - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-monta-mensagem-subapplication-soc-odate-260905-status-macro",
+      "triggerid": "810903",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [MONTA_MENSAGEM] - SubApplication SOC - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-montamsgzap3-4-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802459",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [MontaMsgZap3-4] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-montamsgzap52-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802460",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [MontaMsgZap52] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notificar-time-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793885",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [NOTIFICAR_TIME] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notificar-time-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802477",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [NOTIFICAR_TIME] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notificar-time-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810907",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [NOTIFICAR_TIME] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notifica-time-subapplication-deskmanager-odate-260903-status-macro",
+      "triggerid": "793841",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [NOTIFICA_TIME] - SubApplication DESKMANAGER - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notifica-time-subapplication-deskmanager-odate-260904-status-macro",
+      "triggerid": "802428",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [NOTIFICA_TIME] - SubApplication DESKMANAGER - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notifica-time-subapplication-deskmanager-odate-260905-status-macro",
+      "triggerid": "810869",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [NOTIFICA_TIME] - SubApplication DESKMANAGER - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-obternfs-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "802461",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ObterNfs] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-obtersaldo-subapplication-opensearch-odate-260903-status-macro",
+      "triggerid": "785229",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ObterSaldo] - SubApplication OPENSEARCH - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-obtersaldo-subapplication-opensearch-odate-260904-status-macro",
+      "triggerid": "793853",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ObterSaldo] - SubApplication OPENSEARCH - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-obtersaldo-subapplication-opensearch-odate-260905-status-macro",
+      "triggerid": "802445",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ObterSaldo] - SubApplication OPENSEARCH - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-obtersaldo-subapplication-opensearch-odate-260906-status-macro",
+      "triggerid": "810884",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ObterSaldo] - SubApplication OPENSEARCH - (ODate: 260906): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-obtersaldo-subapplication-teste-odate-260904-status-macro",
+      "triggerid": "810853",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ObterSaldo] - SubApplication TESTE - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-processa-chamado-subapplication-deskmanager-odate-260903-status-macro",
+      "triggerid": "793840",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [PROCESSA_CHAMADO] - SubApplication DESKMANAGER - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-processa-chamado-subapplication-deskmanager-odate-260904-status-macro",
+      "triggerid": "802427",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [PROCESSA_CHAMADO] - SubApplication DESKMANAGER - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-processa-chamado-subapplication-deskmanager-odate-260905-status-macro",
+      "triggerid": "810868",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [PROCESSA_CHAMADO] - SubApplication DESKMANAGER - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-processa-resposta-subapplication-soc-odate-260903-status-macro",
+      "triggerid": "793837",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [PROCESSA_RESPOSTA] - SubApplication SOC - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-processa-resposta-subapplication-soc-odate-260904-status-macro",
+      "triggerid": "802432",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [PROCESSA_RESPOSTA] - SubApplication SOC - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-processa-resposta-subapplication-soc-odate-260905-status-macro",
+      "triggerid": "810882",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [PROCESSA_RESPOSTA] - SubApplication SOC - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-procedurecargas-subapplication-dw-odate-260904-status-macro",
+      "triggerid": "802483",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ProcedureCARGAS] - SubApplication DW - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-procedurecargas-subapplication-dw-odate-260905-status-macro",
+      "triggerid": "810913",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [ProcedureCARGAS] - SubApplication DW - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-relatorio-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793877",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RELATORIO] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-relatorio-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802469",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RELATORIO] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-relatorio-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810896",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RELATORIO] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responder-subapplication-endomarketing-odate-260903-status-macro",
+      "triggerid": "793879",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDER] - SubApplication ENDOMARKETING - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responder-subapplication-endomarketing-odate-260904-status-macro",
+      "triggerid": "802471",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDER] - SubApplication ENDOMARKETING - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responder-subapplication-endomarketing-odate-260905-status-macro",
+      "triggerid": "810898",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDER] - SubApplication ENDOMARKETING - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responder-teams-subapplication-supportbot-odate-260903-status-macro",
+      "triggerid": "793886",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDER_TEAMS] - SubApplication SUPPORTBOT - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responder-teams-subapplication-supportbot-odate-260904-status-macro",
+      "triggerid": "802478",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDER_TEAMS] - SubApplication SUPPORTBOT - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responder-teams-subapplication-supportbot-odate-260905-status-macro",
+      "triggerid": "810908",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDER_TEAMS] - SubApplication SUPPORTBOT - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responde-teams-subapplication-soc-odate-260903-status-macro",
+      "triggerid": "793838",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDE_TEAMS] - SubApplication SOC - (ODate: 260903): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responde-teams-subapplication-soc-odate-260904-status-macro",
+      "triggerid": "802433",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDE_TEAMS] - SubApplication SOC - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-responde-teams-subapplication-soc-odate-260905-status-macro",
+      "triggerid": "810883",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [RESPONDE_TEAMS] - SubApplication SOC - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-sla-enelchubb-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802442",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [SLA_EnelChubb] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-sla-enelchubb-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810878",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [SLA_EnelChubb] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-stp-processa-pedido-subapplication-lj-odate-260904-status-macro",
+      "triggerid": "802462",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [STP_PROCESSA_PEDIDO] - SubApplication LJ - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-stp-processa-pedido-subapplication-lj-odate-260905-status-macro",
+      "triggerid": "810894",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [STP_PROCESSA_PEDIDO] - SubApplication LJ - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-transferearquivochubb-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802441",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [TransfereArquivoChubb] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-transferearquivochubb-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810877",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [TransfereArquivoChubb] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-upd-com-colaboradores-subapplication-api-odate-260904-status-macro",
+      "triggerid": "802430",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [UPD_COM_Colaboradores] - SubApplication API - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-validar-ambiente-subapplication-enviodehumor-odate-260904-status-macro",
+      "triggerid": "802448",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [VALIDAR_AMBIENTE] - SubApplication ENVIODEHUMOR - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-validar-ambiente-subapplication-enviodehumor-odate-260905-status-macro",
+      "triggerid": "810887",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [VALIDAR_AMBIENTE] - SubApplication ENVIODEHUMOR - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-verifica-ids-subapplication-soc-odate-260904-status-macro",
+      "triggerid": "802465",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [VERIFICA_IDS] - SubApplication SOC - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-verifica-ids-subapplication-soc-odate-260905-status-macro",
+      "triggerid": "810902",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [VERIFICA_IDS] - SubApplication SOC - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-verificaarquivosgerados-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802443",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [VerificaArquivosGerados] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-verificaarquivosgerados-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810879",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [VerificaArquivosGerados] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaradesoesce-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802434",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarAdesoesCE] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaradesoesce-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810870",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarAdesoesCE] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaradesoesrj-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802435",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarAdesoesRJ] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaradesoesrj-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810871",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarAdesoesRJ] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaradesoessp-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802436",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarAdesoesSP] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscaradesoessp-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810872",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarAdesoesSP] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarclientes-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802444",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarClientes] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarclientes-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810880",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarClientes] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarfaturamentoce-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802437",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarFaturamentoCE] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarfaturamentoce-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810873",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarFaturamentoCE] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarfaturamentorj-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802438",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarFaturamentoRJ] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarfaturamentorj-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810874",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarFaturamentoRJ] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarfaturamentosp-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802439",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarFaturamentoSP] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-buscarfaturamentosp-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810875",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [buscarFaturamentoSP] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-carregar-lista-usuarios-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "810850",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [carregar_lista_usuarios] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-create-support-dev-llm-relatorio-html-subapplication-deskmanager-odate-260904-status-macro",
+      "triggerid": "810738",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [create_support_dev_llm_relatorio_html] - SubApplication DESKMANAGER - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-create-support-dev-relatorio-subapplication-deskmanager-odate-260904-status-macro",
+      "triggerid": "810737",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [create_support_dev_relatorio] - SubApplication DESKMANAGER - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-gerararquivoapischedulercm-subapplication-enel-odate-260904-status-macro",
+      "triggerid": "802440",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [gerarArquivoAPISchedulerCM] - SubApplication ENEL - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-gerararquivoapischedulercm-subapplication-enel-odate-260905-status-macro",
+      "triggerid": "810876",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [gerarArquivoAPISchedulerCM] - SubApplication ENEL - (ODate: 260905): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-notificacao-exames-vencidos-subapplication-disparos-odate-260904-status-macro",
+      "triggerid": "810849",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [notificacao_exames_vencidos] - SubApplication DISPAROS - (ODate: 260904): status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-server-in01|control-m-job-send-relatorio-support-dev-final-subapplication-deskmanager-odate-260904-status-macro",
+      "triggerid": "810739",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Job [send_relatorio_support_dev_final] - SubApplication DESKMANAGER - (ODate: 260904): status [{ITEM.VALUE}]"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "793836",
+    "description_raw": "Control-M: Job [FW_SOC] - SubApplication SOC - (ODate: 260903): status [{ITEM.VALUE}]",
+    "description_normalized": "control-m-job-fw-soc-subapplication-soc-odate-260903-status-macro",
+    "expression_raw": "{1005884}=1 or\r\n{1005884}=10",
+    "expression_expanded": "last(/IN01/job.status['IN01:00tc9'],#1)=1 or\r\nlast(/IN01/job.status['IN01:00tc9'],#1)=10",
+    "expression_signature": "last(/{HOST}/job.status['IN01:00tc9'],#1)=1orlast(/{HOST}/job.status['IN01:00tc9'],#1)=10",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The job has encountered an issue.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "95418",
+      "name": "Jobs discovery",
+      "key_": "controlm.jobs.discovery"
+    },
+    "prototype_description": "Control-M: Job [{#JOB.NAME}] - SubApplication {#JOB.SUBAPPLICATION} - (ODate: {#JOB.ORDERDATE}): status [{ITEM.VALUE}]",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "controlm_job_id",
+        "value": "IN01:00tc9"
+      },
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10865",
+      "host": "IN01",
+      "name": "Control-M server [IN01]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications",
+      "Control-M/IN01"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1302925",
+        "key_": "job.status['IN01:00tc9']",
+        "name": "Get jobs: Job [FW_SOC]: stats",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5c47056bca6acc9803b4982110778f08db80563d9075d20bde656abe5b7e49dd",
+    "family_source_hash": "sha256:c057ef0f1b2d6537d41480ffccd3191da172b5ea67e08fad26d708022d459122",
+    "representative_of_family": true,
+    "family_instance_count": 142
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

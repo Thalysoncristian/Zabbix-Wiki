@@ -7,6 +7,7 @@
     python main.py scope          # hosts por volume: quem está dentro e fora do escopo
     python main.py reconcile      # snapshot -> fichas em docs/alerts/
     python main.py status         # cobertura da documentação
+    python main.py wiki           # fichas validadas -> página da wiki (ETAPA 10)
 """
 
 from __future__ import annotations
@@ -19,21 +20,47 @@ import tempfile
 from pathlib import Path
 from typing import Any, Sequence
 
+from .clients import NAO_CLASSIFICADO, ClientRegistry
 from .collect import RawSnapshot, collect_raw, partial_snapshot_of
 from .config import ConfigError, load_settings
 from .core.repository import AlertRepository
-from .core.status import DOCUMENTED_STATUSES, UNDOCUMENTED
+from .core.status import DOCUMENTED_STATUSES, NOT_APPLICABLE, UNDOCUMENTED
 from .merge import merge_raw_snapshots
 from .normalize import normalize_snapshot
 from .progress import ConsoleProgress
 from .reconcile import reconcile
 from .report import CHECK, build_report, format_report_lines
 from .snapshot import list_snapshots, load_raw_snapshot, write_json, write_partial_snapshot, write_snapshot
+from .wiki import coletar_entradas, escrever_wiki, gerar_wiki
 from .zabbix_client import ZabbixError, ZabbixReadOnlyClient
 
 EXIT_OK = 0
 EXIT_CONFIG = 2
 EXIT_ZABBIX = 3
+
+
+def configure_console_encoding() -> None:
+    """Garante que a saída aguenta os caracteres que o CLI realmente imprime.
+
+    O console do Windows usa cp1252 por padrão, que não tem `→`, `✓`, `──`
+    nem `🆕`. Sem isto, **um caractere de enfeite derruba o comando inteiro**
+    com `UnicodeEncodeError` — foi exatamente o que aconteceu com
+    `python main.py scope`, que morria na primeira linha do relatório antes
+    de mostrar qualquer dado útil.
+
+    `errors="replace"` é a rede de segurança: num terminal que não renderize
+    UTF-8, o pior caso vira um `?` no lugar do símbolo — nunca um comando
+    abortado no meio. Streams sem `reconfigure` (um `StringIO` capturado em
+    teste, um pipe já encapsulado) são deixados como estão.
+    """
+    for fluxo in (sys.stdout, sys.stderr):
+        reconfigure = getattr(fluxo, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        try:
+            reconfigure(encoding="utf-8", errors="replace")
+        except (ValueError, OSError):  # pragma: no cover - depende do terminal
+            pass
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -183,6 +210,14 @@ def build_parser() -> argparse.ArgumentParser:
                         help="escopo a usar na comparação (padrão: o de scopes.json)")
     kb_cmd.add_argument("--scopes-file", default=None, help="arquivo de escopos (padrão: scopes.json)")
     kb_cmd.add_argument("--json", action="store_true", help="saída em JSON, para script")
+    wk = sub.add_parser("wiki", help="gera a página da wiki a partir das fichas validadas")
+    wk.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+    wk.add_argument("--output", default="wiki.md", help="arquivo de saída (padrão: wiki.md)")
+    wk.add_argument("--stdout", action="store_true", help="imprime na saída padrão em vez de gravar")
+    wk.add_argument("--clients-file", default=None,
+                    help="mapa de clientes por host (padrão: clients.json)")
+    wk.add_argument("--output-dir", default=None,
+                    help="diretório dos snapshots, usado para deduplicar regras sobrepostas")
     return parser
 
 
@@ -517,10 +552,12 @@ def cmd_scope(args: argparse.Namespace) -> int:
     for item in configuracao.listar():
         marca = "→" if item["id"] == escopo.id else " "
         padrao = " (padrão)" if item["is_default"] else ""
-        regra = ", ".join(item["exclude_hosts"] + item["exclude_host_patterns"]
-                          + item["include_hosts"] + item["include_host_patterns"]) or "sem filtro"
+        filtros = list(item["exclude_hosts"] + item["exclude_host_patterns"]
+                       + item["include_hosts"] + item["include_host_patterns"])
+        filtros += [f"LLD {r['rule']!r} de {r['host']!r}"
+                    for r in item.get("exclude_discovery_rules") or []]
         print(f"  {marca} {item['id']:<12} {item['label']:<20}{padrao}")
-        print(f"      {item['mode']}: {regra[:90]}")
+        print(f"      {item['mode']}: {', '.join(filtros)[:90] or 'sem filtro'}")
 
     print()
     print(f"── Efeito do escopo '{escopo.id}' ──────────────────────────────")
@@ -534,24 +571,35 @@ def cmd_scope(args: argparse.Namespace) -> int:
     # Hosts por volume, com o veredito do escopo em cada linha. Esta é a
     # tabela que a decisão de exclusão precisa.
     por_host: dict[str, dict[str, Any]] = {}
-    for alerta in modelo.alerts + modelo.out_of_scope:
+    for alerta, no_escopo in ([(a, True) for a in modelo.alerts]
+                              + [(a, False) for a in modelo.out_of_scope]):
         zbx = alerta.get("zabbix") or {}
         host = zbx.get("host") or {}
         nome = host.get("name") or host.get("host") or "(sem host)"
-        registro = por_host.setdefault(nome, {"alertas": 0, "tecnico": host.get("host") or "", "lld": 0})
+        registro = por_host.setdefault(
+            nome, {"alertas": 0, "tecnico": host.get("host") or "", "lld": 0, "dentro": 0})
         registro["alertas"] += 1
+        registro["dentro"] += 1 if no_escopo else 0
         if zbx.get("discovered"):
             registro["lld"] += 1
 
     ordenados = sorted(por_host.items(), key=lambda kv: -kv[1]["alertas"])
     print()
     print(f"── Hosts por volume (top {args.top}) ───────────────────────────────")
-    print(f"  {'alertas':>8} {'LLD':>7}  {'%amb':>5}  escopo    host")
+    print(f"  {'alertas':>8} {'LLD':>7}  {'%amb':>5}  escopo      host")
     for nome, registro in ordenados[: max(1, args.top)]:
-        no_escopo = escopo.includes_host(nome, registro["tecnico"])
         pct = registro["alertas"] / ambiente["alerts"] * 100 if ambiente["alerts"] else 0
+        # Com exclusão por regra de descoberta um host pode entrar em PARTE:
+        # dizer só "dentro" ou "FORA" esconderia exatamente o recorte que
+        # motivou a regra.
+        if registro["dentro"] == registro["alertas"]:
+            veredito = "dentro    "
+        elif registro["dentro"] == 0:
+            veredito = "FORA      "
+        else:
+            veredito = f"{registro['dentro']} de {registro['alertas']}".ljust(10)
         print(f"  {registro['alertas']:>8} {registro['lld']:>7}  {pct:>4.0f}%  "
-              f"{'dentro' if no_escopo else 'FORA  '}    {nome[:60]}")
+              f"{veredito}  {nome[:60]}")
     if len(ordenados) > args.top:
         print(f"  ... e mais {len(ordenados) - args.top} host(s). Use --top para ver mais.")
 
@@ -653,10 +701,18 @@ def cmd_status(args: argparse.Namespace) -> int:
         por_nivel[doc.doc_level] = por_nivel.get(doc.doc_level, 0) + 1
 
     documentadas = sum(qtd for st, qtd in por_status.items() if st in DOCUMENTED_STATUSES)
-    cobertura = documentadas / len(fichas) * 100
+    # Ficha marcada como não aplicável (alerta de teste, por exemplo) sai do
+    # denominador: ela já foi resolvida — decidiu-se que não tem procedimento.
+    # Mantê-la ali faria a cobertura parecer pior do que é e nunca chegaria a
+    # 100%, por mais que o time documentasse tudo que importa.
+    nao_aplicaveis = por_status.get(NOT_APPLICABLE, 0)
+    pendentes = len(fichas) - nao_aplicaveis
+    cobertura = documentadas / pendentes * 100 if pendentes else 100.0
 
     print(f"Fichas       : {len(fichas)}")
-    print(f"Cobertura    : {documentadas}/{len(fichas)} ({cobertura:.1f}%) documentadas ou revisadas")
+    print(f"Cobertura    : {documentadas}/{pendentes} ({cobertura:.1f}%) documentadas ou revisadas")
+    if nao_aplicaveis:
+        print(f"               ({nao_aplicaveis} não aplicáveis fora da conta — alerta de teste e afins)")
     print(f"Instâncias   : {por_nivel.get('instance', 0)}   Famílias: {por_nivel.get('family', 0)}")
     print(f"Ausentes     : {sum(1 for d in fichas if not d.present_in_zabbix)} não vistas na última coleta do escopo")
     print()
@@ -750,10 +806,70 @@ def cmd_kb(args: argparse.Namespace) -> int:
     print()
     print("Nada foi gravado. Para vincular ou guardar como ficha manual, abra "
           "`python main.py serve` e vá em Base de conhecimento.")
+def cmd_wiki(args: argparse.Namespace) -> int:
+    """Gera a página da wiki a partir das fichas validadas.
+
+    Só entra o que uma pessoa aprovou (`documented`/`reviewed`). Rascunho
+    fica de fora, nem marcado como rascunho: numa página de plantão, texto que
+    parece procedimento é lido como procedimento.
+    """
+    docs_dir = args.docs_dir or "docs/alerts"
+    registry = ClientRegistry.load(args.clients_file)
+    entradas = coletar_entradas(docs_dir, registry)
+
+    # O snapshot serve para saber quais regras se sobrepõem — duas regras que
+    # cobrem os mesmos alertas viram a mesma orientação repetida na página.
+    # Sem snapshot a página sai igual, só sem a deduplicação.
+    from .web.readmodel import resolve_snapshot
+    try:
+        snapshot_dir = resolve_snapshot(args.output_dir or "output", None)
+    except (FileNotFoundError, OSError):
+        snapshot_dir = None
+
+    if args.stdout:
+        print(gerar_wiki(docs_dir, clients_file=args.clients_file, snapshot_dir=snapshot_dir))
+        return EXIT_OK
+
+    if not entradas:
+        print("Nenhuma ficha validada em docs/alerts/ — a página sairia vazia.")
+        print("Documente um procedimento (`python main.py serve`) e rode de novo.")
+        return EXIT_OK
+
+    publicadas = [e for e in entradas if registry.is_monitored(e.cliente)]
+    de_fora = [e for e in entradas if not registry.is_monitored(e.cliente)]
+    caminho, total = escrever_wiki(args.output, docs_dir, clients_file=args.clients_file,
+                                   snapshot_dir=snapshot_dir)
+    alertas = sum(len(e.alertas) for e in publicadas)
+    manuais = sum(1 for e in publicadas if e.manual)
+
+    print(f"✓ {caminho}")
+    print(f"  {total} procedimento(s) validado(s), cobrindo {alertas} alerta(s)")
+
+    por_cliente: dict[str, int] = {}
+    for entrada in publicadas:
+        por_cliente[entrada.cliente] = por_cliente.get(entrada.cliente, 0) + len(entrada.alertas)
+    for cliente_id, quantidade in sorted(por_cliente.items(), key=lambda kv: -kv[1]):
+        print(f"    {registry.label_of(cliente_id):26} {quantidade:>4} alerta(s)")
+
+    if manuais:
+        print(f"  {manuais} procedimento(s) fora do Zabbix (avisados pelo sistema de origem)")
+    if de_fora:
+        rotulos = sorted({registry.label_of(e.cliente) for e in de_fora})
+        print(f"  {len(de_fora)} ficha(s) de fora — atendidas por outro NOC: {', '.join(rotulos)}")
+    nao_classificados = sum(1 for e in publicadas if e.cliente == NAO_CLASSIFICADO)
+    if nao_classificados:
+        print(f"  ⚠ {nao_classificados} procedimento(s) sem cliente definido — ajuste clients.json")
+
+    repositorio = AlertRepository(docs_dir)
+    rascunhos = sum(1 for d in repositorio.all()
+                    if (d.operational or {}).get("doc_status") == "pending_review")
+    if rascunhos:
+        print(f"  {rascunhos} rascunho(s) ficaram de fora — só entra o que foi validado")
     return EXIT_OK
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    configure_console_encoding()
     args = build_parser().parse_args(argv)
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.WARNING,
@@ -777,6 +893,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_status(args)
         if args.command == "kb":
             return cmd_kb(args)
+        if args.command == "wiki":
+            return cmd_wiki(args)
     except ConfigError as exc:
         print(f"✗ Configuração inválida: {exc}", file=sys.stderr)
         return EXIT_CONFIG

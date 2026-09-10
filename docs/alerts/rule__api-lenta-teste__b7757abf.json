@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|api-lenta-teste|b7757abf",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|api-lenta-teste|b7757abf",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "not_applicable",
+  "instances": [
+    {
+      "alert_key": "carguero-api-monitor-down|api-lenta-teste",
+      "triggerid": "23439",
+      "host": "Carguero - API Monitor Down",
+      "description": "API - Lenta - Teste"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23439",
+    "description_raw": "API - Lenta - Teste",
+    "description_normalized": "api-lenta-teste",
+    "expression_raw": "{33432}>3 and ((dayofweek()<6 and (time()>210000 or time()<110000)) or dayofweek()>5)",
+    "expression_expanded": "avg(/Carguero - API Monitor Down/web.test.time[https://fretegratis.strada.log.br/,Verificar,resp],5m)>3 and ((dayofweek()<6 and (time()>210000 or time()<110000)) or dayofweek()>5)",
+    "expression_signature": "avg(/{HOST}/web.test.time[https://fretegratis.strada.log.br/,Verificar,resp],5m)>3and((dayofweek()<6and(time()>210000ortime()<110000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "API TIP FRETE Gratis - https://fretegratis.strada.log.br/",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "23431",
+        "description": "API - Indisponível",
+        "host": "Carguero - API Monitor Down"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46175",
+        "key_": "web.test.time[https://fretegratis.strada.log.br/,Verificar,resp]",
+        "name": "Response time for step \"Verificar\" of scenario \"https://fretegratis.strada.log.br/\".",
+        "units": "s",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5f885a84f1739152d126ca9b4e658c33b45cb7a0917c77d1e1e814befab9569c",
+    "family_source_hash": "sha256:d785d5f0cf5a93936ab0b7a26ce74c7206d9cec5b2be45e70f6229eb023e9a60",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "not_applicable",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Alerta de TESTE — não é ocorrência real e não tem procedimento operacional. Marcado como não aplicável para não poluir a base nem os indicadores de cobertura. A ficha é preservada de propósito: apagar o arquivo faria o `reconcile` recriá-la como `undocumented` na próxima coleta.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

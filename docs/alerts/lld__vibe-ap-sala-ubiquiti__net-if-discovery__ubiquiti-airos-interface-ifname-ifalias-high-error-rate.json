@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-ap-sala-ubiquiti|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-high-error-rate",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-ap-sala-ubiquiti|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-high-error-rate",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-br0-high-error-rate",
+      "triggerid": "24425",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface br0(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-br0-20-high-error-rate",
+      "triggerid": "24426",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface br0.20(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-eth0-high-error-rate",
+      "triggerid": "24417",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface eth0(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-eth0-20-high-error-rate",
+      "triggerid": "24424",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface eth0.20(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi0-high-error-rate",
+      "triggerid": "24418",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi0(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi0ap0-high-error-rate",
+      "triggerid": "733969",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi0ap0(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi0ap1-high-error-rate",
+      "triggerid": "733970",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi0ap1(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi1-high-error-rate",
+      "triggerid": "24419",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi1(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi1ap2-high-error-rate",
+      "triggerid": "733971",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi1ap2(): High error rate"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi1ap3-high-error-rate",
+      "triggerid": "733972",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi1ap3(): High error rate"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24425",
+    "description_raw": "Ubiquiti AirOS: Interface br0(): High error rate",
+    "description_normalized": "ubiquiti-airos-interface-br0-high-error-rate",
+    "expression_raw": "{946116}>{$IF.ERRORS.WARN:\"br0\"}\r\nor {946117}>{$IF.ERRORS.WARN:\"br0\"}",
+    "expression_expanded": "min(/Vibe - AP SALA Ubiquiti/net.if.in.errors[ifInErrors.11],5m)>30\r\nor min(/Vibe - AP SALA Ubiquiti/net.if.out.errors[ifOutErrors.11],5m)>30",
+    "expression_signature": "min(/{HOST}/net.if.in.errors[ifInErrors.11],5m)>30ormin(/{HOST}/net.if.out.errors[ifOutErrors.11],5m)>30",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{946118}<{$IF.ERRORS.WARN:\"br0\"}*0.8\r\nand {946119}<{$IF.ERRORS.WARN:\"br0\"}*0.8",
+    "recovery_expression_expanded": "max(/Vibe - AP SALA Ubiquiti/net.if.in.errors[ifInErrors.11],5m)<30*0.8\r\nand max(/Vibe - AP SALA Ubiquiti/net.if.out.errors[ifOutErrors.11],5m)<30*0.8",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "errors in: {ITEM.LASTVALUE1}, errors out: {ITEM.LASTVALUE2}",
+    "event_name": "Ubiquiti AirOS: Interface br0(): High error rate (>{$IF.ERRORS.WARN:\"br0\"} for 5m)",
+    "comments": "It recovers when it is below 80% of the `{$IF.ERRORS.WARN:\"br0\"}` threshold.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51504",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Ubiquiti AirOS: Interface {#IFNAME}({#IFALIAS}): High error rate",
+    "dependencies": [
+      {
+        "triggerid": "24445",
+        "description": "Ubiquiti AirOS: Interface br0(): Link down",
+        "host": "Vibe - AP SALA Ubiquiti"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10702",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "name": "Vibe - AP SALA Ubiquiti",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51532",
+        "key_": "net.if.in.errors[ifInErrors.11]",
+        "name": "Interface br0(): Inbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "51562",
+        "key_": "net.if.out.errors[ifOutErrors.11]",
+        "name": "Interface br0(): Outbound packets with errors",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:e471b82272b7c8121e5adf1a2fcec8619aba001e0cf3d9c618753ea20c401de2",
+    "family_source_hash": "sha256:a7d45ca88948ee3a92499634d94083675c7329f7bf7a3f629f6723da87bad6f3",
+    "representative_of_family": true,
+    "family_instance_count": 10
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

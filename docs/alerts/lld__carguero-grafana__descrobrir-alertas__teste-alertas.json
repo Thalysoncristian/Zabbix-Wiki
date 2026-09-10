@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|carguero-grafana|descrobrir-alertas|teste-alertas",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|carguero-grafana|descrobrir-alertas|teste-alertas",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "not_applicable",
+  "instances": [
+    {
+      "alert_key": "carguero-grafana|teste-node-cpu-usage-copy-teste-persistentvolumeclaim-prometheus-rancher-monitoring-prometheus-db-prometheus-rancher-monitoring-prometheus-0",
+      "triggerid": "24073",
+      "host": "Carguero - Grafana",
+      "description": "TESTE Node  CPU Usage % (copy) [TESTE] persistentvolumeclaim=prometheus-rancher-monitoring-prometheus-db-prometheus-rancher-monitoring-prometheus-0"
+    },
+    {
+      "alert_key": "carguero-grafana|teste-uso-de-cpu-acima-de-70",
+      "triggerid": "24037",
+      "host": "Carguero - Grafana",
+      "description": "TESTE Uso de CPU acima de 70%"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24037",
+    "description_raw": "TESTE Uso de CPU acima de 70%",
+    "description_normalized": "teste-uso-de-cpu-acima-de-70",
+    "expression_raw": "{34274}=1",
+    "expression_expanded": "last(/Carguero - Grafana/alerta[Uso de CPU acima de 70% ])=1",
+    "expression_signature": "last(/{HOST}/alerta[UsodeCPUacimade70%])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "0",
+      "name": "Not classified"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "ambiente: {#AMBIENTE}\r\nServiceName: {#SERVICENAME}\r\nclient: Carguero\r\nslackChannels: private-teste\r\ngrafana_folder: Carguero\r\nvaluesName: B\r\nservice: CPU\r\nalerta: CPU",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "46639",
+      "name": "Descobrir alertas",
+      "key_": "descrobrir.alertas"
+    },
+    "prototype_description": "TESTE {#ALERTAS}",
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10606",
+      "host": "Carguero - Grafana",
+      "name": "Carguero - Grafana",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "50677",
+        "key_": "alerta[Uso de CPU acima de 70% ]",
+        "name": "Uso de CPU acima de 70%",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5f27d0d33e5081a844c91e9fc260b16363197a121e3bc839afcf94d281c47ff0",
+    "family_source_hash": "sha256:469fa86fd6455903eda763ffee2dd1eff5edc85995870328fbf57e93494ec1cf",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "not_applicable",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Alerta de TESTE — não é ocorrência real e não tem procedimento operacional. Marcado como não aplicável para não poluir a base nem os indicadores de cobertura. A ficha é preservada de propósito: apagar o arquivo faria o `reconcile` recriá-la como `undocumented` na próxima coleta.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

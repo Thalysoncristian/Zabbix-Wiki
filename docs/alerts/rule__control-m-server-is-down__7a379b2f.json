@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|control-m-server-is-down|7a379b2f",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|control-m-server-is-down|7a379b2f",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T20:04:08.964627Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "control-m-dev-votorantim|control-m-server-is-down",
+      "triggerid": "105887",
+      "host": "Control-M DEV Votorantim",
+      "description": "Control-M: Server is down"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-server-is-down",
+      "triggerid": "105900",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Server is down"
+    },
+    {
+      "alert_key": "in01|control-m-server-is-down",
+      "triggerid": "71923",
+      "host": "Control-M server [IN01]",
+      "description": "Control-M: Server is down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "105887",
+    "description_raw": "Control-M: Server is down",
+    "description_normalized": "control-m-server-is-down",
+    "expression_raw": "{125331}=0 or\r\n{125331}=10",
+    "expression_expanded": "last(/Control-M DEV Votorantim/server.state)=0 or\r\nlast(/Control-M DEV Votorantim/server.state)=10",
+    "expression_signature": "last(/{HOST}/server.state)=0orlast(/{HOST}/server.state)=10",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "The server is down.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10885",
+      "host": "Control-M DEV Votorantim",
+      "name": "Control-M DEV Votorantim",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "174674",
+        "key_": "server.state",
+        "name": "Server state",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:e4056e6bf7f4bf8e35dcea9aee710f0b6a65dee06a646d70f8bd3e0beaa2841b",
+    "family_source_hash": "sha256:5fd976dfc1b946ede532ad6f150e0a7bdea06b53a31cdad7fa40d570d21f6cae",
+    "representative_of_family": true,
+    "family_instance_count": 3
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Control-M Server fora do ar — Votorantim (DEV)",
+    "objective": "Reagir a falha do próprio servidor Control-M, que afeta a malha inteira.",
+    "symptoms": [
+      "'Control-M: Server is down'"
+    ],
+    "actions": [
+      "Abrir INC no ServiceNow e manter retido no NOC",
+      "Acionar o N2 de plantão (Teams, depois ligação) — falha do servidor afeta toda a malha, não um host isolado"
+    ],
+    "validation": "",
+    "risks": [
+      "Diferente do agente (que afeta um host), falha do SERVIDOR afeta a malha inteira: não aplicar a tolerância de 5/10 minutos da matriz de agentes."
+    ],
+    "meaning": "O servidor Control-M do ambiente DEV não está respondendo.",
+    "probable_cause": "Queda, erro ou reinício do Control-M/Server, ou atualização de versão.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar no Control-M se o servidor responde e se a malha continua submetendo jobs",
+      "Verificar se houve janela de manutenção comunicada"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC (N1) → N2 Control-M da Master",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Control-M — Servidor",
+      "ticket_queue": "ServiceNow (Votorantim)",
+      "channel": "Teams, com ligação se não houver retorno"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "N2 de plantão (Roberto Lima / Jordy Oliveira) → N3 (Marcos Correa / Rafael Silva)",
+      "channel": "Teams e telefone"
+    },
+    "resolution_criteria": "Servidor Control-M volta a operar e a malha volta a submeter jobs.",
+    "notes": "Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Host 'Control-M DEV Votorantim'. Severidade Information no Zabbix subestima o caso — confirmar com o time se o ambiente DEV justifica o mesmo tratamento do PRD.",
+    "imported_from": "wiki_noc_votorantim_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

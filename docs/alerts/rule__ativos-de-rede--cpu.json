@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ativos-de-rede--cpu",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|embratel-roteador-cisco|cpu-discovery|snmpindex-high-cpu-utilization",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:55Z",
+  "last_modified_at": "2026-09-06T14:38:55.744693Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "24246",
+    "description_raw": "#1: High CPU utilization",
+    "description_normalized": "1-high-cpu-utilization",
+    "expression_raw": "{34707}>{$CPU.UTIL.CRIT}",
+    "expression_expanded": "min(/Embratel - Roteador Cisco/system.cpu.util[cpmCPUTotal5minRev.1],5m)>\"{$CPU.UTIL.CRIT}\"",
+    "expression_signature": "min(/{HOST}/system.cpu.util[cpmCPUTotal5minRev.1],5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current utilization: {ITEM.LASTVALUE1}",
+    "event_name": "#1: High CPU utilization (over {$CPU.UTIL.CRIT}% for 5m)",
+    "comments": "The CPU utilization is too high. The system might be slow to respond.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51126",
+      "name": "CPU Discovery",
+      "key_": "cpu.discovery"
+    },
+    "prototype_description": "#{#SNMPINDEX}: High CPU utilization",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51204",
+        "key_": "system.cpu.util[cpmCPUTotal5minRev.1]",
+        "name": "#1: CPU utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5d70255aae0f2b99e847cb2b5c93e42e6571b925642e2469cc4a8364f726ce74"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "CPU / carga de processamento — Ativos de Rede",
+    "objective": "Distinguir pico normal de saturacao real de CPU.",
+    "symptoms": [
+      "'High CPU utilization'",
+      "'Load average is too high'",
+      "'Uso de CPU acima de N%'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "Esta regra cobre os mesmos alertas de: pontos-de-acesso--cpu, roteadores--cpu (hosts em mais de um host group). ESTA e a ficha primaria — documentar aqui vale para todas; nao escrever de novo nas outras."
+    ],
+    "meaning": "7 alertas em 6 host(s) do grupo 'Ativos de Rede': Embratel - Roteador [Cisco], Vibe - AP REUNIAO [Ubiquiti], Vibe - AP SALA Ubiquiti, Vibe - AP14_VIBE, Vibe - Proxy [Fortigate]…. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 4 instancia(s): 1, CPU ON-DIE Temperature, fgSysCpuUsage.0, loadValue.2. Severidades: Warning=6, High=1.",
+    "probable_cause": "Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Ver se o pico e continuo ou pontual (janela do trigger)",
+      "Identificar o processo/container que puxa a CPU",
+      "Conferir se coincide com janela de batch/backup conhecida"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 5 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

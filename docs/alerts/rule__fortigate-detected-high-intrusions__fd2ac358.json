@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-detected-high-intrusions|fd2ac358",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-detected-high-intrusions|fd2ac358",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-detected-high-intrusions",
+      "triggerid": "103175",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Detected high intrusions"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "103175",
+    "description_raw": "FortiGate: Detected high intrusions",
+    "description_normalized": "fortigate-detected-high-intrusions",
+    "expression_raw": "{122479}<>0",
+    "expression_expanded": "last(/Vibe - Proxy Fortigate/ips.detected.high[fgIpsHighSevDetections.0])<>0",
+    "expression_signature": "last(/{HOST}/ips.detected.high[fgIpsHighSevDetections.0])<>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Acionar a equipe de infra: SOC - Segurança da Informação",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52425",
+        "key_": "ips.detected.high[fgIpsHighSevDetections.0]",
+        "name": "FortiGate: Detected high intrusions",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:05d4683310b1efed5a5beb72dd87bedfc2674439d66da603e12684af14026a25",
+    "family_source_hash": "sha256:50ad6949667b1448708f82f567a585d5534f10fc9fb50668e673172f962be3ee",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

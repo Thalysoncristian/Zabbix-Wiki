@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-mstracker-vm-hom|vfs-fs-dependent-discovery|fsname-disk-space-is-critically-low",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-mstracker-vm-hom|vfs-fs-dependent-discovery|fsname-disk-space-is-critically-low",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-mstracker-vm-hom|disk-space-is-critically-low",
+      "triggerid": "42104",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "/: Disk space is critically low"
+    },
+    {
+      "alert_key": "vibe-mstracker-vm-hom|boot-disk-space-is-critically-low",
+      "triggerid": "42105",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "/boot: Disk space is critically low"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "42104",
+    "description_raw": "/: Disk space is critically low",
+    "description_normalized": "disk-space-is-critically-low",
+    "expression_raw": "{57272}>{$VFS.FS.PUSED.MAX.CRIT:\"/\"} and\r\n(({57273}-{57274})<{$VFS.FS.FREE.MIN.CRIT:\"/\"} or {57275}<1d)",
+    "expression_expanded": "last(/mstracker-vm/vfs.fs.dependent.size[/,pused])>\"{$VFS.FS.PUSED.MAX.CRIT:\\\"/\\\"}\" and\r\n((last(/mstracker-vm/vfs.fs.dependent.size[/,total])-last(/mstracker-vm/vfs.fs.dependent.size[/,used]))<\"{$VFS.FS.FREE.MIN.CRIT:\\\"/\\\"}\" or timeleft(/mstracker-vm/vfs.fs.dependent.size[/,pused],1h,100)<1d)",
+    "expression_signature": "last(/{HOST}/vfs.fs.dependent.size[/,pused])>\"{MACRO}\"and((last(/{HOST}/vfs.fs.dependent.size[/,total])-last(/{HOST}/vfs.fs.dependent.size[/,used]))<\"{MACRO}\"ortimeleft(/{HOST}/vfs.fs.dependent.size[/,pused],1h,100)<1d)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Space used: {ITEM.LASTVALUE3} of {ITEM.LASTVALUE2} ({ITEM.LASTVALUE1})",
+    "event_name": "/: Disk space is critically low (used > {$VFS.FS.PUSED.MAX.CRIT:\"/\"}%)",
+    "comments": "Two conditions should match:\r\n1. The first condition - utilization of the space should be above `{$VFS.FS.PUSED.MAX.CRIT:\"/\"}`.\r\n2. The second condition should be one of the following:\r\n- the disk free space is less than `{$VFS.FS.FREE.MIN.CRIT:\"/\"}`;\r\n- the disk will be full in less than 24 hours.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "63912",
+      "name": "Mounted filesystem discovery",
+      "key_": "vfs.fs.dependent.discovery"
+    },
+    "prototype_description": "{#FSNAME}: Disk space is critically low",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "capacity"
+      }
+    ],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63941",
+        "key_": "vfs.fs.dependent.size[/,pused]",
+        "name": "/: Space utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "63940",
+        "key_": "vfs.fs.dependent.size[/,total]",
+        "name": "/: Total space",
+        "units": "B",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "63939",
+        "key_": "vfs.fs.dependent.size[/,used]",
+        "name": "/: Used space",
+        "units": "B",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:da64311bed73b0e59f8c81d35cb892bbdd1e1ef4c5a0d0d59425e7ee34fc3b0a",
+    "family_source_hash": "sha256:df8e0768785136e1069febefc690e77dfb2702c180abbb6c22bc52a791314330",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

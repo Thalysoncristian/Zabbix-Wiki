@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|net-if-discovery|fortigate-interface-ifname-ifalias-baixo-trafego",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|net-if-discovery|fortigate-interface-ifname-ifalias-baixo-trafego",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-interno2-interno2-baixo-trafego",
+      "triggerid": "61835",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface INTERNO2(INTERNO2): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-master-voto2-baixo-trafego",
+      "triggerid": "105402",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface MASTER_VOTO2(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-vibe-banpara-baixo-trafego",
+      "triggerid": "61838",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface VIBE_BANPARA(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-vpnbkp-baixo-trafego",
+      "triggerid": "61836",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface VPNBKP(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-vpnvibe-baixo-trafego",
+      "triggerid": "61843",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface VPNVIBE(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-a-baixo-trafego",
+      "triggerid": "61846",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface a(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-b-baixo-trafego",
+      "triggerid": "61837",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface b(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-fortilink-baixo-trafego",
+      "triggerid": "61849",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface fortilink(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-internal-baixo-trafego",
+      "triggerid": "61842",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface internal(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-internal1-baixo-trafego",
+      "triggerid": "61839",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface internal1(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-internal4-baixo-trafego",
+      "triggerid": "61850",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface internal4(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-internal6-baixo-trafego",
+      "triggerid": "61848",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface internal6(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-l2t-root-baixo-trafego",
+      "triggerid": "61852",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface l2t.root(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-naf-root-baixo-trafego",
+      "triggerid": "61851",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface naf.root(): Baixo Tráfego"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-vibe-master-baixo-trafego",
+      "triggerid": "61853",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface vibe_master(): Baixo Tráfego"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "61846",
+    "description_raw": "FortiGate: Interface a(): Baixo Tráfego",
+    "description_normalized": "fortigate-interface-a-baixo-trafego",
+    "expression_raw": "{79777}=({$BAIXO.TRAFEGO:\"a\"}) and {79778}=({$BAIXO.TRAFEGO:\"a\"})",
+    "expression_expanded": "avg(/Vibe - Proxy Fortigate/net.if.in[ifHCInOctets.19],10m)=(0) and avg(/Vibe - Proxy Fortigate/net.if.out[ifHCOutOctets.19],10m)=(0)",
+    "expression_signature": "avg(/{HOST}/net.if.in[ifHCInOctets.19],10m)=(0)andavg(/{HOST}/net.if.out[ifHCOutOctets.19],10m)=(0)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "FortiGate: Interface a(): BaixoTráfego ({$BAIXO.TRAFEGO})",
+    "comments": "Adaptado por Master Support",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52465",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "FortiGate: Interface {#IFNAME}({#IFALIAS}): Baixo Tráfego",
+    "dependencies": [
+      {
+        "triggerid": "24726",
+        "description": "Interface a(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52652",
+        "key_": "net.if.in[ifHCInOctets.19]",
+        "name": "Interface a(): Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52712",
+        "key_": "net.if.out[ifHCOutOctets.19]",
+        "name": "Interface a(): Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:9d430ebfc8bee83e3d0e781fe073c3ded8e4eefbee2c0e16f09dbaec31c5d214",
+    "family_source_hash": "sha256:00d343842ff6feca7b0f351325892287c5c778649f0e4f2f06dffe532756ae33",
+    "representative_of_family": true,
+    "family_instance_count": 15
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

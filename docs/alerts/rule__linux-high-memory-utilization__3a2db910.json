@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|linux-high-memory-utilization|3a2db910",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|linux-high-memory-utilization|3a2db910",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "mstracker-vm|linux-high-memory-utilization",
+      "triggerid": "42089",
+      "host": "Vibe - MSTracker-vm Hom",
+      "description": "Linux: High memory utilization"
+    },
+    {
+      "alert_key": "vibe-wazuh-siem|linux-high-memory-utilization",
+      "triggerid": "33960",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "Linux: High memory utilization"
+    },
+    {
+      "alert_key": "vibe-zabbix-server|linux-high-memory-utilization",
+      "triggerid": "22390",
+      "host": "Vibe - Zabbix server",
+      "description": "Linux: High memory utilization"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|linux-high-memory-utilization",
+      "triggerid": "24123",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Linux: High memory utilization"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "42089",
+    "description_raw": "Linux: High memory utilization",
+    "description_normalized": "linux-high-memory-utilization",
+    "expression_raw": "{57238}>{$MEMORY.UTIL.MAX}",
+    "expression_expanded": "min(/mstracker-vm/vm.memory.utilization,5m)>\"{$MEMORY.UTIL.MAX}\"",
+    "expression_signature": "min(/{HOST}/vm.memory.utilization,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Linux: High memory utilization (>{$MEMORY.UTIL.MAX}% for 5m)",
+    "comments": "The system is running out of free memory.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "42088",
+        "description": "Linux: Lack of available memory",
+        "host": "Vibe - MSTracker-vm Hom"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10748",
+      "host": "mstracker-vm",
+      "name": "Vibe - MSTracker-vm Hom",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63909",
+        "key_": "vm.memory.utilization",
+        "name": "Linux: Memory utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:0cc697445b7cd484575de3fed6d48c90e77703f9ed3790ca85ac1e4f8ba805a4",
+    "family_source_hash": "sha256:3e1a9f07b34ef69dd9e8f0dbbe7eb37fe538b824fa13e5e4b2b316597774e8c2",
+    "representative_of_family": true,
+    "family_instance_count": 4
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

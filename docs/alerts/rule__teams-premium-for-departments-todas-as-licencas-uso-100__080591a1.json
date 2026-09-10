@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|teams-premium-for-departments-todas-as-licencas-uso-100|080591a1",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|teams-premium-for-departments-todas-as-licencas-uso-100|080591a1",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-licencas-microsoft|teams-premium-for-departments-todas-as-licencas-uso-100",
+      "triggerid": "86433",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Teams_Premium_(for_Departments): Todas as licenças Uso 100%"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "86433",
+    "description_raw": "Teams_Premium_(for_Departments): Todas as licenças Uso 100%",
+    "description_normalized": "teams-premium-for-departments-todas-as-licencas-uso-100",
+    "expression_raw": "{105008}=100",
+    "expression_expanded": "last(/Vibe - Licencas Microsoft/pusado.[Teams_Premium_(for_Departments)])=100",
+    "expression_signature": "last(/{HOST}/pusado.[Teams_Premium_(for_Departments)])=100",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Solicitado via Teams (Rafale Sales) desativação desta trigger em 14/02/2026 - Jorge Santos.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10711",
+      "host": "Vibe - Licencas Microsoft",
+      "name": "Vibe - Licencas [Microsoft]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "124905",
+        "key_": "pusado.[Teams_Premium_(for_Departments)]",
+        "name": "Teams_Premium_(for_Departments) usados em %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "12h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:35926a1a6f29aac9905a332f44fc507ad24279b32ba5712c544d2c3a83d8ee5c",
+    "family_source_hash": "sha256:d1627bb9727ac1426876d3843c8837bf88d80747cb82b5d0487a72db48abe19c",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

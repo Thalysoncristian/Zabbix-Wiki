@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|uso-de-memoria-acima-de-90-ords-dev-vibe|d9a3cf03",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|uso-de-memoria-acima-de-90-ords-dev-vibe|d9a3cf03",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-influxdb|uso-de-memoria-acima-de-90-ords-dev-vibe",
+      "triggerid": "23451",
+      "host": "Vibe - Influxdb",
+      "description": "Uso de memória acima de 90% - ords-dev-vibe"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23451",
+    "description_raw": "Uso de memória acima de 90% - ords-dev-vibe",
+    "description_normalized": "uso-de-memoria-acima-de-90-ords-dev-vibe",
+    "expression_raw": "{33460}>90",
+    "expression_expanded": "last(/Vibe - Influxdb/pmemoriausada[ords-dev-vibe])>90",
+    "expression_signature": "last(/{HOST}/pmemoriausada[ords-dev-vibe])>90",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46254",
+        "key_": "pmemoriausada[ords-dev-vibe]",
+        "name": "Memória Usado % - ords-dev-vibe",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:7dab5c18a412c58b86e376dc51e3de2174703c057f1c859dce07034fb2e9c0ca",
+    "family_source_hash": "sha256:20e57624d1fec6afd97c1f981615195e1e1a643938d931497a5f4add82363631",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

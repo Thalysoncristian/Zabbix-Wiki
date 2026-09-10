@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|saq--api_web",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|endpoint-cob-com-falha|24164f57",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:53Z",
+  "last_modified_at": "2026-09-06T14:38:53.506221Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "57226",
+    "description_raw": "Endpoint COB com falha",
+    "description_normalized": "endpoint-cob-com-falha",
+    "expression_raw": "{74218}=1",
+    "expression_expanded": "last(/SAQ - URLs/web.test.fail[SAQ - Verificação da URL COB])=1",
+    "expression_signature": "last(/{HOST}/web.test.fail[SAQ-VerificaçãodaURLCOB])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "O endpoint de teste para COB não retornou o código esperado (HTTP 404).",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10849",
+      "host": "SAQ - URLs",
+      "name": "SAQ - URLs",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Saq"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "79529",
+        "key_": "web.test.fail[SAQ - Verificação da URL COB]",
+        "name": "Failed step of scenario \"SAQ - Verificação da URL COB\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:57f3fe2d958d38673264a491908f17d098fe8d5d402b32f5e7f2287fee6d5571"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Endpoint web / API indisponivel ou lenta — Saq",
+    "objective": "Confirmar indisponibilidade de endpoint e acionar quem responde por ele.",
+    "symptoms": [
+      "'API indisponivel - <nome>'",
+      "'Failed step of scenario'",
+      "'<endpoint> com falha'",
+      "'API lenta'"
+    ],
+    "actions": [
+      "[A DEFINIR] Responsavel por endpoint -- a lista mistura sistemas de donos diferentes"
+    ],
+    "validation": "",
+    "risks": [
+      "Endpoints de dev/homologacao costumam nao merecer o mesmo tratamento de producao -- confirmar a lista antes de tratar todos igual",
+      "PIX: 'API lenta' e 'Endpoint com falha' tem urgencias diferentes e provavelmente destinos diferentes. Vale separar antes de tratar como um procedimento so."
+    ],
+    "meaning": "7 alertas em 2 host(s) do grupo 'Saq': SAQ - URLs, Saq - Pix. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 3 instancia(s): --mode, SAQ - Verificação da URL COB, SAQ - Verificação da URL JWKS. Severidades: High=5, Warning=1, Average=1. 1 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o endpoint manualmente (curl/navegador) para confirmar",
+      "Verificar se e endpoint interno ou de terceiro -- muda quem aciona",
+      "Conferir se e ambiente de producao ou dev/homologacao"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 7 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

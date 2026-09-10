@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|link-backup-fabrica-interconnect-indisponivel|d58663de",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|link-backup-fabrica-interconnect-indisponivel|d58663de",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T20:27:10.093872Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "interconect-roteador|link-backup-fabrica-interconnect-indisponivel",
+      "triggerid": "751358",
+      "host": "Interconect - Roteador",
+      "description": "Link Backup - Fábrica Interconnect indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "751358",
+    "description_raw": "Link Backup - Fábrica Interconnect indisponível",
+    "description_normalized": "link-backup-fabrica-interconnect-indisponivel",
+    "expression_raw": "{963395}=0",
+    "expression_expanded": "max(/Interconect - Roteador/link.cont.inter,5h)=0",
+    "expression_signature": "max(/{HOST}/link.cont.inter,5h)=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "23381",
+        "description": "ICMP: Unavailable by ICMP ping",
+        "host": "Interconect - Roteador"
+      }
+    ],
+    "tags": [],
+    "host": {
+      "hostid": "10598",
+      "host": "Interconect - Roteador",
+      "name": "Interconect - Roteador",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1250079",
+        "key_": "link.cont.inter",
+        "name": "Link Fábrica Interconect (1h)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:98a8d2d24ae30f4637484fc07cec94046e16886e8d1690efb39326fc8788005f",
+    "family_source_hash": "sha256:f40f753284fbf3f7c182cd766a44dc268d9a1963505fd5d511e83d2e020ae651",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Link de BACKUP da fábrica (Interconnect/Vellon) indisponível",
+    "objective": "Restabelecer o link de backup antes que o principal também falhe.",
+    "symptoms": [
+      "'Link Backup - Fábrica Interconnect indisponível' (Disaster)"
+    ],
+    "actions": [
+      "Acionar a Vellon Telecom por WhatsApp (+55 91 99264-4565): opção 1 → 1 (sou cliente) → CNPJ 13956365000136 → 1 → 1 → aguardar operador",
+      "Formalizar por e-mail para líderes e NOC com o protocolo",
+      "Abrir chamado no Desk Manager com o protocolo"
+    ],
+    "validation": "",
+    "risks": [
+      "Este alerta e o do host Embratel apontam o MESMO link de backup, por caminhos diferentes. Dois alertas, um incidente — não abrir dois chamados."
+    ],
+    "meaning": "Alerta no próprio host 'Interconect - Roteador'. É o link de BACKUP da fábrica; o principal é a Embratel.",
+    "probable_cause": "Falha do circuito da Vellon/Interconnect ou do equipamento no local.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar que o link principal (Embratel) segue operando"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC → operadora",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Link / operadora",
+      "ticket_queue": "Desk Manager (com o protocolo da operadora)",
+      "channel": "Portal/telefone da operadora, conforme o link"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [
+      "Protocolo da Vellon",
+      "Estado do link principal no momento"
+    ],
+    "escalation": {
+      "after_minutes": null,
+      "to": "líderes + NOC (e-mail com protocolo)",
+      "channel": "E-mail"
+    },
+    "resolution_criteria": "Link de backup volta a responder.",
+    "notes": "Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. VELLON TELECOM / INTERCONNECT (link de backup) — Atendimento por WhatsApp: +55 91 99264-4565. Sequência: opção 1 → opção 1 (sou cliente) → CNPJ 13956365000136 → opção 1 → opção 1 → aguardar operador. Formalizar por e-mail para líderes e NOC, e abrir chamado no Desk Manager com o protocolo.",
+    "imported_from": "wiki_rede_noc_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

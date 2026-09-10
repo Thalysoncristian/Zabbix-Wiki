@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|sem-dados-de-vpn|a7b9349f",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|sem-dados-de-vpn|a7b9349f",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-vpn-fortigate-api|sem-dados-de-vpn",
+      "triggerid": "29350",
+      "host": "Vibe - VPN [Fortigate] API",
+      "description": "Sem dados de VPN"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "29350",
+    "description_raw": "Sem dados de VPN",
+    "description_normalized": "sem-dados-de-vpn",
+    "expression_raw": "{42348}<>1 or {42349}=1",
+    "expression_expanded": "last(/Vibe - VPN Fortigate API/atualiza_vpn.sh)<>1 or nodata(/Vibe - VPN Fortigate API/atualiza_vpn.sh,1h)=1",
+    "expression_signature": "last(/{HOST}/atualiza_vpn.sh)<>1ornodata(/{HOST}/atualiza_vpn.sh,1h)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Chamado: 0226-000003 - Prezados conforme conversado com o sr. Fabrício o alerta foi desativado, já que o monitoramento das sessões está sendo feito pelo grafana.\r\n\r\nDeve-se verificar porque o script abaixo não está funcionando corretamente.\r\n\r\nhost: 192.168.14.217\r\n/usr/lib/zabbix/externalscripts/atualiza_vpn.sh",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10719",
+      "host": "Vibe - VPN Fortigate API",
+      "name": "Vibe - VPN [Fortigate] API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Suporte_infra"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "55743",
+        "key_": "atualiza_vpn.sh",
+        "name": "Atualiza monitoramento VPN",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "10m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:464e9d6db351ab8d58da1e2722628caa51521fde5c8620a60723422e7b1d4b80",
+    "family_source_hash": "sha256:ea994893e137bb10d32ffc25bbca5664ad09249c40ab90e7383071fa018e2468",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

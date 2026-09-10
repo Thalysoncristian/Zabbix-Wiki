@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-wazuh-siem|net-if-discovery|interface-ifname-high-bandwidth-usage",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-wazuh-siem|net-if-discovery|interface-ifname-high-bandwidth-usage",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-wazuh-siem|interface-ens192-high-bandwidth-usage",
+      "triggerid": "33983",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "Interface ens192: High bandwidth usage"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "33983",
+    "description_raw": "Interface ens192: High bandwidth usage",
+    "description_normalized": "interface-ens192-high-bandwidth-usage",
+    "expression_raw": "({47762}>({$IF.UTIL.MAX:\"ens192\"}/100)*{47763} or\r\n{47764}>({$IF.UTIL.MAX:\"ens192\"}/100)*{47763}) and\r\n{47763}>0",
+    "expression_expanded": "(avg(/Vibe - Wazuh SIEM/net.if.in[\"ens192\"],15m)>(\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"/100)*last(/Vibe - Wazuh SIEM/vfs.file.contents[\"/sys/class/net/ens192/speed\"]) or\r\navg(/Vibe - Wazuh SIEM/net.if.out[\"ens192\"],15m)>(\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"/100)*last(/Vibe - Wazuh SIEM/vfs.file.contents[\"/sys/class/net/ens192/speed\"])) and\r\nlast(/Vibe - Wazuh SIEM/vfs.file.contents[\"/sys/class/net/ens192/speed\"])>0",
+    "expression_signature": "(avg(/{HOST}/net.if.in[\"ens192\"],15m)>(\"{MACRO}\"/100)*last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens192/speed\"])oravg(/{HOST}/net.if.out[\"ens192\"],15m)>(\"{MACRO}\"/100)*last(/{HOST}/vfs.file.contents[\"/sys/class/net/ens192/speed\"]))andlast(/{HOST}/vfs.file.contents[\"/sys/class/net/ens192/speed\"])>0",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{47762}<(({$IF.UTIL.MAX:\"ens192\"}-3)/100)*{47763} and\r\n{47764}<(({$IF.UTIL.MAX:\"ens192\"}-3)/100)*{47763}",
+    "recovery_expression_expanded": "avg(/Vibe - Wazuh SIEM/net.if.in[\"ens192\"],15m)<((\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"-3)/100)*last(/Vibe - Wazuh SIEM/vfs.file.contents[\"/sys/class/net/ens192/speed\"]) and\r\navg(/Vibe - Wazuh SIEM/net.if.out[\"ens192\"],15m)<((\"{$IF.UTIL.MAX:\\\"ens192\\\"}\"-3)/100)*last(/Vibe - Wazuh SIEM/vfs.file.contents[\"/sys/class/net/ens192/speed\"])",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "Interface ens192: High bandwidth usage (>{$IF.UTIL.MAX:\"ens192\"}%)",
+    "comments": "The utilization of the network interface is close to its estimated maximum bandwidth.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61038",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}: High bandwidth usage",
+    "dependencies": [
+      {
+        "triggerid": "33984",
+        "description": "Interface ens192: Link down",
+        "host": "Vibe - Wazuh SIEM"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "monitoramento",
+        "value": "excecao"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10743",
+      "host": "Vibe - Wazuh SIEM",
+      "name": "Vibe - Wazuh SIEM",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61079",
+        "key_": "net.if.in[\"ens192\"]",
+        "name": "Interface ens192: Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "61082",
+        "key_": "net.if.out[\"ens192\"]",
+        "name": "Interface ens192: Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "61084",
+        "key_": "vfs.file.contents[\"/sys/class/net/ens192/speed\"]",
+        "name": "Interface ens192: Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:cc88af503754184fd630f9ed44aa6dcd73155b018e7cb07db27185b8d630c999",
+    "family_source_hash": "sha256:c2bfaf29dcb5d4e0efbda77dfd2915a02dc3ebac4c9f3eff1a0355585bc1fbef",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

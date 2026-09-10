@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-high-cpu-utilization|9f589dd7",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-high-cpu-utilization|9f589dd7",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-high-cpu-utilization",
+      "triggerid": "77228",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: High CPU utilization"
+    },
+    {
+      "alert_key": "windows-bob|windows-high-cpu-utilization",
+      "triggerid": "35660",
+      "host": "Windows bob",
+      "description": "Windows: High CPU utilization"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77228",
+    "description_raw": "Windows: High CPU utilization",
+    "description_normalized": "windows-high-cpu-utilization",
+    "expression_raw": "{95466}>{$CPU.UTIL.CRIT}",
+    "expression_expanded": "min(/SRV_INCONTROL_2026/system.cpu.util,5m)>\"{$CPU.UTIL.CRIT}\"",
+    "expression_signature": "min(/{HOST}/system.cpu.util,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current utilization: {ITEM.LASTVALUE1}",
+    "event_name": "Windows: High CPU utilization (over {$CPU.UTIL.CRIT}% for 5m)",
+    "comments": "The CPU utilization is too high. The system might be slow to respond.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103751",
+        "key_": "system.cpu.util",
+        "name": "Windows: CPU utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:8c95c96267d8f2807ac4b03371c2bf00c399599f89edfb1b7de59616da4d33e7",
+    "family_source_hash": "sha256:9481081dc2a90a38203aedb3fc4e329e7336ac63d73541f3597e4d55a3ca52c0",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

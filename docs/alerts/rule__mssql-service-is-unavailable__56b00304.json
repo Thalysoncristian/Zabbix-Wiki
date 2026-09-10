@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mssql-service-is-unavailable|56b00304",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mssql-service-is-unavailable|56b00304",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-service-is-unavailable",
+      "triggerid": "93318",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL: Service is unavailable"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93318",
+    "description_raw": "MSSQL: Service is unavailable",
+    "description_normalized": "mssql-service-is-unavailable",
+    "expression_raw": "{112341}=0",
+    "expression_expanded": "last(/Chubb - SQLDB/net.tcp.service[tcp,sql-enel-prod.database.windows.net,1433])=0",
+    "expression_signature": "last(/{HOST}/net.tcp.service[tcp,sql-enel-prod.database.windows.net,1433])=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The TCP port of the MS SQL Server service is currently unavailable.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153579",
+        "key_": "net.tcp.service[tcp,{HOST.CONN},{$MSSQL.PORT}]",
+        "name": "MSSQL: Service's TCP port state",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "30s"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:04ee0dce8b2ce26284fb5b94adda3eef93d6a75b12c84eb7d4b20a4c6dd37041",
+    "family_source_hash": "sha256:97065cea1b23f91fe6e099309ac3afb9e5e9f916310614aed9a82ae10a0d4ee5",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

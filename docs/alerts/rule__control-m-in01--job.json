@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|control-m-in01--job",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|control-m-server-disconnected|395959bc",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:17:20Z",
+  "last_modified_at": "2026-09-06T02:03:35.448224Z",
+  "revision": 4,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "71921",
+    "description_raw": "Control-M: Server disconnected",
+    "description_normalized": "control-m-server-disconnected",
+    "expression_raw": "{90069}=\"Disconnected\"",
+    "expression_expanded": "last(/IN01/server.message,#1)=\"Disconnected\"",
+    "expression_signature": "last(/{HOST}/server.message,#1)=\"Disconnected\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Triggered message: {ITEM.VALUE}, Current message: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "The server is disconnected.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10865",
+      "host": "IN01",
+      "name": "Control-M server [IN01]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications",
+      "Control-M/IN01"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "95422",
+        "key_": "server.message",
+        "name": "Server message",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:9de11d01cf3e49536f6517c08b16af5bc8218c241ceb8fee501a4bfddde86257"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Control-M [IN01] — falha de job/agente e roteamento VibeCloud (Oracle x BMC)",
+    "objective": "Tratar falhas do orquestrador Control-M e decidir corretamente entre a fila Suporte Oracle e a fila Suporte BMC.",
+    "symptoms": [
+      "'Control-M: Server disconnected' / 'Server error' / 'Server is down'",
+      "'Control-M: Server version has changed'",
+      "'Control-M: Job [NOME] - SubApplication X - (ODate: N): status [...]' -- ex. real: Job [STP_PROCESSA_PEDIDO]"
+    ],
+    "actions": [
+      "Arvore de decisao para job Database Oracle (VibeCloud):",
+      "1) Procedure INICIOU mas deu erro do FLASH ou de outra plataforma externa -> problema na propria procedure -> abrir chamado na fila Suporte Oracle, anexando as evidencias do output.",
+      "2) Procedure NAO iniciou / falha de conexao Control-M <-> Oracle -> problema no Control-M ou na integracao -> abrir chamado na fila Suporte BMC.",
+      "Exemplo real: Job [STP_PROCESSA_PEDIDO] falhou com Exit Code 20000 na proc VIBE_LJ.STP_PROCESSA_PEDIDO por HTTP 502/Status 400 do provedor FLASH -- procedure iniciou e falhou externamente -> Suporte Oracle.",
+      "Para RotinaComFalha/CargaComFalha (RH Cloud, fora do Zabbix): se o erro mudar numa reexecucao, nao abrir chamado duplicado -- vincular ao chamado existente ou abrir novo somente se o erro for inedito.",
+      "",
+      "--- Excecao: job TransfereArquivoChubb (SubApplication ENEL, cliente Chubb) ---",
+      "Regra de Long Run (geral, qualquer job): apos abrir o chamado, acompanhar por ate 10 minutos antes de qualquer tratativa. Se normalizar dentro da janela, o chamado pode ser fechado pelo N1, desde que o motivo da normalizacao seja registrado no ITSM.",
+      "Especifico do step TransfereArquivoChubb_Conciliado em Long Run:",
+      "  1) Verificar no container 'arquivos' do Azure Storage se o arquivo conciliado foi gerado.",
+      "  2) Se o arquivo NAO foi gerado: analisar imediatamente e escalonar se necessario.",
+      "  3) Se o arquivo FOI gerado: parar a execucao do step, reexecutar; se persistir Long Run apos a reexecucao, abrir chamado para analise.",
+      "  NUNCA interromper/reexecutar o step sem confirmar que o arquivo ja foi gerado.",
+      "Para os DEMAIS erros deste job (nao Long Run): registrar no ITSM, anexar print do alerta + print do output do job (obrigatorio antes de escalonar), e encaminhar para a fila Suporte-BMC -- exceto severidade Critica, que aciona por telefone imediatamente."
+    ],
+    "validation": "",
+    "risks": [
+      "A regra 'applications--job' cobre o MESMO host (Control-M server [IN01]) porque ele pertence a dois host groups (Applications e Control-M/IN01). Esta e a ficha primaria -- nao documentar a mesma coisa duas vezes.",
+      "O time Suporte BMC nao tem acao quando a procedure iniciou e falhou por erro de plataforma externa -- nao escalar para BMC nesse caso.",
+      "O alert_key deste job muda todo dia (o ODate entra na chave: '...odate-260904...' vs '...odate-260905...'). Documentar por override de alert_key ficaria orfao em 24h -- por isso este caso esta na REGRA (agrupa por nome do job, estavel), nao num override.",
+      "TransfereArquivoChubb NAO e job do tipo 'Database Oracle' -- a arvore Suporte Oracle x Suporte BMC descrita acima NAO se aplica a ele. Confirmar visualmente o nome/tipo do job antes de aplicar a arvore de decisao Oracle x BMC."
+    ],
+    "meaning": "157 alertas, 66 instancias (nomes de job/agente: ABRIR_CHAMADO, ACK, BuscarAlertas, CLAIM, COLETA_FEEDZ, DECIDIR, Disparo3-4, Disparo52, ENDO-FW, ENVIAR, ENVIA_MSG_TEAMS, EnviaMsgZap3-4 e outros). Severidade concentrada em Warning (142), com 5 Disaster e 3 High -- os casos graves tendem a ser 'Server disconnected'/'Server is down', nao falha pontual de um job. Todo job do tipo 'Database Oracle' e relacionado ao VibeCloud.",
+    "probable_cause": "Perda de comunicacao entre o Control-M e o servidor monitorado, ou falha real na execucao do job/agente nomeado. Para jobs do tipo Database Oracle, a causa se separa em duas: falha da propria procedure (ex.: erro do FLASH) ou falha do Control-M/integracao com o Oracle.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar no console do Control-M se o servidor/agente aparece conectado",
+      "Se for job do tipo Database Oracle: abrir o OUTPUT do job e checar se a procedure chegou a iniciar",
+      "Confirmar se e um evento isolado ou se varios jobs do mesmo agente falharam junto (sintoma de queda do agente, nao dos jobs)"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Suporte Oracle (procedure iniciou e falhou) ou Suporte BMC (falha do Control-M/integracao)",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [
+      "Output completo do job",
+      "ODate",
+      "Codigo/nome do pedido ou processo afetado",
+      "Print do alerta",
+      "Print do output do job (obrigatorios antes de qualquer escalonamento deste job)"
+    ],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Job volta a executar com sucesso (Ended OK) na proxima janela, ou o servidor/agente Control-M volta a aparecer conectado.",
+    "notes": "Horario de atendimento do Suporte BMC/Oracle: A CONFIRMAR com os times (nao veio definido na fonte original). Ver docs/escalation_matrix.md. Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Contato critico Control-M: Bruno Rezegue Mendes (91) 98298-4301; Marcos Paulo Pinheiro Correa tambem consta como contato critico, mas SEM TELEFONE registrado na fonte -- confirmar. Duvida em aberto: o texto geral diz que N1/NOC pode reexecutar jobs 'quando permitido', mas a secao especifica de Control-M atribui reexecucao (ate 3x) ao N2 (Bruno Mendes) -- confirmar quem executa de fato antes de agir.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

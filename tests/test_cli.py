@@ -52,5 +52,81 @@ class TestCliCollect(unittest.TestCase):
             self.assertEqual(codigo, cli.EXIT_CONFIG)
 
 
+class TestSaidaNoConsoleWindows(unittest.TestCase):
+    """O console do Windows usa cp1252, que não tem os símbolos do relatório.
+
+    Um `python main.py scope` real morria com `UnicodeEncodeError` na
+    primeira linha (`→ Snapshot : ...`), antes de imprimir qualquer dado.
+    """
+
+    #: Os caracteres que o CLI de fato imprime e que o cp1252 não conhece.
+    SIMBOLOS = "→ ✓ ✗ ⚠ ── 🆕"
+
+    @staticmethod
+    def _console_cp1252() -> io.TextIOWrapper:
+        return io.TextIOWrapper(io.BytesIO(), encoding="cp1252", newline="")
+
+    def test_console_cp1252_quebraria_sem_a_correcao(self):
+        """Prova que o cenário do bug é real, não hipotético."""
+        console = self._console_cp1252()
+        with self.assertRaises(UnicodeEncodeError):
+            console.write(self.SIMBOLOS)
+            console.flush()
+
+    def test_configure_console_encoding_deixa_a_saida_passar(self):
+        console = self._console_cp1252()
+        with mock.patch("sys.stdout", console), mock.patch("sys.stderr", console):
+            cli.configure_console_encoding()
+            console.write(self.SIMBOLOS)
+            console.flush()
+        self.assertEqual(console.encoding, "utf-8")
+
+    def test_stream_sem_reconfigure_nao_quebra(self):
+        """`StringIO` (usado nos próprios testes) não tem `reconfigure`."""
+        with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+            cli.configure_console_encoding()  # não pode levantar nada
+
+
+
+class TestCoberturaIgnoraNaoAplicavel(unittest.TestCase):
+    """Ficha marcada como não aplicável sai do denominador da cobertura.
+
+    Alerta de teste não tem procedimento porque não é ocorrência real — a
+    decisão já foi tomada. Contá-lo como dívida faria a cobertura parecer pior
+    do que é, e ela nunca chegaria a 100% por mais que o time documentasse
+    tudo que importa.
+    """
+
+    def _status(self, estados: list[str]) -> str:
+        from src.core.models import LEVEL_FAMILY, AlertDoc, empty_operational
+        from src.core.repository import AlertRepository
+
+        with tempfile.TemporaryDirectory() as tmp:
+            repositorio = AlertRepository(tmp)
+            for indice, estado in enumerate(estados):
+                operacional = empty_operational()
+                operacional["doc_status"] = estado
+                repositorio.save(AlertDoc(alert_key=f"a{indice}", doc_level=LEVEL_FAMILY,
+                                          zabbix={}, operational=operacional))
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                cli.main(["status", "--docs-dir", tmp])
+            return buffer.getvalue()
+
+    def test_nao_aplicavel_sai_do_denominador(self):
+        saida = self._status(["documented", "undocumented", "not_applicable", "not_applicable"])
+        self.assertIn("1/2", saida, "4 fichas, 2 não aplicáveis: a conta é sobre 2")
+        self.assertIn("2 não aplicáveis fora da conta", saida)
+
+    def test_sem_nao_aplicavel_a_conta_e_sobre_o_total(self):
+        saida = self._status(["documented", "undocumented"])
+        self.assertIn("1/2", saida)
+        self.assertNotIn("fora da conta", saida)
+
+    def test_tudo_nao_aplicavel_nao_divide_por_zero(self):
+        saida = self._status(["not_applicable", "not_applicable"])
+        self.assertIn("100.0%", saida)
+
+
 if __name__ == "__main__":
     unittest.main()

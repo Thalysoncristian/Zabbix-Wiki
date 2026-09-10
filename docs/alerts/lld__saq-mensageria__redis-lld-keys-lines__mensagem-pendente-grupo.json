@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|saq-mensageria|redis-lld-keys-lines|mensagem-pendente-grupo",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|saq-mensageria|redis-lld-keys-lines|mensagem-pendente-grupo",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-mensageria|mensagem-pendente",
+      "triggerid": "81726",
+      "host": "SAQ Mensageria",
+      "description": "Mensagem Pendente"
+    },
+    {
+      "alert_key": "saq-mensageria|mensagem-pendente",
+      "triggerid": "81727",
+      "host": "SAQ Mensageria",
+      "description": "Mensagem Pendente"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "81726",
+    "description_raw": "Mensagem Pendente",
+    "description_normalized": "mensagem-pendente",
+    "expression_raw": "\"\"<>\"1\" and length({100157})>0",
+    "expression_expanded": "\"\"<>\"1\" and length(last(/SAQ Mensageria/grupo.[]))>0",
+    "expression_signature": "\"\"<>\"1\"andlength(last(/{HOST}/grupo.[]))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Mensagem Pendente No grupo :",
+    "comments": "Solicitação de atendimento para N1: Abrir um chamado na categoria SAQ – Solicitação via WhatsApp e realizar o atendimento. Após a demanda ser resolvida, encerrar o chamado.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "90798",
+      "name": "NOC Mensageria",
+      "key_": "redis.lld.keys.lines"
+    },
+    "prototype_description": "Mensagem Pendente {#GRUPO}",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10853",
+      "host": "SAQ Mensageria",
+      "name": "SAQ Mensageria",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "SAQ MENSSAGERIA",
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "117383",
+        "key_": "grupo.[]",
+        "name": "Grupo",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:62ed6a67afa2de557be7d1ee6523ca9546d03b7fe1e0cccdfe1031ad1fd6e655",
+    "family_source_hash": "sha256:74aa452b1abdd305aa78819d8559721db67783bcf90b3b10a52dd1973b78f7a2",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

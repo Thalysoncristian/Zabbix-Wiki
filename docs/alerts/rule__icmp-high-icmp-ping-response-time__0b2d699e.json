@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|icmp-high-icmp-ping-response-time|0b2d699e",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|icmp-high-icmp-ping-response-time|0b2d699e",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "banpara-firewall-fwbp01|icmp-high-icmp-ping-response-time",
+      "triggerid": "23374",
+      "host": "Banpara - Firewall FWBP01",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "banpara-firewall-fwbp02|icmp-high-icmp-ping-response-time",
+      "triggerid": "23377",
+      "host": "Banpara - Firewall FWBP02",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "interconect-roteador|icmp-high-icmp-ping-response-time",
+      "triggerid": "23383",
+      "host": "Interconect - Roteador",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "oi-roteador-huawei|icmp-high-icmp-ping-response-time",
+      "triggerid": "24449",
+      "host": "Oi - Roteador [Huawei]",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "rt-cisco-ebt|icmp-high-icmp-ping-response-time",
+      "triggerid": "23380",
+      "host": "RT_CISCO_EBT",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "srvcyberarq|icmp-high-icmp-ping-response-time",
+      "triggerid": "105843",
+      "host": "SRVCYBERARQ",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-camera-1-intelbras|icmp-high-icmp-ping-response-time",
+      "triggerid": "24799",
+      "host": "Vibe - Camera 1 [Intelbras]",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-camera-2-intelbras|icmp-high-icmp-ping-response-time",
+      "triggerid": "24805",
+      "host": "Vibe - Camera 2 [Intelbras]",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-camera-3-intelbras|icmp-high-icmp-ping-response-time",
+      "triggerid": "24808",
+      "host": "Vibe - Camera 3 [Intelbras]",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-impressora-hp|icmp-high-icmp-ping-response-time",
+      "triggerid": "24487",
+      "host": "Vibe - Impressora [HP]",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-porta-intelbras|icmp-high-icmp-ping-response-time",
+      "triggerid": "24493",
+      "host": "Vibe - Porta [Intelbras]",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-vmware|icmp-high-icmp-ping-response-time",
+      "triggerid": "24628",
+      "host": "Vibe - VMware",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-voip-gateway-asterisk|icmp-high-icmp-ping-response-time",
+      "triggerid": "32880",
+      "host": "Vibe - VoIP-Gateway Asterisk",
+      "description": "ICMP: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-zabbix-proxy|icmp-high-icmp-ping-response-time",
+      "triggerid": "87615",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "ICMP: High ICMP ping response time"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23374",
+    "description_raw": "ICMP: High ICMP ping response time",
+    "description_normalized": "icmp-high-icmp-ping-response-time",
+    "expression_raw": "{109788}>={$ICMP_RESPONSE_TIME_WARN} and dayofweek()>=1 and dayofweek()<=5 and time()>=110000 and time()<=180000",
+    "expression_expanded": "avg(/Banpara - Firewall FWBP01/icmppingsec,10m)>=\"{$ICMP_RESPONSE_TIME_WARN}\" and dayofweek()>=1 and dayofweek()<=5 and time()>=110000 and time()<=180000",
+    "expression_signature": "avg(/{HOST}/icmppingsec,10m)>=\"{MACRO}\"anddayofweek()>=1anddayofweek()<=5andtime()>=110000andtime()<=180000",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{109789}<{$ICMP_RESPONSE_TIME_WARN}",
+    "recovery_expression_expanded": "max(/Banpara - Firewall FWBP01/icmppingsec,5m)<\"{$ICMP_RESPONSE_TIME_WARN}\"",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Value: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "23373",
+        "description": "ICMP: High ICMP ping loss",
+        "host": "Banpara - Firewall FWBP01"
+      },
+      {
+        "triggerid": "23372",
+        "description": "ICMP: Unavailable by ICMP ping",
+        "host": "Banpara - Firewall FWBP01"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10595",
+      "host": "Banpara - Firewall FWBP01",
+      "name": "Banpara - Firewall FWBP01",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "45921",
+        "key_": "icmppingsec",
+        "name": "ICMP: ICMP response time",
+        "units": "s",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:cdb6490b1732901c6f73df0cc5d0d7f4b80449e27980ab1f3e355cd3cfe5dec7",
+    "family_source_hash": "sha256:2eef90a33f1ad462cec06a12199325c87ac268c4993556e0fda04ac886279560",
+    "representative_of_family": true,
+    "family_instance_count": 14
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

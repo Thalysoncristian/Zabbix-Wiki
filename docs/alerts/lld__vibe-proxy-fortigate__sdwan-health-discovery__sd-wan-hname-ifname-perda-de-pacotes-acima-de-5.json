@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|sdwan-health-discovery|sd-wan-hname-ifname-perda-de-pacotes-acima-de-5",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|sdwan-health-discovery|sd-wan-hname-ifname-perda-de-pacotes-acima-de-5",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-aws-internal2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63425",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_AWS]:[internal2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-aws-wan1-perda-de-pacotes-acima-de-5",
+      "triggerid": "63422",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_AWS]:[wan1]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-aws-wan2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63433",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_AWS]:[wan2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-fortiguard-internal2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63432",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_FortiGuard]:[internal2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-fortiguard-wan1-perda-de-pacotes-acima-de-5",
+      "triggerid": "65285",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_FortiGuard]:[wan1]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-fortiguard-wan2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63421",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_FortiGuard]:[wan2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-gmail-internal2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63424",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Gmail]:[internal2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-gmail-wan1-perda-de-pacotes-acima-de-5",
+      "triggerid": "63430",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Gmail]:[wan1]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-gmail-wan2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63428",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Gmail]:[wan2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-google-search-internal2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63431",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Google Search]:[internal2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-google-search-wan1-perda-de-pacotes-acima-de-5",
+      "triggerid": "63427",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Google Search]:[wan1]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-google-search-wan2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63426",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Google Search]:[wan2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-office-365-internal2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63423",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Office_365]:[internal2]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-office-365-wan1-perda-de-pacotes-acima-de-5",
+      "triggerid": "63429",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Office_365]:[wan1]: Perda de Pacotes acima de 5%"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|sd-wan-default-office-365-wan2-perda-de-pacotes-acima-de-5",
+      "triggerid": "63434",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "SD-WAN [Default_Office_365]:[wan2]: Perda de Pacotes acima de 5%"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "63422",
+    "description_raw": "SD-WAN [Default_AWS]:[wan1]: Perda de Pacotes acima de 5%",
+    "description_normalized": "sd-wan-default-aws-wan1-perda-de-pacotes-acima-de-5",
+    "expression_raw": "{81433}>{$SDWAN.HEALTH.IF.LOSS.WARN:\"Default_AWS\"}> 5",
+    "expression_expanded": "min(/Vibe - Proxy Fortigate/sdwan_health.loss[fgVWLHealthCheckLinkPacketLoss.9],5m)>\"{$SDWAN.HEALTH.IF.LOSS.WARN:\\\"Default_AWS\\\"}\"> 5",
+    "expression_signature": "min(/{HOST}/sdwan_health.loss[fgVWLHealthCheckLinkPacketLoss.9],5m)>\"{MACRO}\">5",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Loss: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "High level of packet loss detected.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52466",
+      "name": "SD-WAN health-check discovery",
+      "key_": "sdwan_health.discovery"
+    },
+    "prototype_description": "SD-WAN [{#HNAME}]:[{#IFNAME}]: Perda de Pacotes acima de 5%",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52811",
+        "key_": "sdwan_health.loss[fgVWLHealthCheckLinkPacketLoss.9]",
+        "name": "SD-WAN [Default_AWS]:[wan1]: Packets loss",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ad698a3bc2d887e6ef1ccea1ae65e51426a0683a27fcd6d50b77e061c4f18188",
+    "family_source_hash": "sha256:92adc6ec373fd34d9e87170ac5d6e52811616cfd0bc90a6b4b44c69c54474bd2",
+    "representative_of_family": true,
+    "family_instance_count": 15
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

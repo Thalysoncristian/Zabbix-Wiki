@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-server-zabbix-value-cache-working-in-low-memory-mode|98282dd3",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-server-zabbix-value-cache-working-in-low-memory-mode|98282dd3",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-server|zabbix-server-zabbix-value-cache-working-in-low-memory-mode",
+      "triggerid": "13558",
+      "host": "Vibe - Zabbix server",
+      "description": "Zabbix server: Zabbix value cache working in low memory mode"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "13558",
+    "description_raw": "Zabbix server: Zabbix value cache working in low memory mode",
+    "description_normalized": "zabbix-server-zabbix-value-cache-working-in-low-memory-mode",
+    "expression_raw": "{13161}=1",
+    "expression_expanded": "last(/Vibe - Zabbix server/zabbix[vcache,cache,mode])=1",
+    "expression_signature": "last(/{HOST}/zabbix[vcache,cache,mode])=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Once the low memory mode has been switched on, the value cache will remain in this state for 24 hours, even if the problem that triggered this mode is resolved sooner.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "23662",
+        "key_": "zabbix[vcache,cache,mode]",
+        "name": "Zabbix server: Value cache operating mode",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:873fcc86e7f7f94961fc8fe1cb6a20e4bf095871f5a643b68f426943dd3f6a76",
+    "family_source_hash": "sha256:ed2870192697169af60f2c38aaceb1a99e911ba0b9244b32c99d9ccf1ce4929e",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

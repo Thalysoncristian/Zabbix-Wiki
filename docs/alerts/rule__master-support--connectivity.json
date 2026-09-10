@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|master-support--connectivity",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|teste-indisponivel|49eef9ec",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:40:02Z",
+  "last_modified_at": "2026-09-06T14:40:02.896367Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "not_applicable",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "102365",
+    "description_raw": "TESTE Indisponível",
+    "description_normalized": "teste-indisponivel",
+    "expression_raw": "{180384}=0",
+    "expression_expanded": "last(/Desk Manager/deskmaneger[status])=0",
+    "expression_signature": "last(/{HOST}/deskmaneger[status])=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "aiops",
+        "value": "Business Application"
+      }
+    ],
+    "host": {
+      "hostid": "10880",
+      "host": "Desk Manager",
+      "name": "Desk Manager",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Master Support"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "170121",
+        "key_": "deskmaneger[status]",
+        "name": "grupovibe.desk.ms",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:631a0ca180b1cbbd25fc84bc3a5836c3a3977f7841dd8646b523bd7dcc88da65"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "not_applicable",
+    "title": "Conectividade (ICMP/TCP) — Master Support",
+    "objective": "Confirmar se o equipamento/servico esta mesmo fora antes de escalar.",
+    "symptoms": [
+      "'Unavailable by ICMP ping' (host fora)",
+      "'High ICMP ping loss' (perda de pacotes)",
+      "'High ICMP ping response time' (latencia alta)"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem aciona quando e link de operadora vs equipamento interno"
+    ],
+    "validation": "",
+    "risks": [
+      "'ping loss' e 'response time' costumam preceder a queda total -- tratar como aviso, nao como incidente equivalente ao 'Unavailable'",
+      "Alerta 'TESTE Indisponivel' com severidade DISASTER no host Desk Manager — um alerta de teste com a maior severidade do sistema. Confirmar se deveria estar ligado em producao.",
+      "Confianca BAIXA no agrupamento: revisar se estes alertas sao mesmo uma unidade antes de tratar a ficha como definitiva. Os motivos estao na pagina da regra."
+    ],
+    "meaning": "1 alertas em 1 host(s) do grupo 'Master Support': Desk Manager. Itens `icmpping*` e `net.tcp*` medem alcancabilidade por ping e porta TCP. 1 instancia(s): status. Severidades: Disaster=1.",
+    "probable_cause": "Equipamento desligado, queda de link, saturacao do caminho ou manutencao nao comunicada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o ping/porta manualmente para confirmar",
+      "Verificar se outros hosts do mesmo caminho tambem cairam (indica link, nao host)",
+      "Confirmar se ha manutencao ou reinicio programado"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico da Fase 2 (confianca low, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. Alerta de TESTE — não é ocorrência real e não tem procedimento operacional. Marcado como não aplicável para não poluir a base nem os indicadores de cobertura. A ficha é preservada de propósito: apagar o arquivo faria o `reconcile` recriá-la como `undocumented` na próxima coleta.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

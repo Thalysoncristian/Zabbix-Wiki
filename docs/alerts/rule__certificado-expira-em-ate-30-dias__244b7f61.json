@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|certificado-expira-em-ate-30-dias|244b7f61",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|certificado-expira-em-ate-30-dias|244b7f61",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-nonprod|certificado-expira-em-ate-30-dias",
+      "triggerid": "80591",
+      "host": "SAQ_Certificado - qrcodes.saq - Nonprod",
+      "description": "Certificado Expira em até 30 dias"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "80591",
+    "description_raw": "Certificado Expira em até 30 dias",
+    "description_normalized": "certificado-expira-em-ate-30-dias",
+    "expression_raw": "{98998}<=30",
+    "expression_expanded": "last(/SAQ_Certificado - qrcodes.saq - Nonprod/cert.expires.days[{#CERT.URL}])<=30",
+    "expression_signature": "last(/{HOST}/cert.expires.days[{MACRO}])<=30",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10870",
+      "host": "SAQ_Certificado - qrcodes.saq - Nonprod",
+      "name": "SAQ_Certificado - qrcodes.saq - Nonprod",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "SAQ Certificados"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "102944",
+        "key_": "cert.expires.days[{#CERT.URL}]",
+        "name": "Certificate Expires in Days",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f022b23a863f04205c334d0a75205783bb39636b1cd405ddddc9f56fc324a6eb",
+    "family_source_hash": "sha256:d701c9808c2fe9c43c49c4de43c9a94b3d65bcd50f52f4ce79116cc71b1616e0",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

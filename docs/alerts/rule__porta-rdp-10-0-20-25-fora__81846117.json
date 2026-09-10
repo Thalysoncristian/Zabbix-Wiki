@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|porta-rdp-10-0-20-25-fora|81846117",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|porta-rdp-10-0-20-25-fora|81846117",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:35:49.150101Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "vibe-credito-banpara|porta-rdp-10-0-20-25-fora",
+      "triggerid": "31597",
+      "host": "Vibe Crédito Banpará (máquinas)",
+      "description": "Porta RDP 10.0.20.25 fora"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "31597",
+    "description_raw": "Porta RDP 10.0.20.25 fora",
+    "description_normalized": "porta-rdp-10-0-20-25-fora",
+    "expression_raw": "{95068}=0",
+    "expression_expanded": "last(/Vibe Credito Banpara/net.tcp.service[tcp,10.0.20.25,3389])=0",
+    "expression_signature": "last(/{HOST}/net.tcp.service[tcp,10.0.20.25,3389])=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "Application",
+        "value": "Manutencao"
+      }
+    ],
+    "host": {
+      "hostid": "10740",
+      "host": "Vibe Credito Banpara",
+      "name": "Vibe Crédito Banpará (máquinas)",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Bapara"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "60130",
+        "key_": "net.tcp.service[tcp,10.0.20.25,3389]",
+        "name": "Porta RDP 10.0.20.25",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2476d0bb95b09a8ed88b2af71c1a84168f2e2b242cc718e83dc0f64d9414c3b6",
+    "family_source_hash": "sha256:a7cfea50897be98944ddec850626908a116598dacfcc4b15a6de103a063893c3",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Porta RDP 10.0.20.25 fora (Banpara)",
+    "objective": "",
+    "symptoms": [
+      "'Porta RDP 10.0.20.25 fora' no host Vibe Credito Banpara"
+    ],
+    "actions": [
+      "Validar no MSMonitor/Zabbix e testar com ping e telnet."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Porta RDP inacessivel — afeta acessos da equipe de Credito/Sustentacao (24x7).",
+    "probable_cause": "Falha de conectividade com o banco.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Validar no MSMonitor/Zabbix",
+      "Testar com ping",
+      "Testar com telnet na porta"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Porta volta a responder no teste de telnet.",
+    "notes": "[DIVERGENCIA COM A FONTE] No catalogo original o segundo IP era 10.0.10.25 -- no ambiente coletado hoje o alerta real e para 10.0.20.25. Confirme qual IP e o correto. Severidade: Alta. SLA: Imediato. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

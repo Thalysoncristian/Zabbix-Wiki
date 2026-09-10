@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--security",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|linux-etc-passwd-has-been-changed|4261af16",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:38Z",
+  "last_modified_at": "2026-09-06T14:39:38.989333Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "33958",
+    "description_raw": "Linux: /etc/passwd has been changed",
+    "description_normalized": "linux-etc-passwd-has-been-changed",
+    "expression_raw": "{47699}<>{47700}",
+    "expression_expanded": "last(/Vibe - Wazuh SIEM/vfs.file.cksum[/etc/passwd,sha256],#1)<>last(/Vibe - Wazuh SIEM/vfs.file.cksum[/etc/passwd,sha256],#2)",
+    "expression_signature": "last(/{HOST}/vfs.file.cksum[/etc/passwd,sha256],#1)<>last(/{HOST}/vfs.file.cksum[/etc/passwd,sha256],#2)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "33954",
+        "description": "Linux: Operating system description has changed",
+        "host": "Vibe - Wazuh SIEM"
+      },
+      {
+        "triggerid": "33952",
+        "description": "Linux: System name has changed",
+        "host": "Vibe - Wazuh SIEM"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "monitoramento",
+        "value": "excecao"
+      },
+      {
+        "tag": "scope",
+        "value": "excecao"
+      }
+    ],
+    "host": {
+      "hostid": "10743",
+      "host": "Vibe - Wazuh SIEM",
+      "name": "Vibe - Wazuh SIEM",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61030",
+        "key_": "vfs.file.cksum[/etc/passwd,sha256]",
+        "name": "Linux: Checksum of /etc/passwd",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "15m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:fe5196b811757cd95fdc6b47d25896b841a376a100e6b515031b6425869fb5c8"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Integridade de arquivo de sistema — Vibe Tecnologia",
+    "objective": "Confirmar se a alteracao foi legitima -- mudanca em /etc/passwd nao se ignora.",
+    "symptoms": [
+      "'/etc/passwd has been changed'"
+    ],
+    "actions": [
+      "Abrir chamado e encaminhar para a fila do SOC."
+    ],
+    "validation": "",
+    "risks": [
+      "Severidade Information subestima o caso: alteracao NAO explicada em /etc/passwd e assunto de seguranca, nao de infraestrutura"
+    ],
+    "meaning": "2 alertas em 2 host(s) do grupo 'Vibe Tecnologia': Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Item `vfs.file.cksum` compara o checksum do arquivo entre coletas. 1 instancia(s): /etc/passwd. Severidades: Information=2.",
+    "probable_cause": "Criacao/remocao legitima de usuario, ou alteracao nao autorizada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar QUEM alterou e QUANDO (log de auditoria do host)",
+      "Confirmar se houve mudanca planejada de usuario/acesso",
+      "Comparar com a janela de alguma atividade conhecida"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "SOC",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager → fila SOC",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "analista SOC (somente horário comercial)",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Se alteracao nao explicada vira chamado para o SOC.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

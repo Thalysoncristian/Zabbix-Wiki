@@ -293,7 +293,7 @@ rota(/^\/$/, async () => {
         el('span', { class: 'chip' }, `${num(w.documented)} documentadas`),
         el('span', { class: 'chip' }, `${num(w.confirmed)} confirmadas`)),
       el('div', { style: 'margin-top:14px' },
-        el('a', { class: 'cta', href: '/groups' }, 'ESCOLHER GRUPO PARA DOCUMENTAR'))),
+        el('a', { class: 'cta', href: '/groups' }, 'Escolher grupo para documentar'))),
 
     dados.knowledge_base ? el('section', { class: 'panel kb-card' },
       el('h2', {}, 'Base de conhecimento do NOC'),
@@ -668,8 +668,8 @@ rota(/^\/groups\/([^/]+)$/, async ([id], params) => {
 
 function cardRegra(r) {
   const proc = r.procedure || {};
-  const acao = proc.status === 'missing' ? 'DOCUMENTAR'
-    : proc.status === 'draft' ? 'CONTINUAR' : 'REVISAR';
+  const acao = proc.status === 'missing' ? 'Documentar'
+    : proc.status === 'draft' ? 'Continuar' : 'Revisar';
   return el('a', { class: 'work-card', href: `/rules/${r.id}` },
     el('h3', {}, r.label),
     el('div', { class: 'meta' },
@@ -678,8 +678,13 @@ function cardRegra(r) {
       el('span', { class: `conf ${CONF_CLASS[r.confidence]}` }, `Confiança ${r.confidence_label}`),
       badgeProcedimento(proc),
       r.status !== 'candidate'
-        ? el('span', { class: `status-pill status-${r.status}` }, rotuloStatus(r.status)) : null),
-    el('div', {}, el('span', { class: 'cta', style: 'padding:6px 14px;font-size:13px' }, acao)));
+        ? el('span', { class: `status-pill status-${r.status}` }, rotuloStatus(r.status)) : null,
+      r.overlaps_with && r.overlaps_with.length
+        ? el('span', { class: 'conf conf-low', title: 'Mesmos alertas que outra regra — provavelmente host em mais de um host group' },
+          '⚠ sobreposta') : null),
+    // O card inteiro já é o link: um botão cheio aqui seria peso repetido
+    // em cada card da grade, competindo com a severidade e a confiança.
+    el('div', { class: 'card-action' }, acao));
 }
 
 const rotuloStatus = (s) => ({
@@ -744,6 +749,16 @@ rota(/^\/rules\/([^/]+)$/, async ([id], params) => {
       el('span', {}, el('strong', {}, num(r.hosts)), ' hosts'),
       el('span', { class: `conf ${CONF_CLASS[r.confidence]}` }, `Confiança ${r.confidence_label}`),
       badgeProcedimento(r.procedure)),
+
+    r.overlaps_with && r.overlaps_with.length
+      ? el('div', { class: 'overlap-banner' },
+        el('span', {}, '⚠ Mesmos alertas que: '),
+        ...r.overlaps_with.flatMap((outroId, i) => [
+          i > 0 ? el('span', {}, ', ') : null,
+          el('a', { href: `/rules/${outroId}` }, outroId),
+        ]).filter(Boolean),
+        el('span', {}, ' — provavelmente um host em mais de um host group. Documente uma vez só.'))
+      : null,
 
     blocoDecisao(r, recarregar),
 
@@ -1141,6 +1156,50 @@ rota(/^\/procedures$/, async (_m, params) => {
         el('td', {}, badgeProcedimento(f.procedure)),
         el('td', { class: 'cell-sub' }, f.procedure.last_modified_at || '—')))),
     paginador(dados.pagination, (p) => aplicarFiltro({ page: p })),
+  );
+});
+
+/* ------------------------------------------------------- alertas manuais */
+const CAMPOS_MANUAL = [
+  ['meaning', 'O que significa'], ['objective', 'Objetivo'], ['symptoms', 'Sintomas'],
+  ['probable_cause', 'Causa provável'], ['checks_before_action', 'Verificações antes de agir'],
+  ['actions', 'Ações'], ['resolution_criteria', 'Critério de resolução'],
+  ['risks', 'Riscos'], ['notes', 'Observações'],
+];
+
+rota(/^\/manual$/, async (_m, params) => {
+  const dados = await api('/api/manual', params);
+  const { form } = campoBusca(params, 'buscar alerta manual…');
+
+  setView(
+    cabecalho('Alertas manuais',
+      `${num(dados.pagination.total)} alerta(s) documentado(s) que não vêm de trigger do Zabbix`),
+    el('div', { class: 'note' }, dados.note),
+    el('div', { class: 'chips' },
+      el('a', { class: `chip ${!params.status ? 'active' : ''}`, href: comFiltros({ status: '' }) }, 'Todos'),
+      dados.facets.by_status.filter((s) => s.value > 0).map((s) => el('a', {
+        class: `chip ${params.status === s.status ? 'active' : ''}`,
+        href: comFiltros({ status: s.status }),
+      }, `${s.label} (${num(s.value)})`))),
+    form,
+    dados.items.length
+      ? dados.items.map((m) => el('section', { class: 'panel' },
+        el('h2', {}, m.title),
+        el('div', { class: 'chips', style: 'margin-bottom:10px' },
+          badgeProcedimento(m.procedure),
+          m.team ? el('span', { class: 'chip' }, m.team) : null,
+          el('span', { class: 'chip mono' }, m.alert_key)),
+        el('dl', { class: 'kv' },
+          CAMPOS_MANUAL.flatMap(([campo, rotulo]) => {
+            const valor = (m.procedure.operational || {})[campo];
+            const texto = Array.isArray(valor) ? valor.join(' · ') : valor;
+            return texto ? [el('dt', {}, rotulo), el('dd', {}, texto)] : [];
+          }))))
+      : el('div', { class: 'note' }, 'Nenhum alerta manual com este filtro.'),
+    paginador(dados.pagination, (p) => aplicarFiltro({ page: p })),
+    el('div', { class: 'note warn' },
+      'Estas fichas ainda são editadas por arquivo, em docs/alerts/manual__*.json — '
+      + 'a edição pela interface só existe para famílias e regras do snapshot.'),
   );
 });
 

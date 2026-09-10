@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-servers--database",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|mysql-buffer-pool-utilization-is-too-low|3eaccfbd",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:40Z",
+  "last_modified_at": "2026-09-06T14:38:40.572419Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "348079",
+    "description_raw": "MySQL: Buffer pool utilization is too low",
+    "description_normalized": "mysql-buffer-pool-utilization-is-too-low",
+    "expression_raw": "{485937}<{$MYSQL.BUFF_UTIL.MIN.WARN}",
+    "expression_expanded": "max(/Vibe - Zabbix server/mysql.buffer_pool_utilization,5m)<\"{$MYSQL.BUFF_UTIL.MIN.WARN}\"",
+    "expression_signature": "max(/{HOST}/mysql.buffer_pool_utilization,5m)<\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MySQL: Buffer pool utilization is too low (less than {$MYSQL.BUFF_UTIL.MIN.WARN}% for 5m)",
+    "comments": "The buffer pool utilization is less than {$MYSQL.BUFF_UTIL.MIN.WARN}% in the last 5 minutes. This means that there is a lot of unused RAM allocated for the buffer pool, which you can easily reallocate at the moment.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "710229",
+        "key_": "mysql.buffer_pool_utilization",
+        "name": "MySQL: Buffer pool utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:b20ffb3a143a4f6335e301eab5672c9ee0edeb76e118cc45154c91a7ad726975"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Banco de dados — Zabbix servers",
+    "objective": "Reagir a degradacao ou falha de coleta do banco.",
+    "symptoms": [
+      "'Buffer pool utilization is too low'",
+      "'Failed to fetch info data'",
+      "'backup is old'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "'Failed to fetch info data' significa que o Zabbix perdeu acesso ao banco -- enquanto durar, as outras metricas deste banco nao valem nada",
+      "E o banco do PROPRIO Zabbix (MySQL do 'Vibe - Zabbix server'). Degradacao aqui afeta todo o monitoramento, nao um servico de negocio."
+    ],
+    "meaning": "11 alertas em 1 host(s) do grupo 'Zabbix servers': Vibe - Zabbix server. Itens `mysql*` / `mssql*` / `db.*` medem desempenho, buffer, backup e conexao. Severidades: Warning=5, Information=3, Average=2, High=1. 2 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Carga alta, configuracao subdimensionada, ou credencial/coleta quebrada.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Distinguir problema DE COLETA ('Failed to fetch') de problema DO BANCO",
+      "Verificar se ha impacto percebido na aplicacao"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca medium, 11 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: DBA responsavel.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

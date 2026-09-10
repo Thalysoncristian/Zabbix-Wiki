@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-server-utilization-of-report-manager-processes-is-high|0742444b",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-server-utilization-of-report-manager-processes-is-high|0742444b",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-server|zabbix-server-utilization-of-report-manager-processes-is-high",
+      "triggerid": "18532",
+      "host": "Vibe - Zabbix server",
+      "description": "Zabbix server: Utilization of report manager processes is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "18532",
+    "description_raw": "Zabbix server: Utilization of report manager processes is high",
+    "description_normalized": "zabbix-server-utilization-of-report-manager-processes-is-high",
+    "expression_raw": "{22369}>75",
+    "expression_expanded": "avg(/Vibe - Zabbix server/zabbix[process,report manager,avg,busy],10m)>75",
+    "expression_signature": "avg(/{HOST}/zabbix[process,reportmanager,avg,busy],10m)>75",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{22369}<65",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix server/zabbix[process,report manager,avg,busy],10m)<65",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Zabbix server: Utilization of report manager processes over 75%",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "34319",
+        "key_": "zabbix[process,report manager,avg,busy]",
+        "name": "Zabbix server: Utilization of report manager internal processes, in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2ef35c766eb39993d676f18b77f78d06eb2180b24ca89fba0234d64105a2dbcd",
+    "family_source_hash": "sha256:6d89e8f581fb3f80b84b9b86b781d539c32c9768054269f0e75624c7f9cc0e2c",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

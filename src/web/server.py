@@ -124,6 +124,8 @@ class WebApp:
             )
         if recurso == "procedures":
             return api.procedures(modelo, params)
+        if recurso == "manual":
+            return api.manual_alerts(modelo, params)
         if recurso == "rules":
             if not identificador:
                 return api.rules(modelo, params)

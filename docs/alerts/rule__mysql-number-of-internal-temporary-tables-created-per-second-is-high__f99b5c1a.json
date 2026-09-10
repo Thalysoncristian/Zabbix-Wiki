@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mysql-number-of-internal-temporary-tables-created-per-second-is-high|f99b5c1a",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mysql-number-of-internal-temporary-tables-created-per-second-is-high|f99b5c1a",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-server|mysql-number-of-internal-temporary-tables-created-per-second-is-high",
+      "triggerid": "348083",
+      "host": "Vibe - Zabbix server",
+      "description": "MySQL: Number of internal temporary tables created per second is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "348083",
+    "description_raw": "MySQL: Number of internal temporary tables created per second is high",
+    "description_normalized": "mysql-number-of-internal-temporary-tables-created-per-second-is-high",
+    "expression_raw": "{485941}>{$MYSQL.CREATED_TMP_TABLES.MAX.WARN}",
+    "expression_expanded": "min(/Vibe - Zabbix server/mysql.created_tmp_tables.rate,5m)>\"{$MYSQL.CREATED_TMP_TABLES.MAX.WARN}\"",
+    "expression_signature": "min(/{HOST}/mysql.created_tmp_tables.rate,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MySQL: Number of internal temporary tables created per second is high (over {$MYSQL.CREATED_TMP_TABLES.MAX.WARN} for 5m)",
+    "comments": "Possibly the application using the database is in need of query optimization.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10084",
+      "host": "Vibe - Zabbix server",
+      "name": "Vibe - Zabbix server",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {
+        "name": "ip-10-57-108-165",
+        "os": "Linux version 6.2.0-1009-aws (buildd@bos03-amd64-033) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GN"
+      }
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "710252",
+        "key_": "mysql.created_tmp_tables.rate",
+        "name": "MySQL: Created tmp tables on memory per second",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:4203a303505c98db995305fd9af12fc744f940c0a0c56f9dbaef5fdeef979f0a",
+    "family_source_hash": "sha256:7539b92bac05b0bd0dc9dd129d8b5d803f9d63d8236e4bd1408e60834ff70f14",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

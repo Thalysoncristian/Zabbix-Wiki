@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|api-indisponivel-conta-digital-strada|fd79b7d5",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|api-indisponivel-conta-digital-strada|fd79b7d5",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "carguero-api-monitor-down|api-indisponivel-conta-digital-strada",
+      "triggerid": "44614",
+      "host": "Carguero - API Monitor Down",
+      "description": "API - Indisponível - Conta Digital Strada"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "44614",
+    "description_raw": "API - Indisponível - Conta Digital Strada",
+    "description_normalized": "api-indisponivel-conta-digital-strada",
+    "expression_raw": "{69766}<6 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_expanded": "count(/Carguero - API Monitor Down/web.test.rspcode[http://contadigital.strada.log.br/,Verificar],10m,\"eq\",\"200\")<6 and ((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[http://contadigital.strada.log.br/,Verificar],10m,\"eq\",\"200\")<6and((dayofweek()<6and(time()>180000ortime()<080000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "http://contadigital.strada.log.br/",
+    "event_name": "http://contadigital.strada.log.br/",
+    "comments": "API Conta Digital Strada - http://contadigital.strada.log.br/",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "64587",
+        "key_": "web.test.rspcode[http://contadigital.strada.log.br/,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"http://contadigital.strada.log.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:1f40ea560e6efb1d26c3decf52dfdd9cc62cf7676d92cdfbeef081f7824e984a",
+    "family_source_hash": "sha256:691f5f36a32375950bbf49851771036f03ffd091d4a4a1287dd5443adede79cc",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

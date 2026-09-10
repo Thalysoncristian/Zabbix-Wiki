@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cortex-arquivo-de-log-maior-que-100mb|201d1a16",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cortex-arquivo-de-log-maior-que-100mb|201d1a16",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|cortex-arquivo-de-log-maior-que-100mb",
+      "triggerid": "117409",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Córtex - Arquivo de Log Maior que 100MB"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "117409",
+    "description_raw": "Córtex - Arquivo de Log Maior que 100MB",
+    "description_normalized": "cortex-arquivo-de-log-maior-que-100mb",
+    "expression_raw": "{137042}>100M",
+    "expression_expanded": "last(/Vibe - Zabbix-Proxy/vfs.dir.size[/var/log/app_teste])>100M",
+    "expression_signature": "last(/{HOST}/vfs.dir.size[/var/log/app_teste])>100M",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "225644",
+        "key_": "vfs.dir.size[/var/log/app_teste]",
+        "name": "Córtex - Logs",
+        "units": "B",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:82868cd8d8b5e69d1a3fee1bb389433e651f337c0ae31edb8d2805818cf80569",
+    "family_source_hash": "sha256:f56b9655b771432edfaa119c2bfd1a7c4025a4523f4d98e22907872d02a1a0f3",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

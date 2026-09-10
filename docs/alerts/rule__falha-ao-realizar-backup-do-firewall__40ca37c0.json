@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|falha-ao-realizar-backup-do-firewall|40ca37c0",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|falha-ao-realizar-backup-do-firewall|40ca37c0",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-vpn-fortigate-api|falha-ao-realizar-backup-do-firewall",
+      "triggerid": "61075",
+      "host": "Vibe - VPN [Fortigate] API",
+      "description": "Falha ao realizar backup do Firewall"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "61075",
+    "description_raw": "Falha ao realizar backup do Firewall",
+    "description_normalized": "falha-ao-realizar-backup-do-firewall",
+    "expression_raw": "{78705}=1",
+    "expression_expanded": "find(/Vibe - VPN Fortigate API/fortigate_backup.sh,,\"like\",\"ERROR\")=1",
+    "expression_signature": "find(/{HOST}/fortigate_backup.sh,,\"like\",\"ERROR\")=1",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{78706}=1",
+    "recovery_expression_expanded": "find(/Vibe - VPN Fortigate API/fortigate_backup.sh,,\"like\",\"OK\")=1",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Monitoramento criado a partir do chamado: 1025-000648, favor contatar a equipe de infra.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10719",
+      "host": "Vibe - VPN Fortigate API",
+      "name": "Vibe - VPN [Fortigate] API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Suporte_infra"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "82941",
+        "key_": "fortigate_backup.sh",
+        "name": "Backup Fortigate",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "1d;wd5h7"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:09fceb1b543127c7a4ba3caf4563868496a5332a726cf52e4f9ad740a95a24bf",
+    "family_source_hash": "sha256:9b302121a1a382d50d240e2ca661daa35d780b5d219c3a766098d98d4aa90671",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|fortigate-interface-vpnbkp-baixo-trafego|12fd0570",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|fortigate-interface-vpnbkp-baixo-trafego|12fd0570",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:36:07.849414Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|fortigate-interface-vpnbkp-baixo-trafego",
+      "triggerid": "191245",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "FortiGate: Interface VPNBKP: Baixo Tráfego"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "191245",
+    "description_raw": "FortiGate: Interface VPNBKP: Baixo Tráfego",
+    "description_normalized": "fortigate-interface-vpnbkp-baixo-trafego",
+    "expression_raw": "{340476}=({$BAIXO.TRAFEGO:\"VPNBKP\"}) and {340477}=({$BAIXO.TRAFEGO:\"VPNBKP\"}) and time()>=110000 and time()<=210000",
+    "expression_expanded": "avg(/Vibe - Proxy Fortigate/net.if.in[ifHCInOctets.16],10m)=(0) and avg(/Vibe - Proxy Fortigate/net.if.out[ifHCOutOctets.16],10m)=(0) and time()>=110000 and time()<=210000",
+    "expression_signature": "avg(/{HOST}/net.if.in[ifHCInOctets.16],10m)=(0)andavg(/{HOST}/net.if.out[ifHCOutOctets.16],10m)=(0)andtime()>=110000andtime()<=210000",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "FortiGate: Interface VPNBKP(): BaixoTráfego ({$BAIXO.TRAFEGO})",
+    "comments": "Adaptado por Master Support",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24717",
+        "description": "Interface VPNBKP(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      },
+      {
+        "triggerid": "24723",
+        "description": "Interface VPNVIBE(): Link down",
+        "host": "Vibe - Proxy [Fortigate]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52643",
+        "key_": "net.if.in[ifHCInOctets.16]",
+        "name": "Interface VPNBKP(): Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "52703",
+        "key_": "net.if.out[ifHCOutOctets.16]",
+        "name": "Interface VPNBKP(): Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:66adf77674c8ac7080bde205ee361166d2de87b6cdb6ac8482329a1a76b7acb3",
+    "family_source_hash": "sha256:50e302074ea5588abd3f7209191433ce80bdb79b02bc612a88e63ea4efccfcb8",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "VPNBKP com baixo trafego (Proxy Fortigate)",
+    "objective": "",
+    "symptoms": [
+      "'Interface VPNBKP(): Baixo Trafego' no host Vibe - Proxy Fortigate"
+    ],
+    "actions": [
+      "Abrir chamado. Sem resposta, acionar no Teams (Rafael Sales)."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Trafego abaixo do normal na VPN de backup.",
+    "probable_cause": "Intermitencia IPsec.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": 5,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Trafego da VPN de backup volta ao patamar normal.",
+    "notes": "Severidade: Media. SLA: 7 min (5m + 2m). SLA MAIS ESPECIFICO que o da regra 'Rede / Interfaces' do grupo Ativos de Rede (12 min) -- esta ficha prevalece para esta interface especifica. Ver docs/escalation_matrix.md para a matriz completa de filas, contatos e horarios. Fluxo geral: validar severidade -> respeitar tolerancia (se media/baixa) -> coletar evidencias (host, data/hora, print/output) -> abrir chamado no DeskManager -> transferir para a fila -> se nao houver retorno dentro do SLA, escalar por Teams/telefone do sobreaviso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

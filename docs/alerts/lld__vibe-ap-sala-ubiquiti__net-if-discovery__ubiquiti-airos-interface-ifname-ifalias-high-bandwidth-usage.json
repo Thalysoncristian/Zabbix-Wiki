@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-ap-sala-ubiquiti|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-high-bandwidth-usage",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-ap-sala-ubiquiti|net-if-discovery|ubiquiti-airos-interface-ifname-ifalias-high-bandwidth-usage",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-br0-high-bandwidth-usage",
+      "triggerid": "24415",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface br0(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-br0-20-high-bandwidth-usage",
+      "triggerid": "24416",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface br0.20(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-eth0-high-bandwidth-usage",
+      "triggerid": "24407",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface eth0(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-eth0-20-high-bandwidth-usage",
+      "triggerid": "24414",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface eth0.20(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi0-high-bandwidth-usage",
+      "triggerid": "24408",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi0(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi0ap0-high-bandwidth-usage",
+      "triggerid": "733965",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi0ap0(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi0ap1-high-bandwidth-usage",
+      "triggerid": "733966",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi0ap1(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi1-high-bandwidth-usage",
+      "triggerid": "24409",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi1(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi1ap2-high-bandwidth-usage",
+      "triggerid": "733967",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi1ap2(): High bandwidth usage"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-interface-wifi1ap3-high-bandwidth-usage",
+      "triggerid": "733968",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: Interface wifi1ap3(): High bandwidth usage"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24415",
+    "description_raw": "Ubiquiti AirOS: Interface br0(): High bandwidth usage",
+    "description_normalized": "ubiquiti-airos-interface-br0-high-bandwidth-usage",
+    "expression_raw": "({35106}>({$IF.UTIL.MAX:\"br0\"}/100)*{35107} or\r\n{35108}>({$IF.UTIL.MAX:\"br0\"}/100)*{35107}) and\r\n{35107}>0",
+    "expression_expanded": "(avg(/Vibe - AP SALA Ubiquiti/net.if.in[ifInOctets.11],15m)>(\"{$IF.UTIL.MAX:\\\"br0\\\"}\"/100)*last(/Vibe - AP SALA Ubiquiti/net.if.speed[ifSpeed.11]) or\r\navg(/Vibe - AP SALA Ubiquiti/net.if.out[ifOutOctets.11],15m)>(\"{$IF.UTIL.MAX:\\\"br0\\\"}\"/100)*last(/Vibe - AP SALA Ubiquiti/net.if.speed[ifSpeed.11])) and\r\nlast(/Vibe - AP SALA Ubiquiti/net.if.speed[ifSpeed.11])>0",
+    "expression_signature": "(avg(/{HOST}/net.if.in[ifInOctets.11],15m)>(\"{MACRO}\"/100)*last(/{HOST}/net.if.speed[ifSpeed.11])oravg(/{HOST}/net.if.out[ifOutOctets.11],15m)>(\"{MACRO}\"/100)*last(/{HOST}/net.if.speed[ifSpeed.11]))andlast(/{HOST}/net.if.speed[ifSpeed.11])>0",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{35106}<(({$IF.UTIL.MAX:\"br0\"}-3)/100)*{35107} and\r\n{35108}<(({$IF.UTIL.MAX:\"br0\"}-3)/100)*{35107}",
+    "recovery_expression_expanded": "avg(/Vibe - AP SALA Ubiquiti/net.if.in[ifInOctets.11],15m)<((\"{$IF.UTIL.MAX:\\\"br0\\\"}\"-3)/100)*last(/Vibe - AP SALA Ubiquiti/net.if.speed[ifSpeed.11]) and\r\navg(/Vibe - AP SALA Ubiquiti/net.if.out[ifOutOctets.11],15m)<((\"{$IF.UTIL.MAX:\\\"br0\\\"}\"-3)/100)*last(/Vibe - AP SALA Ubiquiti/net.if.speed[ifSpeed.11])",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "In: {ITEM.LASTVALUE1}, out: {ITEM.LASTVALUE3}, speed: {ITEM.LASTVALUE2}",
+    "event_name": "Ubiquiti AirOS: Interface br0(): High bandwidth usage (>{$IF.UTIL.MAX:\"br0\"}%)",
+    "comments": "The utilization of the network interface is close to its estimated maximum bandwidth.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51504",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Ubiquiti AirOS: Interface {#IFNAME}({#IFALIAS}): High bandwidth usage",
+    "dependencies": [
+      {
+        "triggerid": "24445",
+        "description": "Ubiquiti AirOS: Interface br0(): Link down",
+        "host": "Vibe - AP SALA Ubiquiti"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10702",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "name": "Vibe - AP SALA Ubiquiti",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51542",
+        "key_": "net.if.in[ifInOctets.11]",
+        "name": "Interface br0(): Bits received",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "51572",
+        "key_": "net.if.out[ifOutOctets.11]",
+        "name": "Interface br0(): Bits sent",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "51582",
+        "key_": "net.if.speed[ifSpeed.11]",
+        "name": "Interface br0(): Speed",
+        "units": "bps",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:fce2975370970ac70b674504704335addbdb7fc6bf6d3402377ed4c0e99d0fdb",
+    "family_source_hash": "sha256:17e19f0932cc3dfc2aef882abafbe316b93f1893113584a7d73b10491e6ba662",
+    "representative_of_family": true,
+    "family_instance_count": 10
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

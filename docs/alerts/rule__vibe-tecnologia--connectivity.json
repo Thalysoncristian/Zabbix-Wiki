@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--connectivity",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|dnx-influxdb-indisponivel-10m-sem-novos-dados|accb3558",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:51:28Z",
+  "last_modified_at": "2026-09-06T00:51:28.463674Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23463",
+    "description_raw": "DNX Influxdb indisponível - 10m sem novos dados",
+    "description_normalized": "dnx-influxdb-indisponivel-10m-sem-novos-dados",
+    "expression_raw": "{33485}=1",
+    "expression_expanded": "nodata(/Vibe - Influxdb/pmemoriausada[centralizador],10m)=1",
+    "expression_signature": "nodata(/{HOST}/pmemoriausada[centralizador],10m)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "https://influxdb-noc.prod.cloud.dnxbrasil.com.br/query",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46250",
+        "key_": "pmemoriausada[centralizador]",
+        "name": "Memória Usado % - centralizador",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:77860dc5ab6746684c01365ce8c339e5ed9d44c74fe1499fbe96a6228ba0f7aa"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Host/servico indisponivel por ICMP ou TCP — grupo Vibe Tecnologia",
+    "objective": "Reagir a perda de conectividade basica (ping ICMP ou porta TCP) em 16 hosts variados do grupo Vibe Tecnologia (firewalls, roteadores, cameras, bancos de dados).",
+    "symptoms": [
+      "'ICMP: Unavailable by ICMP ping'",
+      "'ICMP: High ICMP ping loss/response time'",
+      "'DNX Influxdb indisponivel - 10m sem novos dados'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "Agrupar cameras de seguranca com firewalls de cliente bancario sob o mesmo procedimento pode subestimar a urgencia de um dos dois"
+    ],
+    "meaning": "38 alertas, 16 hosts heterogeneos (firewalls Banpara, roteadores Interconect/Oi/Cisco, cameras IP, InfluxDB, CorreiosDB). Severidade grave: 7 Disaster + 10 High de 38.",
+    "probable_cause": "Equipamento desligado, falha de rede/link, ou host sem enviar dados ha muito tempo.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Identificar o host exato (grupo muito heterogeneo -- camera de seguranca e firewall pedem tratamento diferente)"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico -- confianca alta, mas o grupo e heterogeneo demais para 1 procedimento so. Considerar dividir por tipo de host antes de documentar de vez. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Este grupo mistura ativos MUITO diferentes (cameras de seguranca, firewall de cliente, banco de dados interno) -- provavelmente precisa de mais de um procedimento, nao um so.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

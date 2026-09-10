@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cert-ssl-certificate-is-invalid|1749c13c",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cert-ssl-certificate-is-invalid|1749c13c",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-certificado-e2ip|cert-ssl-certificate-is-invalid",
+      "triggerid": "73484",
+      "host": "SAQ_Certificado - E2Ip",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "saq-certificado-e2ip-bankry|cert-ssl-certificate-is-invalid",
+      "triggerid": "73526",
+      "host": "SAQ_Certificado - E2Ip -  Bankry",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "saq-certificado-e2ip-cartwavehub|cert-ssl-certificate-is-invalid",
+      "triggerid": "73522",
+      "host": "SAQ_Certificado - E2Ip - Cartwavehub",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "saq-certificado-simpay|cert-ssl-certificate-is-invalid",
+      "triggerid": "73530",
+      "host": "SAQ_Certificado - Simpay",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-nonprod|cert-ssl-certificate-is-invalid",
+      "triggerid": "73514",
+      "host": "SAQ_Certificado - qrcodes.saq - Nonprod",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-prod|cert-ssl-certificate-is-invalid",
+      "triggerid": "73510",
+      "host": "SAQ_Certificado - qrcodes.saq - Prod",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "vibe-certificado-dnxbrasil-com|cert-ssl-certificate-is-invalid",
+      "triggerid": "26217",
+      "host": "Vibe - Certificado dnxbrasil.com",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "vibe-certificado-dnxbrasil-com-br|cert-ssl-certificate-is-invalid",
+      "triggerid": "26220",
+      "host": "Vibe - Certificado dnxbrasil.com.br",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "vibe-certificado-mastersupport-com-br|cert-ssl-certificate-is-invalid",
+      "triggerid": "25980",
+      "host": "Vibe - Certificado mastersupport.com.br",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "vibe-certificado-vibedesenv-com|cert-ssl-certificate-is-invalid",
+      "triggerid": "26198",
+      "host": "Vibe - Certificado vibedesenv.com",
+      "description": "Cert: SSL certificate is invalid"
+    },
+    {
+      "alert_key": "vibe-certificado-vibetecnologia-com|cert-ssl-certificate-is-invalid",
+      "triggerid": "26195",
+      "host": "Vibe - Certificado vibetecnologia.com",
+      "description": "Cert: SSL certificate is invalid"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "73526",
+    "description_raw": "Cert: SSL certificate is invalid",
+    "description_normalized": "cert-ssl-certificate-is-invalid",
+    "expression_raw": "{91722}=1",
+    "expression_expanded": "find(/SAQ_Certificado - E2Ip -  Bankry/cert.validation,,\"like\",\"invalid\")=1",
+    "expression_signature": "find(/{HOST}/cert.validation,,\"like\",\"invalid\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "SSL certificate has expired or it is issued for another domain.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "security"
+      }
+    ],
+    "host": {
+      "hostid": "10872",
+      "host": "SAQ_Certificado - E2Ip -  Bankry",
+      "name": "SAQ_Certificado - E2Ip -  Bankry",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "SAQ Certificados"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "99603",
+        "key_": "cert.validation",
+        "name": "Cert: Validation result",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:3b19d3dbb157727ada93a144a03c7a0582ebce8eec38b5eee7beb6fd5f0bbac5",
+    "family_source_hash": "sha256:0def0aba7654989aa9dc450de16b369fec78837b94cba730bcd6049a05cab2e4",
+    "representative_of_family": true,
+    "family_instance_count": 11
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

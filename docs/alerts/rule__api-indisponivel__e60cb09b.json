@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|api-indisponivel|e60cb09b",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|api-indisponivel|e60cb09b",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "carguero-api-monitor-down|api-indisponivel",
+      "triggerid": "23415",
+      "host": "Carguero - API Monitor Down",
+      "description": "API - Indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "23415",
+    "description_raw": "API - Indisponível",
+    "description_normalized": "api-indisponivel",
+    "expression_raw": "{33454}<6 and ((dayofweek()<6 and (time()>210000 or time()<110000)) or dayofweek()>5)",
+    "expression_expanded": "count(/Carguero - API Monitor Down/web.test.rspcode[https://app.tipbank.com.br/,Verificar],1m,\"eq\",\"100\")<6 and ((dayofweek()<6 and (time()>210000 or time()<110000)) or dayofweek()>5)",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[https://app.tipbank.com.br/,Verificar],1m,\"eq\",\"100\")<6and((dayofweek()<6and(time()>210000ortime()<110000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "https://app.tipbank.com.br/",
+    "event_name": "https://app.tipbank.com.br/",
+    "comments": "API TipBank - https://app.tipbank.com.br/",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46138",
+        "key_": "web.test.rspcode[https://app.tipbank.com.br/,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://app.tipbank.com.br/\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:eeed839de149db3e8d7821bc1d89002cc58c315b99b1be6aba2aa5cdf4998d05",
+    "family_source_hash": "sha256:e9b53a7421c1b99c17effeae774ad60c77cd7f32ea46362a72ab271328c763e9",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

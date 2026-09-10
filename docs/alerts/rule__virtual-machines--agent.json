@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|virtual-machines--agent",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|windows-zabbix-agent-is-not-available|5b28f228",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:51Z",
+  "last_modified_at": "2026-09-06T14:39:51.957882Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "35667",
+    "description_raw": "Windows: Zabbix agent is not available",
+    "description_normalized": "windows-zabbix-agent-is-not-available",
+    "expression_raw": "{49737}=0",
+    "expression_expanded": "max(/Windows bob/zabbix[host,agent,available],{$AGENT.TIMEOUT})=0",
+    "expression_signature": "max(/{HOST}/zabbix[host,agent,available],{MACRO})=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Windows: Zabbix agent is not available (for {$AGENT.TIMEOUT})",
+    "comments": "For passive only agents, host availability is used with {$AGENT.TIMEOUT} as time threshold.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61683",
+        "key_": "zabbix[host,agent,available]",
+        "name": "Windows: Zabbix agent availability",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a98d269e691e02edb7396832f2707386714c94088ee054a8643c6896523904cd"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Coleta indisponivel (agente/SNMP) — Virtual machines",
+    "objective": "Restabelecer a coleta -- sem ela, os outros alertas deste host param de existir.",
+    "symptoms": [
+      "'Zabbix agent is not available'",
+      "'No SNMP data collection'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "FALHA SILENCIOSA: enquanto a coleta esta fora, nenhum outro alerta deste host dispara. A ausencia de alertas nao significa que esta tudo bem"
+    ],
+    "meaning": "1 alertas em 1 host(s) do grupo 'Virtual machines': Windows bob. Itens `zabbix[...]` medem disponibilidade do agente e da coleta SNMP. Severidades: Average=1.",
+    "probable_cause": "Servico do agente parado, porta bloqueada (10050), community SNMP incorreta ou host fora.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar se o host responde a ping (se nao responde, o problema e outro)",
+      "Conferir servico do agente / configuracao SNMP",
+      "Checar firewall na porta de coleta"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC / Infra",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca medium, 1 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Quem reinicia o agente e se o NOC tem acesso para isso.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

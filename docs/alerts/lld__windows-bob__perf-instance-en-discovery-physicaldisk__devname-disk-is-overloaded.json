@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|windows-bob|perf-instance-en-discovery-physicaldisk|devname-disk-is-overloaded",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|windows-bob|perf-instance-en-discovery-physicaldisk|devname-disk-is-overloaded",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "windows-bob|0-c-disk-is-overloaded",
+      "triggerid": "35732",
+      "host": "Windows bob",
+      "description": "0 C:: Disk is overloaded"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "35732",
+    "description_raw": "0 C:: Disk is overloaded",
+    "description_normalized": "0-c-disk-is-overloaded",
+    "expression_raw": "{49832}>{$VFS.DEV.UTIL.MAX.WARN}",
+    "expression_expanded": "min(/Windows bob/perf_counter_en[\"\\PhysicalDisk(0 C:)\\% Idle Time\",60],15m)>\"{$VFS.DEV.UTIL.MAX.WARN}\"",
+    "expression_signature": "min(/{HOST}/perf_counter_en[\"\\PhysicalDisk(0C:)\\%IdleTime\",60],15m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "0 C:: Disk is overloaded (util > {$VFS.DEV.UTIL.MAX.WARN}% for 15m)",
+    "comments": "The disk appears to be under heavy load.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61686",
+      "name": "Physical disks discovery",
+      "key_": "perf_instance_en.discovery[PhysicalDisk]"
+    },
+    "prototype_description": "{#DEVNAME}: Disk is overloaded",
+    "dependencies": [
+      {
+        "triggerid": "35733",
+        "description": "0 C:: Disk read request responses are too high",
+        "host": "Windows bob"
+      },
+      {
+        "triggerid": "35734",
+        "description": "0 C:: Disk write request responses are too high",
+        "host": "Windows bob"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61772",
+        "key_": "perf_counter_en[\"\\PhysicalDisk(0 C:)\\% Idle Time\",60]",
+        "name": "0 C:: Disk utilization by idle time",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2d1cc10ce9151ea004b967e80673373586bb684a4eab2694c906c8d8dfce5116",
+    "family_source_hash": "sha256:c82af6f6ad152577c8a7f53d9bdb359f140399fe72bae7a6d21435bc90d5dd14",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

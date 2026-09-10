@@ -1,0 +1,27 @@
+{
+  "_comment": "Decisões do operador sobre os candidatos a regra operacional. Este arquivo NÃO altera o snapshot: apagá-lo devolve todos os agrupamentos ao estado de sugestão.",
+  "updated_at": "2026-09-09T15:34:56Z",
+  "decisions": {
+    "cliente-chubb--connectivity": {
+      "status": "confirmed",
+      "note": "",
+      "decided_by": "",
+      "decided_at": "2026-09-06T02:03:58Z",
+      "previous_status": "candidate"
+    },
+    "cliente-chubb--database": {
+      "status": "confirmed",
+      "note": "",
+      "decided_by": "",
+      "decided_at": "2026-09-06T02:09:04Z",
+      "previous_status": "candidate"
+    },
+    "roteadores--hardware": {
+      "status": "ignored",
+      "note": "",
+      "decided_by": "",
+      "decided_at": "2026-09-09T15:34:56Z",
+      "previous_status": "split"
+    }
+  }
+}

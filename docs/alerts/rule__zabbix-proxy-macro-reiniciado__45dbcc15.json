@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-macro-reiniciado|45dbcc15",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-macro-reiniciado|45dbcc15",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-macro-reiniciado",
+      "triggerid": "24134",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: {HOST.NAME} Reiniciado"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24134",
+    "description_raw": "Zabbix proxy: {HOST.NAME} Reiniciado",
+    "description_normalized": "zabbix-proxy-macro-reiniciado",
+    "expression_raw": "{34444}<10m",
+    "expression_expanded": "last(/Vibe - Zabbix-Proxy/zabbix[uptime])<10m",
+    "expression_signature": "last(/{HOST}/zabbix[uptime])<10m",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Zabbix proxy: {HOST.NAME} has been restarted (uptime < 10m)",
+    "comments": "Uptime is less than 10 minutes.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51031",
+        "key_": "zabbix[uptime]",
+        "name": "Zabbix proxy: Uptime",
+        "units": "uptime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:65785fc57fb90be160d49dbc24e680f806d01fef9e146b78cc344d23d18d2417",
+    "family_source_hash": "sha256:dcb59684e246783aa8330983d623d7fa7f672e7f9203e4a2a14909e3a4f78743",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-utilization-of-self-monitoring-processes-is-high|79de2c56",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-utilization-of-self-monitoring-processes-is-high|79de2c56",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-utilization-of-self-monitoring-processes-is-high",
+      "triggerid": "24151",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: Utilization of self-monitoring processes is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24151",
+    "description_raw": "Zabbix proxy: Utilization of self-monitoring processes is high",
+    "description_normalized": "zabbix-proxy-utilization-of-self-monitoring-processes-is-high",
+    "expression_raw": "{34461}>{$ZABBIX.PROXY.UTIL.MAX:\"self-monitoring\"}",
+    "expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,self-monitoring,avg,busy],10m)>\"{$ZABBIX.PROXY.UTIL.MAX:\\\"self-monitoring\\\"}\"",
+    "expression_signature": "avg(/{HOST}/zabbix[process,self-monitoring,avg,busy],10m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34461}<{$ZABBIX.PROXY.UTIL.MIN:\"self-monitoring\"}",
+    "recovery_expression_expanded": "avg(/Vibe - Zabbix-Proxy/zabbix[process,self-monitoring,avg,busy],10m)<\"{$ZABBIX.PROXY.UTIL.MIN:\\\"self-monitoring\\\"}\"",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Zabbix proxy: Utilization of self-monitoring processes over {$ZABBIX.PROXY.UTIL.MAX:\"self-monitoring\"}%",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51020",
+        "key_": "zabbix[process,self-monitoring,avg,busy]",
+        "name": "Zabbix proxy: Utilization of self-monitoring internal processes, in %",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:287b5c3b029faf7bd59f35fe9495a0ee946c6b94d8a9b4d533b8f76b5693553a",
+    "family_source_hash": "sha256:73c624c0489e7cffcb32a95ac734216edc3d2848e41da366ad2abb2d923b80bf",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

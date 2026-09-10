@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ftp-chubb-ultimo-upload-a-mais-de-24h|f6d708cf",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|ftp-chubb-ultimo-upload-a-mais-de-24h|f6d708cf",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T02:03:21.255702Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "chubb-links-de-api|ftp-chubb-ultimo-upload-a-mais-de-24h",
+      "triggerid": "31584",
+      "host": "Chubb - Links de API",
+      "description": "FTP Chubb (último upload) a mais de 24h"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "31584",
+    "description_raw": "FTP Chubb (último upload) a mais de 24h",
+    "description_normalized": "ftp-chubb-ultimo-upload-a-mais-de-24h",
+    "expression_raw": "{44916} < (now() - 86400)",
+    "expression_expanded": "last(/Chubb - Links de API/ftpchubb.sh) < (now() - 86400)",
+    "expression_signature": "last(/{HOST}/ftpchubb.sh)<(now()-86400)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10705",
+      "host": "Chubb - Links de API",
+      "name": "Chubb - Links de API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "59869",
+        "key_": "ftpchubb.sh",
+        "name": "FTP Chubb (último upload)",
+        "units": "unixtime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "30m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:767567f0562b20782e84b0887d0d1426e041c65f8566f43015a99380e12614b1",
+    "family_source_hash": "sha256:583aee64550a92a6c90c82e306ab742e6955db7a8dc26892b5aeebd53b5781e0",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "FTP Chubb (ultimo upload) a mais de 24h — SEM PROCEDIMENTO NO MANUAL",
+    "objective": "",
+    "symptoms": [
+      "'FTP Chubb (ultimo upload) a mais de 24h'"
+    ],
+    "actions": [],
+    "validation": "",
+    "risks": [
+      "GAP: nenhuma orientacao existe hoje para este alerta. Se disparar, o operador nao tem o que seguir."
+    ],
+    "meaning": "Alerta real no host 'Chubb - Links de API', nao mencionado em nenhuma secao do manual 'Control-M SaaS Chubb'.",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "E-mail"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "contatos Chubb (ver escalation_matrix.md)",
+      "channel": "E-mail"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Manual 'Control-M SaaS Chubb' colado pelo usuario em 2026-09-06. Nao coberto -- precisa de procedimento do time. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo.",
+    "imported_from": "wiki_manual_chubb_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

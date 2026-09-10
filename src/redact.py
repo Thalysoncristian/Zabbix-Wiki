@@ -51,17 +51,21 @@ from typing import Any
 from .keys import short_hash
 
 #: Nomes de parâmetro que indicam segredo quando seguidos de um valor.
+#:
+#: `\w*secret` em vez de `secret` porque o lookbehind `(?<![\w.-])` impede
+#: casar no meio de uma palavra: com `secret` puro, `--hmacsecret,<valor>`
+#: passava batido, e passou mesmo — apareceu em texto claro num trigger de
+#: PIX do ambiente real. Qualquer parâmetro terminado em "secret" é segredo.
 _NOME_SENSIVEL = (
     r"access[-_]?key(?:[-_]?id)?"
     r"|secret[-_]?(?:access[-_]?)?key"
-    r"|secret"
+    r"|\w*secret"
     r"|passwd|password|pwd"
     r"|api[-_]?key|apikey"
     r"|auth[-_]?token|access[-_]?token|token"
     r"|authorization"
     r"|credentials?"
     r"|private[-_]?key"
-    r"|client[-_]?secret"
 )
 
 #: `--secret-key, "valor"` / `password="valor"` / `token: 'valor'`
@@ -71,10 +75,16 @@ _PAR_COM_ASPAS = re.compile(
     re.IGNORECASE,
 )
 
-#: `password=valor` / `token: valor` sem aspas. O valor termina no primeiro
-#: separador — vírgula, espaço, `]`, `)` ou fim de linha.
+#: `password=valor` / `token: valor` / `--clientsecret,valor` sem aspas. O
+#: valor termina no primeiro separador — vírgula, espaço, `]`, `)` ou fim.
+#:
+#: A vírgula precisa estar entre os separadores de NOME (`[:=,]`), e não só
+#: entre os terminadores de valor: chave de item do Zabbix separa parâmetro
+#: por vírgula, então `--clientsecret,<valor>` é a forma mais comum de o
+#: segredo aparecer ali. Sem ela, o par com aspas era redigido e o sem aspas
+#: — o mesmo segredo, escrito de outro jeito — passava direto.
 _PAR_SEM_ASPAS = re.compile(
-    rf"(?P<nome>(?<![\w.-])(?:--)?(?:{_NOME_SENSIVEL})\s*[:=]\s*)(?P<valor>[^\s,;\]\)\"'&]{{8,}})",
+    rf"(?P<nome>(?<![\w.-])(?:--)?(?:{_NOME_SENSIVEL})\s*[:=,]\s*)(?P<valor>[^\s,;\]\)\"'&]{{8,}})",
     re.IGNORECASE,
 )
 
@@ -95,7 +105,17 @@ _JA_REDIGIDO = re.compile(r"^\[REDACTED:[0-9a-f]+\]$")
 
 #: Campos de texto onde um segredo pode aparecer. `description_raw` entra
 #: porque nada impede alguém de escrever a senha no nome do trigger.
+#:
+#: A lista cobre os DOIS formatos de propósito: os nomes do snapshot bruto
+#: (`expression`, vindos da API do Zabbix) e os nomes que a normalização
+#: deriva deles (`expression_expanded`, `expression_signature`…). No fluxo
+#: normal só os primeiros importam, porque a redação roda antes de normalizar
+#: — mas sem os segundos a função fica inútil justamente quando mais se
+#: precisa dela: para limpar dados JÁ normalizados, coletados por uma versão
+#: do coletor anterior à redação. Foi o que aconteceu com o snapshot
+#: 20260905_181510, coletado 36 minutos antes de este módulo existir.
 CAMPOS_DE_TEXTO = (
+    # snapshot bruto (API do Zabbix)
     "expression",
     "recovery_expression",
     "description",
@@ -107,6 +127,17 @@ CAMPOS_DE_TEXTO = (
     "name_resolved",
     "url",
     "value",
+    # alerta normalizado (derivados dos acima)
+    "expression_raw",
+    "expression_expanded",
+    "expression_signature",
+    "recovery_expression_raw",
+    "recovery_expression_expanded",
+    "recovery_expression_signature",
+    "description_raw",
+    "description_normalized",
+    "prototype_description",
+    "alert_key_basis_description",
 )
 
 

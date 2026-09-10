@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|embratel-roteador-cisco|cpu-discovery|snmpindex-high-cpu-utilization",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|embratel-roteador-cisco|cpu-discovery|snmpindex-high-cpu-utilization",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|1-high-cpu-utilization",
+      "triggerid": "24246",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "#1: High CPU utilization"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24246",
+    "description_raw": "#1: High CPU utilization",
+    "description_normalized": "1-high-cpu-utilization",
+    "expression_raw": "{34707}>{$CPU.UTIL.CRIT}",
+    "expression_expanded": "min(/Embratel - Roteador Cisco/system.cpu.util[cpmCPUTotal5minRev.1],5m)>\"{$CPU.UTIL.CRIT}\"",
+    "expression_signature": "min(/{HOST}/system.cpu.util[cpmCPUTotal5minRev.1],5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current utilization: {ITEM.LASTVALUE1}",
+    "event_name": "#1: High CPU utilization (over {$CPU.UTIL.CRIT}% for 5m)",
+    "comments": "The CPU utilization is too high. The system might be slow to respond.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51126",
+      "name": "CPU Discovery",
+      "key_": "cpu.discovery"
+    },
+    "prototype_description": "#{#SNMPINDEX}: High CPU utilization",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51204",
+        "key_": "system.cpu.util[cpmCPUTotal5minRev.1]",
+        "name": "#1: CPU utilization",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:5d70255aae0f2b99e847cb2b5c93e42e6571b925642e2469cc4a8364f726ce74",
+    "family_source_hash": "sha256:6c2eb8e7919fe961d6354f2f57d32d9d9a2c82897230d45f0ec8b3482be93be1",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

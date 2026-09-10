@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-servidor-idrac-dell|fan-discovery|fan-descr-fan-is-in-warning-state",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-servidor-idrac-dell|fan-discovery|fan-descr-fan-is-in-warning-state",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|system-board-sys-fan1-fan-is-in-warning-state",
+      "triggerid": "24306",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "System Board Sys Fan1: Fan is in warning state"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24306",
+    "description_raw": "System Board Sys Fan1: Fan is in warning state",
+    "description_normalized": "system-board-sys-fan1-fan-is-in-warning-state",
+    "expression_raw": "{34807}=1 or {34808}=1",
+    "expression_expanded": "count(/Vibe - Servidor iDRAC DELL/sensor.fan.status[coolingDeviceStatus.1.1],#1,\"eq\",\"{$FAN_WARN_STATUS:\\\"nonCriticalUpper\\\"}\")=1 or count(/Vibe - Servidor iDRAC DELL/sensor.fan.status[coolingDeviceStatus.1.1],#1,\"eq\",\"{$FAN_WARN_STATUS:\\\"nonCriticalLower\\\"}\")=1",
+    "expression_signature": "count(/{HOST}/sensor.fan.status[coolingDeviceStatus.1.1],#1,\"eq\",\"{MACRO}\")=1orcount(/{HOST}/sensor.fan.status[coolingDeviceStatus.1.1],#1,\"eq\",\"{MACRO}\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Please check the fan unit",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51277",
+      "name": "FAN Discovery",
+      "key_": "fan.discovery"
+    },
+    "prototype_description": "{#FAN_DESCR}: Fan is in warning state",
+    "dependencies": [
+      {
+        "triggerid": "24305",
+        "description": "System Board Sys Fan1: Fan is in critical state",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51316",
+        "key_": "sensor.fan.status[coolingDeviceStatus.1.1]",
+        "name": "System Board Sys Fan1: Fan status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:037553e3d236006ed05427e39e3a391c0dfa52a555eaeeb5fee46f7d1154ba2b",
+    "family_source_hash": "sha256:77fdf6da6321840fea6613939dd28bb3a84ed8c9a8c2be6fc057fb4b7ec411b8",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

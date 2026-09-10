@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|srv-incontrol-2026|net-if-discovery|interface-ifname-ifalias-link-down",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|srv-incontrol-2026|net-if-discovery|interface-ifname-ifalias-link-down",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|interface-intel-r-82574l-gigabit-network-connection-ethernet0-link-down",
+      "triggerid": "77255",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Interface Intel(R) 82574L Gigabit Network Connection(Ethernet0): Link down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77255",
+    "description_raw": "Interface Intel(R) 82574L Gigabit Network Connection(Ethernet0): Link down",
+    "description_normalized": "interface-intel-r-82574l-gigabit-network-connection-ethernet0-link-down",
+    "expression_raw": "{$IFCONTROL:\"Intel(R) 82574L Gigabit Network Connection\"}=1 and {95524}<>2 and ({95525}<>{95526})",
+    "expression_expanded": "\"{$IFCONTROL:\\\"Intel(R) 82574L Gigabit Network Connection\\\"}\"=1 and last(/SRV_INCONTROL_2026/net.if.status[\"{CBB5D4DF-BF09-4483-9E39-7DA99F27D231}\"])<>2 and (last(/SRV_INCONTROL_2026/net.if.status[\"{CBB5D4DF-BF09-4483-9E39-7DA99F27D231}\"],#1)<>last(/SRV_INCONTROL_2026/net.if.status[\"{CBB5D4DF-BF09-4483-9E39-7DA99F27D231}\"],#2))",
+    "expression_signature": "\"{MACRO}\"=1andlast(/{HOST}/net.if.status[\"{MACRO}\"])<>2and(last(/{HOST}/net.if.status[\"{MACRO}\"],#1)<>last(/{HOST}/net.if.status[\"{MACRO}\"],#2))",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{95524}=2 or {$IFCONTROL:\"Intel(R) 82574L Gigabit Network Connection\"}=0",
+    "recovery_expression_expanded": "last(/SRV_INCONTROL_2026/net.if.status[\"{CBB5D4DF-BF09-4483-9E39-7DA99F27D231}\"])=2 or \"{$IFCONTROL:\\\"Intel(R) 82574L Gigabit Network Connection\\\"}\"=0",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This trigger expression works as follows:\r\n1. It can be triggered if the operations status is down.\r\n2. `{$IFCONTROL:\"Intel(R) 82574L Gigabit Network Connection\"}=1` - a user can redefine context macro to value - 0. That marks this interface as not important.\r\nNo new trigger will be fired if this interface is down.\r\n3. `{TEMPLATE_NAME:METRIC.diff()}=1` - the trigger fires only if the operational status was up to (1) sometime before (so, do not fire for the 'eternal off' interfaces.)\r\n\r\nWARNING: if closed manually - it will not fire again on the next poll, because of .diff.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "103768",
+      "name": "Network interfaces discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Link down",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103812",
+        "key_": "net.if.status[\"{CBB5D4DF-BF09-4483-9E39-7DA99F27D231}\"]",
+        "name": "Interface Intel(R) 82574L Gigabit Network Connection(Ethernet0): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f7f302e784edc01eceecdab93a2893e483481ab5cd81eabd1f0b7746a00d251d",
+    "family_source_hash": "sha256:fa000e6de966dc1228415f9725122fb3a64cdb450e71632d49de920a7650ee7c",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

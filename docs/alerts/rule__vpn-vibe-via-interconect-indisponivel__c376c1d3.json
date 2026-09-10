@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vpn-vibe-via-interconect-indisponivel|c376c1d3",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|vpn-vibe-via-interconect-indisponivel|c376c1d3",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-vpn|vpn-vibe-via-interconect-indisponivel",
+      "triggerid": "24775",
+      "host": "Vibe - VPN",
+      "description": "VPN Vibe via Interconect Indisponível"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24775",
+    "description_raw": "VPN Vibe via Interconect Indisponível",
+    "description_normalized": "vpn-vibe-via-interconect-indisponivel",
+    "expression_raw": "({54739}=0 and {54740}=0 and {54741}=0) or {54742}=1",
+    "expression_expanded": "(avg(/Vibe - VPN/net.tcp.service[tcp,vpnvibe.fortiddns.com,8443],5m)=0 and avg(/Vibe - VPN/net.tcp.service[tcp,177.66.107.63,8443],5m)=0 and last(/Vibe - VPN Fortigate API/vpn_wan_uso.sh[wan2])=0) or nodata(/Vibe - VPN Fortigate API/vpn_wan_uso.sh[wan2],5m)=1",
+    "expression_signature": "(avg(/{HOST}/net.tcp.service[tcp,vpnvibe.fortiddns.com,8443],5m)=0andavg(/{HOST}/net.tcp.service[tcp,177.66.107.63,8443],5m)=0andlast(/Vibe-VPNFortigateAPI/vpn_wan_uso.sh[wan2])=0)ornodata(/Vibe-VPNFortigateAPI/vpn_wan_uso.sh[wan2],5m)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "vpnvibe.fortiddns.com porta 8443, Usuários conectados: {ITEM.LASTVALUE3}",
+    "event_name": "",
+    "comments": "Quando este serviço porta 8443 fica Indisponível pode ocorrer devido:\r\n\r\n- Link Interconect Fábrica Indisponível\r\n- VMWare Fábrica Indisponível\r\n- Servidor VPN com algum problema.\r\n\r\nVerifique o Mapa de Rede da Vibe para mais detalhes.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10710",
+      "host": "Vibe - VPN",
+      "name": "Vibe - VPN",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "63196",
+        "key_": "net.tcp.service[tcp,177.66.107.63,8443]",
+        "name": "VPN Vibe via Interconect (IP)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "53019",
+        "key_": "net.tcp.service[tcp,vpnvibe.fortiddns.com,8443]",
+        "name": "VPN Vibe via Interconect (DNS)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      },
+      {
+        "itemid": "58676",
+        "key_": "vpn_wan_uso.sh[wan2]",
+        "name": "Conexões WAN2 (Interconect)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:fb7f9f2d369272f54f853859811678837c9d1ee150cf3a955cb599821df644b5",
+    "family_source_hash": "sha256:c9af3ef21d0460608b473245ae1dde837dfcddaadcf027b3d37fafb484da19f0",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

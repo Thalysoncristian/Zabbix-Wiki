@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|dell-idrac-system-is-in-unrecoverable-state|6d38cdb6",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|dell-idrac-system-is-in-unrecoverable-state|6d38cdb6",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|dell-idrac-system-is-in-unrecoverable-state",
+      "triggerid": "24273",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Dell iDRAC: System is in unrecoverable state!"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24273",
+    "description_raw": "Dell iDRAC: System is in unrecoverable state!",
+    "description_normalized": "dell-idrac-system-is-in-unrecoverable-state",
+    "expression_raw": "{34748}=1",
+    "expression_expanded": "count(/Vibe - Servidor iDRAC DELL/system.status[globalSystemStatus.0],#1,\"eq\",\"{$HEALTH_DISASTER_STATUS}\")=1",
+    "expression_signature": "count(/{HOST}/system.status[globalSystemStatus.0],#1,\"eq\",\"{MACRO}\")=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Please check the device for faults",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51273",
+        "key_": "system.status[globalSystemStatus.0]",
+        "name": "Dell iDRAC: Overall system health status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:3714baec9be63529044ab0736f140b23c60379b063cb982ceb3382123126ee61",
+    "family_source_hash": "sha256:6c7c6c4bd0e2b25d55c148687324807a6c751a661e2b3e447dde17fbfa17c1b4",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

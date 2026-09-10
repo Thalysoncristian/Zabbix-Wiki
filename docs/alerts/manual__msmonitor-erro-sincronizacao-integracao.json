@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "alert_key": "manual|msmonitor-erro-sincronizacao-integracao",
+  "scope": "manual",
+  "doc_level": "family",
+  "family_key": "manual|msmonitor-erro-sincronizacao-integracao",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:39:44Z",
+  "last_modified_at": "2026-09-06T00:39:44.417389Z",
+  "revision": 1,
+  "last_seen_at": null,
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": null,
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "MSMonitor — Erro na sincronizacao de integracao",
+    "objective": "",
+    "symptoms": [
+      "Notificacao 'Erro na sincronizacao de integracao' do MSMonitor"
+    ],
+    "actions": [
+      "Aguardar a mensagem de 'normalizada'. Se persistir, ligar para o plantao."
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "Erro ao carregar alertas de uma integracao (ex.: 'zabb', id 12).",
+    "probable_cause": "Falha no getAlerts com o Zabbix.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar se ja chegou a notificacao 'Integracao normalizada' antes de acionar o sobreaviso"
+    ],
+    "requires_ticket": false,
+    "routing": {
+      "team": "Sobreaviso MSMonitor",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": "Telefone"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Jordy — (91) 99165-4121",
+      "channel": "Telefone"
+    },
+    "resolution_criteria": "Notificacao 'Integracao normalizada' recebida.",
+    "notes": "Severidade: Alta. SLA: Imediato (apos validacao). Fluxo geral: validar -> coletar evidencias -> abrir chamado -> transferir para a fila -> escalar se faltar retorno no SLA. Ver docs/escalation_matrix.md.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null,
+    "client": "master-support"
+  }
+}

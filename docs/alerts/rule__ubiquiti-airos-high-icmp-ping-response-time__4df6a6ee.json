@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|ubiquiti-airos-high-icmp-ping-response-time|4df6a6ee",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|ubiquiti-airos-high-icmp-ping-response-time|4df6a6ee",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-ap-reuniao-ubiquiti|ubiquiti-airos-high-icmp-ping-response-time",
+      "triggerid": "24345",
+      "host": "Vibe - AP REUNIAO [Ubiquiti]",
+      "description": "Ubiquiti AirOS: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-ap-sala-ubiquiti|ubiquiti-airos-high-icmp-ping-response-time",
+      "triggerid": "24398",
+      "host": "Vibe - AP SALA Ubiquiti",
+      "description": "Ubiquiti AirOS: High ICMP ping response time"
+    },
+    {
+      "alert_key": "vibe-ap14-vibe|ubiquiti-airos-high-icmp-ping-response-time",
+      "triggerid": "108929",
+      "host": "Vibe - AP14_VIBE",
+      "description": "Ubiquiti AirOS: High ICMP ping response time"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24345",
+    "description_raw": "Ubiquiti AirOS: High ICMP ping response time",
+    "description_normalized": "ubiquiti-airos-high-icmp-ping-response-time",
+    "expression_raw": "{34880}>{$ICMP_RESPONSE_TIME_WARN}",
+    "expression_expanded": "avg(/Vibe - AP REUNIAO Ubiquiti/icmppingsec,5m)>\"{$ICMP_RESPONSE_TIME_WARN}\"",
+    "expression_signature": "avg(/{HOST}/icmppingsec,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Value: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "Average ICMP response time is too high.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24343",
+        "description": "Ubiquiti AirOS: High ICMP ping loss",
+        "host": "Vibe - AP REUNIAO [Ubiquiti]"
+      },
+      {
+        "triggerid": "24344",
+        "description": "Ubiquiti AirOS: Unavailable by ICMP ping",
+        "host": "Vibe - AP REUNIAO [Ubiquiti]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10701",
+      "host": "Vibe - AP REUNIAO Ubiquiti",
+      "name": "Vibe - AP REUNIAO [Ubiquiti]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Pontos de Acesso"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51366",
+        "key_": "icmppingsec",
+        "name": "ICMP response time",
+        "units": "s",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:a6957b684cc61bab3790cbb61bf9bb6e3e96da181789edc8029e26a3e46e3efc",
+    "family_source_hash": "sha256:7e17bcac21febbbfa0fdf73619b012418ac56cf3d7739ed049acb00f9039b99c",
+    "representative_of_family": true,
+    "family_instance_count": 3
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

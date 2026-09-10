@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-version-has-changed|7928cc70",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-version-has-changed|7928cc70",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-version-has-changed",
+      "triggerid": "24157",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: Version has changed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24157",
+    "description_raw": "Zabbix proxy: Version has changed",
+    "description_normalized": "zabbix-proxy-version-has-changed",
+    "expression_raw": "{34467}<>{34468} and length({34469})>0",
+    "expression_expanded": "last(/Vibe - Zabbix-Proxy/zabbix[version],#1)<>last(/Vibe - Zabbix-Proxy/zabbix[version],#2) and length(last(/Vibe - Zabbix-Proxy/zabbix[version]))>0",
+    "expression_signature": "last(/{HOST}/zabbix[version],#1)<>last(/{HOST}/zabbix[version],#2)andlength(last(/{HOST}/zabbix[version]))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Zabbix proxy: Version has changed (new version: {ITEM.VALUE})",
+    "comments": "Zabbix proxy version has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51032",
+        "key_": "zabbix[version]",
+        "name": "Zabbix proxy: Version",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:c0bf049893ea99df967298e3a780f5d195ffff753015a53c3f9d818c3ddba9d5",
+    "family_source_hash": "sha256:4a9f1793f262124a3cc2c0813dc1afe9ee00ee2126ce5b96f75b0ece8d2e269a",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|dell-idrac-high-icmp-ping-loss|6911d723",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|dell-idrac-high-icmp-ping-loss|6911d723",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|dell-idrac-high-icmp-ping-loss",
+      "triggerid": "24268",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "Dell iDRAC: High ICMP ping loss"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24268",
+    "description_raw": "Dell iDRAC: High ICMP ping loss",
+    "description_normalized": "dell-idrac-high-icmp-ping-loss",
+    "expression_raw": "{34741}>{$ICMP_LOSS_WARN} and {34741}<100",
+    "expression_expanded": "min(/Vibe - Servidor iDRAC DELL/icmppingloss,5m)>\"{$ICMP_LOSS_WARN}\" and min(/Vibe - Servidor iDRAC DELL/icmppingloss,5m)<100",
+    "expression_signature": "min(/{HOST}/icmppingloss,5m)>\"{MACRO}\"andmin(/{HOST}/icmppingloss,5m)<100",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Loss: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24269",
+        "description": "Dell iDRAC: Unavailable by ICMP ping",
+        "host": "Vibe - Servidor iDRAC [DELL]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51260",
+        "key_": "icmppingloss",
+        "name": "Dell iDRAC: ICMP loss",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:cb694c311a1aa056ab4220bc7fa5f05395d51be316bf296945a254828d8d310e",
+    "family_source_hash": "sha256:ec5d2f6ceeb1f50e9ab9ae67a48356588b54389851227f1dce24c63ff9a371ba",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

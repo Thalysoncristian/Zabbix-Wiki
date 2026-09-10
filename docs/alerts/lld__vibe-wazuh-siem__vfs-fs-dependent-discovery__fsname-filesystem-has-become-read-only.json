@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-wazuh-siem|vfs-fs-dependent-discovery|fsname-filesystem-has-become-read-only",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-wazuh-siem|vfs-fs-dependent-discovery|fsname-filesystem-has-become-read-only",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-wazuh-siem|filesystem-has-become-read-only",
+      "triggerid": "33980",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "/: Filesystem has become read-only"
+    },
+    {
+      "alert_key": "vibe-wazuh-siem|boot-filesystem-has-become-read-only",
+      "triggerid": "33981",
+      "host": "Vibe - Wazuh SIEM",
+      "description": "/boot: Filesystem has become read-only"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "33980",
+    "description_raw": "/: Filesystem has become read-only",
+    "description_normalized": "filesystem-has-become-read-only",
+    "expression_raw": "{47754}=0 and {47755}=1",
+    "expression_expanded": "last(/Vibe - Wazuh SIEM/vfs.fs.dependent[/,readonly],#2)=0 and last(/Vibe - Wazuh SIEM/vfs.fs.dependent[/,readonly])=1",
+    "expression_signature": "last(/{HOST}/vfs.fs.dependent[/,readonly],#2)=0andlast(/{HOST}/vfs.fs.dependent[/,readonly])=1",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{47755}=0",
+    "recovery_expression_expanded": "last(/Vibe - Wazuh SIEM/vfs.fs.dependent[/,readonly])=0",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The filesystem has become read-only. A possible reason is an I/O error. It is available only for Zabbix agents 6.4 and higher.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61040",
+      "name": "Mounted filesystem discovery",
+      "key_": "vfs.fs.dependent.discovery"
+    },
+    "prototype_description": "{#FSNAME}: Filesystem has become read-only",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "monitoramento",
+        "value": "excecao"
+      },
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10743",
+      "host": "Vibe - Wazuh SIEM",
+      "name": "Vibe - Wazuh SIEM",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61066",
+        "key_": "vfs.fs.dependent[/,readonly]",
+        "name": "/: Filesystem is read-only",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f400e88cb5685abd33f1f4eccdec83eec199e8a67c8465815f757631e46e805e",
+    "family_source_hash": "sha256:ab81067a0d5c0d90b4d04ca9b24bbb66b34899daf77fe3a0231cfe1b219634bf",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|domain-expiry-macro-has-expired|d8218c52",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|domain-expiry-macro-has-expired|d8218c52",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-dominio-dnxbrasil-com|domain-expiry-macro-has-expired",
+      "triggerid": "26209",
+      "host": "Vibe - Dominio dnxbrasil.com",
+      "description": "Domain Expiry: {HOST.NAME} has expired"
+    },
+    {
+      "alert_key": "vibe-dominio-dnxbrasil-com-br|domain-expiry-macro-has-expired",
+      "triggerid": "26213",
+      "host": "Vibe - Dominio dnxbrasil.com.br",
+      "description": "Domain Expiry: {HOST.NAME} has expired"
+    },
+    {
+      "alert_key": "vibe-dominio-mastersupport-com-br|domain-expiry-macro-has-expired",
+      "triggerid": "26187",
+      "host": "Vibe - Dominio mastersupport.com.br",
+      "description": "Domain Expiry: {HOST.NAME} has expired"
+    },
+    {
+      "alert_key": "vibe-dominio-vibedesenv-com|domain-expiry-macro-has-expired",
+      "triggerid": "26201",
+      "host": "Vibe - Dominio vibedesenv.com",
+      "description": "Domain Expiry: {HOST.NAME} has expired"
+    },
+    {
+      "alert_key": "vibe-dominio-vibetecnologia-com|domain-expiry-macro-has-expired",
+      "triggerid": "26191",
+      "host": "Vibe - Dominio vibetecnologia.com",
+      "description": "Domain Expiry: {HOST.NAME} has expired"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "26213",
+    "description_raw": "Domain Expiry: {HOST.NAME} has expired",
+    "description_normalized": "domain-expiry-macro-has-expired",
+    "expression_raw": "{38341}=1\r\nand\r\n{38342}>=0\r\nand\r\n{38343}<>0",
+    "expression_expanded": "find(/Vibe - Dominio dnxbrasil.com.br/domain_check_expiry.status,#1,\"like\",\"EXPIRED\")=1\r\nand\r\nlast(/Vibe - Dominio dnxbrasil.com.br/domain_check_expiry.days_since_expired)>=0\r\nand\r\nlast(/Vibe - Dominio dnxbrasil.com.br/domain_check_expiry.expire_date)<>0",
+    "expression_signature": "find(/{HOST}/domain_check_expiry.status,#1,\"like\",\"EXPIRED\")=1andlast(/{HOST}/domain_check_expiry.days_since_expired)>=0andlast(/{HOST}/domain_check_expiry.expire_date)<>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "{ITEM.LASTVALUE2} days ago on {ITEM.LASTVALUE3}",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "26214",
+        "description": "Domain Expiry: {HOST.NAME} - {ITEM.LASTVALUE1}",
+        "host": "Vibe - Dominio dnxbrasil.com.br"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "domain",
+        "value": "expired"
+      }
+    ],
+    "host": {
+      "hostid": "10730",
+      "host": "Vibe - Dominio dnxbrasil.com.br",
+      "name": "Vibe - Dominio dnxbrasil.com.br",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Dominios e Certificados",
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "56929",
+        "key_": "domain_check_expiry.days_since_expired",
+        "name": "Days Since Expired",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "56930",
+        "key_": "domain_check_expiry.expire_date",
+        "name": "Expire Date",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      },
+      {
+        "itemid": "56931",
+        "key_": "domain_check_expiry.status",
+        "name": "Status",
+        "units": "",
+        "value_type": {
+          "value": "4",
+          "name": "text"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:acbbc0ab81accfdd060e93e346d137a6f3f603a80d827568cbedeeaf492b9c4e",
+    "family_source_hash": "sha256:f1aafeac73f7c5b48aaf832bf512c694b50cac61e9ff1f093207871b50111a58",
+    "representative_of_family": true,
+    "family_instance_count": 5
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

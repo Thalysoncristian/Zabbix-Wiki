@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mssql-number-of-buffers-written-per-second-by-the-lazy-writer-is-high|43b31b94",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mssql-number-of-buffers-written-per-second-by-the-lazy-writer-is-high|43b31b94",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-number-of-buffers-written-per-second-by-the-lazy-writer-is-high",
+      "triggerid": "93300",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL: Number of buffers written per second by the lazy writer is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93300",
+    "description_raw": "MSSQL: Number of buffers written per second by the lazy writer is high",
+    "description_normalized": "mssql-number-of-buffers-written-per-second-by-the-lazy-writer-is-high",
+    "expression_raw": "{112320}>{$MSSQL.LAZY_WRITES.MAX}",
+    "expression_expanded": "min(/Chubb - SQLDB/mssql.lazy_writes_sec.rate,5m)>\"{$MSSQL.LAZY_WRITES.MAX}\"",
+    "expression_signature": "min(/{HOST}/mssql.lazy_writes_sec.rate,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MSSQL: Number of buffers written per second by the lazy writer is high (over {$MSSQL.LAZY_WRITES.MAX} for 5m)",
+    "comments": "The number of buffers written per second by the buffer manager's lazy writer exceeds the threshold.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153615",
+        "key_": "mssql.lazy_writes_sec.rate",
+        "name": "MSSQL: Lazy writes per second",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:7c662a1e950ce15657fd4af8cb5da407edd6172cb52ee74f4955994b48d87f01",
+    "family_source_hash": "sha256:3d24b0c06c04e4c1d805df8f3f7434eb17acc20adf3923ba9fbb6ec48355bed1",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|saq-certificados--certificate",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|cert-fingerprint-has-changed|d1311c54",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:52:10Z",
+  "last_modified_at": "2026-09-06T00:52:10.290225Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "73483",
+    "description_raw": "Cert: Fingerprint has changed",
+    "description_normalized": "cert-fingerprint-has-changed",
+    "expression_raw": "{91673} <> {91674}",
+    "expression_expanded": "last(/SAQ_Certificado - E2Ip/cert.sha1_fingerprint) <> last(/SAQ_Certificado - E2Ip/cert.sha1_fingerprint,#2)",
+    "expression_signature": "last(/{HOST}/cert.sha1_fingerprint)<>last(/{HOST}/cert.sha1_fingerprint,#2)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Cert: Fingerprint has changed (new version: {ITEM.VALUE})",
+    "comments": "The SSL certificate fingerprint has changed. If you did not update the certificate, it may mean your certificate has been hacked. Acknowledge to close the problem manually.\r\nThere could be multiple valid certificates on some installations. In this case, the trigger will have a false positive. You can ignore it or disable the trigger.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10868",
+      "host": "SAQ_Certificado - E2Ip",
+      "name": "SAQ_Certificado - E2Ip",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "SAQ Certificados"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "99530",
+        "key_": "cert.sha1_fingerprint",
+        "name": "Cert: Fingerprint",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:d61af206f0c8079f3ead4073a9bf4418f277c7fa00c8f32ee722c317af086381"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "Certificado/dominio SAQ proximo do vencimento ou invalido",
+    "objective": "Renovar certificados TLS dos dominios SAQ (E2Ip, Bankry, Cartwavehub, Simpay, qrcodes) antes do vencimento.",
+    "symptoms": [
+      "'Cert: SSL certificate expires soon/is invalid'",
+      "'Certificado Expira em ate 30 dias'"
+    ],
+    "actions": [
+      "[A DEFINIR] Quem detem a conta do provedor de certificado para os dominios SAQ"
+    ],
+    "validation": "",
+    "risks": [],
+    "meaning": "25 alertas, 6 hosts (um por certificado). 7 de 25 ja sao Disaster.",
+    "probable_cause": "Certificado nao renovado a tempo.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Confirmar qual dominio especifico (vem no titulo)"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 6 familias tecnicas. Mesmo procedimento generico das outras 2 regras de certificado -- considerar 1 ficha unica de 'renovacao de certificado' referenciada pelas 3 regras.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|master-support--security",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|onesecure-api-indisponivel-http-200-219-199-10-9009-health|f686cf99",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:38:46Z",
+  "last_modified_at": "2026-09-06T00:38:46.814225Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "725546",
+    "description_raw": "ONESecure: API indisponivel (http://200.219.199.10:9009/health)",
+    "description_normalized": "onesecure-api-indisponivel-http-200-219-199-10-9009-health",
+    "expression_raw": "{945808}=0 or {945809}=1",
+    "expression_expanded": "sum(/ONESecure/onesecure.api.available,5m)=0 or nodata(/ONESecure/onesecure.api.available,5m)=1",
+    "expression_signature": "sum(/{HOST}/onesecure.api.available,5m)=0ornodata(/{HOST}/onesecure.api.available,5m)=1",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Estado atual: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "O endpoint /health nao respondeu \"ok\" ou nao retorna dados. Enquanto a API estiver indisponivel, tickets e incidentes nao sao coletados.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "16409",
+      "host": "ONESecure",
+      "name": "ONESecure",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Master Support"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "1232574",
+        "key_": "onesecure.api.available",
+        "name": "ONESecure: API disponivel",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:6d1a19d118f941bdc06728ac0c6577eb3b4ab82baf5c3df4294e36d8124a1cbe"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "SOC / ONESecure — Triagem N1 de incidentes (Alto/Critico)",
+    "objective": "Identificar incidentes classificados como Alto ou Critico no ONESecure, coletar as evidencias minimas e encaminhar para a fila do SOC dentro do SLA -- sem investigar ou responder ao incidente (isso e do SOC).",
+    "symptoms": [
+      "'ONESecure: Ticket aberto [xxxxxx]'",
+      "'ONESecure: Incidente em Preparacao [INC-AGP-...]: <descricao>'",
+      "'ONESecure: API indisponivel (http://200.219.199.10:9009/health)' -- ver ficha propria dessa API",
+      "'ONESecure: Falha na coleta de tickets'"
+    ],
+    "actions": [
+      "Coletar as 5 evidencias obrigatorias: data/hora (Timestamp/timestamp), severidade (Classificacao do evento ou rule.level), nome/descricao do alerta (Regra/rule.description), host/agente afetado (Agente/agent.name), log/output (JSON ou log do registro).",
+      "Abrir chamado no modelo padrao: '[ONESecure][ALTO/CRITICO] <Nome do alerta>' com data/hora, severidade, alerta, host/agente, log/output e origem da evidencia (Dashboard MITRE ATT&CK ou Monitoramento de logs).",
+      "Encaminhar o chamado para a fila do SOC.",
+      "Em horario comercial: comunicar o analista do SOC pelo Teams com o ID do chamado. Fora do horario comercial: NAO acionar diretamente -- o chamado segue na fila do SOC."
+    ],
+    "validation": "Conferir se as 5 evidencias minimas foram registradas e se o chamado foi corretamente direcionado para a fila do SOC antes de considerar a triagem concluida.",
+    "risks": [
+      "N1 nao investiga nem responde ao incidente -- so faz a triagem inicial e encaminha.",
+      "Fora do horario comercial, acionar o analista diretamente e fora do procedimento -- o chamado deve apenas ficar na fila."
+    ],
+    "meaning": "29 alertas no host 'ONESecure' (grupo Master Support), 27 instancias (numeros de incidente/ticket: INC-AGP-..., INC00000...). Severidades: 18 Disaster, 5 High, 4 Average, 2 Warning. O N1 atua SOMENTE em incidentes Alto ou Critico -- classificacao por 'rule.level': 0-6 Baixo (fora do escopo), 7-11 Medio (fora do escopo), 12-14 Alto (triagem), 15+ Critico (triagem).",
+    "probable_cause": "Evento de seguranca real detectado pela plataforma (MITRE ATT&CK / monitoramento de logs) classificado como Alto ou Critico.",
+    "self_resolves": false,
+    "wait_before_ticket_minutes": 0,
+    "checks_before_action": [
+      "Home -> Visao tecnica -> Incidentes: existe registro Alto ou Critico? Se nao, encerrar o fluxo.",
+      "Se sim: Detectar -> Dashboard MITRE ATT&CK, filtros Severidade=Alta/Critica e periodo=ultima 1 hora, localizar o evento.",
+      "Evento nao localizado no dashboard: Detectar -> Monitoramento de logs, filtrar por rule.level, periodo=ultimos 30 minutos."
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "SOC",
+      "ticket_category": "ONESecure",
+      "ticket_subcategory": "Incidente Alto/Critico",
+      "ticket_queue": "DeskManager -> fila SOC",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [
+      "Data/hora",
+      "Severidade (rule.level)",
+      "Nome/descricao do alerta",
+      "Host/agente afetado",
+      "Log/output (JSON)"
+    ],
+    "escalation": {
+      "after_minutes": null,
+      "to": "analista SOC (somente horario comercial)",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Chamado aberto, com as 5 evidencias, corretamente encaminhado para a fila do SOC.",
+    "notes": "Pagina de status do SOC: https://wiki-noc.prod.cloud.dnxbrasil.com.br/pt-br/vibe/Seguranca/SOC/Procedimentos/status. A ficha da familia 'ONESecure: API indisponivel' (SLA 5 min) e separada desta triagem N1 -- ver rule|onesecure-api-indisponivel-http-200-219-199-10-9009-health.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|vibe-tecnologia--cpu",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|uso-de-cpu-acima-de-80-centralizador|814180cd",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:38:22Z",
+  "last_modified_at": "2026-09-06T14:38:22.992473Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23452",
+    "description_raw": "Uso de CPU acima de 80% - centralizador",
+    "description_normalized": "uso-de-cpu-acima-de-80-centralizador",
+    "expression_raw": "{33461}>=80",
+    "expression_expanded": "avg(/Vibe - Influxdb/cpu[centralizador],10m)>=80",
+    "expression_signature": "avg(/{HOST}/cpu[centralizador],10m)>=80",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10603",
+      "host": "Vibe - Influxdb",
+      "name": "Vibe - Influxdb",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46245",
+        "key_": "cpu[centralizador]",
+        "name": "CPU utilizado - centralizador",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:2cee7ef36d17739d45734da893c4437765f0faa52e85066e3a2c416468f349ae"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "CPU / carga de processamento — Vibe Tecnologia",
+    "objective": "Distinguir pico normal de saturacao real de CPU.",
+    "symptoms": [
+      "'High CPU utilization'",
+      "'Load average is too high'",
+      "'Uso de CPU acima de N%'"
+    ],
+    "actions": [
+      "Abrir chamado para o time de Infraestrutura. Caso o problema permaneça sem resposta, acionar o Rafael Sales via Teams."
+    ],
+    "validation": "",
+    "risks": [
+      "Mistura containers/servicos (centralizador, grafana, ords-dev-vibe) com contadores de performance do Windows. Sao realidades diferentes sob a mesma categoria."
+    ],
+    "meaning": "18 alertas em 4 host(s) do grupo 'Vibe Tecnologia': SRV_INCONTROL_2026, Vibe - Influxdb, Vibe - MSTracker-vm Hom, Vibe - Wazuh SIEM. Itens `system.cpu*` / `perf_counter_en*` medem utilizacao e fila de processador. 12 instancia(s): 0 C:, \\Memory\\Free System Page Table Entries, \\Memory\\Pages/sec, \\Processor Information(_total)\\% Interrupt Time, \\Processor Information(_total)\\% Privileged Time. Severidades: Average=7, Warning=11. 8 dependencia(s) entre triggers deste agrupamento — o proprio Zabbix ja os relaciona.",
+    "probable_cause": "Processo em loop, carga legitima acima do dimensionado ou concorrencia de I/O.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Ver se o pico e continuo ou pontual (janela do trigger)",
+      "Identificar o processo/container que puxa a CPU",
+      "Conferir se coincide com janela de batch/backup conhecida"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "Infraestrutura",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": "Teams"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "Rafael Sales",
+      "channel": "Teams"
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca high, 16 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Limite de tolerancia antes de abrir chamado -- pico curto costuma nao valer chamado.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

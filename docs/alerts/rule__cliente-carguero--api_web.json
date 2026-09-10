@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cliente-carguero--api_web",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "rule|api-indisponivel|e64aa74c",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:51:23Z",
+  "last_modified_at": "2026-09-06T00:51:23.729903Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "draft",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "23408",
+    "description_raw": "API - Indisponível",
+    "description_normalized": "api-indisponivel",
+    "expression_raw": "{79678}<6 and {79679}<>0 and {79680}=1 and((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_expanded": "count(/Carguero - API Monitor Down/web.test.rspcode[https://acc.carguero.com.br/health,Verificar],10m,\"eq\",\"200\")<6 and last(/Carguero - API Monitor Down/web.test.fail[https://acc.carguero.com.br/health])<>0 and nodata(/Carguero - API Monitor Down/web.test.rspcode[https://acc.carguero.com.br/health,Verificar],600)=1 and((dayofweek()<6 and (time()>180000 or time()<080000)) or dayofweek()>5)",
+    "expression_signature": "count(/{HOST}/web.test.rspcode[https://acc.carguero.com.br/health,Verificar],10m,\"eq\",\"200\")<6andlast(/{HOST}/web.test.fail[https://acc.carguero.com.br/health])<>0andnodata(/{HOST}/web.test.rspcode[https://acc.carguero.com.br/health,Verificar],600)=1and((dayofweek()<6and(time()>180000ortime()<080000))ordayofweek()>5)",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "https://acc.carguero.com.br/health",
+    "event_name": "https://acc.carguero.com.br/health",
+    "comments": "API ACC - https://acc.carguero.com.br/health",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10593",
+      "host": "Carguero - API Monitor Down",
+      "name": "Carguero - API Monitor Down",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_Carguero"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "46094",
+        "key_": "web.test.fail[https://acc.carguero.com.br/health]",
+        "name": "Failed step of scenario \"https://acc.carguero.com.br/health\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      },
+      {
+        "itemid": "46096",
+        "key_": "web.test.rspcode[https://acc.carguero.com.br/health,Verificar]",
+        "name": "Response code for step \"Verificar\" of scenario \"https://acc.carguero.com.br/health\".",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": ""
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:83d356320f567b87fe1add060e9d9a7fb7384e1923c64e09e97731f7d08b6b3a"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "pending_review",
+    "title": "API indisponivel/lenta — Carguero (monitor de APIs)",
+    "objective": "Reagir a indisponibilidade ou lentidao das APIs do cliente Carguero (contas, backoffice, correios, integracao, mobile).",
+    "symptoms": [
+      "'API - Indisponivel - <Nome>'",
+      "'API - Lenta - Teste'"
+    ],
+    "actions": [
+      "[A DEFINIR] Time responsavel por acionar o cliente Carguero -- e API de terceiro, nao infra propria"
+    ],
+    "validation": "",
+    "risks": [
+      "Sao APIs de um cliente externo -- o NOC provavelmente so registra e comunica, sem acao tecnica direta"
+    ],
+    "meaning": "44 alertas, 27 instancias (URLs/endpoints distintos), host unico 'Carguero - API Monitor Down'. 25 de 44 ja sao Disaster -- a maioria dos casos ja e critica, nao alerta preventivo.",
+    "probable_cause": "API do cliente fora do ar ou respondendo lento (timeout no teste web).",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Identificar qual endpoint especifico (nome/URL vem no titulo)",
+      "Testar o endpoint diretamente para confirmar (curl/navegador)"
+    ],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "Rascunho tecnico -- confianca alta, reune 44 familias tecnicas (uma por endpoint).",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

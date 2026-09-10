@@ -1,0 +1,1805 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-deskmanager-api|ms-chamadosv3-sh|codchamado-assunto-aguardando-setor-3-dias",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-deskmanager-api|ms-chamadosv3-sh|codchamado-assunto-aguardando-setor-3-dias",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-deskmanager-api|0126-000194-sistemas-e-aplicativos-msmonitor-implementar-aguardando-setor-3-dias",
+      "triggerid": "76390",
+      "host": "Vibe - DeskManager API",
+      "description": "0126-000194: Sistemas e Aplicativos - MsMonitor - Implementar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0126-000195-sistemas-e-aplicativos-msmonitor-implementar-aguardando-setor-3-dias",
+      "triggerid": "76399",
+      "host": "Vibe - DeskManager API",
+      "description": "0126-000195: Sistemas e Aplicativos - MsMonitor - Implementar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0126-000453-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "77744",
+      "host": "Vibe - DeskManager API",
+      "description": "0126-000453: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0126-000458-endomarketing-comunicado-interno-comunicado-unico-solicitar-aguardando-setor-3-dias",
+      "triggerid": "77767",
+      "host": "Vibe - DeskManager API",
+      "description": "0126-000458: Endomarketing - Comunicado interno - Comunicado único - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0126-000825-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "81029",
+      "host": "Vibe - DeskManager API",
+      "description": "0126-000825: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0226-000660-vibe-cloud-financeiro-melhoria-aguardando-setor-3-dias",
+      "triggerid": "88457",
+      "host": "Vibe - DeskManager API",
+      "description": "0226-000660: Vibe Cloud - Financeiro - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0226-000691-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "88443",
+      "host": "Vibe - DeskManager API",
+      "description": "0226-000691: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0325-000383-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "39995",
+      "host": "Vibe - DeskManager API",
+      "description": "0325-000383: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0326-000006-suporte-prod-outro-configurar-aguardando-setor-3-dias",
+      "triggerid": "89851",
+      "host": "Vibe - DeskManager API",
+      "description": "0326-000006: Suporte - Prod - Outro - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0326-000141-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "91076",
+      "host": "Vibe - DeskManager API",
+      "description": "0326-000141: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0326-000468-noc-projetos-desk-manager-melhoria-solicitar-aguardando-setor-3-dias",
+      "triggerid": "94083",
+      "host": "Vibe - DeskManager API",
+      "description": "0326-000468: NOC-Projetos - Desk Manager - Melhoria - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0326-000690-vibe-cloud-projetos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "95421",
+      "host": "Vibe - DeskManager API",
+      "description": "0326-000690: Vibe Cloud - Projetos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0326-000942-vibe-cloud-equipamentos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "96899",
+      "host": "Vibe - DeskManager API",
+      "description": "0326-000942: Vibe Cloud - Equipamentos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0326-001100-acionamento-sobreaviso-dnx-aguardando-setor-3-dias",
+      "triggerid": "97645",
+      "host": "Vibe - DeskManager API",
+      "description": "0326-001100: Acionamento - Sobreaviso DNX - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0424-000203-sistemas-e-aplicativos-rh-cloud-implementar-aguardando-setor-3-dias",
+      "triggerid": "40017",
+      "host": "Vibe - DeskManager API",
+      "description": "0424-000203: Sistemas e Aplicativos - RH Cloud - Implementar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0425-000038-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "39992",
+      "host": "Vibe - DeskManager API",
+      "description": "0425-000038: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0425-000390-vibe-cloud-financeiro-melhoria-aguardando-setor-3-dias",
+      "triggerid": "40101",
+      "host": "Vibe - DeskManager API",
+      "description": "0425-000390: Vibe Cloud - Financeiro - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0426-000486-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "100241",
+      "host": "Vibe - DeskManager API",
+      "description": "0426-000486: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0426-000587-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "191553",
+      "host": "Vibe - DeskManager API",
+      "description": "0426-000587: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0426-000727-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "101253",
+      "host": "Vibe - DeskManager API",
+      "description": "0426-000727: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0426-000755-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "101361",
+      "host": "Vibe - DeskManager API",
+      "description": "0426-000755: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0426-001273-marketing-apresentacao-solicitar-aguardando-setor-3-dias",
+      "triggerid": "103852",
+      "host": "Vibe - DeskManager API",
+      "description": "0426-001273: Marketing - Apresentação - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0426-001314-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "104037",
+      "host": "Vibe - DeskManager API",
+      "description": "0426-001314: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000163-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "105126",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000163: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000193-vibe-cloud-rh-falha-aguardando-setor-3-dias",
+      "triggerid": "105251",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000193: Vibe Cloud - RH - Falha - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000258-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "105584",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000258: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000301-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "105811",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000301: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000375-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "108889",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000375: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000438-vibe-cloud-financeiro-melhoria-aguardando-setor-3-dias",
+      "triggerid": "111287",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000438: Vibe Cloud - Financeiro - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000580-projetos-control-m-implementacao-de-fluxo-de-novos-jobs-no-ambiente-de-producao-aguardando-setor-3-dias",
+      "triggerid": "115036",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000580: Projetos - Control-M - Implementação de fluxo de novos Jobs no ambiente de produção - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000664-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "117459",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000664: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000668-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "117473",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000668: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000669-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "117482",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000669: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000670-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "117481",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000670: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-000993-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "131141",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-000993: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-001012-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "131224",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-001012: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-001044-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "133420",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-001044: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-001192-suprimentos-envios-e-logistica-solicitar-aguardando-setor-3-dias",
+      "triggerid": "191538",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-001192: Suprimentos - Envios e Logística - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0526-001448-projetos-control-m-criacao-de-novos-fluxos-de-producao-aguardando-setor-3-dias",
+      "triggerid": "149484",
+      "host": "Vibe - DeskManager API",
+      "description": "0526-001448: Projetos - Control-M - Criação de novos fluxos de produção - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000192-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "160850",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000192: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000233-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "167131",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000233: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000310-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518915",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000310: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000328-vibe-cloud-equipamentos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "179796",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000328: Vibe Cloud - Equipamentos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000329-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "179805",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000329: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000372-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "184060",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000372: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000580-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "187091",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000580: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000771-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "190195",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000771: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000772-vibe-cloud-rh-acesso-aguardando-setor-3-dias",
+      "triggerid": "190199",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000772: Vibe Cloud - RH - Acesso - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000863-soc-seguranca-da-informacao-varredura-de-ambiente-aguardando-setor-3-dias",
+      "triggerid": "190978",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000863: SOC - Segurança da Informação - Varredura de Ambiente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000910-interno-ms-aguardando-setor-3-dias",
+      "triggerid": "191191",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000910: Interno MS - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-000980-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "191813",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-000980: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001068-suprimentos-suprimentos-de-ti-solicitar-aguardando-setor-3-dias",
+      "triggerid": "192275",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001068: Suprimentos - Suprimentos de TI - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001285-sistemas-e-aplicativos-power-automate-solicitar-aguardando-setor-3-dias",
+      "triggerid": "212749",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001285: Sistemas e Aplicativos - Power Automate - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001315-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "235541",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001315: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001318-sistemas-e-aplicativos-power-bi-solicitar-aguardando-setor-3-dias",
+      "triggerid": "235558",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001318: Sistemas e Aplicativos - Power BI - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001323-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "240112",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001323: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001596-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "321232",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001596: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001597-vibe-cloud-equipamentos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "321231",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001597: Vibe Cloud - Equipamentos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0626-001612-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "321295",
+      "host": "Vibe - DeskManager API",
+      "description": "0626-001612: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0725-000357-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "48974",
+      "host": "Vibe - DeskManager API",
+      "description": "0725-000357: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0725-000527-vibe-cloud-equipamentos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "49906",
+      "host": "Vibe - DeskManager API",
+      "description": "0725-000527: Vibe Cloud - Equipamentos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000049-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "389925",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000049: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000056-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "389935",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000056: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000223-monitoramento-alerta-infraestrutura-e-sistemas-melhoria-aguardando-setor-3-dias",
+      "triggerid": "418408",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000223: Monitoramento - Alerta / Infraestrutura e Sistemas - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000500-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "460512",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000500: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000502-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "460526",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000502: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000576-administrativo-faturamento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "460845",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000576: Administrativo - Faturamento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000701-suprimentos-controle-de-estoque-solicitar-aguardando-setor-3-dias",
+      "triggerid": "461267",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000701: Suprimentos - Controle de Estoque - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000744-sistemas-e-aplicativos-zabbix-solicitar-aguardando-setor-3-dias",
+      "triggerid": "461477",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000744: Sistemas e Aplicativos - Zabbix - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-000895-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "462079",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-000895: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001009-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "462501",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001009: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001012-sistemas-e-aplicativos-wiki-solicitar-aguardando-setor-3-dias",
+      "triggerid": "462509",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001012: Sistemas e Aplicativos - Wiki - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001084-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "462799",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001084: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001122-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "462941",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001122: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001144-suporte-prod-rds-configurar-aguardando-setor-3-dias",
+      "triggerid": "463042",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001144: Suporte - Prod - RDS - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001149-vibe-cloud-rh-acesso-aguardando-setor-3-dias",
+      "triggerid": "463058",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001149: Vibe Cloud - RH - Acesso - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001169-desenvolvimento-de-sistemas-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "463106",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001169: Desenvolvimento de Sistemas - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001390-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "463951",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001390: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001446-apoio-na-implementacao-de-melhores-praticas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "464136",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001446: Apoio na Implementação de Melhores Práticas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001485-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "464263",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001485: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001494-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "464291",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001494: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001577-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "464659",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001577: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001600-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "464756",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001600: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001652-noc-deskmanager-solicitacao-aguardando-setor-3-dias",
+      "triggerid": "689199",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001652: NOC - DeskManager - Solicitação - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001766-vibe-cloud-financeiro-melhoria-aguardando-setor-3-dias",
+      "triggerid": "465359",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001766: Vibe Cloud - Financeiro - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001779-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "465394",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001779: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001786-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "465675",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001786: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001794-sefaz-sp-solicitacao-via-teams-aguardando-setor-3-dias",
+      "triggerid": "465453",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001794: SEFAZ-SP - Solicitação Via Teams - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001909-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "465961",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001909: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001910-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "465967",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001910: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001925-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "466011",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001925: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001944-noc-saq-duvidas-aguardando-setor-3-dias",
+      "triggerid": "528789",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001944: NOC - SAQ - Dúvidas - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001964-sistemas-e-aplicativos-control-m-incidente-aguardando-setor-3-dias",
+      "triggerid": "698177",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001964: Sistemas e Aplicativos - Control M - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001967-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "470796",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001967: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001981-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475541",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001981: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001982-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475540",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001982: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001983-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475549",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001983: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001984-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475548",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001984: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001985-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475560",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001985: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001986-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475559",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001986: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001987-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475558",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001987: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001988-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475569",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001988: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-001989-gestao-de-ti-inventario-relatorio-aguardando-setor-3-dias",
+      "triggerid": "475568",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-001989: Gestão de TI - Inventario - Relatorio - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0726-002021-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "480323",
+      "host": "Vibe - DeskManager API",
+      "description": "0726-002021: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0825-000213-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "51968",
+      "host": "Vibe - DeskManager API",
+      "description": "0825-000213: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0825-000244-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "52122",
+      "host": "Vibe - DeskManager API",
+      "description": "0825-000244: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0825-000576-suporte-dev-outro-configurar-aguardando-setor-3-dias",
+      "triggerid": "81025",
+      "host": "Vibe - DeskManager API",
+      "description": "0825-000576: Suporte - Dev - Outro - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000114-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518765",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000114: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000116-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518764",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000116: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000117-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518763",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000117: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000120-banco-de-dados-suporte-implementar-aguardando-setor-3-dias",
+      "triggerid": "518782",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000120: Banco de Dados - Suporte - Implementar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000121-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518781",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000121: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000122-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518791",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000122: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000127-cotacao-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518803",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000127: Cotação - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000140-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "518827",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000140: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000251-vibe-cloud-equipamentos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "528947",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000251: Vibe Cloud - Equipamentos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000314-equipamento-notebook-desktop-retirada-solicitar-aguardando-setor-3-dias",
+      "triggerid": "538655",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000314: Equipamento - Notebook / Desktop - Retirada - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000349-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "538772",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000349: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000351-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "538777",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000351: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000391-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "548418",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000391: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000408-vibe-cloud-equipamentos-melhoria-aguardando-setor-3-dias",
+      "triggerid": "548470",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000408: Vibe Cloud - Equipamentos - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000472-suporte-prod-outro-configurar-aguardando-setor-3-dias",
+      "triggerid": "558158",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000472: Suporte - Prod - Outro - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000498-suporte-prod-aplicacao-configurar-aguardando-setor-3-dias",
+      "triggerid": "558274",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000498: Suporte - Prod - Aplicação - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000506-sistemas-e-aplicativos-ge-cloud-solicitar-aguardando-setor-3-dias",
+      "triggerid": "558302",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000506: Sistemas e Aplicativos - GE CLOUD - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000622-documentacao-procedimentos-criar-aguardando-setor-3-dias",
+      "triggerid": "586584",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000622: Documentação - Procedimentos - Criar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000628-sistemas-e-aplicativos-zabbix-solicitar-aguardando-setor-3-dias",
+      "triggerid": "586604",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000628: Sistemas e Aplicativos - Zabbix - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000667-soc-seguranca-da-informacao-varredura-de-ambiente-aguardando-setor-3-dias",
+      "triggerid": "586739",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000667: SOC - Segurança da Informação - Varredura de Ambiente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000671-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "586752",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000671: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000751-documentacao-procedimentos-criar-aguardando-setor-3-dias",
+      "triggerid": "596358",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000751: Documentação - Procedimentos - Criar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000757-rh-treinamento-e-desenvolvimento-programas-de-capacitacao-solicitar-aguardando-setor-3-dias",
+      "triggerid": "596389",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000757: RH - Treinamento e Desenvolvimento - Programas de capacitação - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000774-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "596436",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000774: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000841-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "605939",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000841: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000886-projetos-client-management-gerenciamento-de-alertas-por-prioridade-de-acionamento-aguardando-setor-3-dias",
+      "triggerid": "615306",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000886: Projetos - Client Management - Gerenciamento de Alertas por prioridade de acionamento - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000898-sistemas-e-aplicativos-vmware-esxi-solicitar-aguardando-setor-3-dias",
+      "triggerid": "615342",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000898: Sistemas e Aplicativos - VMware ESXi - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000899-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "615346",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000899: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000927-suprimentos-envios-e-logistica-solicitar-aguardando-setor-3-dias",
+      "triggerid": "615450",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000927: Suprimentos - Envios e Logística - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-000974-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "624839",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-000974: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001016-gestao-de-ti-inventario-instalar-aguardando-setor-3-dias",
+      "triggerid": "625002",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001016: Gestão de TI - Inventario - Instalar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001176-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "651784",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001176: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001198-gestao-de-ti-inventario-instalar-aguardando-setor-3-dias",
+      "triggerid": "651853",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001198: Gestão de TI - Inventario - Instalar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001216-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "651911",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001216: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001310-suprimentos-suprimentos-de-ti-solicitar-aguardando-setor-3-dias",
+      "triggerid": "661412",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001310: Suprimentos - Suprimentos de TI - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001316-rh-engajamento-e-clima-organizacional-vibecoins-solicitar-aguardando-setor-3-dias",
+      "triggerid": "661500",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001316: RH - Engajamento e clima organizacional - Vibecoins - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001328-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "661533",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001328: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001352-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "670723",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001352: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001353-interno-ms-aguardando-setor-3-dias",
+      "triggerid": "670729",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001353: Interno MS - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001434-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "679981",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001434: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001441-suporte-prod-outro-duvida-aguardando-setor-3-dias",
+      "triggerid": "679978",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001441: Suporte - Prod - Outro - Dúvida - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001454-suprimentos-envios-e-logistica-solicitar-aguardando-setor-3-dias",
+      "triggerid": "689195",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001454: Suprimentos - Envios e Logística - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001546-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "698170",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001546: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001547-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "698169",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001547: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001640-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "716248",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001640: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001661-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "716236",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001661: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001665-documentacao-procedimentos-criar-aguardando-setor-3-dias",
+      "triggerid": "725510",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001665: Documentação - Procedimentos - Criar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001679-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "725507",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001679: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001686-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "725503",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001686: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001736-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "725488",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001736: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001750-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "725481",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001750: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001757-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "734104",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001757: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001761-vibe-cloud-rh-falha-aguardando-setor-3-dias",
+      "triggerid": "734102",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001761: Vibe Cloud - RH - Falha - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001774-infraestrutura-equipamento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "734100",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001774: Infraestrutura - Equipamento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001831-interno-ms-aguardando-setor-3-dias",
+      "triggerid": "734081",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001831: Interno MS - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001832-infraestrutura-redes-incidente-aguardando-setor-3-dias",
+      "triggerid": "734080",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001832: Infraestrutura - Redes - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001851-suporte-root-outro-duvida-aguardando-setor-3-dias",
+      "triggerid": "734068",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001851: Suporte - Root - Outro - Dúvida - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001862-suporte-prod-ecs-duvida-aguardando-setor-3-dias",
+      "triggerid": "742689",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001862: Suporte - Prod - ECS - Dúvida - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001875-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "742683",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001875: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001881-sefaz-sp-solicitacao-via-teams-aguardando-setor-3-dias",
+      "triggerid": "742679",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001881: SEFAZ-SP - Solicitação Via Teams - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001882-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742678",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001882: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001891-sistemas-e-aplicativos-wiki-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742676",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001891: Sistemas e Aplicativos - Wiki - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001892-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742675",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001892: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001893-sistemas-e-aplicativos-wiki-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742674",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001893: Sistemas e Aplicativos - Wiki - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001899-endomarketing-desenvolvimento-de-campanhas-e-acoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742673",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001899: Endomarketing - Desenvolvimento de campanhas e ações - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001904-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742670",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001904: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001937-soc-seguranca-da-informacao-alerta-de-seguranca-aguardando-setor-3-dias",
+      "triggerid": "742661",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001937: SOC - Segurança da Informação - Alerta de Segurança - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001949-rh-gestao-de-pessoal-cracha-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742655",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001949: RH - Gestão de Pessoal - Crachá - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001951-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "742653",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001951: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001961-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751218",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001961: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001969-sistemas-e-aplicativos-ge-cloud-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751217",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001969: Sistemas e Aplicativos - GE CLOUD - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001972-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751216",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001972: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001975-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751215",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001975: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001976-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751214",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001976: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001978-suprimentos-compras-e-requisicoes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751213",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001978: Suprimentos - Compras e requisições - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-001987-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751210",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-001987: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002042-endomarketing-suporte-logistico-montagem-de-kit-onboarding-aguardando-setor-3-dias",
+      "triggerid": "751198",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002042: Endomarketing - Suporte logístico - Montagem de Kit Onboarding - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002046-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "751196",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002046: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002086-documentacao-procedimentos-criar-aguardando-setor-3-dias",
+      "triggerid": "759597",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002086: Documentação - Procedimentos - Criar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002150-administrativo-reembolsos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "776422",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002150: Administrativo - Reembolsos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002203-vibe-cloud-financeiro-falha-aguardando-setor-3-dias",
+      "triggerid": "776407",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002203: Vibe Cloud - Financeiro - Falha - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002230-infraestrutura-equipamento-incidente-aguardando-setor-3-dias",
+      "triggerid": "785162",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002230: Infraestrutura - Equipamento - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002249-sistemas-e-aplicativos-zabbix-solicitar-aguardando-setor-3-dias",
+      "triggerid": "785157",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002249: Sistemas e Aplicativos - Zabbix - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0826-002263-apoio-na-implementacao-de-melhores-praticas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "785155",
+      "host": "Vibe - DeskManager API",
+      "description": "0826-002263: Apoio na Implementação de Melhores Práticas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0925-000021-vibe-cloud-rh-falha-aguardando-setor-3-dias",
+      "triggerid": "54177",
+      "host": "Vibe - DeskManager API",
+      "description": "0925-000021: Vibe Cloud - RH - Falha - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000020-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "785136",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000020: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000022-sistemas-e-aplicativos-wiki-solicitar-aguardando-setor-3-dias",
+      "triggerid": "785135",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000022: Sistemas e Aplicativos - Wiki - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000027-endomarketing-comunicacao-interna-solicitar-aguardando-setor-3-dias",
+      "triggerid": "785130",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000027: Endomarketing - Comunicação interna - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000037-documentacao-relatorio-criar-aguardando-setor-3-dias",
+      "triggerid": "785125",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000037: Documentação - Relatório - Criar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000038-documentacao-relatorio-criar-aguardando-setor-3-dias",
+      "triggerid": "785124",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000038: Documentação - Relatório - Criar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000051-sefaz-sp-solicitacao-via-teams-aguardando-setor-3-dias",
+      "triggerid": "793790",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000051: SEFAZ-SP - Solicitação Via Teams - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000061-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793789",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000061: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000073-infraestrutura-equipamento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793782",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000073: Infraestrutura - Equipamento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000079-sistemas-e-aplicativos-zabbix-incidente-aguardando-setor-3-dias",
+      "triggerid": "793780",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000079: Sistemas e Aplicativos - Zabbix - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000081-sistemas-e-aplicativos-desenvolvimento-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793779",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000081: Sistemas e Aplicativos - Desenvolvimento - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000101-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "793776",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000101: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000109-sistemas-e-aplicativos-desk-manager-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793771",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000109: Sistemas e Aplicativos - Desk Manager - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000116-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793768",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000116: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000120-endomarketing-comunicacao-interna-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793767",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000120: Endomarketing - Comunicação interna - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000121-marketing-pagina-web-solicitar-aguardando-setor-3-dias",
+      "triggerid": "793766",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000121: Marketing - Pagina Web - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000126-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "793764",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000126: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000131-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802375",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000131: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000134-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802374",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000134: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000140-sefaz-sp-solicitacao-via-teams-aguardando-setor-3-dias",
+      "triggerid": "802373",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000140: SEFAZ-SP - Solicitação Via Teams - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000142-administrativo-reembolsos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802372",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000142: Administrativo - Reembolsos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000150-suporte-prod-outro-configurar-aguardando-setor-3-dias",
+      "triggerid": "802369",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000150: Suporte - Prod - Outro - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000151-sistemas-e-aplicativos-wiki-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802368",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000151: Sistemas e Aplicativos - Wiki - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000153-rh-gestao-de-pessoal-cracha-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802367",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000153: RH - Gestão de Pessoal - Crachá - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000154-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802366",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000154: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000161-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802362",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000161: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000178-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "802356",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000178: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000193-infraestrutura-redes-incidente-aguardando-setor-3-dias",
+      "triggerid": "802348",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000193: Infraestrutura - Redes - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000194-sistemas-e-aplicativos-control-m-incidente-aguardando-setor-3-dias",
+      "triggerid": "802347",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000194: Sistemas e Aplicativos - Control M - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000201-suporte-dev-ecs-verificar-aguardando-setor-3-dias",
+      "triggerid": "810820",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000201: Suporte - Dev - ECS - Verificar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000203-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810819",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000203: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000208-suporte-prod-ecs-configurar-aguardando-setor-3-dias",
+      "triggerid": "810818",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000208: Suporte - Prod - ECS - Configurar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000210-rh-departamento-pessoal-inclusao-de-beneficios-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810816",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000210: RH - Departamento Pessoal - Inclusão de benefícios - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000215-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810815",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000215: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000217-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810814",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000217: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000218-endomarketing-criacao-de-artes-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810813",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000218: Endomarketing - Criação de artes - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000220-infraestrutura-administracao-de-usuario-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810812",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000220: Infraestrutura - Administração de Usuário  -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000224-administrativo-pagamentos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810811",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000224: Administrativo - Pagamentos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000226-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810810",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000226: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000245-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810808",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000245: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000255-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "810807",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000255: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000256-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810806",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000256: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000258-sistemas-backoffice-melhoria-aguardando-setor-3-dias",
+      "triggerid": "810805",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000258: Sistemas - Backoffice - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000267-suporte-prod-outro-verificar-aguardando-setor-3-dias",
+      "triggerid": "810803",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000267: Suporte - Prod - Outro - Verificar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000270-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810802",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000270: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000273-suporte-prod-eks-indisponivel-aguardando-setor-3-dias",
+      "triggerid": "810801",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000273: Suporte - Prod - EKS - Indisponível - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000276-estoque-saida-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810799",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000276: Estoque - Saida - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000277-administrativo-reembolsos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810798",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000277: Administrativo - Reembolsos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000278-sistemas-e-aplicativos-msmonitor-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810797",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000278: Sistemas e Aplicativos - MsMonitor -  Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000279-compras-e-aquisicoes-equipamento-e-ti-solicitar-aguardando-setor-3-dias",
+      "triggerid": "810796",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000279: Compras e Aquisições - Equipamento e TI - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000281-soc-seguranca-da-informacao-incidente-de-seguranca-confirmado-aguardando-setor-3-dias",
+      "triggerid": "810795",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000281: SOC - Segurança da Informação - Incidente de Segurança Confirmado - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000282-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "810794",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000282: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000291-suporte-outros-sem-sub-categorias-aguardando-setor-3-dias",
+      "triggerid": "819042",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000291: Suporte - Outros - Sem Sub-Categorias - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000292-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819041",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000292: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000293-administrativo-reembolsos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819040",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000293: Administrativo - Reembolsos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000294-conta-e-seguranca-ip-na-whitelist-cadastrar-aguardando-setor-3-dias",
+      "triggerid": "819039",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000294: Conta e Segurança - IP na Whitelist - Cadastrar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000295-sistemas-e-aplicativos-control-m-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819038",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000295: Sistemas e Aplicativos - Control M - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000296-administrativo-reembolsos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819037",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000296: Administrativo - Reembolsos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000300-vibe-cloud-financeiro-falha-aguardando-setor-3-dias",
+      "triggerid": "819036",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000300: Vibe Cloud - Financeiro - Falha - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000302-sistemas-e-aplicativos-zabbix-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819035",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000302: Sistemas e Aplicativos - Zabbix - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000304-sistemas-e-aplicativos-zabbix-incidente-aguardando-setor-3-dias",
+      "triggerid": "819034",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000304: Sistemas e Aplicativos - Zabbix - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000306-administrativo-reembolsos-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819033",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000306: Administrativo - Reembolsos - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000308-infraestrutura-redes-incidente-aguardando-setor-3-dias",
+      "triggerid": "819032",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000308: Infraestrutura - Redes - Incidente - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000315-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819031",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000315: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000316-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819030",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000316: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000317-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819029",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000317: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000318-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819028",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000318: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000319-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819027",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000319: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000320-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819026",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000320: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000323-soc-seguranca-da-informacao-alerta-de-seguranca-aguardando-setor-3-dias",
+      "triggerid": "819025",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000323: SOC - Segurança da Informação - Alerta de Segurança - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000326-pagamentos-aprovacao-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819024",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000326: Pagamentos - Aprovação - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000327-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819023",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000327: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000328-pagamentos-aprovacao-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819022",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000328: Pagamentos - Aprovação - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000329-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819021",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000329: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000334-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819020",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000334: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000336-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819019",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000336: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000337-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819018",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000337: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000343-duvidas-operacionais-duvidas-solicitar-aguardando-setor-3-dias",
+      "triggerid": "819017",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000343: Duvidas Operacionais - Duvidas - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|0926-000344-monitoramento-alerta-reportar-aguardando-setor-3-dias",
+      "triggerid": "819016",
+      "host": "Vibe - DeskManager API",
+      "description": "0926-000344: Monitoramento - Alerta - Reportar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1024-000236-vibe-cloud-financeiro-melhoria-aguardando-setor-3-dias",
+      "triggerid": "40009",
+      "host": "Vibe - DeskManager API",
+      "description": "1024-000236: Vibe Cloud - Financeiro - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1025-000085-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "58456",
+      "host": "Vibe - DeskManager API",
+      "description": "1025-000085: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1025-000107-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "58598",
+      "host": "Vibe - DeskManager API",
+      "description": "1025-000107: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1025-000852-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "61942",
+      "host": "Vibe - DeskManager API",
+      "description": "1025-000852: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1224-000230-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "40004",
+      "host": "Vibe - DeskManager API",
+      "description": "1224-000230: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1225-000402-endomarketing-paginas-no-portal-interno-criacao-solicitar-aguardando-setor-3-dias",
+      "triggerid": "70555",
+      "host": "Vibe - DeskManager API",
+      "description": "1225-000402: Endomarketing - Páginas no portal interno - Criação - Solicitar - Aguardando setor (3 dias)"
+    },
+    {
+      "alert_key": "vibe-deskmanager-api|1225-000516-vibe-cloud-rh-melhoria-aguardando-setor-3-dias",
+      "triggerid": "71087",
+      "host": "Vibe - DeskManager API",
+      "description": "1225-000516: Vibe Cloud - RH - Melhoria - Aguardando setor (3 dias)"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "191191",
+    "description_raw": "0626-000910: Interno MS - Aguardando setor (3 dias)",
+    "description_normalized": "0626-000910-interno-ms-aguardando-setor-3-dias",
+    "expression_raw": "(000003=000002 or 000003=000005 or 000003=000017) and 000007=000178 and 3>=5 \r\n and 3>=3 and\r\nlength({212979})>0",
+    "expression_expanded": "(000003=000002 or 000003=000005 or 000003=000017) and 000007=000178 and 3>=5 \r\n and 3>=3 and\r\nlength(last(/Vibe - DeskManager API/temporestante2.[0626-000910]))>0",
+    "expression_signature": "(000003=000002or000003=000005or000003=000017)and000007=000178and3>=5and3>=3andlength(last(/{HOST}/temporestante2.[0626-000910]))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Cloud Managed Services - 2026-09-02",
+    "event_name": "",
+    "comments": "Assunto: Interno MS\r\nGrupo: Cloud Managed Services",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "55782",
+      "name": "Atualiza",
+      "key_": "ms_chamadosv3.sh"
+    },
+    "prototype_description": "{#CODCHAMADO}: {#ASSUNTO} - Aguardando setor (3 dias)",
+    "dependencies": [
+      {
+        "triggerid": "191189",
+        "description": "0626-000910: Interno MS - Chamado defasado (5 dias úteis) na Central de Serviços",
+        "host": "Vibe - DeskManager API"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10720",
+      "host": "Vibe - DeskManager API",
+      "name": "Vibe - DeskManager API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "520459",
+        "key_": "temporestante2.[0626-000910]",
+        "name": "0626-000910 Tempo restante 2º",
+        "units": "",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "10m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:b1aa8ea3a11849bff155bcb0a3d6842215604a2fbd252a4cb2a92c5ec1fcf1fb",
+    "family_source_hash": "sha256:8cd276784b7d1006002eaab382cde4fc044eb63889e29d1aefd5f9e4cea5533e",
+    "representative_of_family": true,
+    "family_instance_count": 277
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

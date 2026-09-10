@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-system-name-has-changed|aa9c2f2d",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-system-name-has-changed|aa9c2f2d",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-system-name-has-changed",
+      "triggerid": "77229",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: System name has changed"
+    },
+    {
+      "alert_key": "windows-bob|windows-system-name-has-changed",
+      "triggerid": "35661",
+      "host": "Windows bob",
+      "description": "Windows: System name has changed"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77229",
+    "description_raw": "Windows: System name has changed",
+    "description_normalized": "windows-system-name-has-changed",
+    "expression_raw": "{95467} and length({95468})>0",
+    "expression_expanded": "change(/SRV_INCONTROL_2026/system.hostname) and length(last(/SRV_INCONTROL_2026/system.hostname))>0",
+    "expression_signature": "change(/{HOST}/system.hostname)andlength(last(/{HOST}/system.hostname))>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "Windows: System name has changed (new name: {ITEM.VALUE})",
+    "comments": "The name of the system has changed. Acknowledge to close the problem manually.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103752",
+        "key_": "system.hostname",
+        "name": "Windows: System name",
+        "units": "",
+        "value_type": {
+          "value": "1",
+          "name": "character"
+        },
+        "update_interval": "1h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ac3e2806217f52e45dc5c430671802635e325bf2eda0dfba8c35ae6c731446aa",
+    "family_source_hash": "sha256:17309a73dc4b0016612fb0cfb1c23d05098d4c8d96f13208a37fc60a33821650",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

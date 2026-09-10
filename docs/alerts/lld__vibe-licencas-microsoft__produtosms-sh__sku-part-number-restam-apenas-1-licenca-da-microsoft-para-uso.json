@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-licencas-microsoft|produtosms-sh|sku-part-number-restam-apenas-1-licenca-da-microsoft-para-uso",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-licencas-microsoft|produtosms-sh|sku-part-number-restam-apenas-1-licenca-da-microsoft-para-uso",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-licencas-microsoft|ccibots-privprev-viral-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124217",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "CCIBOTS_PRIVPREV_VIRAL: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|dyn365-team-members-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124212",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "DYN365_TEAM_MEMBERS: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|dynamics-365-onboarding-sku-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124220",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Dynamics_365_Onboarding_SKU: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|exchange-online-plano-2-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124225",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Exchange Online (Plano 2): Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|flow-free-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124215",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "FLOW_FREE: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|flow-per-user-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124211",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "FLOW_PER_USER: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|microsoft-365-business-premium-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124218",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Microsoft 365 Business Premium: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|office-365-f3-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124214",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Office 365 F3: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|powerapps-dev-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124228",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "POWERAPPS_DEV: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|powerapps-viral-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124219",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "POWERAPPS_VIRAL: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|power-bi-standard-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124221",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "POWER_BI_STANDARD: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|projectprofessional-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124224",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "PROJECTPROFESSIONAL: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|power-bi-premium-por-usuario-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124222",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Power BI Premium por Usuário: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|power-pages-vtrial-for-makers-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124223",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Power_Pages_vTrial_for_Makers: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|rightsmanagement-adhoc-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124227",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "RIGHTSMANAGEMENT_ADHOC: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|stream-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124210",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "STREAM: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|teams-premium-for-departments-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124226",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Teams_Premium_(for_Departments): Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|windows-store-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124213",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "WINDOWS_STORE: Restam apenas 1 licença da Microsoft para uso"
+    },
+    {
+      "alert_key": "vibe-licencas-microsoft|win10-vda-e3-restam-apenas-1-licenca-da-microsoft-para-uso",
+      "triggerid": "124216",
+      "host": "Vibe - Licencas [Microsoft]",
+      "description": "Win10_VDA_E3: Restam apenas 1 licença da Microsoft para uso"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "124210",
+    "description_raw": "STREAM: Restam apenas 1 licença da Microsoft para uso",
+    "description_normalized": "stream-restam-apenas-1-licenca-da-microsoft-para-uso",
+    "expression_raw": "{143846}>=114",
+    "expression_expanded": "last(/Vibe - Licencas Microsoft/usados.[STREAM])>=114",
+    "expression_signature": "last(/{HOST}/usados.[STREAM])>=114",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "0526-000807: Chamado de Criação",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52904",
+      "name": "Licenças",
+      "key_": "produtosms.sh"
+    },
+    "prototype_description": "{#SKU_PART_NUMBER}: Restam apenas 1 licença da Microsoft para uso",
+    "dependencies": [],
+    "tags": [],
+    "host": {
+      "hostid": "10711",
+      "host": "Vibe - Licencas Microsoft",
+      "name": "Vibe - Licencas [Microsoft]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52928",
+        "key_": "usados.[STREAM]",
+        "name": "STREAM usados",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "12h"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:c71af6f4a46552da511d2f2810e5359bed9a02ff44b8ca539b113c842367a8aa",
+    "family_source_hash": "sha256:bd3750f7ade7d901f4eb3b86925163743f0b434d2aeab4f40ba3e6b808be4671",
+    "representative_of_family": true,
+    "family_instance_count": 19
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

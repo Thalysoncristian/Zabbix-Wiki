@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-servidor-idrac-dell|temp-ambient-discovery|sensor-locale-temperature-is-above-critical-threshold",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-servidor-idrac-dell|temp-ambient-discovery|sensor-locale-temperature-is-above-critical-threshold",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-servidor-idrac-dell|system-board-inlet-temp-temperature-is-above-critical-threshold",
+      "triggerid": "24320",
+      "host": "Vibe - Servidor iDRAC [DELL]",
+      "description": "System Board Inlet Temp: Temperature is above critical threshold"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24320",
+    "description_raw": "System Board Inlet Temp: Temperature is above critical threshold",
+    "description_normalized": "system-board-inlet-temp-temperature-is-above-critical-threshold",
+    "expression_raw": "{34831}>{$TEMP_CRIT:\"Ambient\"}\r\nor\r\n{34832}={$TEMP_CRIT_STATUS}\r\nor\r\n{34832}={$TEMP_DISASTER_STATUS}",
+    "expression_expanded": "avg(/Vibe - Servidor iDRAC DELL/sensor.temp.value[temperatureProbeReading.Ambient.1.1],5m)>\"{$TEMP_CRIT:\\\"Ambient\\\"}\"\r\nor\r\nlast(/Vibe - Servidor iDRAC DELL/sensor.temp.status[temperatureProbeStatus.Ambient.1.1])=\"{$TEMP_CRIT_STATUS}\"\r\nor\r\nlast(/Vibe - Servidor iDRAC DELL/sensor.temp.status[temperatureProbeStatus.Ambient.1.1])=\"{$TEMP_DISASTER_STATUS}\"",
+    "expression_signature": "avg(/{HOST}/sensor.temp.value[temperatureProbeReading.Ambient.1.1],5m)>\"{MACRO}\"orlast(/{HOST}/sensor.temp.status[temperatureProbeStatus.Ambient.1.1])=\"{MACRO}\"orlast(/{HOST}/sensor.temp.status[temperatureProbeStatus.Ambient.1.1])=\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{34833}<{$TEMP_CRIT:\"Ambient\"}-3",
+    "recovery_expression_expanded": "max(/Vibe - Servidor iDRAC DELL/sensor.temp.value[temperatureProbeReading.Ambient.1.1],5m)<\"{$TEMP_CRIT:\\\"Ambient\\\"}\"-3",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current value: {ITEM.LASTVALUE1}",
+    "event_name": "System Board Inlet Temp: Temperature is above critical threshold: >{$TEMP_CRIT:\"Ambient\"}",
+    "comments": "This trigger uses temperature sensor values as well as temperature sensor status if available",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51281",
+      "name": "Temperature Ambient Discovery",
+      "key_": "temp.ambient.discovery"
+    },
+    "prototype_description": "{#SENSOR_LOCALE}: Temperature is above critical threshold",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10696",
+      "host": "Vibe - Servidor iDRAC DELL",
+      "name": "Vibe - Servidor iDRAC [DELL]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Servidores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51333",
+        "key_": "sensor.temp.status[temperatureProbeStatus.Ambient.1.1]",
+        "name": "System Board Inlet Temp: Temperature status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "3m"
+      },
+      {
+        "itemid": "51334",
+        "key_": "sensor.temp.value[temperatureProbeReading.Ambient.1.1]",
+        "name": "System Board Inlet Temp: Temperature",
+        "units": "°C",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "3m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:9e404d5258083698ecde0e6a77107b33fda742960fa795be6a7075220f2bf2e4",
+    "family_source_hash": "sha256:941b144125c1eddf36378ab18cb81338051c57df5baa8347d7ca19b90aad1946",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

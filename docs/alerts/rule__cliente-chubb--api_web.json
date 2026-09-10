@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cliente-chubb--api_web",
+  "scope": "zabbix",
+  "doc_level": "rule",
+  "family_key": "lld|chubb-links-de-api|autorization-enel-api|arquivo-em-branco-api-com-dados-reprocessar",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T14:39:21Z",
+  "last_modified_at": "2026-09-06T14:39:21.514759Z",
+  "revision": 3,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [],
+  "zabbix": {
+    "triggerid": "29163",
+    "description_raw": "Arquivo em branco, API com dados, reprocessar",
+    "description_normalized": "arquivo-em-branco-api-com-dados-reprocessar",
+    "expression_raw": "{42009}=1 and \t\r\n{42010}<4800",
+    "expression_expanded": "nodata(/Chubb - Links de API/monitoramento.arquivo.[Bearer],10h)=1 and \t\r\nlast(/Chubb - Links de API/api.soma.[Bearer])<4800",
+    "expression_signature": "nodata(/{HOST}/monitoramento.arquivo.[Bearer],10h)=1andlast(/{HOST}/api.soma.[Bearer])<4800",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "ENEL_BB31082026001MOV.TXT",
+    "event_name": "",
+    "comments": "Atualize o token de autorização conforme passo a passo abaixo:\r\n* Selecione o host e clique em atualizar\r\n* Recarregue a página e verefique a última checagem\r\n\r\nApós atualizar o token, faça a atualização de cada estado individualmente.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "51820",
+      "name": "Token para Autorização API",
+      "key_": "autorization.enel.api"
+    },
+    "prototype_description": "Arquivo em branco, API com dados, reprocessar",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      }
+    ],
+    "host": {
+      "hostid": "10705",
+      "host": "Chubb - Links de API",
+      "name": "Chubb - Links de API",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "58591",
+        "key_": "api.soma.[Bearer]",
+        "name": "API Soma",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "15m;0/1-7,02:00-09:00;10m/1-7,09:00-09:30"
+      },
+      {
+        "itemid": "58592",
+        "key_": "monitoramento.arquivo.[Bearer]",
+        "name": "Arquivo foi gerado?",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1h;0/1-7,00:00-08:00;10m/1-7,08:00-08:30"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:97f22d11f5c99b93749f05b0cd964dc27ccf889f526f03c862b744708229329e"
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Endpoint web / API indisponivel ou lenta — Cliente_chubb",
+    "objective": "Confirmar indisponibilidade de endpoint e acionar quem responde por ele.",
+    "symptoms": [
+      "'API indisponivel - <nome>'",
+      "'Failed step of scenario'",
+      "'<endpoint> com falha'",
+      "'API lenta'"
+    ],
+    "actions": [
+      "Abrir chamado no DeskManager e manter na fila do NOC para acompanhamento."
+    ],
+    "validation": "",
+    "risks": [
+      "Endpoints de dev/homologacao costumam nao merecer o mesmo tratamento de producao -- confirmar a lista antes de tratar todos igual",
+      "Os alertas de 'Arquivo em branco/nao gerado' ja tem ficha de familia propria (marcadas como mapeamento INFERIDO do manual da Chubb, pendentes de confirmacao)."
+    ],
+    "meaning": "4 alertas em 2 host(s) do grupo 'Cliente_chubb': App - Enel Azure, Chubb - Links de API. Itens `web.test*` executam cenarios HTTP contra os endpoints monitorados. 2 instancia(s): Bearer, Check Disponibilidade App Enel. Severidades: High=3, Warning=1.",
+    "probable_cause": "Aplicacao fora, dependencia externa falhando, certificado invalido ou rede no caminho.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Testar o endpoint manualmente (curl/navegador) para confirmar",
+      "Verificar se e endpoint interno ou de terceiro -- muda quem aciona",
+      "Conferir se e ambiente de producao ou dev/homologacao"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "DeskManager",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "Alerta normaliza e o indicador volta ao patamar esperado. [EXTRAPOLADO — ajuste se o critério real for outro]",
+    "notes": "Rascunho tecnico da Fase 2 (confianca medium, 4 familias tecnicas). Criterio de resolucao, time, fila e SLA ficam em branco de proposito — sao conhecimento organizacional, nao se deduzem da chave de item. Ver docs/escalation_matrix.md. ROTEAMENTO EXTRAPOLADO do padrão das fichas que vieram do time — não foi informado especificamente para este alerta. Confira o time e a fila antes de tratar como definitivo. EM ABERTO: Responsavel por endpoint -- a lista mistura sistemas de donos diferentes.",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

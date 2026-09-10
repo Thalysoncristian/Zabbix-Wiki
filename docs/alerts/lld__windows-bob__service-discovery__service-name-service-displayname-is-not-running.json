@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|windows-bob|service-discovery|service-name-service-displayname-is-not-running",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|windows-bob|service-discovery|service-name-service-displayname-is-not-running",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "windows-bob|awsliteagent-aws-lite-guest-agent-is-not-running",
+      "triggerid": "35682",
+      "host": "Windows bob",
+      "description": "\"AWSLiteAgent\" (AWS Lite Guest Agent) is not running"
+    },
+    {
+      "alert_key": "windows-bob|amazon-ec2launch-amazon-ec2launch-is-not-running",
+      "triggerid": "35680",
+      "host": "Windows bob",
+      "description": "\"Amazon EC2Launch\" (Amazon EC2Launch) is not running"
+    },
+    {
+      "alert_key": "windows-bob|amazonssmagent-amazon-ssm-agent-is-not-running",
+      "triggerid": "35681",
+      "host": "Windows bob",
+      "description": "\"AmazonSSMAgent\" (Amazon SSM Agent) is not running"
+    },
+    {
+      "alert_key": "windows-bob|bfe-base-filtering-engine-is-not-running",
+      "triggerid": "35683",
+      "host": "Windows bob",
+      "description": "\"BFE\" (Base Filtering Engine) is not running"
+    },
+    {
+      "alert_key": "windows-bob|brokerinfrastructure-background-tasks-infrastructure-service-is-not-running",
+      "triggerid": "35684",
+      "host": "Windows bob",
+      "description": "\"BrokerInfrastructure\" (Background Tasks Infrastructure Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|coremessagingregistrar-coremessaging-is-not-running",
+      "triggerid": "35685",
+      "host": "Windows bob",
+      "description": "\"CoreMessagingRegistrar\" (CoreMessaging) is not running"
+    },
+    {
+      "alert_key": "windows-bob|cryptsvc-cryptographic-services-is-not-running",
+      "triggerid": "35686",
+      "host": "Windows bob",
+      "description": "\"CryptSvc\" (Cryptographic Services) is not running"
+    },
+    {
+      "alert_key": "windows-bob|dps-diagnostic-policy-service-is-not-running",
+      "triggerid": "35691",
+      "host": "Windows bob",
+      "description": "\"DPS\" (Diagnostic Policy Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|dcomlaunch-dcom-server-process-launcher-is-not-running",
+      "triggerid": "35687",
+      "host": "Windows bob",
+      "description": "\"DcomLaunch\" (DCOM Server Process Launcher) is not running"
+    },
+    {
+      "alert_key": "windows-bob|dhcp-dhcp-client-is-not-running",
+      "triggerid": "35688",
+      "host": "Windows bob",
+      "description": "\"Dhcp\" (DHCP Client) is not running"
+    },
+    {
+      "alert_key": "windows-bob|dispbrokerdesktopsvc-display-policy-service-is-not-running",
+      "triggerid": "35689",
+      "host": "Windows bob",
+      "description": "\"DispBrokerDesktopSvc\" (Display Policy Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|dnscache-dns-client-is-not-running",
+      "triggerid": "35690",
+      "host": "Windows bob",
+      "description": "\"Dnscache\" (DNS Client) is not running"
+    },
+    {
+      "alert_key": "windows-bob|eventlog-windows-event-log-is-not-running",
+      "triggerid": "35692",
+      "host": "Windows bob",
+      "description": "\"EventLog\" (Windows Event Log) is not running"
+    },
+    {
+      "alert_key": "windows-bob|eventsystem-com-event-system-is-not-running",
+      "triggerid": "35693",
+      "host": "Windows bob",
+      "description": "\"EventSystem\" (COM+ Event System) is not running"
+    },
+    {
+      "alert_key": "windows-bob|fontcache-windows-font-cache-service-is-not-running",
+      "triggerid": "35694",
+      "host": "Windows bob",
+      "description": "\"FontCache\" (Windows Font Cache Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|ikeext-ike-and-authip-ipsec-keying-modules-is-not-running",
+      "triggerid": "35695",
+      "host": "Windows bob",
+      "description": "\"IKEEXT\" (IKE and AuthIP IPsec Keying Modules) is not running"
+    },
+    {
+      "alert_key": "windows-bob|lsm-local-session-manager-is-not-running",
+      "triggerid": "35699",
+      "host": "Windows bob",
+      "description": "\"LSM\" (Local Session Manager) is not running"
+    },
+    {
+      "alert_key": "windows-bob|lanmanserver-server-is-not-running",
+      "triggerid": "35697",
+      "host": "Windows bob",
+      "description": "\"LanmanServer\" (Server) is not running"
+    },
+    {
+      "alert_key": "windows-bob|lanmanworkstation-workstation-is-not-running",
+      "triggerid": "35698",
+      "host": "Windows bob",
+      "description": "\"LanmanWorkstation\" (Workstation) is not running"
+    },
+    {
+      "alert_key": "windows-bob|msdtc-distributed-transaction-coordinator-is-not-running",
+      "triggerid": "35701",
+      "host": "Windows bob",
+      "description": "\"MSDTC\" (Distributed Transaction Coordinator) is not running"
+    },
+    {
+      "alert_key": "windows-bob|nlasvc-network-location-awareness-is-not-running",
+      "triggerid": "35702",
+      "host": "Windows bob",
+      "description": "\"NlaSvc\" (Network Location Awareness) is not running"
+    },
+    {
+      "alert_key": "windows-bob|power-power-is-not-running",
+      "triggerid": "35704",
+      "host": "Windows bob",
+      "description": "\"Power\" (Power) is not running"
+    },
+    {
+      "alert_key": "windows-bob|profsvc-user-profile-service-is-not-running",
+      "triggerid": "35705",
+      "host": "Windows bob",
+      "description": "\"ProfSvc\" (User Profile Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|rpceptmapper-rpc-endpoint-mapper-is-not-running",
+      "triggerid": "35706",
+      "host": "Windows bob",
+      "description": "\"RpcEptMapper\" (RPC Endpoint Mapper) is not running"
+    },
+    {
+      "alert_key": "windows-bob|rpcss-remote-procedure-call-rpc-is-not-running",
+      "triggerid": "35707",
+      "host": "Windows bob",
+      "description": "\"RpcSs\" (Remote Procedure Call (RPC)) is not running"
+    },
+    {
+      "alert_key": "windows-bob|sens-system-event-notification-service-is-not-running",
+      "triggerid": "35710",
+      "host": "Windows bob",
+      "description": "\"SENS\" (System Event Notification Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|samss-security-accounts-manager-is-not-running",
+      "triggerid": "35708",
+      "host": "Windows bob",
+      "description": "\"SamSs\" (Security Accounts Manager) is not running"
+    },
+    {
+      "alert_key": "windows-bob|schedule-task-scheduler-is-not-running",
+      "triggerid": "35709",
+      "host": "Windows bob",
+      "description": "\"Schedule\" (Task Scheduler) is not running"
+    },
+    {
+      "alert_key": "windows-bob|spooler-print-spooler-is-not-running",
+      "triggerid": "35711",
+      "host": "Windows bob",
+      "description": "\"Spooler\" (Print Spooler) is not running"
+    },
+    {
+      "alert_key": "windows-bob|staterepository-state-repository-service-is-not-running",
+      "triggerid": "35712",
+      "host": "Windows bob",
+      "description": "\"StateRepository\" (State Repository Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|storsvc-storage-service-is-not-running",
+      "triggerid": "35713",
+      "host": "Windows bob",
+      "description": "\"StorSvc\" (Storage Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|sysmain-sysmain-is-not-running",
+      "triggerid": "35714",
+      "host": "Windows bob",
+      "description": "\"SysMain\" (SysMain) is not running"
+    },
+    {
+      "alert_key": "windows-bob|systemeventsbroker-system-events-broker-is-not-running",
+      "triggerid": "35715",
+      "host": "Windows bob",
+      "description": "\"SystemEventsBroker\" (System Events Broker) is not running"
+    },
+    {
+      "alert_key": "windows-bob|themes-themes-is-not-running",
+      "triggerid": "35716",
+      "host": "Windows bob",
+      "description": "\"Themes\" (Themes) is not running"
+    },
+    {
+      "alert_key": "windows-bob|trkwks-distributed-link-tracking-client-is-not-running",
+      "triggerid": "35717",
+      "host": "Windows bob",
+      "description": "\"TrkWks\" (Distributed Link Tracking Client) is not running"
+    },
+    {
+      "alert_key": "windows-bob|ualsvc-user-access-logging-service-is-not-running",
+      "triggerid": "35718",
+      "host": "Windows bob",
+      "description": "\"UALSVC\" (User Access Logging Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|usermanager-user-manager-is-not-running",
+      "triggerid": "35719",
+      "host": "Windows bob",
+      "description": "\"UserManager\" (User Manager) is not running"
+    },
+    {
+      "alert_key": "windows-bob|usosvc-update-orchestrator-service-is-not-running",
+      "triggerid": "35720",
+      "host": "Windows bob",
+      "description": "\"UsoSvc\" (Update Orchestrator Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|w32time-windows-time-is-not-running",
+      "triggerid": "35721",
+      "host": "Windows bob",
+      "description": "\"W32Time\" (Windows Time) is not running"
+    },
+    {
+      "alert_key": "windows-bob|wcmsvc-windows-connection-manager-is-not-running",
+      "triggerid": "35722",
+      "host": "Windows bob",
+      "description": "\"Wcmsvc\" (Windows Connection Manager) is not running"
+    },
+    {
+      "alert_key": "windows-bob|windefend-microsoft-defender-antivirus-service-is-not-running",
+      "triggerid": "35723",
+      "host": "Windows bob",
+      "description": "\"WinDefend\" (Microsoft Defender Antivirus Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|winrm-windows-remote-management-ws-management-is-not-running",
+      "triggerid": "35725",
+      "host": "Windows bob",
+      "description": "\"WinRM\" (Windows Remote Management (WS-Management)) is not running"
+    },
+    {
+      "alert_key": "windows-bob|winmgmt-windows-management-instrumentation-is-not-running",
+      "triggerid": "35724",
+      "host": "Windows bob",
+      "description": "\"Winmgmt\" (Windows Management Instrumentation) is not running"
+    },
+    {
+      "alert_key": "windows-bob|wpnservice-windows-push-notifications-system-service-is-not-running",
+      "triggerid": "35726",
+      "host": "Windows bob",
+      "description": "\"WpnService\" (Windows Push Notifications System Service) is not running"
+    },
+    {
+      "alert_key": "windows-bob|zabbix-agent-zabbix-agent-is-not-running",
+      "triggerid": "35727",
+      "host": "Windows bob",
+      "description": "\"Zabbix Agent\" (Zabbix Agent) is not running"
+    },
+    {
+      "alert_key": "windows-bob|iphlpsvc-ip-helper-is-not-running",
+      "triggerid": "35696",
+      "host": "Windows bob",
+      "description": "\"iphlpsvc\" (IP Helper) is not running"
+    },
+    {
+      "alert_key": "windows-bob|mpssvc-windows-defender-firewall-is-not-running",
+      "triggerid": "35700",
+      "host": "Windows bob",
+      "description": "\"mpssvc\" (Windows Defender Firewall) is not running"
+    },
+    {
+      "alert_key": "windows-bob|nsi-network-store-interface-service-is-not-running",
+      "triggerid": "35703",
+      "host": "Windows bob",
+      "description": "\"nsi\" (Network Store Interface Service) is not running"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "35704",
+    "description_raw": "\"Power\" (Power) is not running",
+    "description_normalized": "power-power-is-not-running",
+    "expression_raw": "{49795}<>0",
+    "expression_expanded": "min(/Windows bob/service.info[\"Power\",state],#3)<>0",
+    "expression_signature": "min(/{HOST}/service.info[\"Power\",state],#3)<>0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "\"Power\" (Power) is not running (startup type automatic)",
+    "comments": "The service has a state other than \"Running\" for the last three times.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "61687",
+      "name": "Windows services discovery",
+      "key_": "service.discovery"
+    },
+    "prototype_description": "\"{#SERVICE.NAME}\" ({#SERVICE.DISPLAYNAME}) is not running",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10744",
+      "host": "Windows bob",
+      "name": "Windows bob",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Virtual machines"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "61739",
+        "key_": "service.info[\"Power\",state]",
+        "name": "State of service \"Power\" (Power)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:33bbe20dbac72210bc8edbcd38c292fd571b314c61db7fa42310b426660b1f4a",
+    "family_source_hash": "sha256:c896c900edcb5b01e3c836787592452a678694279ebd6149cfad76c1075d0dfd",
+    "representative_of_family": true,
+    "family_instance_count": 48
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

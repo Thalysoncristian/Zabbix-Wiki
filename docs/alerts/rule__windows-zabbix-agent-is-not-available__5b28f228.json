@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|windows-zabbix-agent-is-not-available|5b28f228",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|windows-zabbix-agent-is-not-available|5b28f228",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "srv-incontrol-2026|windows-zabbix-agent-is-not-available",
+      "triggerid": "77235",
+      "host": "SRV_INCONTROL_2026",
+      "description": "Windows: Zabbix agent is not available"
+    },
+    {
+      "alert_key": "windows-bob|windows-zabbix-agent-is-not-available",
+      "triggerid": "35667",
+      "host": "Windows bob",
+      "description": "Windows: Zabbix agent is not available"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "77235",
+    "description_raw": "Windows: Zabbix agent is not available",
+    "description_normalized": "windows-zabbix-agent-is-not-available",
+    "expression_raw": "{95476}=0",
+    "expression_expanded": "max(/SRV_INCONTROL_2026/zabbix[host,agent,available],{$AGENT.TIMEOUT})=0",
+    "expression_signature": "max(/{HOST}/zabbix[host,agent,available],{MACRO})=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Windows: Zabbix agent is not available (for {$AGENT.TIMEOUT})",
+    "comments": "For passive only agents, host availability is used with {$AGENT.TIMEOUT} as time threshold.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10874",
+      "host": "SRV_INCONTROL_2026",
+      "name": "SRV_INCONTROL_2026",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Vibe Tecnologia"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "103766",
+        "key_": "zabbix[host,agent,available]",
+        "name": "Windows: Zabbix agent availability",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:328115387407a76ad6e2b57f8aad3842b87f44282f12077df189af8bc9f1b412",
+    "family_source_hash": "sha256:ff7173b5395e94cd1bcd1fe79e2385c100e51718e4b38110b6432d08c3ea1f80",
+    "representative_of_family": true,
+    "family_instance_count": 2
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

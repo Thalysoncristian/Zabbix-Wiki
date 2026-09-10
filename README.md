@@ -233,6 +233,11 @@ python main.py reconcile --dry-run
 # cobertura da documentação
 python main.py status
 
+# gera a página da wiki a partir das fichas validadas (ETAPA 10)
+python main.py wiki
+python main.py wiki --output docs/wiki-noc.md
+python main.py wiki --stdout
+
 # coleta do ambiente inteiro (percorre grupo a grupo, nunca numa requisição só)
 python main.py collect
 
@@ -985,6 +990,7 @@ GET  /api/host-groups            grupos com hosts, alertas e severidades
 GET  /api/host-groups/<slug>     hosts, famílias e alertas do grupo
 GET  /api/procedures             famílias por estado do procedimento
 POST /api/procedures/<família>   grava o procedimento LOCAL  ← única escrita
+GET  /api/manual                 alertas documentados que não vêm do Zabbix
 GET  /api/collisions             colisões com os triggers envolvidos
 GET  /api/status                 snapshot em uso, execução da coleta, redação
 GET  /api/search?q=              busca global agrupada por tipo
@@ -1084,6 +1090,26 @@ python -m unittest discover -s tests -t .
 
 ---
 
+### Alertas manuais — o que não nasce de um trigger
+
+Nem todo alerta que chega ao NOC vem do Zabbix. RH Cloud e MSMonitor avisam por
+conta própria (e-mail, webhook), e o procedimento deles é tão operacional
+quanto o de um trigger. Essas fichas usam `scope: manual` e vivem na mesma
+`docs/alerts/` — sem repositório paralelo, sem segunda máquina de estados.
+
+Elas aparecem em **Alertas manuais** na barra lateral e num card do dashboard.
+Estar em disco não bastava: um procedimento que só existe para quem lê JSON
+não serve ao operador às 3h, que abre a tela.
+
+O escopo operacional **não** as filtra, e isso é decisão, não esquecimento:
+escopo recorta por host, e um alerta manual não tem host. A tela diz isso.
+
+O `reconcile` também não as toca — ele só marca como ausente o que tem
+`scope: zabbix`, então uma coleta nova nunca declara desaparecido um alerta que
+nunca esteve lá.
+
+---
+
 ## 19. Escopo operacional (o que o NOC analisa)
 
 A coleta real trouxe 18.903 alertas — e um único host, `Control-M PRD
@@ -1126,6 +1152,35 @@ O escopo `noc` usa **exclusão** de propósito: a falha silenciosa é a mais
 perigosa num painel de plantão. `include_hosts` existe para escopos de
 investigação ("só o Control-M", "só o Cliente X"), onde a lista fechada É a
 intenção — nunca para a visão principal.
+
+### Recorte fino: excluir uma família, não o host inteiro
+
+Excluir por host é grosso demais em pelo menos um caso real. O
+`Control-M PRD Votorantim` tem 16.262 alertas de job — que o NOC não analisa,
+porque a malha é acompanhada dentro do Control-M do próprio cliente — e **60
+alertas de agente fora**, que o NOC atende e tem procedimento escrito (fases,
+matriz de tolerância de 5/10 minutos, escalonamento N2→N3).
+
+Excluir o host escondia os 60 junto com os 16 mil. O sintoma só apareceu ao
+documentar: o procedimento existia e o alerta não aparecia no painel.
+
+```json
+"exclude_discovery_rules": [
+  { "host": "Control-M PRD Votorantim", "rule": "Jobs" }
+]
+```
+
+`Jobs` sai, `Agent discovery` fica. Os dois campos são obrigatórios: uma regra
+sem host valeria para o ambiente inteiro, e `Jobs` é um nome de LLD genérico o
+bastante para existir em outros clientes.
+
+Como um host passa a entrar **em parte**, `python main.py scope` deixou de
+dizer só "dentro" ou "FORA" e passa a mostrar a fração:
+
+```
+   alertas     LLD   %amb  escopo        host
+     16326   16322    86%  64 de 16326   Control-M PRD Votorantim
+```
 
 ### Configuração: `scopes.json`
 
@@ -1382,7 +1437,124 @@ na tela diz qual sinal o produziu — e é por ali que se corrige.
 
 ---
 
-## 21. Base de conhecimento do NOC (o wiki da equipe)
+## 21. A wiki gerada (ETAPA 10)
+
+> Caminho inverso ao da seção 22, que lê o wiki existente do NOC e o liga
+> às famílias e regras. Esta seção é a saída: ficha validada → página.
+
+```bash
+python main.py wiki          # docs/alerts/*.json  ->  wiki.md
+```
+
+O último elo: a página que o NOC consulta, gerada a partir das fichas em vez
+de escrita à mão.
+
+### A wiki abre por CLIENTE
+
+O Master Support presta NOC para vários clientes, e o mesmo alerta técnico —
+"disco cheio" — tem contato, fila e SLA diferentes conforme o dono do host.
+Por isso o primeiro nível da página é o cliente, e a categoria técnica é a
+subdivisão. Cada cliente traz a **sua** matriz de acionamento: os contatos da
+Chubb não aparecem na aba da Vibe.
+
+O host group do Zabbix não serve para isso: `Ativos de Rede` tem roteador de
+operadora e AP de escritório, `Applications` tem Control-M da Chubb e Grafana
+de três clientes. Quem carrega a informação de dono é o **nome do host**. O
+mapa fica em `clients.json`:
+
+```json
+{
+  "clients": [
+    { "id": "banpara", "label": "Banpará", "monitored_by_us": false,
+      "host_patterns": ["Vibe Crédito Banpará*", "Banpara*"] },
+    { "id": "chubb", "label": "Chubb",
+      "hosts": ["Control-M server [IN01]"], "host_patterns": ["Chubb*"] },
+    { "id": "vibe", "label": "Vibe Tecnologia",
+      "host_patterns": ["Vibe*"], "host_groups": ["Vibe Tecnologia"] }
+  ]
+}
+```
+
+Resolução em três passos, e **a ordem do arquivo importa**: nome exato,
+depois curinga, e host group só como último recurso. `Vibe Crédito Banpará` é
+host do Banpará — se `Vibe*` fosse avaliado antes, o alerta apareceria na aba
+errada, com o contato errado no meio da madrugada. Um teste trava essa ordem.
+
+`monitored_by_us: false` tira o cliente da página: procedimento de plantão que
+não é nosso só atrapalha quem está de plantão. O rodapé diz quem ficou de
+fora, para a omissão não passar despercebida.
+
+Host que não casa com ninguém vira **Não classificado** e aparece assim, com o
+aviso de que falta configuração. Atribuir por palpite seria pior: mandaria o
+operador acionar quem não tem nada a ver com o alerta. Uma ficha sem host
+(as de `scope: manual`) pode declarar o dono em `operational.client`.
+
+### Por que gerar, e não escrever
+
+Uma wiki escrita à mão **não tem como saber que envelheceu**. Quando um
+trigger é recriado, renomeado ou apagado no Zabbix, a página continua idêntica
+e convincente — e alguém às 3h segue um procedimento para um alerta que não
+existe mais. A ficha sabe: ela carrega `alert_key`, `source_hash` e o
+`review_needed` que o `reconcile` levanta quando o fato técnico muda.
+
+O conhecimento continua sendo escrito por pessoas, nas fichas. A página é uma
+projeção — e por isso traz, no topo, o aviso de que é gerada e de onde vem.
+
+### Só entra o que foi validado
+
+Somente fichas `documented` ou `reviewed`. Rascunho fica de fora — **nem
+marcado como rascunho**: numa página de plantão, texto que parece procedimento
+é lido como procedimento. Quem quer ver o que ainda falta usa
+`python main.py serve`, que separa os estados com clareza.
+
+O comando diz quantos rascunhos ficaram de fora, para o número não sumir de
+vista:
+
+```
+✓ docs/wiki-noc.md
+  33 procedimento(s) validado(s), cobrindo 40 alerta(s)
+  12 deles fora do Zabbix (avisados pelo sistema de origem)
+  79 rascunho(s) ficaram de fora — só entra o que foi validado
+```
+
+### Um procedimento, uma entrada
+
+Oito famílias de endpoint ENEL receberam o mesmo procedimento. Na página
+viravam oito entradas idênticas — que o operador lê como oito casos
+diferentes. O gerador agrupa por **conteúdo** do procedimento (ignorando o
+título) e lista os alertas cobertos:
+
+```markdown
+##### 🟠 API ENEL indisponível (endpoint específico)
+
+**Cobre 8 alertas:**
+* `ENEL API Adesão(Subscription) CE Indisponível`
+* `ENEL API Faturamento(Invoice) SP Indisponível`
+...
+```
+
+### A matriz de acionamento é derivada
+
+Times, canais e escalonamento saem do `routing` das fichas, não de uma tabela
+paralela. Escrita à mão, a matriz descola com o tempo: alguém muda a fila numa
+ficha e esquece da tabela. Derivando, as duas nunca discordam.
+
+### Dialeto e determinismo
+
+A saída é Markdown no dialeto do **Wiki.js** (`{.is-warning}`, `{.tabset}`,
+`<details>`, mermaid) — o mesmo do catálogo que o NOC já mantém, para que a
+página gerada seja indistinguível, no formato, da que existe hoje.
+
+E é **determinística**: mesma entrada, mesmos bytes. Sem isso não daria para
+versionar o `.md` nem enxergar num diff o que mudou de uma geração para outra.
+
+---
+
+## 22. Base de conhecimento do NOC (o wiki da equipe)
+
+> Caminho inverso ao da seção 21. Lá, as fichas validadas viram uma página
+> de wiki para quem vai plantonear. Aqui, o wiki que a equipe **já mantém**
+> entra no sistema e é ligado ao que a coleta observou.
 
 O NOC já tem um catálogo de alertas no wiki: 27 itens com ação imediata, fila,
 prazo, descrição e causa provável, mais uma matriz de acionamento com dez

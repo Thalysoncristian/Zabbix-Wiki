@@ -236,6 +236,11 @@ def dashboard(modelo: ReadModel, _params: dict[str, list[str]]) -> dict[str, Any
             {"key": "with_dependencies", "label": "Com dependências",
              "value": sum(1 for a in alertas if (a.get("zabbix") or {}).get("dependencies")),
              "href": "/alerts?dependencies=1"},
+            # Alertas que não nascem de trigger (RH Cloud, MSMonitor). Ficam no
+            # dashboard porque, sem isso, o procedimento existe em disco e
+            # ninguém que abre a tela descobre que ele existe.
+            {"key": "manual", "label": "Alertas manuais (fora do Zabbix)",
+             "value": len(modelo.manual_alerts), "href": "/manual"},
         ],
         "severities": [
             {"name": nome, "value": qtd, "href": f"/alerts?severity={nome}"}
@@ -592,6 +597,55 @@ def host_group_detail(modelo: ReadModel, group_id: str, params: dict[str, list[s
         ),
         "families_list": [f.resumo(modelo.procedure_of_family(f.id)) for f in familias[:50]],
         "alerts_page": {"items": [resumo_alerta(modelo, a) for a in pagina], "pagination": meta},
+    }
+
+
+# --------------------------------------------------------------- alertas manuais
+def manual_alerts(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
+    """Alertas documentados que não vêm de nenhum trigger do Zabbix.
+
+    Nem todo alerta que chega ao NOC nasce de um trigger: RH Cloud e MSMonitor
+    avisam por conta própria. O procedimento desses casos vive na mesma
+    `docs/alerts/` das demais fichas, com `scope: manual` — e precisa aparecer
+    na interface, senão está documentado só para quem lê JSON.
+    """
+    estado = _um(params, "status")
+    if estado and estado not in PROCEDURE_STATUSES:
+        raise ApiError(f"status inválido: {estado}. Válidos: {', '.join(PROCEDURE_STATUSES)}")
+
+    agulha = normalize_text(_um(params, "q"))
+    contagem = {chave: 0 for chave in PROCEDURE_STATUSES}
+    itens = []
+    for manual in modelo.manual_alerts:
+        situacao = manual["procedure"]["status"]
+        contagem[situacao] = contagem.get(situacao, 0) + 1
+        if estado and situacao != estado:
+            continue
+        if agulha and agulha not in normalize_text(
+            f"{manual['title']} {manual['alert_key']} {manual['team']}"
+        ):
+            continue
+        itens.append(manual)
+
+    pagina, meta = paginate(itens, _int(params, "page", 1), _int(params, "per_page", 50))
+    return {
+        "items": pagina,
+        "pagination": meta,
+        "facets": {
+            "by_status": [
+                {"status": chave, "label": PROCEDURE_LABELS[chave], "value": contagem.get(chave, 0)}
+                for chave in PROCEDURE_STATUSES
+            ],
+            "total_unfiltered": len(modelo.manual_alerts),
+        },
+        # O escopo recorta por host, e alerta manual não tem host: ele aparece
+        # em qualquer visão. Dizer isso na tela evita a leitura errada de que o
+        # escopo ativo já filtrou esta lista.
+        "note": (
+            "Alertas que não vêm do Zabbix — avisados pelo próprio sistema de origem "
+            "(e-mail, webhook). Não são afetados pelo escopo operacional, porque escopo "
+            "recorta por host e estes alertas não têm host."
+        ),
     }
 
 

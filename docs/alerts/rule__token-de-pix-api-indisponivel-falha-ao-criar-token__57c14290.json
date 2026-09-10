@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|token-de-pix-api-indisponivel-falha-ao-criar-token|57c14290",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|token-de-pix-api-indisponivel-falha-ao-criar-token|57c14290",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-pix|token-de-pix-api-indisponivel-falha-ao-criar-token",
+      "triggerid": "52814",
+      "host": "Saq - Pix",
+      "description": "Token de PIX API indisponível (falha ao criar token)"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "52814",
+    "description_raw": "Token de PIX API indisponível (falha ao criar token)",
+    "description_normalized": "token-de-pix-api-indisponivel-falha-ao-criar-token",
+    "expression_raw": "{69290}=2",
+    "expression_expanded": "min(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],#3)=2",
+    "expression_signature": "min(/{HOST}/check_pix_api.py[--mode,check,--url,{MACRO},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],#3)=2",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{69291}<>2",
+    "recovery_expression_expanded": "last(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}])<>2",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "1",
+      "name": "PROBLEM"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "3 falhas consecutivas na criação na criação do token para criação do pix.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "52587",
+        "description": "PIX API sem monitoramento",
+        "host": "Saq - Pix"
+      }
+    ],
+    "tags": [],
+    "host": {
+      "hostid": "10846",
+      "host": "Saq - Pix",
+      "name": "Saq - Pix",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Saq"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "73670",
+        "key_": "check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,{$PIX_CLIENT_ID},--clientsecret,{$PIX_CLIENT_SECRET},--hmacsecret,{$PIX_HMAC_SECRET},--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}]",
+        "name": "Disponibilidade da PIX API (1=OK, 0=Falha, 2=Falha_Token)",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f444f672ab433a7da13ce1c347c869f2b44a72335d179e9cc41756ba7282aca4",
+    "family_source_hash": "sha256:8ec912bc1ce3829fb2ef89a92f70204a07ec113985695aa6f604e2edcaf9381a",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

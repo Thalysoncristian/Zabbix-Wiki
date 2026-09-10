@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|control-m-prd-votorantim|controlm-agent-discovery|control-m-agent-agent-name-status-item-value",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|control-m-prd-votorantim|controlm-agent-discovery|control-m-agent-agent-name-status-item-value",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T20:03:59.002804Z",
+  "revision": 2,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt01-status-macro",
+      "triggerid": "189864",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt01]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt02-status-macro",
+      "triggerid": "189863",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt02]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt03-status-macro",
+      "triggerid": "189862",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt03]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt04-status-macro",
+      "triggerid": "189861",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt04]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt05-status-macro",
+      "triggerid": "567660",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt05]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt06-status-macro",
+      "triggerid": "567659",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt06]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmagt07-status-macro",
+      "triggerid": "189858",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmagt07]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmprd02-status-macro",
+      "triggerid": "189857",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmprd02]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-awslcctrlmprd04-status-macro",
+      "triggerid": "189856",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [awslcctrlmprd04]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brccqwsfs01vc-status-macro",
+      "triggerid": "189855",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brccqwsfs01vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowsfs01vc-status-macro",
+      "triggerid": "189854",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowsfs01vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvapp24vc-status-macro",
+      "triggerid": "189853",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvapp24vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvapp25vc-status-macro",
+      "triggerid": "189852",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvapp25vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvapp26vc-status-macro",
+      "triggerid": "189851",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvapp26vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvcgn02vc-status-macro",
+      "triggerid": "189850",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvcgn02vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvqlk06vc-status-macro",
+      "triggerid": "189849",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvqlk06vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvqlk07vc-status-macro",
+      "triggerid": "189848",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvqlk07vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-brsaowvqlk08vc-status-macro",
+      "triggerid": "189847",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [brsaowvqlk08vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-r3sap-status-macro",
+      "triggerid": "217331",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [r3sap]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vid-adf-vc-status-macro",
+      "triggerid": "189865",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vid_adf_vc]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vidb0302-status-macro",
+      "triggerid": "189846",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vidb0302]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vidb0303-status-macro",
+      "triggerid": "189845",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vidb0303]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vidb0304-status-macro",
+      "triggerid": "189844",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vidb0304]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0502ctm-status-macro",
+      "triggerid": "189843",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0502ctm]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0503ctm-status-macro",
+      "triggerid": "189842",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0503ctm]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0504ctm-status-macro",
+      "triggerid": "189841",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0504ctm]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0505ctm-status-macro",
+      "triggerid": "189840",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0505ctm]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0506ctm-status-macro",
+      "triggerid": "189839",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0506ctm]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0507ctm-status-macro",
+      "triggerid": "189838",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0507ctm]: status [{ITEM.VALUE}]"
+    },
+    {
+      "alert_key": "control-m-prd-votorantim|control-m-agent-vide0508ctm-status-macro",
+      "triggerid": "189837",
+      "host": "Control-M PRD Votorantim",
+      "description": "Control-M: Agent [vide0508ctm]: status [{ITEM.VALUE}]"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "217331",
+    "description_raw": "Control-M: Agent [r3sap]: status [{ITEM.VALUE}]",
+    "description_normalized": "control-m-agent-r3sap-status-macro",
+    "expression_raw": "{259044}=1 or\r\n{259044}=10",
+    "expression_expanded": "last(/Control-M PRD Votorantim/agent.status['r3sap'],#1)=1 or\r\nlast(/Control-M PRD Votorantim/agent.status['r3sap'],#1)=10",
+    "expression_signature": "last(/{HOST}/agent.status['r3sap'],#1)=1orlast(/{HOST}/agent.status['r3sap'],#1)=10",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "The agent has encountered an issue.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "174701",
+      "name": "Agent discovery",
+      "key_": "controlm.agent.discovery"
+    },
+    "prototype_description": "Control-M: Agent [{#AGENT.NAME}]: status [{ITEM.VALUE}]",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "Agent",
+        "value": "status"
+      }
+    ],
+    "host": {
+      "hostid": "10886",
+      "host": "Control-M PRD Votorantim",
+      "name": "Control-M PRD Votorantim",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Applications"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "555120",
+        "key_": "agent.status['r3sap']",
+        "name": "Agent [r3sap]: status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:cc4ae18137426bff9ebe982a14c6938a64868fe0af5a24fc9bd9b469c509ebf2",
+    "family_source_hash": "sha256:74c76c3fa3ca381f3344e875be8e059426f3e287c9a20600522d064b19b791ec",
+    "representative_of_family": true,
+    "family_instance_count": 30
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Agente Control-M indisponível (Unavailable) — Votorantim",
+    "objective": "Restabelecer a submissão de jobs do host afetado e medir o impacto na malha antes de acionar o N2 — sem acionar por intermitência que se resolve sozinha.",
+    "symptoms": [
+      "'Control-M: Agent [<nome>]: status [Unavailable (1)]' — o Control-M/Server não consegue comunicar com o agente (serviço caído, servidor offline ou bloqueio de rede)",
+      "'Control-M: Agent [<nome>]: status disabled' — agente desabilitado no Control-M/Server (manutenção manual ou desativação automática após falhas sucessivas)"
+    ],
+    "actions": [
+      "FASE 1 — Abrir o INC no ServiceNow IMEDIATAMENTE, antes da análise técnica: garante o registro exato do início da falha",
+      "FASE 3 — Esgotado o tempo de tolerância, verificar no MsMonitor se o alerta normalizou:",
+      "  NORMALIZOU: atualizar o INC com a análise de impacto (mesmo que seja 'nenhum job afetado') e ENCERRAR o chamado. Enviar e-mail informativo para noc-controlm@vibetecnologia.com e esp-controlm@vibetecnologia.com (Template 4).",
+      "  PERSISTIU: atualizar o INC com a análise e os prints, enviar e-mail de incidente para os mesmos endereços (Template 5) e acionar o N2 de plantão — primeiro por Teams, sem retorno por ligação. Consultar a escala oficial ESCALA_NOC_2026.xlsx.",
+      "FASE 4 — Aguardar o retorno do N2: se ele normalizar ou identificar falso positivo, encerrar o chamado com o aval registrado; se confirmar falha de infraestrutura, o N1 transfere para a fila do fornecedor e faz o acionamento conforme orientação dele."
+    ],
+    "validation": "Agente volta a aparecer disponível no Control-M e os jobs que estavam em Wait Host voltam a ser submetidos.",
+    "risks": [
+      "`disabled` NÃO é presumido como manutenção programada: tratar como incidente até que o N2 ou o fornecedor confirmem formalmente. Nunca presumir que foi de propósito.",
+      "Job travado em Executing/Unknown é o caso mais delicado: o painel mostra amarelo, mas a execução real pode já ter falhado ou concluído no servidor de origem.",
+      "Se o N2 de plantão não atender: acionar o outro analista de N2, depois o N3 (Marcos Paulo Correa / Rafael Ferreira da Silva) e, em último caso, a liderança da Master. Registrar no chamado TODAS as tentativas, com horário de cada uma."
+    ],
+    "meaning": "Item de LLD 'Agent discovery' no host 'Control-M PRD Votorantim' — 30 agentes descobertos. O Control-M/Server perdeu comunicação com o agente: todos os jobs daquele host param de ser submetidos, com efeito cascata na malha (Late Submission e travamento das cadeias dependentes).",
+    "probable_cause": "Queda do serviço do agente, servidor offline, bloqueio de rede, ou desativação no Control-M/Server.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "FASE 2 — Consultar a matriz de agentes (em observações) para saber se é Host Group (10 min) ou Isolado (5 min). O cronômetro já está correndo",
+      "FASE 2 — No Control-M > Monitoring, filtrar `Host` Like/= <nome do agente> e levantar o impacto na malha",
+      "Contar SÓ o que é impacto direto: Unknown/Executing (o Control-M perdeu o status real da execução — pode ter abortado ou estar rodando solto), Wait Host (retidos) e Ended Not OK (falharam com a queda)",
+      "IGNORAR: Ended OK (concluíram antes da queda) e Wait for Event / Wait Resource / Wait Workload / Wait User (aguardam condição lógica, não rodariam mesmo com o agente no ar)",
+      "Capturar os prints da análise — servem para o chamado e para o e-mail"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC (N1) → N2 Control-M da Master",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Control-M — Agente indisponível",
+      "ticket_queue": "ServiceNow (Votorantim) — retido no NOC até orientação do N2",
+      "channel": "Teams, com ligação se não houver retorno"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [
+      "Print do filtro de impacto no Monitoring (Host = agente)",
+      "Nome do agente e sua arquitetura (Isolado ou Host Group)",
+      "Horário de início da ocorrência",
+      "Fornecedor responsável (Tivit ou NTT)"
+    ],
+    "escalation": {
+      "after_minutes": 5,
+      "to": "N2 de plantão (Roberto Lima (91) 98431-8588 / Jordy Oliveira (91) 99165-4121) → N3 (Marcos Correa (91) 98455-1564 / Rafael Silva +1 (321) 946-4112) → liderança. Fornecedores: Tivit (Ivan Vargem (11) 98911-0379) e NTT (0800 200 3282 / servicedesk.br@global.ntt)",
+      "channel": "Teams e telefone"
+    },
+    "resolution_criteria": "Agente volta a comunicar com o Control-M/Server e a malha volta a submeter os jobs do host. Se normalizou dentro da tolerância, o INC é encerrado pelo próprio N1.",
+    "notes": "Manual 'NOC Votorantim — Control-M' colado pelo time em 2026-09-06. Operação 24x7. TOLERÂNCIA ANTES DE ACIONAR O N2 — Host Group (10 min de tolerância): brsaowvapp24vc/25vc/26vc (Tivit, DataFactory) · brsaowvqlk06vc/07vc/08vc (Tivit, Qliksense) · vidb0302/0303/0304 (Tivit, SAP BW) · awslcctrlmagt01 a 07 (NTT, SAP S/4) · awslcctrlmprd02 (NTT, Produção). ISOLADO (5 min de tolerância): brsaowvcgn02vc (Tivit, Cognos) · brsaowsfs01vc (Tivit, Transf. Arquivos) · brccqwsfs01vc (Tivit, SFTP ONS) · awslcctrlmprd04 (NTT, Produção). Os agentes vide0502ctm a vide0508ctm constam como permanentemente desabilitados e não devem gerar chamado. Acesso ao Control-M: VPN FortiClient da Fábrica, com ZTNA/Netskope como contingência (procedimento completo na wiki do NOC). Chamados no ServiceNow da Votorantim, obrigatoriamente como Incidente (INC), nunca Requisição.",
+    "imported_from": "wiki_noc_votorantim_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

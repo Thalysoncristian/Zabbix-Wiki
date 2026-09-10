@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|mssql-total-average-wait-time-for-locks-is-high|9a2b9119",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|mssql-total-average-wait-time-for-locks-is-high|9a2b9119",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "chubb-sqldb|mssql-total-average-wait-time-for-locks-is-high",
+      "triggerid": "93295",
+      "host": "Chubb - SQLDB",
+      "description": "MSSQL: Total average wait time for locks is high"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "93295",
+    "description_raw": "MSSQL: Total average wait time for locks is high",
+    "description_normalized": "mssql-total-average-wait-time-for-locks-is-high",
+    "expression_raw": "{112314}>{$MSSQL.AVERAGE_WAIT_TIME.MAX}",
+    "expression_expanded": "min(/Chubb - SQLDB/mssql.average_wait_time,5m)>\"{$MSSQL.AVERAGE_WAIT_TIME.MAX}\"",
+    "expression_signature": "min(/{HOST}/mssql.average_wait_time,5m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "MSSQL: Total average wait time for locks is high (over {$MSSQL.AVERAGE_WAIT_TIME.MAX}ms for 5m)",
+    "comments": "An average wait time longer than 500ms may indicate excessive blocking. This value should generally correlate to 'Lock Waits/sec' and move up or down with it accordingly.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10876",
+      "host": "Chubb - SQLDB",
+      "name": "Chubb - SQLDB",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Cliente_chubb"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "153575",
+        "key_": "mssql.average_wait_time",
+        "name": "MSSQL: Total average wait time",
+        "units": "ms",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "0;m0-59s3"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:7d834c4f31bd2f417363661017be7c51fcdbb97f3580bd858851480b9ad922af",
+    "family_source_hash": "sha256:81dd5bb088fbd99264bc61c743a3f16587f7801f35189af171d54f0f8fc6bc6d",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

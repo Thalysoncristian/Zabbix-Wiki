@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|zabbix-proxy-more-than-macro-used-in-the-vmware-cache|2d2cb982",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|zabbix-proxy-more-than-macro-used-in-the-vmware-cache|2d2cb982",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T00:14:38Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-zabbix-proxy|zabbix-proxy-more-than-macro-used-in-the-vmware-cache",
+      "triggerid": "24158",
+      "host": "Vibe - Zabbix-Proxy",
+      "description": "Zabbix proxy: More than {$ZABBIX.PROXY.UTIL.MAX}% used in the vmware cache"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24158",
+    "description_raw": "Zabbix proxy: More than {$ZABBIX.PROXY.UTIL.MAX}% used in the vmware cache",
+    "description_normalized": "zabbix-proxy-more-than-macro-used-in-the-vmware-cache",
+    "expression_raw": "{34470}>{$ZABBIX.PROXY.UTIL.MAX}",
+    "expression_expanded": "max(/Vibe - Zabbix-Proxy/zabbix[vmware,buffer,pused],10m)>\"{$ZABBIX.PROXY.UTIL.MAX}\"",
+    "expression_signature": "max(/{HOST}/zabbix[vmware,buffer,pused],10m)>\"{MACRO}\"",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "3",
+      "name": "Average"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Consider increasing VMwareCacheSize in the zabbix_proxy.conf configuration file.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "capacity"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10693",
+      "host": "Vibe - Zabbix-Proxy",
+      "name": "Vibe - Zabbix-Proxy",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Zabbix servers"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51033",
+        "key_": "zabbix[vmware,buffer,pused]",
+        "name": "Zabbix proxy: VMware cache, % used",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:4def6e680d50b32d2eff62705437bf9e1a3d84281ff65bfbab6281c35997fc52",
+    "family_source_hash": "sha256:9aee594622a177f271fb807a7068ec0c2357fbec4838a779dfcaac42a4372d54",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

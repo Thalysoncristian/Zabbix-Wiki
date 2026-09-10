@@ -22,24 +22,37 @@
       "label": "NOC",
       "description": "Alertas sob responsabilidade operacional do NOC.",
 
-      "exclude_hosts": [
-        "Control-M PRD Votorantim"
+      "exclude_hosts": [],
+      "exclude_host_patterns": [],
+
+      "exclude_discovery_rules": [
+        { "host": "Control-M PRD Votorantim", "rule": "Jobs" }
       ],
 
-      "_sobre_exclude_hosts": [
-        "Control-M PRD Votorantim: ~16.326 alertas (~86% do ambiente), quase",
-        "todos LLD de jobs, fora do escopo do NOC hoje.",
+      "_sobre_exclude_discovery_rules": [
+        "Esconde os ~16.262 alertas de job do Control-M PRD Votorantim, que o",
+        "NOC não analisa pelo Zabbix: a malha é acompanhada dentro do próprio",
+        "Control-M do cliente, e esses alertas dominavam todos os indicadores",
+        "(86% do ambiente).",
         "",
-        "Os demais hosts de Control-M (DEV Votorantim, SaaS Master, server",
-        "[IN01]) NÃO foram excluídos: eles não foram medidos, e excluir por",
-        "semelhança de nome é palpite. Rode 'python main.py scope' para ver o",
-        "volume de cada um e decida com o número na frente.",
+        "ANTES este host era excluído INTEIRO (exclude_hosts). O efeito",
+        "colateral só apareceu documentando: os 60 alertas de 'Agent discovery'",
+        "do MESMO host são atendidos pelo NOC, têm procedimento escrito (fases,",
+        "matriz de tolerância 5/10 min, escalonamento N2/N3) — e sumiam junto",
+        "com os jobs. Recortar pela regra de descoberta separa os dois:",
+        "'Jobs' sai, 'Agent discovery' fica.",
         "",
-        "Nome exato, sem diferenciar maiúsculas. Para faixas, use",
-        "exclude_host_patterns com curingas: ['Control-M * Votorantim']."
+        "'host' e 'rule' são obrigatórios. Uma regra sem host valeria para o",
+        "ambiente todo, e 'Jobs' é um nome de LLD genérico o bastante para",
+        "existir em outros clientes."
       ],
 
-      "exclude_host_patterns": []
+      "_sobre_os_demais_control_m": [
+        "Os outros hosts de Control-M (DEV Votorantim, SaaS Master, server",
+        "[IN01]) NÃO são filtrados: eles não têm volume que justifique, e",
+        "IN01/SaaS Master são da Chubb. Rode 'python main.py scope' para ver o",
+        "volume de cada um e decida com o número na frente."
+      ]
     }
   ]
 }

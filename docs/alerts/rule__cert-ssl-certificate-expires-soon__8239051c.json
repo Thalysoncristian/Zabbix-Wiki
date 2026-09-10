@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cert-ssl-certificate-expires-soon|8239051c",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cert-ssl-certificate-expires-soon|8239051c",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "saq-certificado-e2ip|cert-ssl-certificate-expires-soon",
+      "triggerid": "73482",
+      "host": "SAQ_Certificado - E2Ip",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "saq-certificado-e2ip-bankry|cert-ssl-certificate-expires-soon",
+      "triggerid": "73524",
+      "host": "SAQ_Certificado - E2Ip -  Bankry",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "saq-certificado-e2ip-cartwavehub|cert-ssl-certificate-expires-soon",
+      "triggerid": "73520",
+      "host": "SAQ_Certificado - E2Ip - Cartwavehub",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "saq-certificado-simpay|cert-ssl-certificate-expires-soon",
+      "triggerid": "73528",
+      "host": "SAQ_Certificado - Simpay",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-nonprod|cert-ssl-certificate-expires-soon",
+      "triggerid": "73512",
+      "host": "SAQ_Certificado - qrcodes.saq - Nonprod",
+      "description": "Cert: SSL certificate expires soon"
+    },
+    {
+      "alert_key": "saq-certificado-qrcodes-saq-prod|cert-ssl-certificate-expires-soon",
+      "triggerid": "73508",
+      "host": "SAQ_Certificado - qrcodes.saq - Prod",
+      "description": "Cert: SSL certificate expires soon"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "73524",
+    "description_raw": "Cert: SSL certificate expires soon",
+    "description_normalized": "cert-ssl-certificate-expires-soon",
+    "expression_raw": "({91719} - now()) / 86400 < {$CERT.EXPIRY.WARN}",
+    "expression_expanded": "(last(/SAQ_Certificado - E2Ip -  Bankry/cert.not_after) - now()) / 86400 < 30",
+    "expression_signature": "(last(/{HOST}/cert.not_after)-now())/86400<30",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "1",
+      "name": "Information"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "Cert: SSL certificate expires soon (less than {$CERT.EXPIRY.WARN} days)",
+    "comments": "The SSL certificate should be updated or it will become untrusted.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "73526",
+        "description": "Cert: SSL certificate is invalid",
+        "host": "SAQ_Certificado - E2Ip -  Bankry"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "scope",
+        "value": "notice"
+      }
+    ],
+    "host": {
+      "hostid": "10872",
+      "host": "SAQ_Certificado - E2Ip -  Bankry",
+      "name": "SAQ_Certificado - E2Ip -  Bankry",
+      "status": {
+        "value": "1",
+        "name": "not monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "SAQ Certificados"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "99596",
+        "key_": "cert.not_after",
+        "name": "Cert: Expires on",
+        "units": "unixtime",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:92f8e66a71e514e4596c7854f039e4e969ccc381ce8d2f870d172ec31bcba05a",
+    "family_source_hash": "sha256:e0cad8767c539bd29c387c8e472d2277cbe56cf64ece38024b686b07920a4472",
+    "representative_of_family": true,
+    "family_instance_count": 6
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

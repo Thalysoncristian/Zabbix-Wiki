@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|cisco-ios-unavailable-by-icmp-ping|8bf1f8f0",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|cisco-ios-unavailable-by-icmp-ping|8bf1f8f0",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:38Z",
+  "last_modified_at": "2026-09-06T20:27:15.045222Z",
+  "revision": 1,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "documented",
+  "instances": [
+    {
+      "alert_key": "embratel-roteador-cisco|cisco-ios-unavailable-by-icmp-ping",
+      "triggerid": "24186",
+      "host": "Embratel - Roteador [Cisco]",
+      "description": "Cisco IOS: Unavailable by ICMP ping"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24186",
+    "description_raw": "Cisco IOS: Unavailable by ICMP ping",
+    "description_normalized": "cisco-ios-unavailable-by-icmp-ping",
+    "expression_raw": "{34545}=0",
+    "expression_expanded": "max(/Embratel - Roteador Cisco/icmpping,#3)=0",
+    "expression_signature": "max(/{HOST}/icmpping,#3)=0",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "4",
+      "name": "High"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "",
+    "event_name": "",
+    "comments": "Last three attempts returned timeout.  Please check device connectivity.",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10694",
+      "host": "Embratel - Roteador Cisco",
+      "name": "Embratel - Roteador [Cisco]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede",
+      "Roteadores"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51103",
+        "key_": "icmpping",
+        "name": "Cisco IOS: ICMP ping",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "1m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f1959f3438d8177387e6030c9f08fe59022972be4c62f4e8b71fd3497364857f",
+    "family_source_hash": "sha256:2513bf74dc19813c013907c928a01dbd7cf005063d72bab2a3391d774cd663d4",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "documented",
+    "title": "Roteador Embratel inalcançável (ICMP)",
+    "objective": "Confirmar se o roteador do link principal está fora antes de acionar a operadora.",
+    "symptoms": [
+      "'Cisco IOS: Unavailable by ICMP ping' (High)"
+    ],
+    "actions": [
+      "Acionar a Embratel (portal WebSIR com a designação, ou 0800 721 1021)",
+      "Informar +55 91 3222-1678 (NOC) como contato",
+      "Formalizar por e-mail e abrir no Desk Manager com o protocolo"
+    ],
+    "validation": "",
+    "risks": [
+      "Costuma vir junto com 'Link Principal indisponível' — é o mesmo incidente."
+    ],
+    "meaning": "Host 'Embratel - Roteador [Cisco]' não responde a ping — pode ser queda do link ou do equipamento.",
+    "probable_cause": "Queda do circuito, do equipamento no local, ou falta de energia.",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [
+      "Verificar as lâmpadas do aparelho preto no local (PON verde = OK, SD vermelha = instável)",
+      "Confirmar se o alerta de 'Link Principal indisponível' também disparou"
+    ],
+    "requires_ticket": true,
+    "routing": {
+      "team": "NOC → operadora",
+      "ticket_category": "Incidente",
+      "ticket_subcategory": "Link / operadora",
+      "ticket_queue": "Desk Manager (com o protocolo da operadora)",
+      "channel": "Portal/telefone da operadora, conforme o link"
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "líderes + NOC",
+      "channel": "E-mail"
+    },
+    "resolution_criteria": "Roteador volta a responder ao ping.",
+    "notes": "Wiki de rede do NOC (acionamento de operadoras), repassada pelo time em 2026-09-06. EMBRATEL (link principal) — Antes de abrir chamado, verificar o aparelho: no primeiro equipamento (preto), lâmpada PON verde = conexão estável; lâmpada SD vermelha = rede instável. Abertura pelo portal WebSIR (link com a designação na wiki de rede), ou 0800 721 1021 / caebt@claroatendimento.com.br. Informar o telefone do NOC como contato: +55 91 3222-1678. Depois formalizar por e-mail (erro + protocolo) para os líderes e o NOC, e abrir chamado no Desk Manager por integração com o protocolo.",
+    "imported_from": "wiki_rede_noc_2026-09-06",
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

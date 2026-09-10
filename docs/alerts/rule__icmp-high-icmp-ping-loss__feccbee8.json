@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "alert_key": "rule|icmp-high-icmp-ping-loss|feccbee8",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "rule|icmp-high-icmp-ping-loss|feccbee8",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-impressora-hp|icmp-high-icmp-ping-loss",
+      "triggerid": "87616",
+      "host": "Vibe - Impressora [HP]",
+      "description": "ICMP: High ICMP ping loss"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "87616",
+    "description_raw": "ICMP: High ICMP ping loss",
+    "description_normalized": "icmp-high-icmp-ping-loss",
+    "expression_raw": "{106350}>{$ICMP_LOSS_WARN} and {106351}<100 and dayofweek()>=1 and dayofweek()<=5 and time()>=080000 and time()<=180000",
+    "expression_expanded": "min(/Vibe - Impressora HP/icmppingloss,1m)>\"{$ICMP_LOSS_WARN}\" and min(/Vibe - Impressora HP/icmppingloss,5m)<100 and dayofweek()>=1 and dayofweek()<=5 and time()>=080000 and time()<=180000",
+    "expression_signature": "min(/{HOST}/icmppingloss,1m)>\"{MACRO}\"andmin(/{HOST}/icmppingloss,5m)<100anddayofweek()>=1anddayofweek()<=5andtime()>=080000andtime()<=180000",
+    "recovery_mode": {
+      "value": "0",
+      "name": "expression"
+    },
+    "recovery_expression_raw": "",
+    "recovery_expression_expanded": "",
+    "priority": {
+      "value": "2",
+      "name": "Warning"
+    },
+    "status": {
+      "value": "1",
+      "name": "disabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "1",
+      "name": "unknown"
+    },
+    "opdata": "Loss: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "",
+    "manual_close": false,
+    "templated": false,
+    "source_template": null,
+    "discovered": false,
+    "discovery_rule": null,
+    "prototype_description": null,
+    "dependencies": [
+      {
+        "triggerid": "24485",
+        "description": "ICMP: Unavailable by ICMP ping",
+        "host": "Vibe - Impressora [HP]"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "ambiente",
+        "value": "prod"
+      },
+      {
+        "tag": "scope",
+        "value": "availability"
+      },
+      {
+        "tag": "scope",
+        "value": "performance"
+      }
+    ],
+    "host": {
+      "hostid": "10695",
+      "host": "Vibe - Impressora HP",
+      "name": "Vibe - Impressora [HP]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "IOT"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "51876",
+        "key_": "icmppingloss",
+        "name": "ICMP: ICMP loss",
+        "units": "%",
+        "value_type": {
+          "value": "0",
+          "name": "numeric float"
+        },
+        "update_interval": "5m"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:ace9f93ed4535f4181d75b530ed0f6d4d8649458dedd07af5ebb48ca72e40290",
+    "family_source_hash": "sha256:0dacfb8d51fe00d63f474d78ab123b5142601d1e520df261195030415c96f908",
+    "representative_of_family": true,
+    "family_instance_count": 1
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

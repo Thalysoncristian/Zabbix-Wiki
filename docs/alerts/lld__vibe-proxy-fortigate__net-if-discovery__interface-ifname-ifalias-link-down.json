@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "alert_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-link-down",
+  "scope": "zabbix",
+  "doc_level": "family",
+  "family_key": "lld|vibe-proxy-fortigate|net-if-discovery|interface-ifname-ifalias-link-down",
+  "present_in_zabbix": true,
+  "created_at": "2026-09-06T00:14:39Z",
+  "last_modified_at": "2026-09-06T00:14:39Z",
+  "revision": 0,
+  "last_seen_at": "2026-09-05T21:15:09Z",
+  "procedure_status": "missing",
+  "instances": [
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-interno2-interno2-link-down",
+      "triggerid": "24716",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface INTERNO2(INTERNO2): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto1-link-down",
+      "triggerid": "105390",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO1(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-master-voto2-link-down",
+      "triggerid": "105401",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface MASTER_VOTO2(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-banpara-link-down",
+      "triggerid": "42736",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VIBE_BANPARA(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-visitante-visitante-link-down",
+      "triggerid": "24725",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VISITANTE(VISITANTE): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnbkp-link-down",
+      "triggerid": "24717",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNBKP(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vpnvibe-link-down",
+      "triggerid": "24723",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface VPNVIBE(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-a-link-down",
+      "triggerid": "24726",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface a(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-b-link-down",
+      "triggerid": "24718",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface b(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-fortilink-link-down",
+      "triggerid": "24729",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface fortilink(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal-link-down",
+      "triggerid": "24722",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal1-link-down",
+      "triggerid": "24719",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal1(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal2-oi-link-down",
+      "triggerid": "24724",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal2(Oi): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal3-lan-link-down",
+      "triggerid": "24720",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal3(LAN): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal4-link-down",
+      "triggerid": "24730",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal4(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal5-banpara-link-down",
+      "triggerid": "24734",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal5(BANPARA): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-internal6-link-down",
+      "triggerid": "24728",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface internal6(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-l2t-root-link-down",
+      "triggerid": "24732",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface l2t.root(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-naf-root-link-down",
+      "triggerid": "24731",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface naf.root(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-ssl-root-ssl-vpn-interface-link-down",
+      "triggerid": "24727",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface ssl.root(SSL VPN interface): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-vibe-master-link-down",
+      "triggerid": "24733",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface vibe_master(): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan1-wan-ebt-link-down",
+      "triggerid": "24735",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan1(WAN_EBT): Link down"
+    },
+    {
+      "alert_key": "vibe-proxy-fortigate|interface-wan2-interconect-link-down",
+      "triggerid": "24721",
+      "host": "Vibe - Proxy [Fortigate]",
+      "description": "Interface wan2(INTERCONECT): Link down"
+    }
+  ],
+  "zabbix": {
+    "triggerid": "24726",
+    "description_raw": "Interface a(): Link down",
+    "description_normalized": "interface-a-link-down",
+    "expression_raw": "{$IFCONTROL:\"a\"}=1 and {36097}=2 and ({36098}<>{36099})",
+    "expression_expanded": "\"{$IFCONTROL:\\\"a\\\"}\"=1 and last(/Vibe - Proxy Fortigate/net.if.status[ifOperStatus.19])=2 and (last(/Vibe - Proxy Fortigate/net.if.status[ifOperStatus.19],#1)<>last(/Vibe - Proxy Fortigate/net.if.status[ifOperStatus.19],#2))",
+    "expression_signature": "\"{MACRO}\"=1andlast(/{HOST}/net.if.status[ifOperStatus.19])=2and(last(/{HOST}/net.if.status[ifOperStatus.19],#1)<>last(/{HOST}/net.if.status[ifOperStatus.19],#2))",
+    "recovery_mode": {
+      "value": "1",
+      "name": "recovery expression"
+    },
+    "recovery_expression_raw": "{36097}<>2 or {$IFCONTROL:\"a\"}=0",
+    "recovery_expression_expanded": "last(/Vibe - Proxy Fortigate/net.if.status[ifOperStatus.19])<>2 or \"{$IFCONTROL:\\\"a\\\"}\"=0",
+    "priority": {
+      "value": "5",
+      "name": "Disaster"
+    },
+    "status": {
+      "value": "0",
+      "name": "enabled"
+    },
+    "value": {
+      "value": "0",
+      "name": "OK"
+    },
+    "state": {
+      "value": "0",
+      "name": "normal"
+    },
+    "opdata": "Current state: {ITEM.LASTVALUE1}",
+    "event_name": "",
+    "comments": "This trigger expression works as follows:\r\n1. It can be triggered if the operations status is down.\r\n2. `{$IFCONTROL:\"a\"}=1` - a user can redefine the context macro to \"0\", marking this interface as not important. No new trigger will be fired if this interface is down.\r\n3. `{TEMPLATE_NAME:METRIC.diff()}=1` - the trigger fires only if the operational status was up to \"1\" sometime before.\r\n\r\nWARNING: if closed manually - it will not fire again on the next poll, because of `.diff`.",
+    "manual_close": true,
+    "templated": false,
+    "source_template": null,
+    "discovered": true,
+    "discovery_rule": {
+      "itemid": "52465",
+      "name": "Network interface discovery",
+      "key_": "net.if.discovery"
+    },
+    "prototype_description": "Interface {#IFNAME}({#IFALIAS}): Link down",
+    "dependencies": [],
+    "tags": [
+      {
+        "tag": "scope",
+        "value": "availability"
+      }
+    ],
+    "host": {
+      "hostid": "10708",
+      "host": "Vibe - Proxy Fortigate",
+      "name": "Vibe - Proxy [Fortigate]",
+      "status": {
+        "value": "0",
+        "name": "monitored"
+      },
+      "inventory": {}
+    },
+    "host_groups": [
+      "Ativos de Rede"
+    ],
+    "templates": [],
+    "items": [
+      {
+        "itemid": "52752",
+        "key_": "net.if.status[ifOperStatus.19]",
+        "name": "Interface a(): Operational status",
+        "units": "",
+        "value_type": {
+          "value": "3",
+          "name": "numeric unsigned"
+        },
+        "update_interval": "0"
+      }
+    ],
+    "zabbix_version": "7.2.1",
+    "collected_at": "2026-09-05T21:15:09Z",
+    "source_hash": "sha256:f39f09b9d3a0496afffeaf9fa33d5d563dfb69a180a235e4dd386cc58ac5fc68",
+    "family_source_hash": "sha256:895f4046eb0839784c2d0faeaa33e3ed45dd5cb06b42c5f6f4391f1fc88075bf",
+    "representative_of_family": true,
+    "family_instance_count": 23
+  },
+  "ai_suggestion": null,
+  "operational": {
+    "doc_status": "undocumented",
+    "title": "",
+    "objective": "",
+    "symptoms": [],
+    "actions": [],
+    "validation": "",
+    "risks": [],
+    "meaning": "",
+    "probable_cause": "",
+    "self_resolves": null,
+    "wait_before_ticket_minutes": null,
+    "checks_before_action": [],
+    "requires_ticket": null,
+    "routing": {
+      "team": "",
+      "ticket_category": "",
+      "ticket_subcategory": "",
+      "ticket_queue": "",
+      "channel": ""
+    },
+    "schedule_policy": {
+      "type": "ref",
+      "name": "default_business_hours"
+    },
+    "evidence_required": [],
+    "escalation": {
+      "after_minutes": null,
+      "to": "",
+      "channel": ""
+    },
+    "resolution_criteria": "",
+    "notes": "",
+    "imported_from": null,
+    "reviewed_by": "",
+    "reviewed_at": null,
+    "last_zabbix_hash_at_review": null
+  }
+}

@@ -327,3 +327,11 @@ a.cta:hover { text-decoration: none; filter: brightness(1.08); }
   border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
 }
 a.instance:hover { border-color: var(--accent); text-decoration: none; }
+
+/* Base de conhecimento do NOC: os motivos de cada sugestão precisam ser tão
+   legíveis quanto o botão de confirmar — quem confirma sem ler o motivo é
+   exatamente o problema que o casamento por palavra inteira evita. */
+.reasons { margin: 6px 0 0; padding-left: 18px; }
+.reasons li { font-size: 12.5px; margin-bottom: 3px; color: var(--text-dim); }
+.status-candidate { color: var(--text-dim); }
+.kb-card { border-left: 3px solid var(--accent); }

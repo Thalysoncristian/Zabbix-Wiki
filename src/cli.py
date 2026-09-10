@@ -135,6 +135,8 @@ def build_parser() -> argparse.ArgumentParser:
                      help="caminho de um snapshot específico (padrão: o mais recente não-parcial)")
     srv.add_argument("--scopes-file", default=None,
                      help="arquivo de escopos operacionais (padrão: scopes.json)")
+    srv.add_argument("--catalog", default=None,
+                     help="catálogo do NOC em markdown (padrão: docs/knowledge/catalogo-noc.md)")
 
     esc = sub.add_parser(
         "scope",
@@ -167,6 +169,20 @@ def build_parser() -> argparse.ArgumentParser:
 
     st = sub.add_parser("status", help="cobertura da documentação nas fichas")
     st.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+
+    kb_cmd = sub.add_parser(
+        "kb",
+        help="confronta o catálogo do NOC (wiki) com o snapshot e mostra o que casa",
+    )
+    kb_cmd.add_argument("--catalog", default=None,
+                        help="markdown do catálogo (padrão: docs/knowledge/catalogo-noc.md)")
+    kb_cmd.add_argument("--output", default=None, help="diretório dos snapshots (padrão: OUTPUT_DIR do .env)")
+    kb_cmd.add_argument("--snapshot", default=None, help="snapshot específico (padrão: o mais recente)")
+    kb_cmd.add_argument("--docs-dir", default=None, help="diretório das fichas (padrão: docs/alerts)")
+    kb_cmd.add_argument("--scope", default=None, metavar="ID",
+                        help="escopo a usar na comparação (padrão: o de scopes.json)")
+    kb_cmd.add_argument("--scopes-file", default=None, help="arquivo de escopos (padrão: scopes.json)")
+    kb_cmd.add_argument("--json", action="store_true", help="saída em JSON, para script")
     return parser
 
 
@@ -462,6 +478,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
         serve_forever(
             output_dir=output_dir, docs_dir=docs_dir, snapshot=args.snapshot,
             host=args.host, port=args.port, on_ready=pronto, scopes_file=args.scopes_file,
+            catalog_file=args.catalog,
         )
     except OSError as exc:
         raise ConfigError(f"Não foi possível abrir {args.host}:{args.port} — {exc}") from exc
@@ -649,6 +666,93 @@ def cmd_status(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def cmd_kb(args: argparse.Namespace) -> int:
+    """Confronta o catálogo do NOC com o snapshot — sem gravar nada.
+
+    Existe para responder, antes de qualquer importação, três perguntas que só
+    os dados reais respondem: quanto do wiki o Zabbix realmente vê, o que já foi
+    ligado, e o que só existe fora do Zabbix (e portanto vira ficha manual).
+
+    O comando é de leitura: quem confirma vínculo é a interface, com a pessoa
+    olhando o alvo.
+    """
+    from .kb.catalog import CatalogError, parse_catalog
+    from .kb.links import LINKED, MANUAL, PENDING, REJECTED, LinkStore
+    from .kb.matching import suggest_for_entry
+    from .scope import load_scopes
+    from .web.readmodel import ReadModel, resolve_snapshot
+
+    try:
+        settings = load_settings(args.env_file)
+        output_dir = args.output or settings.output_dir
+    except ConfigError:
+        output_dir = args.output or "output"
+    docs_dir = args.docs_dir or "docs/alerts"
+
+    try:
+        catalogo = parse_catalog(args.catalog or "docs/knowledge/catalogo-noc.md")
+    except CatalogError as exc:
+        raise ConfigError(str(exc)) from exc
+
+    escopos = load_scopes(args.scopes_file)
+    escopo = escopos.get(args.scope)
+    vinculos = LinkStore(Path(docs_dir).parent / "kb_links.json")
+    modelo = ReadModel(resolve_snapshot(output_dir, args.snapshot), docs_dir,
+                       scope=escopo, links=vinculos, catalog=catalogo)
+
+    linhas: list[dict[str, Any]] = []
+    for entrada in catalogo.entries:
+        sugestoes = [s for s in suggest_for_entry(entrada, modelo) if s.kind == "family"]
+        registro = vinculos.get(entrada.id)
+        linhas.append({
+            "id": entrada.id,
+            "name": entrada.name,
+            "category": entrada.category,
+            "host": entrada.host,
+            "team": entrada.team,
+            "status": registro.get("status", PENDING),
+            "targets": registro.get("targets") or [],
+            "matches": [s.to_dict() for s in sugestoes[:3]],
+        })
+
+    if args.json:
+        print(json.dumps({"source": catalogo.to_dict()["source"], "scope": escopo.id,
+                          "entries": linhas}, indent=2, ensure_ascii=False))
+        return EXIT_OK
+
+    com_match = [l for l in linhas if l["matches"]]
+    alertas_cobertos = sum(m["alerts"] for l in com_match for m in l["matches"][:1])
+    print(f"Catálogo    : {catalogo.source_path} ({len(catalogo.entries)} itens, "
+          f"{len(catalogo.escalation)} filas na matriz)")
+    print(f"Snapshot    : {modelo.snapshot_dir.name}   Escopo: {escopo.label}")
+    print(f"Com sugestão: {len(com_match)}/{len(linhas)} itens casam com algo coletado "
+          f"(~{alertas_cobertos} alertas no melhor casamento de cada um)")
+    contagem = vinculos.counts()
+    print(f"Já decidido : {contagem.get(LINKED, 0)} vinculados, {contagem.get(MANUAL, 0)} fichas "
+          f"manuais, {contagem.get(REJECTED, 0)} descartados")
+    print()
+
+    categoria_atual = ""
+    for linha in linhas:
+        if linha["category"] != categoria_atual:
+            categoria_atual = linha["category"]
+            print(f"── {categoria_atual} " + "─" * max(0, 56 - len(categoria_atual)))
+        marcador = {LINKED: "🔗", MANUAL: "📄", REJECTED: "✗"}.get(linha["status"], " ")
+        print(f"  {marcador} {linha['name'][:52]}")
+        if not linha["matches"]:
+            print(f"       nada no snapshot casa — candidato a ficha manual "
+                  f"(host do wiki: {linha['host'] or 'não informado'})")
+        for casamento in linha["matches"]:
+            hosts = ", ".join(casamento["hosts"][:2]) or "sem host"
+            print(f"       [{casamento['confidence_label']:<5}] {casamento['label'][:48]} "
+                  f"— {casamento['alerts']} alerta(s) em {hosts}")
+            print(f"               {casamento['reasons'][0][:88]}")
+    print()
+    print("Nada foi gravado. Para vincular ou guardar como ficha manual, abra "
+          "`python main.py serve` e vá em Base de conhecimento.")
+    return EXIT_OK
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     logging.basicConfig(
@@ -671,6 +775,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return cmd_reconcile(args)
         if args.command == "status":
             return cmd_status(args)
+        if args.command == "kb":
+            return cmd_kb(args)
     except ConfigError as exc:
         print(f"✗ Configuração inválida: {exc}", file=sys.stderr)
         return EXIT_CONFIG

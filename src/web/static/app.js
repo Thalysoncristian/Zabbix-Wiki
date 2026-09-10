@@ -295,6 +295,20 @@ rota(/^\/$/, async () => {
       el('div', { style: 'margin-top:14px' },
         el('a', { class: 'cta', href: '/groups' }, 'ESCOLHER GRUPO PARA DOCUMENTAR'))),
 
+    dados.knowledge_base ? el('section', { class: 'panel kb-card' },
+      el('h2', {}, 'Base de conhecimento do NOC'),
+      el('div', { class: 'subtitle' },
+        `${num(dados.knowledge_base.total)} itens no wiki da equipe. `
+        + 'Cada um pode ser ligado a uma família ou regra — o sistema sugere, você confirma.'),
+      el('div', { class: 'chips', style: 'margin-top:10px' },
+        dados.knowledge_base.by_status.map((s) =>
+          el('span', { class: 'chip' }, `${num(s.value)} ${s.label.toLowerCase()}`))),
+      el('div', { style: 'margin-top:10px' },
+        el('a', { href: '/kb' },
+          dados.knowledge_base.pending
+            ? `Avaliar ${num(dados.knowledge_base.pending)} item(ns) do wiki →`
+            : 'Abrir a base do NOC →'))) : null,
+
     w.next_rules.length ? el('section', {},
       el('h2', {}, 'Próximas regras'),
       el('div', { class: 'work-cards' }, w.next_rules.map(cardRegra))) : null,
@@ -698,6 +712,20 @@ rota(/^\/rules$/, async (_m, params) => {
   );
 });
 
+
+/** Itens do wiki do NOC ligados a esta família/regra. Só vínculos confirmados:
+ *  uma sugestão que ninguém aceitou não é conhecimento da equipe. */
+function blocoWiki(entradas) {
+  if (!entradas || !entradas.length) return null;
+  return el('section', { class: 'panel kb-card' },
+    el('h2', {}, 'Base do NOC'),
+    el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+      'Itens do wiki da equipe que alguém confirmou corresponderem a isto.'),
+    el('div', { class: 'chips' }, entradas.map((e) => el('a', {
+      class: 'chip', href: `/kb/${encodeURIComponent(e.id)}`,
+    }, `${e.name}${e.team ? ' · ' + e.team : ''}`))));
+}
+
 /* --------------------------------------------------------- página da regra */
 rota(/^\/rules\/([^/]+)$/, async ([id], params) => {
   const r = await api(`/api/rules/${encodeURIComponent(id)}`, params);
@@ -718,6 +746,8 @@ rota(/^\/rules\/([^/]+)$/, async ([id], params) => {
       badgeProcedimento(r.procedure)),
 
     blocoDecisao(r, recarregar),
+
+    blocoWiki(r.wiki_entries),
 
     el('section', { class: 'panel' },
       el('h2', {}, 'Por que estes alertas foram agrupados?'),
@@ -930,6 +960,8 @@ rota(/^\/families\/(.+)$/, async ([id], params) => {
       f.comments.map((c) => el('div', { style: 'margin-bottom:8px' },
         el('div', { class: 'cell-sub' }, `${num(c.alerts)} alerta(s)`),
         el('pre', { class: 'expr' }, c.text)))) : null,
+
+    blocoWiki(f.wiki_entries),
 
     blocoProcedimento(f.procedure, f.id, recarregar),
 
@@ -1214,6 +1246,198 @@ rota(/^\/status$/, async () => {
             ? el('span', { class: 'badge documented', style: 'margin-left:6px' }, 'em uso') : null),
           el('td', {}, sn.partial ? 'parcial' : sn.merged ? 'consolidado' : 'coleta'),
           el('td', { class: 'num' }, `${(sn.size_bytes / 1048576).toFixed(1)} MB`))))),
+  );
+});
+
+
+/* ------------------------------------------------- base de conhecimento NOC */
+/* O wiki do NOC é conhecimento já aprovado por gente. O que esta tela faz é
+ * PROPOR onde ele encaixa no que a coleta observou — e esperar a confirmação.
+ * O caso `STALL` casando com `Number of installed packages` é o motivo de
+ * nenhuma sugestão ser aplicada sozinha. */
+
+const KB_CLASSE = { pending: 'status-candidate', linked: 'status-confirmed',
+                    manual: 'status-split', rejected: 'status-ignored' };
+
+async function postKb(entryId, acao, corpo) {
+  const resposta = await fetch(`/api/kb/${encodeURIComponent(entryId)}/${acao}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo || {}),
+  });
+  const dados = await resposta.json();
+  if (!resposta.ok) throw new Error(dados.error || `HTTP ${resposta.status}`);
+  return dados;
+}
+
+rota(/^\/kb$/, async (_m, params) => {
+  const dados = await api('/api/kb', { ...params, per_page: params.per_page || 50 });
+  const { form } = campoBusca(params, 'alerta, host ou fila do wiki…');
+  const facetas = dados.facets;
+
+  setView(
+    cabecalho('Base de conhecimento do NOC',
+      `${dados.source.path} · ${num(facetas.total_unfiltered)} itens · lido em ${dados.source.parsed_at}`),
+    el('div', { class: 'note' },
+      el('strong', {}, 'Este catálogo é conhecimento humano já validado. '),
+      'O sistema não o reescreve: ele apenas sugere a qual família ou regra cada item corresponde. ',
+      'Casar texto não prova que é o mesmo alerta — por isso a confirmação é sua, e o que for importado ',
+      'entra como rascunho, preenchendo só campos vazios.'),
+
+    el('div', { class: 'toolbar' }, form,
+      seletor('Situação', 'status',
+        facetas.by_status.map((s) => ({ value: s.status, label: `${s.label} (${s.value})` })), params),
+      seletor('Categoria', 'category',
+        facetas.categories.map((c) => ({ value: c, label: c })), params)),
+
+    tabela(
+      [{ label: 'Alerta no wiki' }, { label: 'Categoria' }, { label: 'Host (wiki)' },
+       { label: 'Fila' }, { label: 'Prazo' }, { label: 'Situação' }],
+      dados.items.map((i) => el('tr', {},
+        el('td', {}, el('a', { href: `/kb/${encodeURIComponent(i.id)}` }, i.name),
+          i.severity.label ? el('div', { class: 'cell-sub' }, i.severity.label) : null),
+        el('td', { class: 'cell-sub' }, i.category),
+        el('td', { class: 'cell-sub' }, i.host || '—'),
+        el('td', { class: 'cell-sub' }, i.routing.team || '—'),
+        el('td', { class: 'cell-sub' }, i.sla.raw || '—'),
+        el('td', {},
+          el('span', { class: `status-pill ${KB_CLASSE[i.link.status] || ''}` }, i.link.label),
+          i.link.targets.length
+            ? el('div', { class: 'cell-sub' }, `${i.link.targets.length} alvo(s)`) : null)))),
+    paginador(dados.pagination, (pagina) => aplicarFiltro({ page: pagina })),
+
+    el('section', { class: 'panel' }, el('h2', {}, 'Matriz de acionamento'),
+      el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+        'Transcrita do wiki. É o que preenche a fila e o canal de escalonamento de cada ficha importada.'),
+      tabela([{ label: 'Fila / Time' }, { label: 'Responsável por' }, { label: 'Canal' },
+              { label: 'Escalonamento' }, { label: 'Horário' }],
+        dados.escalation.map((e) => el('tr', {},
+          el('td', {}, el('strong', {}, e.team)),
+          el('td', { class: 'cell-sub' }, e.responsible_for || '—'),
+          el('td', { class: 'cell-sub' }, e.channel || '—'),
+          el('td', { class: 'cell-sub' }, e.escalation || '—'),
+          el('td', { class: 'cell-sub' }, e.schedule || '—'))))),
+  );
+});
+
+rota(/^\/kb\/(.+)$/, async ([id], params) => {
+  const item = await api(`/api/kb/${encodeURIComponent(id)}`, params);
+  const recarregar = () => render();
+  const mensagem = el('div', { class: 'form-msg' });
+
+  const executar = async (acao, corpo) => {
+    mensagem.className = 'form-msg';
+    mensagem.textContent = 'Salvando…';
+    try {
+      const r = await postKb(id, acao, corpo);
+      mensagem.className = 'form-msg ok';
+      mensagem.textContent = r.written_fields && r.written_fields.length
+        ? `Importado: ${r.written_fields.join(', ')}.`
+        + (r.preserved_fields && r.preserved_fields.length
+          ? ` Preservado (já havia texto): ${r.preserved_fields.join(', ')}.` : '')
+        : 'Salvo.';
+      setTimeout(recarregar, 900);
+    } catch (e) {
+      mensagem.className = 'form-msg error';
+      mensagem.textContent = e.message;
+    }
+  };
+
+  const preview = item.preview.operational;
+  const fontes = item.preview.field_sources;
+
+  setView(
+    cabecalho(item.name, `${item.category} · ${item.severity.label || 'sem severidade'}`,
+      [{ label: 'Base do NOC', href: '/kb' }, { label: item.name }]),
+
+    el('div', { class: 'chips' },
+      el('span', { class: `status-pill ${KB_CLASSE[item.link.status] || ''}` }, item.link.label),
+      item.host ? el('span', { class: 'chip' }, `Host no wiki: ${item.host}`) : null,
+      item.routing.team ? el('span', { class: 'chip' }, `Fila: ${item.routing.team}`) : null,
+      item.sla.raw ? el('span', { class: 'chip' }, `Prazo: ${item.sla.raw}`) : null),
+
+    el('section', { class: 'panel' }, el('h2', {}, 'O que o wiki diz'),
+      el('dl', { class: 'kv' },
+        el('dt', {}, 'Ação imediata'), el('dd', {}, item.action || na('—')),
+        el('dt', {}, 'Descrição'), el('dd', {}, item.description || na('—')),
+        el('dt', {}, 'Causa provável'), el('dd', {}, item.probable_cause || na('—')),
+        el('dt', {}, 'Fila / contato'), el('dd', {}, item.routing.raw || na('—')),
+        el('dt', {}, 'Escalonar em'), el('dd', {}, item.sla.raw || na('—')),
+        item.reference ? el('dt', {}, 'Referência') : null,
+        item.reference ? el('dd', {}, item.reference) : null,
+        item.escalation ? el('dt', {}, 'Matriz de acionamento') : null,
+        item.escalation ? el('dd', {},
+          `${item.escalation.team} · canal ${item.escalation.channel || '—'}`
+          + ` · escala para ${item.escalation.escalation || '—'} · ${item.escalation.schedule || '—'}`) : null)),
+
+    item.link.targets.length ? el('section', { class: 'panel' },
+      el('h2', {}, 'Vínculos confirmados'),
+      tabela([{ label: 'Alvo' }, { label: 'Tipo' }, { label: 'Confirmado em' }, { label: '' }],
+        item.link.targets.map((t) => el('tr', {},
+          el('td', {}, el('a', { href: `/${t.kind === 'rule' ? 'rules' : 'families'}/${t.id}` }, t.label || t.id)),
+          el('td', { class: 'cell-sub' }, t.kind === 'rule' ? 'regra operacional' : 'família técnica'),
+          el('td', { class: 'cell-sub' }, t.linked_at || '—'),
+          el('td', {}, el('button', {
+            onclick: () => executar('unlink', { kind: t.kind, target_id: t.id }),
+          }, 'Desfazer vínculo')))))) : null,
+
+    el('section', { class: 'panel' },
+      el('h2', {}, 'Possíveis correspondências no ambiente'),
+      el('div', { class: 'subtitle', style: 'margin-bottom:10px' }, item.disclaimer),
+      item.suggestions.length
+        ? el('div', { class: 'work-cards' }, item.suggestions.map((s) => el('div', { class: 'work-card' },
+          el('h3', {}, el('a', { href: `/${s.kind === 'rule' ? 'rules' : 'families'}/${s.target_id}` }, s.label)),
+          el('div', { class: 'meta' },
+            el('span', { class: `conf ${CONF_CLASS[s.confidence]}` }, `confiança ${s.confidence_label}`),
+            ` · ${s.kind === 'rule' ? 'regra operacional' : 'família técnica'}`
+            + ` · ${num(s.alerts)} alerta(s)`
+            + (s.hosts.length ? ` · ${s.hosts.slice(0, 2).join(', ')}` : '')),
+          el('ul', { class: 'reasons' }, s.reasons.slice(0, 4).map((r) => el('li', {}, r))),
+          el('div', { class: 'decide' },
+            el('button', { class: 'primary',
+              onclick: () => executar('link', { kind: s.kind, target_id: s.target_id }) },
+              'Vincular e importar'),
+            el('button', {
+              onclick: () => executar('link', { kind: s.kind, target_id: s.target_id, overwrite: true }) },
+              'Vincular sobrescrevendo')))))
+        : el('p', { class: 'muted' },
+          'Nada no snapshot deste escopo casa com o nome deste item. Isso costuma significar que o '
+          + 'sistema que gera o alerta não é monitorado pelo Zabbix — guarde-o como ficha manual '
+          + 'para não perder o conhecimento.')),
+
+    el('section', { class: 'panel' },
+      el('h2', {}, 'O que seria escrito na ficha'),
+      el('div', { class: 'subtitle', style: 'margin-bottom:8px' },
+        'Prévia exata da importação, com a origem de cada campo. Nada além disto é gravado.'),
+      tabela([{ label: 'Campo' }, { label: 'Valor' }, { label: 'De onde veio' }],
+        Object.entries(preview).map(([campo, valor]) => el('tr', {},
+          el('td', { class: 'mono' }, campo),
+          el('td', {}, Array.isArray(valor) ? valor.join(' · ')
+            : typeof valor === 'object' ? Object.entries(valor).map(([k, v]) => `${k}: ${v}`).join(' · ')
+            : String(valor)),
+          el('td', { class: 'cell-sub' }, fontes[campo] || '—')))),
+      el('div', { class: 'note warn', style: 'margin-top:10px' },
+        el('strong', {}, 'O wiki não preenche tudo. '),
+        'Estes campos continuam vazios e precisam de alguém: ',
+        item.missing_from_wiki.join('; '), '. ',
+        'Enquanto faltarem, a ficha fica como rascunho — o sistema não a dá como documentada.')),
+
+    el('section', { class: 'panel' },
+      el('h2', {}, 'Este item não existe no Zabbix?'),
+      el('div', { class: 'subtitle' },
+        'Boa parte do catálogo descreve sistemas que a coleta não vê. Guardar como ficha manual '
+        + 'mantém o conhecimento no mesmo lugar, marcado como manual e ausente do Zabbix.'),
+      el('div', { class: 'decide' },
+        el('button', { class: item.link.status === 'manual' ? '' : 'primary',
+          onclick: () => executar('manual', {}) }, 'Guardar como ficha manual'),
+        el('button', { onclick: () => executar('status', { status: 'rejected' }) },
+          'Descartar este item'),
+        item.link.status !== 'pending'
+          ? el('button', { onclick: () => executar('status', { status: 'pending' }) }, 'Voltar ao início')
+          : null,
+        mensagem),
+      item.link.doc_key
+        ? el('div', { class: 'muted', style: 'margin-top:6px' },
+          'Ficha manual em ', el('span', { class: 'mono' }, item.link.doc_key))
+        : null),
   );
 });
 

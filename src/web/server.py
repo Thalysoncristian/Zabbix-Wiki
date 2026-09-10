@@ -16,7 +16,8 @@ trazendo uma linha só vale mais do que qualquer conveniência de framework.
 * **Nenhuma credencial do Zabbix chega aqui.** Este processo lê arquivos; não
   importa `zabbix_client`, não lê `ZABBIX_API_TOKEN`, não abre conexão com o
   Zabbix. A garantia é estrutural.
-* **Escrita só em `docs/alerts/`**, e só por `POST /api/procedures/<id>`.
+* **Escrita só em `docs/`** — fichas em `docs/alerts/`, decisões e vínculos ao
+  lado delas. Nenhuma rota escreve fora dali, e nenhuma escreve no Zabbix.
 * Arquivos estáticos são servidos de um diretório fixo, com o caminho
   normalizado antes de qualquer acesso — `..` não escapa dali.
 """
@@ -64,8 +65,10 @@ class WebApp:
         docs_dir: str = "docs/alerts",
         snapshot: str | None = None,
         scopes_file: str | None = None,
+        catalog_file: str | None = None,
     ):
-        self.cache = ReadModelCache(output_dir, docs_dir, snapshot, scopes=load_scopes(scopes_file))
+        self.cache = ReadModelCache(output_dir, docs_dir, snapshot, scopes=load_scopes(scopes_file),
+                                    catalog_file=catalog_file)
         self.docs_dir = docs_dir
 
     # ------------------------------------------------------------------- rotas
@@ -148,6 +151,10 @@ class WebApp:
             return api.status(modelo, self.cache, params)
         if recurso == "search":
             return api.search(modelo, params)
+        if recurso == "kb":
+            if identificador:
+                return api.kb_entry(modelo, identificador, params)
+            return api.kb(modelo, params)
         if recurso == "scopes":
             return {"scopes": self.cache.scopes.listar(), "default": self.cache.scopes.default_id}
         raise api.ApiError(f"Recurso desconhecido: {recurso}", 404)
@@ -187,6 +194,24 @@ class WebApp:
                 return 200, resultado
             if partes[3] == "decision":
                 resultado = api.decide_rule(modelo, identificador, corpo_json())
+                self.cache.invalidate()
+                return 200, resultado
+
+        # Base de conhecimento: vincular um item do wiki, desfazer, guardar
+        # como ficha manual, ou descartar. Todas escrevem só em docs/.
+        if len(partes) == 4 and partes[:2] == ["api", "kb"]:
+            escopo = (params.get("scope") or [None])[0]
+            modelo = self.cache.get(escopo)
+            identificador = unquote(partes[2])
+            acoes: dict[str, Any] = {
+                "link": lambda: api.kb_link(modelo, identificador, corpo_json(), self.docs_dir),
+                "unlink": lambda: api.kb_unlink(modelo, identificador, corpo_json()),
+                "manual": lambda: api.kb_manual(modelo, identificador, corpo_json(), self.docs_dir),
+                "status": lambda: api.kb_status(modelo, identificador, corpo_json()),
+            }
+            acao = acoes.get(partes[3])
+            if acao is not None:
+                resultado = acao()
                 self.cache.invalidate()
                 return 200, resultado
 
@@ -285,9 +310,11 @@ def serve(
     port: int = 8000,
     on_ready: Callable[[str], None] = lambda _url: None,
     scopes_file: str | None = None,
+    catalog_file: str | None = None,
 ) -> ThreadingHTTPServer:
     """Sobe o servidor e devolve a instância (para testes e para o `serve` da CLI)."""
-    app = WebApp(output_dir=output_dir, docs_dir=docs_dir, snapshot=snapshot, scopes_file=scopes_file)
+    app = WebApp(output_dir=output_dir, docs_dir=docs_dir, snapshot=snapshot, scopes_file=scopes_file,
+                 catalog_file=catalog_file)
     servidor = ThreadingHTTPServer((host, port), make_handler(app))
     servidor.daemon_threads = True
     porta = servidor.server_address[1]
@@ -303,8 +330,9 @@ def serve_forever(
     port: int = 8000,
     on_ready: Callable[[str], None] = lambda _url: None,
     scopes_file: str | None = None,
+    catalog_file: str | None = None,
 ) -> None:
-    servidor = serve(output_dir, docs_dir, snapshot, host, port, on_ready, scopes_file)
+    servidor = serve(output_dir, docs_dir, snapshot, host, port, on_ready, scopes_file, catalog_file)
     hilo = threading.Thread(target=servidor.serve_forever, daemon=True)
     hilo.start()
     try:

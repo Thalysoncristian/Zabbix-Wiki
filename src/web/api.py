@@ -16,12 +16,29 @@ from typing import Any, Callable
 
 from ..core.models import AlertDoc, build_family_key
 from ..core.repository import AlertRepository, ConcurrentModificationError
-from ..core.status import ALL_STATUSES, StatusError, assert_can_document, assert_transition
+from ..core.status import (
+    ALL_STATUSES,
+    PENDING_REVIEW,
+    UNDOCUMENTED,
+    StatusError,
+    assert_can_document,
+    assert_transition,
+)
+from ..kb.apply import imported_from, merge_operational, missing_from_wiki, operational_from_entry
+from ..kb.links import (
+    MANUAL as LINK_MANUAL,
+    PENDING as LINK_PENDING,
+    STATUS_LABELS as LINK_LABELS,
+    STATUSES as LINK_STATUSES,
+    LinkError,
+)
+from ..kb.matching import suggest_for_entry
 from ..keys import normalize_text
 from ..rules.candidates import CONFIDENCE_LABELS
 from ..rules.decisions import CANDIDATE, DECISIONS, STATUS_LABELS, DecisionError
 from .readmodel import (
     PROCEDURE_LABELS,
+    kb_doc_key,
     rule_doc_key,
     PROCEDURE_STATUSES,
     SEVERIDADES,
@@ -250,6 +267,28 @@ def dashboard(modelo: ReadModel, _params: dict[str, list[str]]) -> dict[str, Any
             "groups": grupos_trabalho[:8],
             "next_rules": pendentes_lista[:6],
         },
+        # A base de conhecimento que a equipe já tem. Só aparece quando existe
+        # catálogo: sem wiki, o card seria uma promessa vazia.
+        "knowledge_base": _resumo_kb_dashboard(modelo),
+    }
+
+
+def _resumo_kb_dashboard(modelo: ReadModel) -> dict[str, Any] | None:
+    if modelo.catalog is None:
+        return None
+    contagem = {chave: 0 for chave in (LINK_PENDING, *LINK_STATUSES)}
+    for entrada in modelo.catalog.entries:
+        estado = modelo.links.get(entrada.id).get("status", LINK_PENDING)
+        contagem[estado] = contagem.get(estado, 0) + 1
+    return {
+        "total": len(modelo.catalog.entries),
+        "source": modelo.catalog.source_path,
+        "by_status": [
+            {"status": chave, "label": LINK_LABELS[chave], "value": contagem.get(chave, 0)}
+            for chave in (LINK_PENDING, *LINK_STATUSES)
+        ],
+        "pending": contagem.get(LINK_PENDING, 0),
+        "href": "/kb",
     }
 
 
@@ -405,6 +444,8 @@ def family_detail(modelo: ReadModel, family_id: str, params: dict[str, list[str]
         # `hosts` continua sendo a CONTAGEM (vem do resumo); a lista tem nome
         # próprio para não haver um campo que é número numa tela e lista noutra.
         "hosts_list": [{"id": hid, "name": nome} for hid, nome in sorted(familia.hosts.items(), key=lambda kv: kv[1])],
+        # Itens do wiki do NOC que uma pessoa ligou a esta família.
+        "wiki_entries": modelo.wiki_entries_for("family", familia.id),
         "expressions": sorted(expressoes.values(), key=lambda e: -e["alerts"]),
         "item_keys": sorted(({"key": k, "alerts": v} for k, v in itens_chave.items()), key=lambda i: -i["alerts"])[:30],
         "tags": sorted(({"tag": k, "alerts": v} for k, v in tags.items()), key=lambda t: -t["alerts"])[:30],
@@ -775,6 +816,7 @@ def rule_detail(modelo: ReadModel, rule_id: str, params: dict[str, list[str]]) -
         # `instances` continua sendo a CONTAGEM (vem do payload); a lista
         # paginada tem nome próprio.
         "instances_page": _instancias_da_regra(modelo, regra, params),
+        "wiki_entries": modelo.wiki_entries_for("rule", rule_id),
         "families_list": [f.resumo(modelo.procedure_of_family(f.id)) for f in familias[:50]],
         "hosts_list": [{"id": h, "name": n} for h, n in sorted(regra.hosts.items(), key=lambda kv: kv[1])],
         "dependencies_list": dependencias[:60],
@@ -1088,3 +1130,241 @@ def search(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
         "out_of_scope_alerts": fora_do_escopo,
         "groups": [g for g in grupos_resultado if g["total"]],
     }
+
+
+# ------------------------------------------------------ base de conhecimento
+def _exigir_catalogo(modelo: ReadModel) -> Any:
+    if modelo.catalog is None:
+        raise ApiError(
+            "Nenhum catálogo do NOC carregado. Cole a versão atual do wiki em "
+            "docs/knowledge/catalogo-noc.md.",
+            404,
+        )
+    return modelo.catalog
+
+
+def _entrada(modelo: ReadModel, entry_id: str) -> Any:
+    entrada = _exigir_catalogo(modelo).get(entry_id)
+    if entrada is None:
+        raise ApiError(f"Item {entry_id} não existe no catálogo.", 404)
+    return entrada
+
+
+def _resumo_kb(modelo: ReadModel, entrada: Any) -> dict[str, Any]:
+    vinculo = modelo.links.get(entrada.id)
+    return {
+        **entrada.to_dict(),
+        "link": {
+            "status": vinculo.get("status", LINK_PENDING),
+            "label": LINK_LABELS.get(vinculo.get("status", LINK_PENDING), ""),
+            "targets": vinculo.get("targets") or [],
+            "note": vinculo.get("note", ""),
+            "decided_by": vinculo.get("decided_by", ""),
+            "decided_at": vinculo.get("decided_at"),
+            "doc_key": vinculo.get("doc_key", ""),
+        },
+    }
+
+
+def kb(modelo: ReadModel, params: dict[str, list[str]]) -> dict[str, Any]:
+    """O catálogo do NOC como fila de trabalho: o que já foi ligado e o que não.
+
+    O que ainda não foi avaliado vem primeiro — é a única parte que exige
+    decisão de alguém.
+    """
+    catalogo = _exigir_catalogo(modelo)
+    estado = _um(params, "status")
+    categoria = _um(params, "category")
+    termo = normalize_text(_um(params, "q"))
+
+    if estado and estado not in (LINK_PENDING, *LINK_STATUSES):
+        raise ApiError(f"status inválido: {estado}. Válidos: "
+                       f"{', '.join((LINK_PENDING, *LINK_STATUSES))}")
+
+    itens = []
+    contagem = {chave: 0 for chave in (LINK_PENDING, *LINK_STATUSES)}
+    for entrada in catalogo.entries:
+        resumo = _resumo_kb(modelo, entrada)
+        atual = resumo["link"]["status"]
+        contagem[atual] = contagem.get(atual, 0) + 1
+        if estado and atual != estado:
+            continue
+        if categoria and entrada.category != categoria:
+            continue
+        if termo and termo not in normalize_text(
+            f"{entrada.name} {entrada.host} {entrada.team} {entrada.description}"
+        ):
+            continue
+        itens.append(resumo)
+
+    ordem = {LINK_PENDING: 0, "linked": 1, "manual": 2, "rejected": 3}
+    itens.sort(key=lambda i: (ordem.get(i["link"]["status"], 9), i["category"], i["name"].lower()))
+    pagina, meta = paginate(itens, _int(params, "page", 1), _int(params, "per_page", 50))
+    return {
+        "items": pagina,
+        "pagination": meta,
+        "source": catalogo.to_dict()["source"],
+        "escalation": [linha.to_dict() for linha in catalogo.escalation],
+        "facets": {
+            "by_status": [
+                {"status": chave, "label": LINK_LABELS[chave], "value": contagem.get(chave, 0)}
+                for chave in (LINK_PENDING, *LINK_STATUSES)
+            ],
+            "categories": catalogo.categories,
+            "total_unfiltered": len(catalogo.entries),
+        },
+    }
+
+
+def kb_entry(modelo: ReadModel, entry_id: str, _params: dict[str, list[str]]) -> dict[str, Any]:
+    """Um item do wiki com as sugestões de vínculo e o que seria escrito.
+
+    A prévia (`preview`) mostra o bloco operacional exato que a importação
+    gravaria e a origem de cada campo. O operador decide olhando o resultado,
+    não uma promessa.
+    """
+    catalogo = _exigir_catalogo(modelo)
+    entrada = _entrada(modelo, entry_id)
+    bloco, fontes = operational_from_entry(entrada, catalogo)
+    return {
+        **_resumo_kb(modelo, entrada),
+        "suggestions": [s.to_dict() for s in suggest_for_entry(entrada, modelo)],
+        "preview": {"operational": bloco, "field_sources": fontes},
+        "missing_from_wiki": missing_from_wiki(entrada),
+        "disclaimer": (
+            "As sugestões abaixo são casamentos de TEXTO entre o nome no wiki e o que a "
+            "coleta observou. Casar texto não prova que é o mesmo alerta: confira o host e "
+            "a descrição antes de confirmar. A importação entra como rascunho e só preenche "
+            "campos vazios."
+        ),
+    }
+
+
+def _aplicar_entrada(
+    modelo: ReadModel, entrada: Any, chave: str, doc: Any, corpo: dict[str, Any], docs_dir: str,
+) -> dict[str, Any]:
+    """Escreve o conteúdo do wiki numa ficha, sem apagar o que já havia.
+
+    O estado nunca sobe além de `pending_review`: o wiki traz a ação imediata,
+    não o procedimento completo, e uma ficha só é dada como documentada quando
+    uma pessoa completa o que falta.
+    """
+    catalogo = _exigir_catalogo(modelo)
+    bloco, fontes = operational_from_entry(entrada, catalogo)
+    fundido, escritos, preservados = merge_operational(
+        doc.operational, bloco, overwrite=bool(corpo.get("overwrite")),
+    )
+
+    if escritos:
+        fundido["imported_from"] = imported_from(entrada, catalogo, fontes, by=str(corpo.get("by") or ""))
+        if doc.doc_status == UNDOCUMENTED:
+            fundido["doc_status"] = PENDING_REVIEW
+
+    doc.operational = fundido
+    doc.touch()
+    repositorio = AlertRepository(docs_dir)
+    try:
+        repositorio.save(doc, expected_revision=corpo.get("expected_revision"))
+    except ConcurrentModificationError as exc:
+        raise ApiError(str(exc), 409) from exc
+
+    return {
+        "doc_key": chave,
+        "written_fields": escritos,
+        "preserved_fields": preservados,
+        "procedure_status": doc.procedure_status,
+        "revision": doc.revision,
+        "missing_from_wiki": missing_from_wiki(entrada),
+    }
+
+
+def kb_link(modelo: ReadModel, entry_id: str, corpo: dict[str, Any], docs_dir: str) -> dict[str, Any]:
+    """Confirma um vínculo e importa o conteúdo do wiki para a ficha do alvo."""
+    entrada = _entrada(modelo, entry_id)
+    tipo = str(corpo.get("kind") or "")
+    alvo = str(corpo.get("target_id") or "")
+    if tipo not in ("family", "rule"):
+        raise ApiError("Informe 'kind': 'family' ou 'rule'.", 400)
+
+    if tipo == "rule":
+        regra = modelo.rules.get(alvo)
+        if regra is None:
+            raise ApiError(f"Regra {alvo} não existe neste escopo.", 404)
+        chave = rule_doc_key(alvo)
+        rotulo = f"{regra.label} — {regra.group_name}"
+        primeiro = regra.alert_ids[0] if regra.alert_ids else None
+    else:
+        familia = modelo.families.get(alvo)
+        if familia is None:
+            raise ApiError(f"Família {alvo} não existe neste snapshot.", 404)
+        chave = familia.key
+        rotulo = familia.label
+        primeiro = familia.alert_ids[0] if familia.alert_ids else None
+
+    repositorio = AlertRepository(docs_dir)
+    doc = repositorio.get(chave)
+    if doc is None:
+        alerta = modelo.by_trigger.get(primeiro) if primeiro else None
+        if alerta is None:
+            raise ApiError(f"{rotulo} não tem alertas — não há ficha a criar.", 400)
+        doc = AlertDoc.from_collected_alert(alerta)
+        doc.alert_key = chave
+        doc.family_key = build_family_key(alerta)
+        if tipo == "rule":
+            doc.doc_level = "rule"
+
+    resultado = _aplicar_entrada(modelo, entrada, chave, doc, corpo, docs_dir)
+    registro = modelo.links.link(
+        entry_id, tipo, alvo, rotulo,
+        by=str(corpo.get("by") or ""), note=str(corpo.get("note") or ""),
+    )
+    return {"saved": True, "entry_id": entry_id, "kind": tipo, "target_id": alvo,
+            "label": rotulo, "link": registro, **resultado}
+
+
+def kb_unlink(modelo: ReadModel, entry_id: str, corpo: dict[str, Any]) -> dict[str, Any]:
+    """Desfaz o vínculo. A ficha e o texto dela permanecem intactos."""
+    _entrada(modelo, entry_id)
+    tipo = str(corpo.get("kind") or "")
+    alvo = str(corpo.get("target_id") or "")
+    if tipo not in ("family", "rule") or not alvo:
+        raise ApiError("Informe 'kind' e 'target_id'.", 400)
+    registro = modelo.links.unlink(entry_id, tipo, alvo)
+    return {
+        "saved": True, "entry_id": entry_id, "link": registro,
+        "note": "O vínculo foi removido. A ficha e o texto já escrito continuam onde estavam.",
+    }
+
+
+def kb_manual(modelo: ReadModel, entry_id: str, corpo: dict[str, Any], docs_dir: str) -> dict[str, Any]:
+    """Guarda o item como ficha MANUAL — para o que não existe no Zabbix.
+
+    Metade do catálogo do NOC descreve alertas de sistemas que a coleta não vê
+    (RH Cloud, MSMonitor, Feedz). Perder esse conhecimento por ele não ter
+    trigger correspondente seria o pior resultado possível: a ficha manual o
+    guarda no mesmo repositório, marcada como manual e ausente do Zabbix.
+    """
+    entrada = _entrada(modelo, entry_id)
+    chave = kb_doc_key(entry_id)
+    repositorio = AlertRepository(docs_dir)
+    doc = repositorio.get(chave) or AlertDoc.manual(chave)
+    resultado = _aplicar_entrada(modelo, entrada, chave, doc, corpo, docs_dir)
+    registro = modelo.links.set_status(
+        entry_id, LINK_MANUAL, by=str(corpo.get("by") or ""),
+        note=str(corpo.get("note") or ""), doc_key=chave,
+    )
+    return {"saved": True, "entry_id": entry_id, "link": registro, **resultado}
+
+
+def kb_status(modelo: ReadModel, entry_id: str, corpo: dict[str, Any]) -> dict[str, Any]:
+    """Descarta um item ("isto não corresponde a nada aqui") ou desfaz."""
+    _entrada(modelo, entry_id)
+    estado = str(corpo.get("status") or "")
+    try:
+        registro = modelo.links.set_status(
+            entry_id, estado, by=str(corpo.get("by") or ""), note=str(corpo.get("note") or ""),
+        )
+    except LinkError as exc:
+        raise ApiError(str(exc), 400) from exc
+    return {"saved": True, "entry_id": entry_id, "link": registro,
+            "label": LINK_LABELS.get(registro["status"], registro["status"])}

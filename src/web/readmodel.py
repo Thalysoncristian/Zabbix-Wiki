@@ -40,6 +40,8 @@ from typing import Any, Iterable
 
 from ..core.models import build_family_key
 from ..core.repository import AlertRepository
+from ..kb.catalog import DEFAULT_CATALOG, Catalog, CatalogError, parse_catalog
+from ..kb.links import LinkStore
 from ..keys import normalize_text, short_hash, slugify
 from ..rules.candidates import build_candidates
 from ..rules.decisions import CANDIDATE, DecisionStore
@@ -164,6 +166,16 @@ def rule_doc_key(rule_id: str) -> str:
     return f"rule|{rule_id}"
 
 
+def kb_doc_key(entry_id: str) -> str:
+    """Endereço da ficha MANUAL de um item do wiki que não existe no Zabbix.
+
+    Mesmo repositório, mesma máquina de estados — só o prefixo muda, como em
+    `rule|`. Um segundo lugar para guardar procedimento seria um segundo lugar
+    para procurar às três da manhã.
+    """
+    return f"kb|{entry_id}"
+
+
 def _nomes_do_host(alerta: dict[str, Any]) -> tuple[str, str]:
     host = (alerta.get("zabbix") or {}).get("host") or {}
     return str(host.get("name") or ""), str(host.get("host") or "")
@@ -220,11 +232,19 @@ class ReadModel:
         docs_dir: str | Path = "docs/alerts",
         scope: OperationalScope = EVERYTHING,
         decisions: DecisionStore | None = None,
+        links: LinkStore | None = None,
+        catalog: Catalog | None = None,
     ):
         self.snapshot_dir = Path(snapshot_dir)
         self.docs_dir = Path(docs_dir)
         self.scope = scope
         self.decisions = decisions or DecisionStore()
+        # Catálogo do NOC e vínculos: conhecimento humano que independe do
+        # escopo, referenciado aqui para que família e regra saibam o que o
+        # wiki já diz sobre elas. Ambos podem ser `None` — o sistema funciona
+        # sem catálogo nenhum.
+        self.links = links or LinkStore()
+        self.catalog = catalog
         self.loaded_at = ""
 
         payload = json.loads((self.snapshot_dir / "normalized" / "alerts.json").read_text(encoding="utf-8"))
@@ -441,6 +461,22 @@ class ReadModel:
             self.rule_procedures[identificador] = _procedimento(doc, None)
             self.rule_procedures[identificador]["family_key"] = rule_doc_key(identificador)
 
+    def wiki_entries_for(self, kind: str, target_id: str) -> list[dict[str, Any]]:
+        """Itens do wiki que uma pessoa ligou a esta família ou regra.
+
+        Só vínculos confirmados aparecem: uma sugestão que ninguém aceitou não
+        pode se apresentar como conhecimento da equipe.
+        """
+        if self.catalog is None:
+            return []
+        saida = []
+        for entry_id in self.links.entries_for_target(kind, target_id):
+            entrada = self.catalog.get(entry_id)
+            if entrada is not None:
+                saida.append({"id": entrada.id, "name": entrada.name,
+                              "category": entrada.category, "team": entrada.team})
+        return saida
+
     def decision_of_rule(self, rule_id: str) -> dict[str, Any]:
         return self._decisoes.get(rule_id) or {"status": CANDIDATE}
 
@@ -531,10 +567,17 @@ class ReadModelCache:
         snapshot: str | None = None,
         scopes: ScopeConfig | None = None,
         decisions_file: str | None = None,
+        catalog_file: str | None = None,
+        links_file: str | None = None,
     ):
         self.output_dir = output_dir
         self.docs_dir = docs_dir
         self.decisions = DecisionStore(decisions_file or Path(docs_dir).parent / "rule_decisions.json")
+        self.catalog_path = Path(catalog_file or DEFAULT_CATALOG)
+        self.links = LinkStore(links_file or Path(docs_dir).parent / "kb_links.json")
+        self._catalog: Catalog | None = None
+        self._catalog_mtime = -1.0
+        self.catalog_error = ""
         self.snapshot_escolhido = snapshot
         self.scopes = scopes or ScopeConfig(scopes={ALL_SCOPE_ID: EVERYTHING}, default_id=ALL_SCOPE_ID)
         # Um modelo por escopo. Os dicionários de alerta são compartilhados por
@@ -553,7 +596,31 @@ class ReadModelCache:
         marca_docs = 0.0
         if docs.is_dir():
             marca_docs = sum(f.stat().st_mtime for f in docs.glob("*.json"))
-        return (str(caminho), alerts.stat().st_mtime, marca_docs, self.decisions.mtime())
+        return (str(caminho), alerts.stat().st_mtime, marca_docs,
+                self.decisions.mtime(), self.links.mtime(), self._mtime_catalogo())
+
+    def _mtime_catalogo(self) -> float:
+        return self.catalog_path.stat().st_mtime if self.catalog_path.is_file() else 0.0
+
+    def catalog(self) -> Catalog | None:
+        """Catálogo do NOC, relido quando o markdown muda.
+
+        Ausência de catálogo não é erro: a interface simplesmente não oferece a
+        aba do wiki. Um markdown ilegível, sim — e a mensagem fica guardada
+        para a interface mostrar em vez de o servidor cair.
+        """
+        marca = self._mtime_catalogo()
+        if marca == 0.0:
+            self._catalog, self._catalog_mtime, self.catalog_error = None, 0.0, ""
+            return None
+        if self._catalog is None or marca != self._catalog_mtime:
+            try:
+                self._catalog = parse_catalog(self.catalog_path)
+                self.catalog_error = ""
+            except CatalogError as exc:
+                self._catalog, self.catalog_error = None, str(exc)
+            self._catalog_mtime = marca
+        return self._catalog
 
     def get(self, scope_id: str | None = None) -> ReadModel:
         escopo = self.scopes.get(scope_id)
@@ -565,7 +632,8 @@ class ReadModelCache:
             modelo = self._modelos.get(escopo.id)
             if modelo is None:
                 caminho = resolve_snapshot(self.output_dir, self.snapshot_escolhido)
-                modelo = ReadModel(caminho, self.docs_dir, scope=escopo, decisions=self.decisions)
+                modelo = ReadModel(caminho, self.docs_dir, scope=escopo, decisions=self.decisions,
+                                   links=self.links, catalog=self.catalog())
                 self._modelos[escopo.id] = modelo
             return modelo
 

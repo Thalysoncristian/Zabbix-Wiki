@@ -266,6 +266,10 @@ python main.py serve
 # escopo operacional: hosts por volume, quem está dentro e fora
 python main.py scope
 python main.py scope --scope all --top 50
+
+# catálogo do NOC (wiki) x snapshot: o que casa, o que não casa
+python main.py kb
+python main.py kb --json
 python main.py serve --port 9000
 python main.py serve --snapshot output/snapshots/20260905_181510
 ```
@@ -619,7 +623,12 @@ ficha" — é o gatilho para `documented`/`reviewed` → `review_needed`.
 │   ├── snapshot.py            # escrita imutável em output/snapshots/
 │   ├── report.py              # relatório da coleta
 │   ├── reconcile.py           # snapshot -> fichas em docs/alerts/
+│   ├── scope.py               # escopo operacional (o que o NOC analisa)
+│   ├── redact.py              # redação de segredos antes de persistir
 │   ├── core/                  # modelo da ficha, máquina de estados, repositório
+│   ├── rules/                 # candidatos a regra, taxonomia, instâncias, decisões
+│   ├── kb/                    # catálogo do NOC: leitura, casamento, importação
+│   ├── web/                   # servidor local, read model, API e interface
 │   └── cli.py
 └── tests/
     ├── fixtures/fake_zabbix.py      # Zabbix falso (transporte em memória)
@@ -632,6 +641,11 @@ ficha" — é o gatilho para `documented`/`reviewed` → `review_needed`.
     ├── test_reconcile.py
     ├── test_scale.py                # paginação, retry, redução de lote, multi-grupo
     ├── test_merge.py                # consolidação e snapshots independentes
+    ├── test_scope.py                # escopo operacional
+    ├── test_redact.py               # redação de segredos
+    ├── test_web.py                  # interface: API, filtros, segurança
+    ├── test_rules.py                # agrupamento, instâncias, confiança, decisão
+    ├── test_kb.py                   # catálogo do NOC, casamento e importação
     ├── test_cli.py
     └── test_cli_fase2.py
 ```
@@ -1365,3 +1379,170 @@ As categorias estão em `src/rules/taxonomy.py`, derivadas dos prefixos de item
 que existem no ambiente coletado. Acrescentar uma categoria só muda o
 agrupamento de quem casar com ela. Se um agrupamento parecer errado, o motivo
 na tela diz qual sinal o produziu — e é por ali que se corrige.
+
+---
+
+## 21. Base de conhecimento do NOC (o wiki da equipe)
+
+O NOC já tem um catálogo de alertas no wiki: 27 itens com ação imediata, fila,
+prazo, descrição e causa provável, mais uma matriz de acionamento com dez
+filas. Isso é **conhecimento humano já validado** — o oposto de uma sugestão de
+máquina, e a coisa mais valiosa que o sistema pode receber.
+
+O que este módulo faz é ligar esse catálogo ao que a coleta observou. Ele não
+reescreve o wiki, não decide sozinho e não inventa nada.
+
+### O caso que define o desenho
+
+A primeira versão casava por substring. O item `STALL` do wiki (coletor do
+MSMonitor parado, plantão telefônico com o Jordy) casou com o alerta
+
+```
+Linux: Number of installed packages has been changed
+                     ^^^^^
+```
+
+O procedimento de plantão teria sido anexado a um alerta de inventário de
+pacotes. É um erro silencioso, plausível e que só aparece às três da manhã.
+
+Duas decisões saíram dali, e são o módulo inteiro:
+
+1. **Casamento por palavra inteira.** `\bstall\b` não casa dentro de
+   `installed`. Existe um teste com esse nome.
+2. **Nada é aplicado sozinho.** Casar texto não prova que é o mesmo alerta. O
+   sistema propõe, mostra os motivos, e espera a confirmação de uma pessoa.
+
+### A fonte: markdown, não formulário
+
+`docs/knowledge/catalogo-noc.md` é uma cópia colável do wiki. Quem atualizar o
+wiki cola a versão nova nesse arquivo — as tabelas são lidas pelo cabeçalho,
+não pela posição, então seções fora de ordem continuam funcionando.
+
+```bash
+python main.py kb          # confronta o catálogo com o snapshot, sem gravar nada
+```
+
+Pedir para a equipe redigitar 27 procedimentos num formulário seria trocar uma
+fonte viva por uma cópia que envelhece.
+
+### O que é lido, e o que não é inferido
+
+| Coluna do wiki | Campo da ficha |
+|---|---|
+| Alerta | `title` |
+| Descrição (referência técnica) | `meaning` |
+| Causa provável | `probable_cause` |
+| Ação imediata do operador | `actions` |
+| Fila / Contato | `routing.team`, `routing.ticket_queue`, `routing.channel` |
+| Escalonar em — `7 min (5m + 2m)` | `wait_before_ticket_minutes` = 5, `escalation.after_minutes` = 7 |
+| Matriz de acionamento (fila) | `escalation.to`, `escalation.channel` |
+| Referência, Host, Sev., Horário | `notes` |
+
+Cada campo escrito aponta para a célula que o originou, em
+`imported_from.field_sources`, dentro da própria ficha. Seis meses depois dá
+para responder "de onde veio isto?" sem adivinhar.
+
+**A severidade do wiki não vira severidade do Zabbix.** São escalas diferentes,
+mantidas por pessoas diferentes; o rótulo é transportado como "Alto (wiki)".
+
+**`requires_ticket` e `self_resolves` nunca viram `False`.** Eles são lidos da
+frase em português ("Abrir chamado", "Aguardar a recuperação automática"), e
+silêncio não é negativa — ainda mais porque `requires_ticket` é campo
+obrigatório para marcar a ficha como documentada. Uma leitura de texto não pode
+fazer a validação passar com uma resposta que ninguém deu.
+
+**O wiki não preenche `resolution_criteria`.** Nenhum dos 27 itens diz como
+saber que o problema acabou. É justamente esse campo que a máquina de estados
+exige para `documented`, então a importação — por construção — não consegue
+fingir que um alerta está documentado. Ela entra como **rascunho**.
+
+### Não destrutiva
+
+A importação só preenche campo vazio. O que a equipe escreveu vence a
+importação sempre, e a resposta diz o que foi escrito e o que foi preservado.
+Sobrescrever exige pedir explicitamente.
+
+Desfazer um vínculo remove a ligação e **não apaga a ficha**: se alguém
+escreveu por cima do que veio do wiki, aquilo é conhecimento da equipe agora.
+
+### Os quatro estados de um item
+
+```
+(sem registro)  ainda não avaliado — aparece na fila com as sugestões
+linked          ligado a uma ou mais famílias/regras, com a ficha importada
+manual          não existe no Zabbix; virou ficha manual (`kb|<id>`)
+rejected        avaliado e descartado
+```
+
+Tudo em `docs/kb_links.json`, versionado no git ao lado dos procedimentos.
+Apagar o arquivo devolve todos os itens ao estado de sugestão, sem perder
+nenhuma ficha.
+
+### Metade do catálogo não vem do Zabbix
+
+Medido no snapshot real (18.903 alertas, escopo NOC):
+
+| | |
+|---|---|
+| itens no wiki | 27 |
+| com correspondência no snapshot | 13 |
+| sem correspondência | 14 |
+
+Os 14 restantes descrevem RH Cloud, MSMonitor, Control-M e integrações que a
+coleta não enxerga. Perder esse conhecimento por falta de trigger seria o pior
+resultado possível — daí a **ficha manual**: mesmo repositório, mesma máquina
+de estados, marcada como `scope: manual` e `present_in_zabbix: false`.
+
+### Sinais do casamento, todos explicáveis
+
+| sinal | força |
+|---|---|
+| o nome do wiki é o texto do alerta | igualdade |
+| o nome aparece inteiro, como palavras completas | frase |
+| `RotinaComFalha` separado em "rotina com falha" | camelCase |
+| fração das palavras do wiki presentes no alerta | cobertura (≥ 60%) |
+| o host do wiki bate com o host do alerta | reforça |
+
+Dois rebaixamentos que existem por causa de dados reais:
+
+* **nome de uma palavra só** (`STALL`, `CargaComFalha`) casa por acaso com
+  facilidade → teto de confiança rebaixado;
+* **nome que é só um pedaço do alerta** — `Http Response - Feedz` dentro de
+  `Failed step of scenario "Http Response - Feedz"` é um alerta *vizinho*, não
+  o mesmo → nunca sai como confiança alta.
+
+Divergência de host vira aviso na tela, não silêncio: `Serviço parado` pode
+casar perfeitamente no texto e estar no host errado.
+
+### Onde aparece na interface
+
+* **Base do NOC (wiki)** — a fila: o que ainda não foi avaliado vem primeiro
+* **Item do wiki** — o que o wiki diz, as correspondências com os motivos, a
+  **prévia exata** do que seria escrito com a origem de cada campo, e o que
+  continua faltando
+* **Família / Regra** — os itens do wiki que alguém confirmou corresponderem
+  àquilo (só vínculos confirmados: sugestão que ninguém aceitou não é
+  conhecimento da equipe)
+* **Dashboard** — quantos itens do wiki ainda esperam decisão
+
+### Endpoints
+
+```
+GET  /api/kb                     catálogo como fila de trabalho + matriz
+GET  /api/kb/<id>                item + sugestões + prévia + o que falta
+POST /api/kb/<id>/link           confirma e importa      ← escrita local
+POST /api/kb/<id>/unlink         desfaz (a ficha fica)   ← escrita local
+POST /api/kb/<id>/manual         guarda como ficha manual ← escrita local
+POST /api/kb/<id>/status         descarta / desfaz        ← escrita local
+```
+
+Sem catálogo o sistema continua inteiro: `/api/kb` responde 404 com a instrução
+e o dashboard simplesmente omite o bloco.
+
+### Custo
+
+| | |
+|---|---|
+| leitura do markdown | relida só quando o arquivo muda |
+| `/api/kb` | 3 ms |
+| `/api/kb/<id>` (517 famílias comparadas) | 23 ms |

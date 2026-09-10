@@ -6,8 +6,8 @@
   "family_key": "rule|icmp-high-icmp-ping-loss|087b6ad9",
   "present_in_zabbix": true,
   "created_at": "2026-09-06T00:14:38Z",
-  "last_modified_at": "2026-09-06T20:27:45.852322Z",
-  "revision": 1,
+  "last_modified_at": "2026-09-08T13:28:21.260109Z",
+  "revision": 2,
   "last_seen_at": "2026-09-05T21:15:09Z",
   "procedure_status": "draft",
   "instances": [

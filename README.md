@@ -1025,7 +1025,7 @@ procedimento: todos são estados válidos e aparecem como *"não disponível"* o
 A primeira coleta real trouxe isto numa expressão de trigger:
 
 ```
-avg(/Saq - AWS/aws_check.py[--access-key, "AKIA…", --secret-key, "…"], 5m) >= 5
+avg(/HOST/check.py[--access-key, "AKIA…", --secret-key, "…"], 5m) >= 5
 ```
 
 Uma credencial de produção, em texto claro, dentro do Zabbix. O Zabbix-Wiki não

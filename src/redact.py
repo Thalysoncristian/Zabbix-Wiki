@@ -66,12 +66,23 @@ _NOME_SENSIVEL = (
     r"|authorization"
     r"|credentials?"
     r"|private[-_]?key"
+    # A METADE IDENTIFICADORA do par também é credencial. `--clientid,
+    # servico@empresa.com` ao lado de `--clientsecret` é a conta de serviço em
+    # texto claro: quem a lê já tem metade do que precisa, e ela vaza o nome
+    # real da conta mesmo depois de o segredo virar [REDACTED].
+    #
+    # `user` sozinho fica DE FORA de propósito. Ele aparece em item legítimo
+    # ("processos do usuário X", "sessões por usuário") e redigir isso
+    # destruiria dado operacional para proteger o que não é segredo.
+    r"|client[-_]?id"
+    r"|user[-_]?name|username"
+    r"|login"
 )
 
 #: `--secret-key, "valor"` / `password="valor"` / `token: 'valor'`
 #: O valor entre aspas é o caso mais comum em chaves de item do Zabbix.
 _PAR_COM_ASPAS = re.compile(
-    rf"(?P<nome>(?<![\w.-])(?:--)?(?:{_NOME_SENSIVEL})\s*[:=,]\s*)(?P<aspa>[\"'])(?P<valor>[^\"']{{4,}})(?P=aspa)",
+    rf"(?P<nome>(?<![\w.\-/])(?:--)?(?:{_NOME_SENSIVEL})\s*[:=,]\s*)(?P<aspa>[\"'])(?P<valor>[^\"']{{4,}})(?P=aspa)",
     re.IGNORECASE,
 )
 
@@ -84,7 +95,7 @@ _PAR_COM_ASPAS = re.compile(
 #: segredo aparecer ali. Sem ela, o par com aspas era redigido e o sem aspas
 #: — o mesmo segredo, escrito de outro jeito — passava direto.
 _PAR_SEM_ASPAS = re.compile(
-    rf"(?P<nome>(?<![\w.-])(?:--)?(?:{_NOME_SENSIVEL})\s*[:=,]\s*)(?P<valor>[^\s,;\]\)\"'&]{{8,}})",
+    rf"(?P<nome>(?<![\w.\-/])(?:--)?(?:{_NOME_SENSIVEL})\s*[:=,]\s*)(?P<valor>[^\s,;\]\)\"'&]{{8,}})",
     re.IGNORECASE,
 )
 
@@ -101,7 +112,13 @@ _MACRO = re.compile(r"^\{[$#]?[^{}]*\}$")
 #: `source_hash` é calculado sobre o texto redigido, uma segunda passada (num
 #: merge de snapshots já redigidos, por exemplo) jogaria toda a documentação
 #: em `review_needed` sem nenhum motivo real.
-_JA_REDIGIDO = re.compile(r"^\[REDACTED:[0-9a-f]+\]$")
+#:
+#: O teste é por PREFIXO, e não pelo marcador inteiro. `]` está fora da classe
+#: de caracteres do valor em `_PAR_SEM_ASPAS`, então dentro de uma chave de
+#: item o grupo capturado é `[REDACTED:4bdf095e` — sem o fecha-colchetes. Uma
+#: âncora `$` não casava com isso, a guarda não disparava, e a segunda passada
+#: redigia o próprio marcador: hash novo e um `]` órfão no texto.
+_JA_REDIGIDO = re.compile(r"^\[REDACTED:")
 
 #: Campos de texto onde um segredo pode aparecer. `description_raw` entra
 #: porque nada impede alguém de escrever a senha no nome do trigger.

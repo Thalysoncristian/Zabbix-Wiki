@@ -23,8 +23,8 @@
     "description_raw": "PIX API lenta (média 5m > {$PIX_RT_WARN}s)",
     "description_normalized": "pix-api-lenta-media-5m-macro-s",
     "expression_raw": "{68711}>{$PIX_RT_WARN}",
-    "expression_expanded": "avg(/Saq - Pix/check_pix_api_detalhes.py[--mode,responsetime,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],5m)>5",
-    "expression_signature": "avg(/{HOST}/check_pix_api_detalhes.py[--mode,responsetime,--url,{MACRO},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],5m)>5",
+    "expression_expanded": "avg(/Saq - Pix/check_pix_api_detalhes.py[--mode,responsetime,--url,{$PIX_API_URL},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],5m)>5",
+    "expression_signature": "avg(/{HOST}/check_pix_api_detalhes.py[--mode,responsetime,--url,{MACRO},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],5m)>5",
     "recovery_mode": {
       "value": "0",
       "name": "expression"

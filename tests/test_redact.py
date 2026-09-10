@@ -154,12 +154,19 @@ class TestSegredoSemAspas(unittest.TestCase):
         self.assertNotIn("77331094e9ab7c1de9e306b210f4c8a1", redigido)
 
     def test_o_que_nao_e_segredo_continua_legivel(self):
-        """Redigir não pode destruir a utilidade do alerta."""
+        """Redigir não pode destruir a utilidade do alerta.
+
+        O `--clientid` saiu desta lista: ele era tratado como "usuário, não
+        segredo" e ficava em claro ao lado do `--clientsecret` redigido. No
+        ambiente real isso deixava a conta de serviço exposta em 13 fichas —
+        metade do par de credenciais, entregue de graça. Ver
+        `TestMetadeIdentificadora`.
+        """
         redigido, total = redact_text(self.PIX)
-        self.assertEqual(total, 2)
+        self.assertEqual(total, 3)
         self.assertIn("pix.check", redigido)
-        self.assertIn("--clientid,monitor@exemplo.com", redigido, "usuário não é segredo")
         self.assertIn("{$PIX_API_URL}", redigido, "macro é referência, não valor")
+        self.assertIn("--url,{$PIX_API_URL}", redigido, "parâmetro comum continua legível")
 
     def test_virgula_nao_cria_falso_positivo(self):
         """A vírgula agora separa nome de valor — não pode redigir parâmetro
@@ -213,6 +220,64 @@ class TestAlertaNormalizado(unittest.TestCase):
         uma_vez, _ = redact_value(self._alerta())
         duas_vezes, total = redact_value(uma_vez)
         self.assertEqual(duas_vezes, uma_vez)
+        self.assertEqual(total, 0)
+
+
+class TestMetadeIdentificadora(unittest.TestCase):
+    """A conta de serviço é credencial tanto quanto o segredo dela.
+
+    Achado no ambiente real: `--clientsecret` era redigido e o
+    `--clientid,monitoracaojd@saq.com` ao lado ficava em texto claro, em 13
+    ocorrências. Quem lia a ficha já saía com metade do par.
+    """
+
+    def test_clientid_e_redigido(self):
+        redigido, total = redact_text(
+            "check_pix_api.py[--clientid,servico@empresa.com,--clientsecret,s3gr3d0abcdef]"
+        )
+        self.assertNotIn("servico@empresa.com", redigido)
+        self.assertNotIn("s3gr3d0abcdef", redigido)
+        self.assertEqual(total, 2)
+
+    def test_username_e_login_tambem(self):
+        for chave in ("--username=svc_app_prod", "login=svc_app_prod"):
+            self.assertNotIn("svc_app_prod", redact_text(chave)[0])
+
+    def test_user_sozinho_NAO_e_redigido(self):
+        """`--user` aparece em item legítimo. Redigi-lo destruiria dado
+        operacional para proteger o que não é segredo."""
+        texto = "proc.num[,postgres,--user,zabbix]"
+        self.assertEqual(redact_text(texto), (texto, 0))
+
+    def test_segmento_de_url_nao_e_nome_de_argumento(self):
+        """`https://…/login,Verificar` casava com `login` e a redação engolia
+        "Verificar" — o nome do passo do cenário web, dado operacional puro."""
+        texto = 'web.test.rspcode[https://app2.exemplo.com.br/login,Verificar]'
+        self.assertEqual(redact_text(texto), (texto, 0))
+
+
+class TestIdempotenciaDentroDeChaveDeItem(unittest.TestCase):
+    """O marcador precisa sobreviver a uma segunda passada mesmo sem o `]`.
+
+    Numa chave de item, `]` fica fora da classe de caracteres do valor, então o
+    grupo capturado é `[REDACTED:4bdf095e` — truncado. Com a guarda ancorada em
+    `$`, ela não disparava: a segunda passada redigia o próprio marcador,
+    gerando um hash novo e um `]` órfão no texto.
+    """
+
+    CHAVE = ("min(/{HOST}/check_pix_api.py[--mode,check,--clientid,conta@empresa.com,"
+             "--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a]])")
+
+    def test_marcador_existente_sobrevive(self):
+        redigido, _ = redact_text(self.CHAVE)
+        self.assertIn("[REDACTED:4bdf095e]", redigido)
+        self.assertIn("[REDACTED:4514f38a]", redigido)
+        self.assertNotIn("]]]", redigido, "colchete órfão: o marcador foi re-redigido")
+
+    def test_passadas_seguintes_nao_mudam_nada(self):
+        uma, _ = redact_text(self.CHAVE)
+        duas, total = redact_text(uma)
+        self.assertEqual(duas, uma)
         self.assertEqual(total, 0)
 
 

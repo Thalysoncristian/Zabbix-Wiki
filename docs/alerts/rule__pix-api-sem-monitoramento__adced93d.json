@@ -23,8 +23,8 @@
     "description_raw": "PIX API sem monitoramento",
     "description_normalized": "pix-api-sem-monitoramento",
     "expression_raw": "{69001}=1",
-    "expression_expanded": "nodata(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],600)=1",
-    "expression_signature": "nodata(/{HOST}/check_pix_api.py[--mode,check,--url,{MACRO},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],600)=1",
+    "expression_expanded": "nodata(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],600)=1",
+    "expression_signature": "nodata(/{HOST}/check_pix_api.py[--mode,check,--url,{MACRO},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],600)=1",
     "recovery_mode": {
       "value": "0",
       "name": "expression"

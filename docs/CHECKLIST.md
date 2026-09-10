@@ -10,13 +10,14 @@ marcado aqui, com a data e o commit.
 
 ## 🔴 Bloqueadores — segurança
 
-- [ ] **Rotacionar as credenciais expostas no Zabbix**
-  Chave AWS (`Saq - AWS`, 57 triggers) e clientsecret/hmacsecret do PIX
-  (`Saq - Pix`, 5 triggers) estão em texto claro dentro da expressão de trigger.
-  Quem tem leitura na API enxerga. Redigir o arquivo local **não desfaz** isso.
-  → Detalhes em [SEGURANCA-credenciais-expostas.md](SEGURANCA-credenciais-expostas.md)
-  → *Pronto quando:* credenciais rotacionadas na AWS/PIX **e** substituídas por
-  macro secreta no Zabbix. Conferir com o `grep` do próprio documento.
+- [ ] **Rotacionar as credenciais que estão em texto claro no Zabbix**
+  Alguns itens gravam a credencial dentro da própria expressão do trigger, em
+  vez de usar macro. Quem tem leitura na API enxerga. Redigir a cópia local
+  **não desfaz** isso — a exposição está na origem.
+  → O levantamento de quais hosts e itens **não fica neste repositório**: é um
+  mapa de onde procurar segredo. Está com o time de infraestrutura.
+  → *Pronto quando:* credenciais rotacionadas e substituídas por macro secreta
+  no Zabbix.
 
 - [ ] **Revisar quem tem permissão de leitura na API do Zabbix**
   Enquanto as credenciais estiveram em claro, qualquer conta com leitura pôde
@@ -181,7 +182,7 @@ marcado aqui, com a data e o commit.
 - [x] **Alertas manuais visíveis na interface** — as 12 fichas de RH Cloud e
   MSMonitor existiam em disco e só apareciam pra quem lia JSON — 2026-09-06 `c348cd7`
 - [x] **Dois furos na redação de segredos** — vírgula como separador sem aspas e
-  `hmacsecret`; ambos deixavam credencial real passar — 2026-09-06 `d84bb96`
+  a segunda metade do par; ambos deixavam credencial real passar — `d84bb96`
 - [x] **Importar o catálogo do NOC e o manual da Chubb** — 40 fichas com time,
   fila e SLA reais — 2026-09-06 `78d4ec5`
 - [x] **Cobrir 100% das regras** — 50 clusters restantes documentados; 1.931 de

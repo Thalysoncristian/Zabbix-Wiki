@@ -157,10 +157,11 @@ todo dia.
 
 ## ⚠️ Risco aberto encontrado durante o trabalho
 
-> **Credenciais em texto claro dentro do Zabbix.** A chave AWS (host
-> `Saq - AWS`, 57 triggers) e o `clientsecret`/`hmacsecret` do PIX (host
-> `Saq - Pix`, 5 triggers) estão escritos na própria expressão do trigger.
+> **Credenciais em texto claro dentro do Zabbix.** Alguns itens gravam a
+> credencial na própria expressão do trigger, em vez de usar macro secreta.
 > Qualquer conta com permissão de leitura na API do Zabbix consegue vê-las.
+> Quais são, especificamente, não fica escrito aqui: este repositório é de
+> alertas, e a lista seria um mapa de onde procurar segredo.
 >
 > **O que já foi feito:** as cópias locais do projeto foram redigidas e o caso
 > está documentado. **O que falta, e não depende de mim:** rotacionar as

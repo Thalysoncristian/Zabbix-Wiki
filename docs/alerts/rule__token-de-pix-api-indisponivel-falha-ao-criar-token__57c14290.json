@@ -23,14 +23,14 @@
     "description_raw": "Token de PIX API indisponível (falha ao criar token)",
     "description_normalized": "token-de-pix-api-indisponivel-falha-ao-criar-token",
     "expression_raw": "{69290}=2",
-    "expression_expanded": "min(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],#3)=2",
-    "expression_signature": "min(/{HOST}/check_pix_api.py[--mode,check,--url,{MACRO},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],#3)=2",
+    "expression_expanded": "min(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}],#3)=2",
+    "expression_signature": "min(/{HOST}/check_pix_api.py[--mode,check,--url,{MACRO},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{MACRO},--account,{MACRO},--type_fine,{MACRO},--fine,{MACRO},--amount,{MACRO}],#3)=2",
     "recovery_mode": {
       "value": "1",
       "name": "recovery expression"
     },
     "recovery_expression_raw": "{69291}<>2",
-    "recovery_expression_expanded": "last(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,monitoracaojd@saq.com,--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}])<>2",
+    "recovery_expression_expanded": "last(/Saq - Pix/check_pix_api.py[--mode,check,--url,{$PIX_API_URL},--clientid,[REDACTED:3cc1753a],--clientsecret,[REDACTED:4bdf095e],--hmacsecret,[REDACTED:4514f38a],--branch,{$PIX_SRC_BRANCH},--account,{$PIX_SRC_ACCOUNT},--type_fine,{$PIX_TYPE_FINE},--fine,{$PIX_FINE},--amount,{$PIX_AMOUNT}])<>2",
     "priority": {
       "value": "4",
       "name": "High"
